@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
     "react-native-web",
     "expo",
     "@kakamu/api",
-    "@kakamu/config",
     "@kakamu/i18n",
     "@kakamu/query",
     "@kakamu/schema",

@@ -34,7 +34,6 @@
     }
   },
   "dependencies": {
-    "@kakamu/config": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "react-error-boundary": "^6.0.0",
@@ -43,7 +42,7 @@
   "devDependencies": {
     "@kakamu/eslint-config": "workspace:*",
     "@kakamu/typescript-config": "workspace:*",
-    "@types/react": "^19.2.2",
+    "@types/react": "~19.2.14",
     "eslint": "^9.39.1",
     "nativewind": "preview",
     "typescript": "^5.9.3"

@@ -54,8 +54,7 @@
 ```
 sns-platform/
 ├── apps/
-│   ├── mobile/                  # Expo (React Native)
-│   ├── web/                     # Next.js 15 App Router
+│   ├── client/                  # Expo (React Native)
 │   └── admin/                   # Next.js 15 (관리자 대시보드)
 ├── packages/
 │   ├── ui/                      # 공유 컴포넌트 (RN + Web 크로스)
@@ -77,9 +76,9 @@ sns-platform/
 
 ### 2-2. 각 패키지 상세
 
-#### `apps/mobile` — Expo (React Native)
+#### `apps/client` — Expo (React Native)
 ```
-mobile/
+client/
 ├── app/                         # Expo Router (파일 기반 라우팅)
 │   ├── (auth)/
 │   │   ├── login.tsx
@@ -121,27 +120,6 @@ mobile/
 │       └── sentry.ts
 ├── app.config.ts
 └── tailwind.config.ts
-```
-
-#### `apps/web` — Next.js 15
-```
-web/
-├── app/                         # App Router
-│   ├── (auth)/
-│   ├── (main)/
-│   │   ├── feed/
-│   │   ├── explore/
-│   │   ├── notifications/
-│   │   ├── messages/
-│   │   └── [username]/
-│   └── api/                     # Route Handlers (BFF 레이어)
-│       ├── auth/
-│       └── og/                  # OG 이미지 생성
-├── src/
-│   ├── components/
-│   ├── features/
-│   └── lib/
-└── next.config.ts
 ```
 
 #### `packages/api`
@@ -284,7 +262,7 @@ packages:
 sns-platform/
 │
 ├── apps/
-│   ├── mobile/                  # Expo SDK 52+ (React Native)
+│   ├── client/                  # Expo SDK 52+ (React Native)
 │   │   ├── app/                 # Expo Router v3 (파일 기반)
 │   │   ├── src/
 │   │   │   ├── components/
@@ -292,15 +270,6 @@ sns-platform/
 │   │   │   └── lib/
 │   │   ├── app.config.ts
 │   │   ├── tailwind.config.ts   # NativeWind 5 설정
-│   │   └── package.json
-│   │
-│   ├── web/                     # Next.js 15 (App Router)
-│   │   ├── app/
-│   │   ├── src/
-│   │   │   ├── components/
-│   │   │   ├── features/
-│   │   │   └── lib/
-│   │   ├── next.config.ts
 │   │   └── package.json
 │   │
 │   └── admin/                   # Next.js 15 (관리자)
@@ -435,14 +404,6 @@ push → Turborepo affected 분석
 
 ```
 apps/mobile ──┬──→ packages/ui
-              ├──→ packages/api
-              ├──→ packages/query
-              ├──→ packages/store
-              ├──→ packages/schema
-              ├──→ packages/types
-              └──→ packages/i18n
-
-apps/web ─────┬──→ packages/ui
               ├──→ packages/api
               ├──→ packages/query
               ├──→ packages/store

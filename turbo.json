@@ -13,9 +13,13 @@
     "test": {
       "cache": false
     },
+    "web": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "with": ["@kakamu/client#web"]
     }
   }
 }
