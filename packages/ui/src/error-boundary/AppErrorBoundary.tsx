@@ -4,7 +4,7 @@ import {
   type ErrorBoundaryPropsWithComponent,
   type FallbackProps,
 } from "react-error-boundary";
-import { View, Text } from "react-native";
+import { View, Text } from "react-native-css/components";
 import { Button } from "../primitives/Button";
 import { cn } from "../lib/cn";
 

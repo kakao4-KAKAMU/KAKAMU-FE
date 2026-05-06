@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { Text, type TextProps } from "react-native";
+import { Text, type TextProps } from "react-native-css/components";
 import { cn } from "../lib/cn";
 
 const badgeVariants = cva("rounded-full px-2.5 py-1 text-xs font-medium", {

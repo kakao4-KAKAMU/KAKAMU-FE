@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { Text, View, type TextProps, type ViewProps } from "react-native";
+import { Text, View, type TextProps, type ViewProps } from "react-native-css/components";
 import { cn } from "../lib/cn";
 
 const alertVariants = cva("w-full rounded-2xl border p-3", {

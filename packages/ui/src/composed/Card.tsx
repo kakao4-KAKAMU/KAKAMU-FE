@@ -1,4 +1,4 @@
-import { View, Text, type TextProps, type ViewProps } from "react-native";
+import { View, Text, type TextProps, type ViewProps } from "react-native-css/components";
 import { cn } from "../lib/cn";
 
 type CProps = ViewProps & { className?: string };

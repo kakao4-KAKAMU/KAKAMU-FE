@@ -1,4 +1,4 @@
-import { View, type ViewProps } from "react-native";
+import { View, type ViewProps } from "react-native-css/components";
 import { cn } from "../lib/cn";
 
 type SeparatorProps = ViewProps & {
