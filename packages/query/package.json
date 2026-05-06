@@ -1,0 +1,29 @@
+{
+  "name": "@kakamu/query",
+  "version": "0.0.0",
+  "private": true,
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0"
+  },
+  "dependencies": {
+    "@kakamu/api": "workspace:*",
+    "@kakamu/types": "workspace:*",
+    "@tanstack/react-query": "^5.90.10"
+  },
+  "devDependencies": {
+    "@kakamu/eslint-config": "workspace:*",
+    "@kakamu/typescript-config": "workspace:*",
+    "@types/react": "^19.2.2",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3"
+  }
+}

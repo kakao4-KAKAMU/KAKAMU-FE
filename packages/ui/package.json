@@ -1,0 +1,51 @@
+{
+  "name": "@kakamu/ui",
+  "version": "0.0.0",
+  "private": true,
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "react-native": "./src/index.ts",
+  "exports": {
+    ".": {
+      "react-native": "./src/index.ts",
+      "default": "./src/index.web.ts"
+    }
+  },
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0",
+    "react-native": ">=0.76.0",
+    "nativewind": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    },
+    "nativewind": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@kakamu/config": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "react-error-boundary": "^6.0.0",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@kakamu/eslint-config": "workspace:*",
+    "@kakamu/typescript-config": "workspace:*",
+    "@types/react": "^19.2.2",
+    "eslint": "^9.39.1",
+    "nativewind": "preview",
+    "typescript": "^5.9.3"
+  }
+}
