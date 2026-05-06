@@ -3,6 +3,9 @@
 @import "tailwindcss/utilities.css";
 
 @import "nativewind/theme";
+/* @plugin "tailwindcss-safe-area"; */
+
+@source "../../packages/ui/src/**/*.tsx";
 
 @custom-variant dark (&:is(.dark *));
 
