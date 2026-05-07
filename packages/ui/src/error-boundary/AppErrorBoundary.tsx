@@ -5,7 +5,7 @@ import {
   type FallbackProps,
 } from "react-error-boundary";
 import { View, Text } from "react-native-css/components";
-import { Button } from "../primitives/Button";
+import { Button } from "../composed/button";
 import { cn } from "../lib/cn";
 
 export type UiErrorBoundaryProps = Omit<
