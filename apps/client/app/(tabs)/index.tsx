@@ -1,10 +1,10 @@
 
 import { View } from 'react-native-css/components';
 import { Button, Text } from '@kakamu/ui';
-import { useColorScheme } from '@/components/ColorScheme/useColorScheme';
+import { useThemeScheme } from '@/components/themeScheme';
 
 export default function TabOneScreen() {
-  const { colorScheme, toggleColorScheme } = useColorScheme()
+  const { colorScheme, toggleColorScheme } = useThemeScheme()
   const changeTheme = () => {
     toggleColorScheme()
   }

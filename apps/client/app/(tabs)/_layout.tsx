@@ -12,9 +12,8 @@ import {
   Text,
   View,
 } from 'react-native-css/components';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useColors } from '@/components/useColors';
+import { useColors } from '@/components/themeColor/useColors';
 
 type IconName = React.ComponentProps<typeof FontAwesome>['name'];
 
@@ -27,7 +26,7 @@ function TabButton(
   { icon, label, isFocused, style: _ignoredStyle, ref, ...pressableProps }: TabButtonProps
 ) {
   const colors = useColors();
-  const tint = isFocused ? colors.primary : colors.mutedForeground;
+  const tint = isFocused ? colors['--primary'] : colors['--muted-foreground'];
 
   return (
     <Pressable

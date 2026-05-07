@@ -1,5 +1,4 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -7,10 +6,10 @@ import { useEffect, useMemo } from 'react';
 import '../global.css';
 import 'react-native-reanimated';
 import { AppErrorBoundary, PortalHost } from '@kakamu/ui';
-import { ColorSchemeProvider } from '@/components/ColorScheme/ColorSchemeProvider';
-import { useColorScheme } from '@/components/ColorScheme/useColorScheme';
-import { useColors } from '@/components/useColors';
+import { useThemeScheme, ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
+import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
+import { useColors } from '@/components/themeColor/useColors';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -59,50 +58,32 @@ export default function RootLayout() {
   }
 
   return (
-    <AppErrorBoundary>
-      <ColorSchemeProvider>
-        <ThemedRootStack />
-        <PortalHost />
-      </ColorSchemeProvider>
-    </AppErrorBoundary>
+    <ThemeSchemeProvider>
+      <ThemeColorProvider>
+        <AppErrorBoundary>
+          <ThemedRootStack />
+          <PortalHost />
+        </AppErrorBoundary>
+      </ThemeColorProvider>
+    </ThemeSchemeProvider>
   );
 }
 
 function ThemedRootStack() {
   const colors = useColors();
 
-  const { colorScheme } = useColorScheme();
-
-  const navigationTheme = useMemo<Theme>(
-    () => ({
-      ...DefaultTheme,
-      dark: colorScheme === 'dark',
-      colors: {
-        ...DefaultTheme.colors,
-        primary: colors.primary,
-        background: colors.background,
-        card: colors.card,
-        text: colors.foreground,
-        border: colors.border,
-        notification: colors.destructive,
-      },
-    }),
-    [colors, colorScheme],
-  );
   return (
-    <ThemeProvider value={navigationTheme}>
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: colors.card },
-          headerTintColor: colors.foreground,
+          headerStyle: { backgroundColor: colors['--card'] },
+          headerTintColor: colors['--foreground'],
           contentStyle: {
-            backgroundColor: colors.background,
-            color: colors.foreground
+            backgroundColor: colors['--background'],
+            color: colors['--foreground']
           }
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
-    </ThemeProvider>
   );
 }

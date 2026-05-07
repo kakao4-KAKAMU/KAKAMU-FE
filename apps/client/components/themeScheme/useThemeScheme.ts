@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import ColorSchemeContext from "./ColorSchemeContext";
+import ThemeSchemeContext from "./ThemeSchemeContext";
 
-export function useColorScheme() {
-  const context = useContext(ColorSchemeContext);
+export function useThemeScheme() {
+  const context = useContext(ThemeSchemeContext);
   if (!context) {
     throw new Error('useColorScheme must be used within a ColorSchemeProvider');
   }

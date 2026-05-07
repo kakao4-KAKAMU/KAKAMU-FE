@@ -1,12 +1,12 @@
 import { Appearance, Platform } from "react-native";
+import type { ColorSchemeName } from "react-native";
 import { useState } from "react";
-import ColorSchemeContext from "./ColorSchemeContext";
-import { View } from "react-native-css/components";
+import ThemeSchemeContext from "./ThemeSchemeContext";
 
-export function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeSchemeProvider({ children }: { children: React.ReactNode }) {
   const colorScheme = Appearance.getColorScheme();
-  const [colorSchemeState, setColorSchemeState] = useState<string>(colorScheme ?? 'light');
-  const setColorScheme = (scheme: 'light' | 'dark') => {
+  const [colorSchemeState, setColorSchemeState] = useState<ColorSchemeName>(colorScheme ?? 'light');
+  const setColorScheme = (scheme: ColorSchemeName) => {
     const newTheme = scheme ?? 'light'
     if (Platform.OS === 'ios' || Platform.OS === 'android') {
       Appearance.setColorScheme(newTheme)
@@ -25,8 +25,8 @@ export function ColorSchemeProvider({ children }: { children: React.ReactNode })
   }
 
   return (
-    <ColorSchemeContext.Provider value={{ colorScheme: colorSchemeState, setColorScheme: setColorScheme, toggleColorScheme: toggleColorScheme }}>
+    <ThemeSchemeContext.Provider value={{ colorScheme: colorSchemeState, setColorScheme: setColorScheme, toggleColorScheme: toggleColorScheme }}>
       {children}
-    </ColorSchemeContext.Provider>
+    </ThemeSchemeContext.Provider>
   );  
 }

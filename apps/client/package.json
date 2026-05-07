@@ -20,7 +20,7 @@
     "@kakamu/ui": "workspace:*",
     "@react-navigation/native": "^7.1.8",
     "@sentry/react-native": "~7.11.0",
-    "color": "^5.0.3",
+    "culori": "^4.0.2",
     "expo": "~55.0.23",
     "expo-constants": "~55.0.16",
     "expo-font": "~55.0.7",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",
+    "@types/culori": "^4.0.1",
     "@types/react": "~19.2.14",
     "@types/react-native-web": "^0.19.2",
     "postcss": "^8.5.6",
