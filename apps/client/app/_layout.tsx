@@ -1,13 +1,15 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import '../global.css';
 import 'react-native-reanimated';
-
 import { AppErrorBoundary } from '@kakamu/ui';
 import { ColorSchemeProvider } from '@/components/ColorScheme/ColorSchemeProvider';
+import { useColorScheme } from '@/components/ColorScheme/useColorScheme';
+import { useColors } from '@/components/useColors';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -43,19 +45,50 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-
   return (
     <AppErrorBoundary>
       <ColorSchemeProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
+        <ThemedRootStack />
       </ColorSchemeProvider>
     </AppErrorBoundary>
+  );
+}
+
+function ThemedRootStack() {
+  const colors = useColors();
+
+  const { colorScheme } = useColorScheme();
+
+  const navigationTheme = useMemo<Theme>(
+    () => ({
+      ...DefaultTheme,
+      dark: colorScheme === 'dark',
+      colors: {
+        ...DefaultTheme.colors,
+        primary: colors.primary,
+        background: colors.background,
+        card: colors.card,
+        text: colors.foreground,
+        border: colors.border,
+        notification: colors.destructive,
+      },
+    }),
+    [colors, colorScheme],
+  );
+  return (
+    <ThemeProvider value={navigationTheme}>
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.card },
+          headerTintColor: colors.foreground,
+          contentStyle: {
+            backgroundColor: colors.background,
+            color: colors.foreground
+          }
+        }}
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </ThemeProvider>
   );
 }

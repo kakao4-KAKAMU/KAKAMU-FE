@@ -1,17 +1,19 @@
 import { useUnstableNativeVariable } from "nativewind" 
 import { useClientOnlyValue } from "./useClientOnlyValue";
 import { Platform } from 'react-native';
+import Color from 'color'
 
 export const useColors = () => {
   const isClient = useClientOnlyValue(false, true);
   let cssMethod = null;
-
   if(!isClient) {
-    cssMethod = () => ""
-  }
-  else if(Platform.OS === "web") {
+    cssMethod = () => "#ffffff"
+  } else if(Platform.OS === "web") {
     const css = getComputedStyle(document.documentElement);
-    cssMethod = (name: string) => css.getPropertyValue(name);
+    cssMethod = (name: string) => {
+      const [l, a, b] = css.getPropertyValue(name).split('lab(')[1].split(')')[0].split(' ')
+        return Color({l: l.replace('%', ''), a, b}).hex()
+    };
   } else {
     cssMethod = useUnstableNativeVariable;
   }
