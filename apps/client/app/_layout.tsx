@@ -10,6 +10,19 @@ import { AppErrorBoundary, PortalHost } from '@kakamu/ui';
 import { ColorSchemeProvider } from '@/components/ColorScheme/ColorSchemeProvider';
 import { useColorScheme } from '@/components/ColorScheme/useColorScheme';
 import { useColors } from '@/components/useColors';
+import * as Sentry from '@sentry/react-native';
+
+const navigationIntegration = Sentry.reactNavigationIntegration({
+  enableTimeToInitialDisplay: true,
+  routeChangeTimeoutMs: 1_000, // default: 1_000
+  ignoreEmptyBackNavigationTransactions: true, // default: true
+  useDispatchedActionData: true, // default: false
+});
+Sentry.init({
+  dsn: "https://c975936198a658db66d7afd36e8bc6e2@o4511347737690113.ingest.us.sentry.io/4511347740180480",
+  enableLogs: true,
+  integrations: [navigationIntegration],
+})
 
 export {
   // Catch any errors thrown by the Layout component.

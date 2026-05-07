@@ -7,6 +7,7 @@ import {
 import { View, Text } from "react-native-css/components";
 import { Button } from "../composed/button";
 import { cn } from "../lib/cn";
+import * as Sentry from '@sentry/react-native';
 
 export type UiErrorBoundaryProps = Omit<
   ErrorBoundaryPropsWithComponent,
@@ -28,8 +29,11 @@ export function DefaultErrorFallback({
   title?: string;
   description?: string;
 }) {
-  const errorMessage = error instanceof Error ? error.message : undefined;
+  if(error instanceof Error) {
+    Sentry.captureException(error)
+  }
 
+  const errorMessage = error instanceof Error ? error.message : undefined;
   return (
     <View className={cn("rounded-3xl border border-destructive/30 bg-destructive/10 p-4", className)}>
       <Text className="text-base font-semibold text-destructive">{title}</Text>
