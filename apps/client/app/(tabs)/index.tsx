@@ -1,6 +1,6 @@
 
-import { View, Text } from 'react-native-css/components';
-import { Button } from '@kakamu/ui';
+import { View } from 'react-native-css/components';
+import { Button, Text } from '@kakamu/ui';
 import { useColorScheme } from '@/components/ColorScheme/useColorScheme';
 
 export default function TabOneScreen() {
@@ -11,7 +11,9 @@ export default function TabOneScreen() {
   return (
     <View className="flex-1 items-center justify-center">
       <Text>{colorScheme}</Text>
-      <Button onPress={changeTheme}>Click me</Button>
+      <Button onPress={changeTheme}>
+        <Text>Click me</Text>
+      </Button>
     </View>
   );
 }
