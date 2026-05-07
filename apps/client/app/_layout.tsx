@@ -7,6 +7,7 @@ import '../global.css';
 import 'react-native-reanimated';
 
 import { AppErrorBoundary } from '@kakamu/ui';
+import { ColorSchemeProvider } from '@/components/ColorScheme/ColorSchemeProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,10 +50,12 @@ function RootLayoutNav() {
 
   return (
     <AppErrorBoundary>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <ColorSchemeProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ColorSchemeProvider>
     </AppErrorBoundary>
   );
 }

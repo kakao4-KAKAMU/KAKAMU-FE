@@ -13,6 +13,9 @@
     "test": {
       "cache": false
     },
+    "ios": {
+      "cache": false
+    },
     "web": {
       "cache": false
     },
