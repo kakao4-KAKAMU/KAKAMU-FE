@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useMemo } from 'react';
 import '../global.css';
 import 'react-native-reanimated';
-import { AppErrorBoundary } from '@kakamu/ui';
+import { AppErrorBoundary, PortalHost } from '@kakamu/ui';
 import { ColorSchemeProvider } from '@/components/ColorScheme/ColorSchemeProvider';
 import { useColorScheme } from '@/components/ColorScheme/useColorScheme';
 import { useColors } from '@/components/useColors';
@@ -49,6 +49,7 @@ export default function RootLayout() {
     <AppErrorBoundary>
       <ColorSchemeProvider>
         <ThemedRootStack />
+        <PortalHost />
       </ColorSchemeProvider>
     </AppErrorBoundary>
   );

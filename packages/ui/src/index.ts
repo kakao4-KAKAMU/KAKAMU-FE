@@ -17,7 +17,7 @@ export { HoverCard, HoverCardTrigger, HoverCardContent } from "./composed/hover-
 export { Icon } from "./composed/icon"
 export { Input } from "./composed/input"
 export { Label } from "./composed/label"
-export { Menubar, MenubarTrigger, MenubarContent, MenubarItem, MenubarCheckboxItem, MenubarRadioGroup, MenubarRadioItem, MenubarLabel, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubTrigger, MenubarSubContent } from "./composed/menubar"
+export { Menubar, MenubarTrigger, MenubarContent, MenubarItem, MenubarCheckboxItem, MenubarRadioGroup, MenubarRadioItem, MenubarLabel, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubTrigger, MenubarSubContent, PortalHost } from "./composed/menubar"
 export { NativeOnlyAnimatedView } from "./composed/native-only-animated-view"
 export { Popover, PopoverTrigger, PopoverContent } from "./composed/popover"
 export { Progress } from "./composed/progress"
