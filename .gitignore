@@ -20,6 +20,7 @@ build
 .idea
 .vscode/*
 !.vscode/extensions.json
+.cursor
 
 # Logs / debug
 npm-debug.log*
