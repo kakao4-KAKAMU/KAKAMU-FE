@@ -13,7 +13,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <ScrollViewStyleReset />
       </head>
-      <body className="bg-background foreground">{children}</body>
+      <body className="bg-background text-foreground">{children}</body>
     </html>
   );
 }
