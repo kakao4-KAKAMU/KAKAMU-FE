@@ -1,15 +1,13 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import '../global.css';
 import 'react-native-reanimated';
 import { AppErrorBoundary, PortalHost } from '@kakamu/ui';
-import { useThemeScheme, ThemeSchemeProvider } from '@/components/themeScheme';
+import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
 import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
-import { useColors } from '@/components/themeColor/useColors';
+import { useAuthStore } from '@kakamu/store';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -29,31 +27,123 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: '(guest)',
+  guest: {
+    path: '(guest)',
+    initialRouteName: 'index',
+  },
+  account: {
+    path: '(account)',
+    initialRouteName: 'index',
+  },
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.setOptions({
+  duration: 2000,
+  fade: true
+})
 SplashScreen.preventAutoHideAsync();
 
+const ACCOUNT_ONLY_PREFIXES = [
+  '/persona',
+  '/profile/my',
+  '/profile/setting',
+  '/chat',
+  '/sonar',
+  '/feed/write',
+  '/search',
+];
+
+const GUEST_ONLY_PREFIXES = ['/signin', '/signup'];
+
+const startsWithPrefix = (pathname: string, prefixes: string[]) =>
+  prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
+  const [authReady, setAuthReady] = useState(false);
+  const [bootstrapReady, setBootstrapReady] = useState(false);
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const isAuthenticated = !!accessToken;
+  const router = useRouter();
+  const segments = useSegments();
+  const pathname = usePathname();
+  const isAppReady = authReady && bootstrapReady;
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    let isMounted = true;
+
+    const restoreAuth = async () => {
+      try {
+        await Promise.resolve();
+      } finally {
+        if (isMounted) {
+          setAuthReady(true);
+        }
+      }
+    };
+
+    restoreAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    let isMounted = true;
+
+    const runBootstrap = async () => {
+      try {
+        await Promise.resolve();
+      } finally {
+        if (isMounted) {
+          setBootstrapReady(true);
+        }
+      }
+    };
+
+    runBootstrap();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isAppReady) {
+      return;
     }
-  }, [loaded]);
 
-  if (!loaded) {
+    SplashScreen.hideAsync();
+  }, [isAppReady]);
+
+  useEffect(() => {
+    if (!isAppReady) {
+      return;
+    }
+
+    const rootSegment = segments[0];
+    const isAccountRoute = rootSegment === '(account)';
+    const isGuestRoute = rootSegment === '(guest)';
+    const isGroupedRoute = isAccountRoute || isGuestRoute;
+    const isAccountOnlyCommonRoute = startsWithPrefix(pathname, ACCOUNT_ONLY_PREFIXES);
+    const isGuestOnlyCommonRoute = startsWithPrefix(pathname, GUEST_ONLY_PREFIXES);
+
+    if (isAuthenticated && !isAccountRoute) {
+      if (isGuestRoute || isGuestOnlyCommonRoute) {
+        router.replace('/persona');
+      }
+      return;
+    }
+
+    if (!isAuthenticated && (isAccountRoute || (!isGroupedRoute && isAccountOnlyCommonRoute))) {
+      router.replace('/(guest)');
+      return;
+    }
+  }, [isAppReady, isAuthenticated, pathname, router, segments]);
+
+  if (!isAppReady) {
     return null;
   }
 
@@ -61,7 +151,16 @@ export default function RootLayout() {
     <ThemeSchemeProvider>
       <ThemeColorProvider>
         <AppErrorBoundary>
-          <ThemedRootStack />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="(guest)" />
+            <Stack.Screen name="(account)" />
+            <Stack.Screen name="profile/[id]" />
+            <Stack.Screen name="feed/[id]" />
+          </Stack>
           <PortalHost />
         </AppErrorBoundary>
       </ThemeColorProvider>
@@ -69,21 +168,3 @@ export default function RootLayout() {
   );
 }
 
-function ThemedRootStack() {
-  const colors = useColors();
-
-  return (
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: colors['--card'] },
-          headerTintColor: colors['--foreground'],
-          contentStyle: {
-            backgroundColor: colors['--background'],
-            color: colors['--foreground']
-          }
-        }}
-      >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-  );
-}
