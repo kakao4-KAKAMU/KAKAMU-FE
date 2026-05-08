@@ -4,7 +4,7 @@ export default function TabLayout() {
   return (
     <Stack
       screenOptions={{
-        headerBackButtonDisplayMode: 'minimal',
+        headerShown: false
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Intro' }} />
