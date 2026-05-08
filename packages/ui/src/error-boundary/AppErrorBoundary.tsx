@@ -4,8 +4,9 @@ import {
   type ErrorBoundaryPropsWithComponent,
   type FallbackProps,
 } from "react-error-boundary";
-import { View, Text } from "react-native-css/components";
+import { View } from "react-native";
 import { Button } from "../composed/button";
+import { Text } from "../composed/text";
 import { cn } from "../lib/cn";
 import * as Sentry from '@sentry/react-native';
 
@@ -42,7 +43,9 @@ export function DefaultErrorFallback({
         <Text className="mt-2 text-xs text-destructive/80">{errorMessage}</Text>
       ) : null}
       <Button className="mt-4 self-start" variant="destructive" onPress={resetErrorBoundary}>
-        다시 시도
+        <Text>
+          다시 시도
+        </Text>
       </Button>
     </View>
   );
