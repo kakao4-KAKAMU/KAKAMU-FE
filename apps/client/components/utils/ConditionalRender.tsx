@@ -24,4 +24,4 @@ const ConditionalRenderBoolean = ({ render, condition }: ConditionalRenderBoolea
 
 ConditionalRender.Boolean = ConditionalRenderBoolean
 
-export default ConditionalRender
+export { ConditionalRender }
