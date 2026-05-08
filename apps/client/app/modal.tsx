@@ -1,7 +1,8 @@
 import { Separator } from '@kakamu/ui';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
-import { View, Text } from 'react-native-css/components';
+import { View } from 'react-native';
+import { Text } from '@kakamu/ui';
 
 export default function ModalScreen() {
   return (

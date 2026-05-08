@@ -1,5 +1,5 @@
 
-import { View } from 'react-native-css/components';
+import { View } from 'react-native';
 import { Button, Text } from '@kakamu/ui';
 import { useThemeScheme } from '@/components/themeScheme';
 

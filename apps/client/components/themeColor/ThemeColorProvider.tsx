@@ -4,6 +4,7 @@ import { useThemeScheme } from '../themeScheme';
 import { View } from 'react-native';
 import { parse, formatRgb } from 'culori'
 import { ColorContext } from './ColorContext';
+import { TextClassContext} from '@kakamu/ui'
 
 export type ThemeVariables = Record<`--${string}`, string>
 
@@ -102,9 +103,11 @@ export function ThemeColorProvider({ children }: { children: React.ReactNode }) 
     <ColorContext.Provider value={parsedTheme}>
       <VariableContextProvider value={parsedTheme}>
         <ThemeProvider value={navigationTheme}>
-          <View className="bg-background text-foreground h-full w-full overflow-scroll">
-            {children}
-          </View>
+          <TextClassContext.Provider value="text-foreground">
+            <View className="bg-background h-full w-full overflow-scroll">
+              {children}
+            </View>
+          </TextClassContext.Provider>
         </ThemeProvider>
       </VariableContextProvider>
     </ColorContext.Provider>

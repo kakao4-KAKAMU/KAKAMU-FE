@@ -1,4 +1,4 @@
-import { View } from 'react-native-css/components';
+import { View } from 'react-native';
 
 export default function TabTwoScreen() {
   return (

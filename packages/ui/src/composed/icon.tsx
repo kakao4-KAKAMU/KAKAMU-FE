@@ -13,12 +13,13 @@ function IconImpl({ as: IconComponent, ...props }: IconProps) {
   return <IconComponent {...props} />;
 }
 
-styled(IconImpl, {
+const StyledIcon = styled(IconImpl, {
   className: {
     target: 'style',
     nativeStyleToProps: {
       height: 'size',
       width: 'size',
+      color: 'textColor',
     },
   },
 });
@@ -46,9 +47,9 @@ styled(IconImpl, {
 function Icon({ as: IconComponent, className, size = 14, ...props }: IconProps) {
   const textClass = React.useContext(TextClassContext);
   return (
-    <IconImpl
+    <StyledIcon
       as={IconComponent}
-      className={cn('text-foreground', textClass, className)}
+      className={cn('text-foreground text-base', textClass, className)}
       size={size}
       {...props}
     />

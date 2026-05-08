@@ -1,5 +1,6 @@
 import { Link, Stack } from 'expo-router';
-import { View, Text } from 'react-native-css/components';
+import { View } from 'react-native';
+import { Text } from '@kakamu/ui';
 
 export default function NotFoundScreen() {
   return (
