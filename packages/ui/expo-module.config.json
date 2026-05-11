@@ -1,0 +1,5 @@
+{
+  "name": "@kakamu/ui",
+  "platforms": ["ios", "android", "web"],
+  "jsSrcsDir": "src"
+}
