@@ -5,7 +5,7 @@ guest.layout.signUp,회원가입,Sign up
 guest.layout.findPassword,비밀번호 찾기,Forgot password
 guest.layout.resetPassword,비밀번호 초기화,Reset password
 guest.intro.screenTitle,인트로,Intro
-guest.intro.brandName,Kakamu,Kakamu
+guest.intro.brandName,Filma,Filma
 guest.intro.skip,건너뛰기,Skip
 guest.intro.personaDemoTitle,감성파 페르소나,Mood persona
 guest.intro.personaDemoSubtitle,오늘의 추천 정확도 92%,Today's picks—92% match
@@ -19,10 +19,10 @@ guest.intro.heroSubtitle,"피드, 예고편 판독, 좋아요, 저장을 페르�
 guest.intro.featurePersona,페르소나별 취향,Persona tastes
 guest.intro.featureTrailer,예고편 판독,Trailer takes
 guest.intro.featureSave,카테고리 저장,Saved categories
-guest.intro.cta,Kakamu 시작하기,Get started with Kakamu
-guest.signIn.headerTitle,Kakamu에 로그인,Sign in to Kakamu
+guest.intro.cta,Filma 시작하기,Get started with Filma
+guest.signIn.headerTitle,Filma에 로그인,Sign in to Filma
 guest.signIn.headerDescription,페르소나로 영화 취향과 무드를 이어서 확인하세요.,"Pick up right where you left off with your personas, taste, and mood."
-guest.signUp.headerTitle,Kakamu에 가입하기,Join Kakamu
+guest.signUp.headerTitle,Filma에 가입하기,Join Filma
 guest.signUp.headerDescription,취향 기반 추천과 무드 큐레이션을 시작해 보세요.,Start taste-based recommendations and mood curation.
 guest.findPassword.title,비밀번호 찾기,Forgot password
 guest.findPassword.description,가입 시 사용한 이메일을 입력하면 비밀번호 재설정 링크가 담긴 인증 메일을 보내드립니다.,Enter the email you used to sign up and we will send a reset link.
@@ -35,7 +35,7 @@ guest.findPasswordDone.description,메일함을 확인하고 링크를 눌러 �
 guest.findPasswordDone.goSignIn,로그인으로 이동,Go to sign in
 guest.findPasswordDone.resend,메일을 받지 못했나요? 다시 보내기,Didn't get the email? Send again
 guest.form.signIn.email,이메일,Email
-guest.form.signIn.emailPlaceholder,email@kakamu.app,email@kakamu.app
+guest.form.signIn.emailPlaceholder,email@Filma.app,email@Filma.app
 guest.form.signIn.password,비밀번호,Password
 guest.form.signIn.passwordPlaceholder,비밀번호를 입력하세요,Enter your password
 guest.form.signIn.rememberMe,로그인 상태 유지,Keep me signed in
@@ -44,11 +44,11 @@ guest.form.signIn.submit,로그인,Sign in
 guest.form.signIn.a11yShowPassword,비밀번호 표시,Show password
 guest.form.signIn.a11yHidePassword,비밀번호 숨기기,Hide password
 guest.form.signUp.nickname,닉네임,Nickname
-guest.form.signUp.nicknamePlaceholder,카카무 팬,Kakamu fan
+guest.form.signUp.nicknamePlaceholder,필마 팬,Filma fan
 guest.form.signUp.username,아이디,Username
 guest.form.signUp.usernamePlaceholder,영문·숫자·밑줄만 사용,Letters numbers and underscores
 guest.form.signUp.email,이메일,Email
-guest.form.signUp.emailPlaceholder,email@kakamu.app,email@kakamu.app
+guest.form.signUp.emailPlaceholder,email@Filma.app,email@Filma.app
 guest.form.signUp.password,비밀번호,Password
 guest.form.signUp.passwordPlaceholder,8자 이상 입력하세요,At least 8 characters
 guest.form.signUp.passwordConfirm,비밀번호 확인,Confirm password
@@ -62,7 +62,7 @@ guest.form.signUp.a11yHidePassword,비밀번호 숨기기,Hide password
 guest.form.signUp.a11yShowPasswordConfirm,비밀번호 확인 표시,Show confirm password
 guest.form.signUp.a11yHidePasswordConfirm,비밀번호 확인 숨기기,Hide confirm password
 guest.form.findPassword.email,이메일,Email
-guest.form.findPassword.emailPlaceholder,email@kakamu.app,email@kakamu.app
+guest.form.findPassword.emailPlaceholder,email@Filma.app,email@Filma.app
 guest.form.findPassword.submit,인증 메일 보내기,Send verification email
 guest.form.reset.newPassword,새 비밀번호,New password
 guest.form.reset.newPasswordConfirm,새 비밀번호 확인,Confirm new password
