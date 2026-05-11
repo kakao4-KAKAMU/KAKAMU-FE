@@ -8,6 +8,9 @@ RUN corepack enable
 FROM base AS builder
 WORKDIR /app
 
+# 빌드: docker build --build-arg env=<이름> (기본값 production → NODE_ENV·.env.production)
+ARG env=production
+ENV NODE_ENV=${env}
 COPY . .
 
 ENV CI=true
@@ -15,9 +18,10 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @kakamu/client build-web
 
 FROM base AS runner
+ARG env=production
+ENV NODE_ENV=${env}
 WORKDIR /app/apps/client
 
-ENV NODE_ENV=production
 ENV PORT=3000
 
 COPY --from=builder /app/node_modules /app/node_modules
