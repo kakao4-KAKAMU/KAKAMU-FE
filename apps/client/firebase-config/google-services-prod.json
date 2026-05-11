@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "528569770402",
+    "project_id": "kakamu-356c4",
+    "storage_bucket": "kakamu-356c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528569770402:android:e423ac324178dcaa0f12fb",
+        "android_client_info": {
+          "package_name": "com.kakamu.filma"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3zTRk2s8v4H_wwliWNspebUuf0v5Luao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

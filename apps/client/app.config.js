@@ -2,24 +2,28 @@
 
 const config = {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "filma",
+    "slug": "filma",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "scheme": "filma",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.kakamu.filma",
+      "supportsTablet": true,
+      "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/GoogleService-Info-Dev.plist" : "./firebase-config/GoogleService-Info-Prod.plist"
     },
     "android": {
+      "package": "com.kakamu.filma",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/google-services-dev.json" : "./firebase-config/google-services-prod.json"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +40,16 @@ const config = {
         {
           "image": "./assets/images/splash-icon.png",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ],
