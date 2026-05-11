@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Pressable, View } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
 import {
@@ -32,6 +33,7 @@ export function SignInForm({
   onForgotPassword,
   submitting = false,
 }: SignInFormProps) {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleEmailChange = useCallback(
@@ -57,12 +59,12 @@ export function SignInForm({
     <View className="gap-4">
       <View className="gap-2">
         <Label nativeID="signin-email-label" className="text-sm text-muted-foreground">
-          이메일
+          {t('guest.form.signIn.email')}
         </Label>
         <Input
           value={values.email}
           onChangeText={handleEmailChange}
-          placeholder="email@kakamu.app"
+          placeholder={t('guest.form.signIn.emailPlaceholder')}
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
@@ -74,13 +76,13 @@ export function SignInForm({
       </View>
       <View className="gap-2">
         <Label nativeID="signin-password-label" className="text-sm text-muted-foreground">
-          비밀번호
+          {t('guest.form.signIn.password')}
         </Label>
         <View className="relative">
           <Input
             value={values.password}
             onChangeText={handlePasswordChange}
-            placeholder="비밀번호를 입력하세요"
+            placeholder={t('guest.form.signIn.passwordPlaceholder')}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
             autoCorrect={false}
@@ -91,7 +93,9 @@ export function SignInForm({
           />
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={showPassword ? '비밀번호 숨기기' : '비밀번호 표시'}
+            accessibilityLabel={
+              showPassword ? t('guest.form.signIn.a11yHidePassword') : t('guest.form.signIn.a11yShowPassword')
+            }
             onPress={togglePasswordVisibility}
             hitSlop={8}
             className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
@@ -115,7 +119,7 @@ export function SignInForm({
             checked={values.rememberMe}
             onCheckedChange={handleRememberChange}
           />
-          <Text className="text-sm text-muted-foreground">로그인 상태 유지</Text>
+          <Text className="text-sm text-muted-foreground">{t('guest.form.signIn.rememberMe')}</Text>
         </Pressable>
 
         <Pressable
@@ -124,7 +128,9 @@ export function SignInForm({
           hitSlop={8}
           className="active:opacity-70"
         >
-          <Text className="text-sm font-semibold text-foreground">비밀번호 찾기</Text>
+          <Text className="text-sm font-semibold text-foreground">
+            {t('guest.form.signIn.forgotPassword')}
+          </Text>
         </Pressable>
       </View>
 
@@ -136,7 +142,7 @@ export function SignInForm({
         accessibilityRole="button"
         className="h-12 rounded-xl mt-1"
       >
-        <Text className="text-base font-bold">로그인</Text>
+        <Text className="text-base font-bold">{t('guest.form.signIn.submit')}</Text>
       </Button>
     </View>
   );

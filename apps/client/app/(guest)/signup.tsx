@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { Stack, useRouter, useRootNavigationState } from 'expo-router';
+import { useTranslation } from '@kakamu/i18n';
+import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import {
   AuthHeader,
@@ -19,6 +20,7 @@ const INITIAL_VALUES: SignUpFormValues = {
 
 export default function SignUpScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [values, setValues] = useState<SignUpFormValues>(INITIAL_VALUES);
   const [submitting, setSubmitting] = useState(false);
 
@@ -42,7 +44,7 @@ export default function SignUpScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: '회원가입' }} />
+      <Stack.Screen options={{ title: t('guest.layout.signUp') }} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1 bg-background"
@@ -55,8 +57,8 @@ export default function SignUpScreen() {
         >
           <View className="min-h-full grow justify-center px-6 py-8 gap-8">
             <AuthHeader
-              title="Kakamu에 가입하기"
-              description="취향 기반 추천과 무드 큐레이션을 시작해 보세요."
+              title={t('guest.signUp.headerTitle')}
+              description={t('guest.signUp.headerDescription')}
             />
 
             <SignUpForm
@@ -73,11 +75,7 @@ export default function SignUpScreen() {
               disabled={submitting}
             />
 
-            <SignUpPrompt
-              question="이미 계정이 있으신가요?"
-              actionLabel="로그인"
-              onPress={handleNavigateSignIn}
-            />
+            <SignUpPrompt variant="toSignIn" onPress={handleNavigateSignIn} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

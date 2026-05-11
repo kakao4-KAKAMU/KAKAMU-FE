@@ -1,3 +1,4 @@
+import { useTranslation } from '@kakamu/i18n';
 import { View } from 'react-native';
 import { MessageCircle, Globe } from 'lucide-react-native';
 import { SocialAuthButton } from './SocialAuthButton';
@@ -13,17 +14,19 @@ export function SocialAuthList({
   onPressGoogle,
   disabled,
 }: SocialAuthListProps) {
+  const { t } = useTranslation();
+
   return (
     <View className="gap-2">
       <SocialAuthButton
-        label="카카오로 계속하기"
+        label={t('guest.social.kakao')}
         icon={MessageCircle}
         iconClassName="text-yellow-600"
         onPress={onPressKakao}
         disabled={disabled}
       />
       <SocialAuthButton
-        label="Google로 계속하기"
+        label={t('guest.social.google')}
         icon={Globe}
         iconClassName="text-muted-foreground"
         onPress={onPressGoogle}

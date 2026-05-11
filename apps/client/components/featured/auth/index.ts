@@ -6,4 +6,4 @@ export { SignInForm, type SignInFormValues } from './SignInForm';
 export { SignUpForm, type SignUpFormValues } from './SignUpForm';
 export { SocialAuthButton } from './SocialAuthButton';
 export { SocialAuthList } from './SocialAuthList';
-export { SignUpPrompt } from './SignUpPrompt';
+export { SignUpPrompt, type SignUpPromptVariant } from './SignUpPrompt';

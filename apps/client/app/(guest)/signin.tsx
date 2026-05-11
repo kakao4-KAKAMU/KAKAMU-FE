@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import {
@@ -17,6 +18,7 @@ const INITIAL_VALUES: SignInFormValues = {
 
 export default function SignInScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [values, setValues] = useState<SignInFormValues>(INITIAL_VALUES);
   const [submitting, setSubmitting] = useState(false);
 
@@ -41,7 +43,7 @@ export default function SignInScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: '로그인' }} />
+      <Stack.Screen options={{ title: t('guest.layout.signIn') }} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1 bg-background"
@@ -54,8 +56,8 @@ export default function SignInScreen() {
         >
           <View className="min-h-full grow justify-center px-6 py-8 gap-8">
             <AuthHeader
-              title="Kakamu에 로그인"
-              description={'페르소나로 영화 취향과 무드를 이어서 확인하세요.'}
+              title={t('guest.signIn.headerTitle')}
+              description={t('guest.signIn.headerDescription')}
             />
 
             <SignInForm
@@ -72,7 +74,7 @@ export default function SignInScreen() {
               disabled={submitting}
             />
 
-            <SignUpPrompt onPress={handleNavigateSignUp} />
+            <SignUpPrompt variant="toSignUp" onPress={handleNavigateSignUp} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

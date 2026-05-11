@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import '../global.css';
 import 'react-native-reanimated';
 import { AppErrorBoundary, PortalHost } from '@kakamu/ui';
+import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
 import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
@@ -148,23 +149,25 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeSchemeProvider>
-      <ThemeColorProvider>
-        <AppErrorBoundary>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="(guest)" />
-            <Stack.Screen name="(account)" />
-            <Stack.Screen name="profile/[id]" />
-            <Stack.Screen name="feed/[id]" />
-          </Stack>
-          <PortalHost />
-        </AppErrorBoundary>
-      </ThemeColorProvider>
-    </ThemeSchemeProvider>
+    <I18nextProvider i18n={getI18n()}>
+      <ThemeSchemeProvider>
+        <ThemeColorProvider>
+          <AppErrorBoundary>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="(guest)" />
+              <Stack.Screen name="(account)" />
+              <Stack.Screen name="profile/[id]" />
+              <Stack.Screen name="feed/[id]" />
+            </Stack>
+            <PortalHost />
+          </AppErrorBoundary>
+        </ThemeColorProvider>
+      </ThemeSchemeProvider>
+    </I18nextProvider>
   );
 }
 

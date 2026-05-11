@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { View } from 'react-native';
 import { Button, Input, Label, Text } from '@kakamu/ui';
 
@@ -19,6 +20,7 @@ export function FindPasswordForm({
   onSubmit,
   submitting = false,
 }: FindPasswordFormProps) {
+  const { t } = useTranslation();
   const isSubmitDisabled = useMemo(() => {
     return submitting || !values.email.trim();
   }, [submitting, values.email]);
@@ -32,12 +34,12 @@ export function FindPasswordForm({
     <View className="gap-3.5">
       <View className="gap-1.5">
         <Label nativeID="findpassword-email-label" className="text-sm font-medium text-foreground">
-          이메일
+          {t('guest.form.findPassword.email')}
         </Label>
         <Input
           value={values.email}
           onChangeText={handleEmailChange}
-          placeholder="email@kakamu.app"
+          placeholder={t('guest.form.findPassword.emailPlaceholder')}
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
@@ -56,7 +58,7 @@ export function FindPasswordForm({
         accessibilityRole="button"
         className="h-12 rounded-md"
       >
-        <Text className="text-sm font-medium">인증 메일 보내기</Text>
+        <Text className="text-sm font-medium">{t('guest.form.findPassword.submit')}</Text>
       </Button>
     </View>
   );

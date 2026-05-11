@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 import { Text } from '@kakamu/ui';
@@ -10,6 +11,7 @@ const INITIAL_VALUES: FindPasswordFormValues = {
 
 export default function FindPasswordScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [values, setValues] = useState<FindPasswordFormValues>(INITIAL_VALUES);
   const [submitting, setSubmitting] = useState(false);
 
@@ -25,7 +27,7 @@ export default function FindPasswordScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: '비밀번호 찾기' }} />
+      <Stack.Screen options={{ title: t('guest.layout.findPassword') }} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1 bg-background"
@@ -39,10 +41,10 @@ export default function FindPasswordScreen() {
           <View className="min-h-full grow justify-center px-6 pt-6 pb-7 gap-3.5">
             <View className="gap-2">
               <Text className="text-3xl font-extrabold text-foreground leading-tight">
-                비밀번호 찾기
+                {t('guest.findPassword.title')}
               </Text>
               <Text className="text-sm font-normal text-muted-foreground leading-snug">
-                가입 시 사용한 이메일을 입력하면 비밀번호 재설정 링크가 담긴 인증 메일을 보내드립니다.
+                {t('guest.findPassword.description')}
               </Text>
             </View>
 
@@ -61,7 +63,7 @@ export default function FindPasswordScreen() {
                 className="active:opacity-70"
               >
                 <Text className="text-sm font-normal text-muted-foreground text-center">
-                  로그인으로 돌아가기
+                  {t('guest.findPassword.backToSignIn')}
                 </Text>
               </Pressable>
             </View>

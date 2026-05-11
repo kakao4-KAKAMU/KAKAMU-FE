@@ -1,17 +1,21 @@
 import { Pressable, View } from 'react-native';
+import { useTranslation } from '@kakamu/i18n';
 import { Text } from '@kakamu/ui';
 
+export type SignUpPromptVariant = 'toSignUp' | 'toSignIn';
+
 type SignUpPromptProps = {
-  question?: string;
-  actionLabel?: string;
+  variant: SignUpPromptVariant;
   onPress?: () => void;
 };
 
-export function SignUpPrompt({
-  question = '아직 계정이 없으신가요?',
-  actionLabel = '회원가입',
-  onPress,
-}: SignUpPromptProps) {
+export function SignUpPrompt({ variant, onPress }: SignUpPromptProps) {
+  const { t } = useTranslation();
+  const question =
+    variant === 'toSignUp' ? t('guest.footer.toSignUpPrompt') : t('guest.footer.toSignInPrompt');
+  const actionLabel =
+    variant === 'toSignUp' ? t('guest.footer.toSignUpAction') : t('guest.footer.toSignInAction');
+
   return (
     <View className="flex-row items-center justify-center gap-1.5">
       <Text className="text-sm text-muted-foreground">{question}</Text>

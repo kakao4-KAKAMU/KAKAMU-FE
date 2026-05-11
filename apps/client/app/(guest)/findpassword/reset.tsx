@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 import { Text } from '@kakamu/ui';
@@ -11,6 +12,7 @@ const INITIAL_VALUES: ResetPasswordFormValues = {
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [values, setValues] = useState<ResetPasswordFormValues>(INITIAL_VALUES);
   const [submitting, setSubmitting] = useState(false);
 
@@ -26,7 +28,7 @@ export default function ResetPasswordScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: '비밀번호 초기화' }} />
+      <Stack.Screen options={{ title: t('guest.layout.resetPassword') }} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1 bg-background"
@@ -40,10 +42,10 @@ export default function ResetPasswordScreen() {
           <View className="min-h-full grow justify-center px-6 pt-6 pb-7 gap-3.5">
             <View className="gap-2">
               <Text className="text-3xl font-extrabold text-foreground leading-tight">
-                비밀번호 초기화
+                {t('guest.resetPassword.title')}
               </Text>
               <Text className="text-sm font-normal text-muted-foreground leading-snug">
-                새 비밀번호를 입력하고 한 번 더 확인해 주세요.
+                {t('guest.resetPassword.description')}
               </Text>
             </View>
 
@@ -62,7 +64,7 @@ export default function ResetPasswordScreen() {
                 className="active:opacity-70"
               >
                 <Text className="text-sm font-normal text-muted-foreground text-center">
-                  로그인으로 돌아가기
+                  {t('guest.resetPassword.backToSignIn')}
                 </Text>
               </Pressable>
             </View>

@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Pressable, View } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
 import {
@@ -28,6 +29,7 @@ export function ResetPasswordForm({
   onSubmit,
   submitting = false,
 }: ResetPasswordFormProps) {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
@@ -55,13 +57,13 @@ export function ResetPasswordForm({
     <View className="gap-3.5">
       <View className="gap-1.5">
         <Label nativeID="reset-password-label" className="text-sm font-medium text-foreground">
-          새 비밀번호
+          {t('guest.form.reset.newPassword')}
         </Label>
         <View className="relative">
           <Input
             value={values.password}
             onChangeText={handlePasswordChange}
-            placeholder="8자 이상 입력하세요"
+            placeholder={t('guest.form.reset.passwordPlaceholder')}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
             autoCorrect={false}
@@ -72,7 +74,9 @@ export function ResetPasswordForm({
           />
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={showPassword ? '비밀번호 숨기기' : '비밀번호 표시'}
+            accessibilityLabel={
+              showPassword ? t('guest.form.reset.a11yHidePassword') : t('guest.form.reset.a11yShowPassword')
+            }
             onPress={() => setShowPassword((prev) => !prev)}
             hitSlop={8}
             className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
@@ -89,13 +93,13 @@ export function ResetPasswordForm({
           nativeID="reset-password-confirm-label"
           className="text-sm font-medium text-foreground"
         >
-          새 비밀번호 확인
+          {t('guest.form.reset.newPasswordConfirm')}
         </Label>
         <View className="relative">
           <Input
             value={values.passwordConfirm}
             onChangeText={handlePasswordConfirmChange}
-            placeholder="비밀번호를 다시 입력하세요"
+            placeholder={t('guest.form.reset.passwordConfirmPlaceholder')}
             secureTextEntry={!showPasswordConfirm}
             autoCapitalize="none"
             autoCorrect={false}
@@ -106,7 +110,11 @@ export function ResetPasswordForm({
           />
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={showPasswordConfirm ? '비밀번호 확인 숨기기' : '비밀번호 확인 표시'}
+            accessibilityLabel={
+              showPasswordConfirm
+                ? t('guest.form.reset.a11yHidePasswordConfirm')
+                : t('guest.form.reset.a11yShowPasswordConfirm')
+            }
             onPress={() => setShowPasswordConfirm((prev) => !prev)}
             hitSlop={8}
             className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
@@ -119,7 +127,7 @@ export function ResetPasswordForm({
       </View>
 
       {values.passwordConfirm && values.password !== values.passwordConfirm ? (
-        <Text className="text-sm text-destructive">비밀번호가 일치하지 않습니다.</Text>
+        <Text className="text-sm text-destructive">{t('guest.form.reset.passwordMismatch')}</Text>
       ) : null}
 
       <Button
@@ -130,7 +138,7 @@ export function ResetPasswordForm({
         accessibilityRole="button"
         className="h-12 rounded-md"
       >
-        <Text className="text-sm font-medium">비밀번호 변경</Text>
+        <Text className="text-sm font-medium">{t('guest.form.reset.submit')}</Text>
       </Button>
     </View>
   );

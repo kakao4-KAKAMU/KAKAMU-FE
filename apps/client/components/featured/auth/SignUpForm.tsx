@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Pressable, View } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
 import {
@@ -34,6 +35,7 @@ export function SignUpForm({
   onPressTerms,
   submitting = false,
 }: SignUpFormProps) {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
@@ -78,12 +80,12 @@ export function SignUpForm({
     <View className="gap-4">
       <View className="gap-2">
         <Label nativeID="signup-nickname-label" className="text-sm text-muted-foreground">
-          닉네임
+          {t('guest.form.signUp.nickname')}
         </Label>
         <Input
           value={values.nickname}
           onChangeText={handleNicknameChange}
-          placeholder="카카무 팬"
+          placeholder={t('guest.form.signUp.nicknamePlaceholder')}
           autoCapitalize="none"
           autoCorrect={false}
           textContentType="nickname"
@@ -94,12 +96,12 @@ export function SignUpForm({
 
       <View className="gap-2">
         <Label nativeID="signup-email-label" className="text-sm text-muted-foreground">
-          이메일
+          {t('guest.form.signUp.email')}
         </Label>
         <Input
           value={values.email}
           onChangeText={handleEmailChange}
-          placeholder="email@kakamu.app"
+          placeholder={t('guest.form.signUp.emailPlaceholder')}
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
@@ -112,13 +114,13 @@ export function SignUpForm({
 
       <View className="gap-2">
         <Label nativeID="signup-password-label" className="text-sm text-muted-foreground">
-          비밀번호
+          {t('guest.form.signUp.password')}
         </Label>
         <View className="relative">
           <Input
             value={values.password}
             onChangeText={handlePasswordChange}
-            placeholder="8자 이상 입력하세요"
+            placeholder={t('guest.form.signUp.passwordPlaceholder')}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
             autoCorrect={false}
@@ -129,7 +131,9 @@ export function SignUpForm({
           />
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={showPassword ? '비밀번호 숨기기' : '비밀번호 표시'}
+            accessibilityLabel={
+              showPassword ? t('guest.form.signUp.a11yHidePassword') : t('guest.form.signUp.a11yShowPassword')
+            }
             onPress={() => setShowPassword((prev) => !prev)}
             hitSlop={8}
             className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
@@ -143,13 +147,13 @@ export function SignUpForm({
 
       <View className="gap-2">
         <Label nativeID="signup-password-confirm-label" className="text-sm text-muted-foreground">
-          비밀번호 확인
+          {t('guest.form.signUp.passwordConfirm')}
         </Label>
         <View className="relative">
           <Input
             value={values.passwordConfirm}
             onChangeText={handlePasswordConfirmChange}
-            placeholder="비밀번호를 다시 입력하세요"
+            placeholder={t('guest.form.signUp.passwordConfirmPlaceholder')}
             secureTextEntry={!showPasswordConfirm}
             autoCapitalize="none"
             autoCorrect={false}
@@ -160,7 +164,11 @@ export function SignUpForm({
           />
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={showPasswordConfirm ? '비밀번호 확인 숨기기' : '비밀번호 확인 표시'}
+            accessibilityLabel={
+              showPasswordConfirm
+                ? t('guest.form.signUp.a11yHidePasswordConfirm')
+                : t('guest.form.signUp.a11yShowPasswordConfirm')
+            }
             onPress={() => setShowPasswordConfirm((prev) => !prev)}
             hitSlop={8}
             className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
@@ -183,7 +191,7 @@ export function SignUpForm({
           <Checkbox checked={values.agreedToTerms} onCheckedChange={handleTermsChange} />
           <View className="shrink">
             <Text className="text-sm text-muted-foreground leading-5">
-              서비스 이용약관과 개인정보 처리방침에 동의합니다.
+              {t('guest.form.signUp.termsAgreement')}
             </Text>
             <Pressable
               accessibilityRole="link"
@@ -191,13 +199,15 @@ export function SignUpForm({
               hitSlop={8}
               className="self-start mt-1 active:opacity-70"
             >
-              <Text className="text-sm font-semibold text-foreground">약관 보기</Text>
+              <Text className="text-sm font-semibold text-foreground">
+                {t('guest.form.signUp.viewTerms')}
+              </Text>
             </Pressable>
           </View>
         </Pressable>
 
         {values.passwordConfirm && values.password !== values.passwordConfirm ? (
-          <Text className="text-sm text-destructive">비밀번호가 일치하지 않습니다.</Text>
+          <Text className="text-sm text-destructive">{t('guest.form.signUp.passwordMismatch')}</Text>
         ) : null}
       </View>
 
@@ -209,7 +219,7 @@ export function SignUpForm({
         accessibilityRole="button"
         className="h-12 rounded-xl"
       >
-        <Text className="text-base font-bold">회원가입</Text>
+        <Text className="text-base font-bold">{t('guest.form.signUp.submit')}</Text>
       </Button>
     </View>
   );
