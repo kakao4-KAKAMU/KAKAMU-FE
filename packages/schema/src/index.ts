@@ -20,6 +20,7 @@ export type {
   AuthNicknameMessages,
   AuthPasswordConfirmMessages,
   AuthPasswordMessages,
+  AuthPhoneMessages,
   AuthProfileMessages,
   AuthSnsTypeMessages,
   AuthTokenMessages,

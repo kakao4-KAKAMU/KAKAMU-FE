@@ -89,6 +89,8 @@ guest.validation.nickname.min,"닉네임은 {{min}}자 이상이어야 합니다
 guest.validation.nickname.max,"닉네임은 {{max}}자 이하여야 합니다.",Nickname must be at most {{max}} characters.
 guest.validation.email.required,이메일을 입력해 주세요.,Please enter your email.
 guest.validation.email.invalid,올바른 이메일 형식이 아닙니다.,Please enter a valid email address.
+guest.validation.phone.required,휴대전화 번호를 입력해 주세요.,Please enter your phone number.
+guest.validation.phone.invalid,"국제 형식(+국가번호)으로 입력해 주세요. 예: +821012345678","Use international format with country code, e.g. +821012345678"
 guest.validation.password.required,비밀번호를 입력해 주세요.,Please enter your password.
 guest.validation.password.min,"비밀번호는 {{min}}자 이상이어야 합니다.",Password must be at least {{min}} characters.
 guest.validation.password.max,"비밀번호는 {{max}}자 이하여야 합니다.",Password must be at most {{max}} characters.

@@ -4,6 +4,12 @@ export interface AuthEmailMessages {
   invalid: string;
 }
 
+/** E.164 등 국제 전화번호 형식 (`+` 로 시작) */
+export interface AuthPhoneMessages {
+  required: string;
+  invalid: string;
+}
+
 export interface AuthUsernameMessages {
   required: string;
   min: string;
@@ -46,6 +52,7 @@ export interface AuthAgreedToTermsMessages {
 
 export interface AuthFormValidationMessages {
   email: AuthEmailMessages;
+  phone: AuthPhoneMessages;
   username: AuthUsernameMessages;
   nickname: AuthNicknameMessages;
   profile: AuthProfileMessages;

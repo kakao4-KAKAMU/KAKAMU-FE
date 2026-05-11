@@ -21,6 +21,15 @@ function emailField(messages: AuthFormValidationMessages['email']) {
     .email(messages.invalid);
 }
 
+/** ITU-T E.164: `+` 와 국가코드 이후 7~15자리 숫자 */
+function phoneField(messages: AuthFormValidationMessages['phone']) {
+  return z
+    .string()
+    .trim()
+    .min(1, messages.required)
+    .regex(/^\+[1-9]\d{6,14}$/, messages.invalid);
+}
+
 function usernameField(messages: AuthFormValidationMessages['username']) {
   return z
     .string()
@@ -72,6 +81,7 @@ function passwordConfirmRefine(
 
 export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
   const email = emailField(messages.email);
+  const phone = phoneField(messages.phone);
   const username = usernameField(messages.username);
   const nickname = nicknameField(messages.nickname);
   const password = passwordField(messages.password);
