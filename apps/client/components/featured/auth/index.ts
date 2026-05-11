@@ -1,5 +1,6 @@
 export { AuthBrandLogo } from './AuthBrandLogo';
 export { AuthHeader } from './AuthHeader';
+export { FindPasswordForm, type FindPasswordFormValues } from './FindPasswordForm';
 export { SignInForm, type SignInFormValues } from './SignInForm';
 export { SignUpForm, type SignUpFormValues } from './SignUpForm';
 export { SocialAuthButton } from './SocialAuthButton';

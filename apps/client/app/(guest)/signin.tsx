@@ -26,7 +26,8 @@ export default function SignInScreen() {
   }, []);
 
   const handleForgotPassword = useCallback(() => {
-  }, []);
+    router.push('./findpassword');
+  }, [router]);
 
   const handleKakaoLogin = useCallback(() => {
   }, []);
