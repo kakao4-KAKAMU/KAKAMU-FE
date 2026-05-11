@@ -29,14 +29,13 @@ export function TabButton({
         android_ripple={{ borderless: true }}
         {...pressableProps}
         className={cn(
-          "flex-1 items-center justify-center gap-1 rounded-full",
+          "flex-1 items-center justify-center gap-1 rounded-full opacity-100 active:opacity-70",
           isFocused && "bg-foreground",
           className
         )}
-        style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
       >
         <Icon as={icon} size={18} />
-        <Text className="text-[10px] font-semibold tracking-wider uppercase leading-none">
+        <Text className="text-xs font-semibold tracking-wider uppercase leading-none">
           {label}
         </Text>
       </Pressable>

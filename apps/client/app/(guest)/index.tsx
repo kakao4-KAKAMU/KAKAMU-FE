@@ -1,4 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
+import { useTranslation } from '@kakamu/i18n';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import {
@@ -9,9 +10,12 @@ import {
   IntroTopBar,
   IntroVisualStage,
 } from '@/components/featured/intro';
+import { StatItem } from '@/components/featured/intro/IntroPersonaPreviewCard';
+import { Users, Clapperboard, Bookmark } from 'lucide-react-native';
 
 export default function IntroScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const onSkip = React.useCallback(() => {
     router.replace('/signin');
@@ -21,9 +25,14 @@ export default function IntroScreen() {
     router.replace('/signin');
   }, [router]);
 
+  const stats: StatItem[] = [
+    { value: '86', label: t('guest.intro.statLikes'), tone: 'violet' },
+    { value: '14', label: t('guest.intro.statSaved'), tone: 'blue' },
+  ];
+
   return (
     <>
-      <Stack.Screen options={{ title: 'Intro' }} />
+      <Stack.Screen options={{ title: t('guest.intro.screenTitle') }} />
 
       <View className="flex-1 bg-background">
         <IntroBackground />
@@ -34,18 +43,31 @@ export default function IntroScreen() {
           className="flex-1"
         >
           <View className="flex-col gap-4 px-[18px] pb-6 pt-[18px]">
-            <IntroTopBar onSkip={onSkip} />
+            <IntroTopBar brandName={t('guest.intro.brandName')} onSkip={onSkip} />
 
             <IntroHero
-              title={'영화 취향이 피드가 되고,\n추천이 되는 곳'}
-              description="피드, 예고편 판독, 좋아요, 저장을 페르소나별 데이터로 모아 나만의 영화 지도를 만듭니다."
+              badge={t('guest.intro.badge')}
+              title={t('guest.intro.heroTitle')}
+              description={t('guest.intro.heroSubtitle')}
             />
 
-            <IntroVisualStage />
+            <IntroVisualStage
+              personaName={t('guest.intro.personaDemoTitle')}
+              personaSubtitle={t('guest.intro.personaDemoSubtitle')}
+              movieTitle={t('guest.intro.movieDemoTitle')}
+              movieMeta={t('guest.intro.movieDemoMeta')}
+              stats={stats}
+            />
 
-            <IntroFeatureCardList />
+            <IntroFeatureCardList
+              items={[
+                { id: 'persona', icon: Users, title: t('guest.intro.featurePersona') },
+                { id: 'trailer', icon: Clapperboard, title: t('guest.intro.featureTrailer') },
+                { id: 'saved', icon: Bookmark, title: t('guest.intro.featureSave') },
+              ]}
+            />
 
-            <IntroCallToAction onPress={onStart} />
+            <IntroCallToAction label={t('guest.intro.cta')} onPress={onStart} />
           </View>
         </ScrollView>
       </View>
