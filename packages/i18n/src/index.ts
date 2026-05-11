@@ -1,6 +1,9 @@
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next, useTranslation } from 'react-i18next';
 
+export { buildAuthFormValidationMessages } from './auth-form-validation-messages';
+export { useErrorBindedScheme, type ErrorBindedSchemeResult } from './use-error-binded-scheme';
+
 import enTranslation from './generated/en.json';
 import koTranslation from './generated/ko.json';
 

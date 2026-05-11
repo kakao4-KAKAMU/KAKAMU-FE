@@ -45,6 +45,8 @@ guest.form.signIn.a11yShowPassword,비밀번호 표시,Show password
 guest.form.signIn.a11yHidePassword,비밀번호 숨기기,Hide password
 guest.form.signUp.nickname,닉네임,Nickname
 guest.form.signUp.nicknamePlaceholder,카카무 팬,Kakamu fan
+guest.form.signUp.username,아이디,Username
+guest.form.signUp.usernamePlaceholder,영문·숫자·밑줄만 사용,Letters numbers and underscores
 guest.form.signUp.email,이메일,Email
 guest.form.signUp.emailPlaceholder,email@kakamu.app,email@kakamu.app
 guest.form.signUp.password,비밀번호,Password
@@ -78,3 +80,21 @@ guest.footer.toSignUpPrompt,아직 계정이 없으신가요?,No account yet?
 guest.footer.toSignUpAction,회원가입,Sign up
 guest.footer.toSignInPrompt,이미 계정이 있으신가요?,Already have an account?
 guest.footer.toSignInAction,로그인,Sign in
+guest.validation.username.required,아이디를 입력해 주세요.,Please enter your username.
+guest.validation.username.min,"아이디는 {{min}}자 이상이어야 합니다.",Username must be at least {{min}} characters.
+guest.validation.username.max,"아이디는 {{max}}자 이하여야 합니다.",Username must be at most {{max}} characters.
+guest.validation.username.pattern,"아이디는 영문, 숫자, 밑줄(_)만 사용할 수 있습니다.","Username can only use letters, numbers, and underscores."
+guest.validation.nickname.required,닉네임을 입력해 주세요.,Please enter your nickname.
+guest.validation.nickname.min,"닉네임은 {{min}}자 이상이어야 합니다.",Nickname must be at least {{min}} characters.
+guest.validation.nickname.max,"닉네임은 {{max}}자 이하여야 합니다.",Nickname must be at most {{max}} characters.
+guest.validation.email.required,이메일을 입력해 주세요.,Please enter your email.
+guest.validation.email.invalid,올바른 이메일 형식이 아닙니다.,Please enter a valid email address.
+guest.validation.password.required,비밀번호를 입력해 주세요.,Please enter your password.
+guest.validation.password.min,"비밀번호는 {{min}}자 이상이어야 합니다.",Password must be at least {{min}} characters.
+guest.validation.password.max,"비밀번호는 {{max}}자 이하여야 합니다.",Password must be at most {{max}} characters.
+guest.validation.passwordConfirm.required,비밀번호 확인을 입력해 주세요.,Please confirm your password.
+guest.validation.passwordConfirm.mismatch,비밀번호가 일치하지 않습니다.,Passwords do not match.
+guest.validation.snsType.invalid,지원하지 않는 소셜 로그인 유형입니다.,This social sign-in type is not supported.
+guest.validation.token.required,인증 토큰이 필요합니다.,An authentication token is required.
+guest.validation.profile.max,"프로필은 {{max}}자 이하여야 합니다.",Profile must be at most {{max}} characters.
+guest.validation.agreedToTerms.required,약관에 동의해 주세요.,Please agree to the terms.
