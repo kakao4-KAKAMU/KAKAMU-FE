@@ -1,7 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
+import type { SignUpWithTermsFormInput } from '@kakamu/schema';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { useForm } from 'react-hook-form';
 import {
   AuthHeader,
   SignUpForm,
@@ -9,8 +12,10 @@ import {
   SocialAuthList,
   type SignUpFormValues,
 } from '@/components/featured/auth';
+import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
-const INITIAL_VALUES: SignUpFormValues = {
+const DEFAULT_VALUES: SignUpFormValues = {
+  username: '',
   nickname: '',
   email: '',
   password: '',
@@ -21,10 +26,22 @@ const INITIAL_VALUES: SignUpFormValues = {
 export default function SignUpScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [values, setValues] = useState<SignUpFormValues>(INITIAL_VALUES);
+  const authForms = useAuthFormValidationKit(t);
+  const resolver = useMemo(
+    () => zodResolver(authForms.signUpWithTerms),
+    [authForms.signUpWithTerms]
+  );
+
+  const { control, handleSubmit, formState } = useForm<SignUpWithTermsFormInput>({
+    resolver,
+    defaultValues: DEFAULT_VALUES,
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+  });
+
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = useCallback(() => {
+  const onValid = useCallback((_data: SignUpWithTermsFormInput) => {
     setSubmitting(true);
     setSubmitting(false);
   }, []);
@@ -62,11 +79,11 @@ export default function SignUpScreen() {
             />
 
             <SignUpForm
-              values={values}
-              onChange={setValues}
-              onSubmit={handleSubmit}
+              control={control}
+              onSubmit={handleSubmit(onValid)}
               onPressTerms={handleShowTerms}
               submitting={submitting}
+              canSubmit={formState.isValid}
             />
 
             <SocialAuthList

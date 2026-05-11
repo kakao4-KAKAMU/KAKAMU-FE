@@ -1,25 +1,41 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
+import type { FindPasswordFormInput } from '@kakamu/schema';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
+import { useForm } from 'react-hook-form';
 import { Text } from '@kakamu/ui';
 import { FindPasswordForm, type FindPasswordFormValues } from '@/components/featured/auth';
+import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
-const INITIAL_VALUES: FindPasswordFormValues = {
+const DEFAULT_VALUES: FindPasswordFormValues = {
   email: '',
 };
 
 export default function FindPasswordScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [values, setValues] = useState<FindPasswordFormValues>(INITIAL_VALUES);
+  const authForms = useAuthFormValidationKit(t);
+  const resolver = useMemo(() => zodResolver(authForms.findPassword), [authForms.findPassword]);
+
+  const { control, handleSubmit, formState } = useForm<FindPasswordFormInput>({
+    resolver,
+    defaultValues: DEFAULT_VALUES,
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+  });
+
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = useCallback(() => {
-    setSubmitting(true);
-    setSubmitting(false);
-    router.replace('/findpassword/done');
-  }, [router]);
+  const onValid = useCallback(
+    (_data: FindPasswordFormInput) => {
+      setSubmitting(true);
+      setSubmitting(false);
+      router.replace('/findpassword/done');
+    },
+    [router]
+  );
 
   const handleBackToSignIn = useCallback(() => {
     router.replace('/signin');
@@ -49,10 +65,10 @@ export default function FindPasswordScreen() {
             </View>
 
             <FindPasswordForm
-              values={values}
-              onChange={setValues}
-              onSubmit={handleSubmit}
+              control={control}
+              onSubmit={handleSubmit(onValid)}
               submitting={submitting}
+              canSubmit={formState.isValid}
             />
 
             <View className="items-center">

@@ -1,7 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
+import type { SignInWithRememberFormInput } from '@kakamu/schema';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { useForm } from 'react-hook-form';
 import {
   AuthHeader,
   SignInForm,
@@ -9,8 +12,9 @@ import {
   SignUpPrompt,
   type SignInFormValues,
 } from '@/components/featured/auth';
+import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
-const INITIAL_VALUES: SignInFormValues = {
+const DEFAULT_VALUES: SignInFormValues = {
   email: '',
   password: '',
   rememberMe: false,
@@ -19,10 +23,22 @@ const INITIAL_VALUES: SignInFormValues = {
 export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [values, setValues] = useState<SignInFormValues>(INITIAL_VALUES);
+  const authForms = useAuthFormValidationKit(t);
+  const resolver = useMemo(
+    () => zodResolver(authForms.signInWithRemember),
+    [authForms.signInWithRemember]
+  );
+
+  const { control, handleSubmit, formState } = useForm<SignInWithRememberFormInput>({
+    resolver,
+    defaultValues: DEFAULT_VALUES,
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+  });
+
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = useCallback(() => {
+  const onValid = useCallback((_data: SignInWithRememberFormInput) => {
     setSubmitting(true);
     setSubmitting(false);
   }, []);
@@ -61,11 +77,11 @@ export default function SignInScreen() {
             />
 
             <SignInForm
-              values={values}
-              onChange={setValues}
-              onSubmit={handleSubmit}
+              control={control}
+              onSubmit={handleSubmit(onValid)}
               onForgotPassword={handleForgotPassword}
               submitting={submitting}
+              canSubmit={formState.isValid}
             />
 
             <SocialAuthList
