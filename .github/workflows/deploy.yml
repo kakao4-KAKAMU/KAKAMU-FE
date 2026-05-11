@@ -28,9 +28,9 @@ jobs:
 
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/filma-frontend:latest 
-          ${{ secrets.DOCKER_USERNAME }}/filma-frontend:${{ github.sha }}
-          ${{ secrets.DOCKER_USERNAME }}/filma-frontend:1.${{ github.run_number }}
+          ${{ secrets.DOCKER_USERNAME }}/filma-frontend-dev:latest 
+          ${{ secrets.DOCKER_USERNAME }}/filma-frontend-dev:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/filma-frontend-dev:1.${{ github.run_number }}
 
     - name: Checkout Helm Chart Repo
       uses: actions/checkout@v4 # helm repo 코드 다운
