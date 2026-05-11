@@ -15,6 +15,7 @@ COPY . .
 
 ENV CI=true
 RUN pnpm install --frozen-lockfile
+RUN pnpm --filter @kakamu/i18n build
 RUN pnpm --filter @kakamu/client build-web
 
 FROM base AS runner
