@@ -1,4 +1,6 @@
-{
+/** @type {import("expo/config").ExpoConfig} */
+
+const config = {
   "expo": {
     "name": "mobile",
     "slug": "mobile",
@@ -22,7 +24,8 @@
     "web": {
       "bundler": "metro",
       "output": "server",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "startUrl": process.env.EXPO_PUBLIC_HOST_PATH || "/",
     },
     "plugins": [
       "expo-router",
@@ -37,7 +40,10 @@
       ]
     ],
     "experiments": {
+      "baseUrl": process.env.EXPO_PUBLIC_HOST_PATH || "/",
       "typedRoutes": true
     }
   }
 }
+
+module.exports = config;

@@ -1,0 +1,100 @@
+code,ko,en
+guest.layout.intro,인트로,Intro
+guest.layout.signIn,로그인,Sign in
+guest.layout.signUp,회원가입,Sign up
+guest.layout.findPassword,비밀번호 찾기,Forgot password
+guest.layout.resetPassword,비밀번호 초기화,Reset password
+guest.intro.screenTitle,인트로,Intro
+guest.intro.brandName,Filma,Filma
+guest.intro.skip,건너뛰기,Skip
+guest.intro.personaDemoTitle,감성파 페르소나,Mood persona
+guest.intro.personaDemoSubtitle,오늘의 추천 정확도 92%,Today's picks—92% match
+guest.intro.movieDemoTitle,Past Lives,Past Lives
+guest.intro.movieDemoMeta,감정 여운 · 106 min,Quiet drama · 106 min
+guest.intro.statLikes,likes,likes
+guest.intro.statSaved,saved,saved
+guest.intro.badge,persona-powered cinema social,persona-powered cinema social
+guest.intro.heroTitle,"영화 취향이 피드가 되고, 추천이 되는 곳",Where your movie taste becomes your feed—and your picks
+guest.intro.heroSubtitle,"피드, 예고편 판독, 좋아요, 저장을 페르소나별 데이터로 모아 나만의 영화 지도를 만듭니다.","Collect feeds, trailer takes, likes, and saves across personas and build your personal movie map."
+guest.intro.featurePersona,페르소나별 취향,Persona tastes
+guest.intro.featureTrailer,예고편 판독,Trailer takes
+guest.intro.featureSave,카테고리 저장,Saved categories
+guest.intro.cta,Filma 시작하기,Get started with Filma
+guest.signIn.headerTitle,Filma에 로그인,Sign in to Filma
+guest.signIn.headerDescription,페르소나로 영화 취향과 무드를 이어서 확인하세요.,"Pick up right where you left off with your personas, taste, and mood."
+guest.signUp.headerTitle,Filma에 가입하기,Join Filma
+guest.signUp.headerDescription,취향 기반 추천과 무드 큐레이션을 시작해 보세요.,Start taste-based recommendations and mood curation.
+guest.findPassword.title,비밀번호 찾기,Forgot password
+guest.findPassword.description,가입 시 사용한 이메일을 입력하면 비밀번호 재설정 링크가 담긴 인증 메일을 보내드립니다.,Enter the email you used to sign up and we will send a reset link.
+guest.findPassword.backToSignIn,로그인으로 돌아가기,Back to sign in
+guest.resetPassword.title,비밀번호 초기화,Reset password
+guest.resetPassword.description,새 비밀번호를 입력하고 한 번 더 확인해 주세요.,Enter a new password and confirm it once more.
+guest.resetPassword.backToSignIn,로그인으로 돌아가기,Back to sign in
+guest.findPasswordDone.title,인증 메일을 발송했습니다,Verification email sent
+guest.findPasswordDone.description,메일함을 확인하고 링크를 눌러 비밀번호를 재설정해 주세요. 스팸함도 함께 확인해 주세요.,Check your inbox and tap the link to reset your password. Please check spam as well.
+guest.findPasswordDone.goSignIn,로그인으로 이동,Go to sign in
+guest.findPasswordDone.resend,메일을 받지 못했나요? 다시 보내기,Didn't get the email? Send again
+guest.form.signIn.email,이메일,Email
+guest.form.signIn.emailPlaceholder,email@Filma.app,email@Filma.app
+guest.form.signIn.password,비밀번호,Password
+guest.form.signIn.passwordPlaceholder,비밀번호를 입력하세요,Enter your password
+guest.form.signIn.rememberMe,로그인 상태 유지,Keep me signed in
+guest.form.signIn.forgotPassword,비밀번호 찾기,Forgot password
+guest.form.signIn.submit,로그인,Sign in
+guest.form.signIn.a11yShowPassword,비밀번호 표시,Show password
+guest.form.signIn.a11yHidePassword,비밀번호 숨기기,Hide password
+guest.form.signUp.nickname,닉네임,Nickname
+guest.form.signUp.nicknamePlaceholder,필마 팬,Filma fan
+guest.form.signUp.username,아이디,Username
+guest.form.signUp.usernamePlaceholder,영문·숫자·밑줄만 사용,Letters numbers and underscores
+guest.form.signUp.email,이메일,Email
+guest.form.signUp.emailPlaceholder,email@Filma.app,email@Filma.app
+guest.form.signUp.password,비밀번호,Password
+guest.form.signUp.passwordPlaceholder,8자 이상 입력하세요,At least 8 characters
+guest.form.signUp.passwordConfirm,비밀번호 확인,Confirm password
+guest.form.signUp.passwordConfirmPlaceholder,비밀번호를 다시 입력하세요,Re-enter your password
+guest.form.signUp.termsAgreement,서비스 이용약관과 개인정보 처리방침에 동의합니다.,I agree to the Terms of Service and Privacy Policy.
+guest.form.signUp.viewTerms,약관 보기,View terms
+guest.form.signUp.passwordMismatch,비밀번호가 일치하지 않습니다.,Passwords do not match.
+guest.form.signUp.submit,회원가입,Sign up
+guest.form.signUp.a11yShowPassword,비밀번호 표시,Show password
+guest.form.signUp.a11yHidePassword,비밀번호 숨기기,Hide password
+guest.form.signUp.a11yShowPasswordConfirm,비밀번호 확인 표시,Show confirm password
+guest.form.signUp.a11yHidePasswordConfirm,비밀번호 확인 숨기기,Hide confirm password
+guest.form.findPassword.email,이메일,Email
+guest.form.findPassword.emailPlaceholder,email@Filma.app,email@Filma.app
+guest.form.findPassword.submit,인증 메일 보내기,Send verification email
+guest.form.reset.newPassword,새 비밀번호,New password
+guest.form.reset.newPasswordConfirm,새 비밀번호 확인,Confirm new password
+guest.form.reset.passwordPlaceholder,8자 이상 입력하세요,At least 8 characters
+guest.form.reset.passwordConfirmPlaceholder,비밀번호를 다시 입력하세요,Re-enter your password
+guest.form.reset.passwordMismatch,비밀번호가 일치하지 않습니다.,Passwords do not match.
+guest.form.reset.submit,비밀번호 변경,Update password
+guest.form.reset.a11yShowPassword,비밀번호 표시,Show password
+guest.form.reset.a11yHidePassword,비밀번호 숨기기,Hide password
+guest.form.reset.a11yShowPasswordConfirm,비밀번호 확인 표시,Show confirm password
+guest.form.reset.a11yHidePasswordConfirm,비밀번호 확인 숨기기,Hide confirm password
+guest.social.kakao,카카오로 계속하기,Continue with Kakao
+guest.social.google,Google로 계속하기,Continue with Google
+guest.footer.toSignUpPrompt,아직 계정이 없으신가요?,No account yet?
+guest.footer.toSignUpAction,회원가입,Sign up
+guest.footer.toSignInPrompt,이미 계정이 있으신가요?,Already have an account?
+guest.footer.toSignInAction,로그인,Sign in
+guest.validation.username.required,아이디를 입력해 주세요.,Please enter your username.
+guest.validation.username.min,"아이디는 {{min}}자 이상이어야 합니다.",Username must be at least {{min}} characters.
+guest.validation.username.max,"아이디는 {{max}}자 이하여야 합니다.",Username must be at most {{max}} characters.
+guest.validation.username.pattern,"아이디는 영문, 숫자, 밑줄(_)만 사용할 수 있습니다.","Username can only use letters, numbers, and underscores."
+guest.validation.nickname.required,닉네임을 입력해 주세요.,Please enter your nickname.
+guest.validation.nickname.min,"닉네임은 {{min}}자 이상이어야 합니다.",Nickname must be at least {{min}} characters.
+guest.validation.nickname.max,"닉네임은 {{max}}자 이하여야 합니다.",Nickname must be at most {{max}} characters.
+guest.validation.email.required,이메일을 입력해 주세요.,Please enter your email.
+guest.validation.email.invalid,올바른 이메일 형식이 아닙니다.,Please enter a valid email address.
+guest.validation.password.required,비밀번호를 입력해 주세요.,Please enter your password.
+guest.validation.password.min,"비밀번호는 {{min}}자 이상이어야 합니다.",Password must be at least {{min}} characters.
+guest.validation.password.max,"비밀번호는 {{max}}자 이하여야 합니다.",Password must be at most {{max}} characters.
+guest.validation.passwordConfirm.required,비밀번호 확인을 입력해 주세요.,Please confirm your password.
+guest.validation.passwordConfirm.mismatch,비밀번호가 일치하지 않습니다.,Passwords do not match.
+guest.validation.snsType.invalid,지원하지 않는 소셜 로그인 유형입니다.,This social sign-in type is not supported.
+guest.validation.token.required,인증 토큰이 필요합니다.,An authentication token is required.
+guest.validation.profile.max,"프로필은 {{max}}자 이하여야 합니다.",Profile must be at most {{max}} characters.
+guest.validation.agreedToTerms.required,약관에 동의해 주세요.,Please agree to the terms.
