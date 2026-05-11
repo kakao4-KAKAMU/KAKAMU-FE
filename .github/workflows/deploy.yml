@@ -26,6 +26,9 @@ jobs:
         context: .
         file: ./apps/client/Dockerfile # 도커 파일 경로
 
+        build-args: |
+          env=dev
+
         push: true
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/filma-frontend-dev:latest 
