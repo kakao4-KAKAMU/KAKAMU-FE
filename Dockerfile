@@ -11,25 +11,33 @@ WORKDIR /app
 # 빌드: docker build --build-arg env=<이름> (기본값 production → NODE_ENV·.env.production)
 ARG env=production
 ENV NODE_ENV=${env}
+
+# .env가 컨텍스트에 없을 때도 동일 경로로 빌드되도록 EXPO_PUBLIC_* 를 명시 전달합니다.
+ARG EXPO_PUBLIC_HOST_PATH=/
+ENV EXPO_PUBLIC_HOST_PATH=${EXPO_PUBLIC_HOST_PATH}
+
 COPY . .
 
 ENV CI=true
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @kakamu/i18n build
-RUN pnpm --filter @kakamu/client build-web
+RUN pnpm --filter @kakamu/client build-web-${env}
 
 FROM base AS runner
 ARG env=production
 ENV NODE_ENV=${env}
-WORKDIR /app/apps/client
+
+ARG EXPO_PUBLIC_HOST_PATH=/
+ENV EXPO_PUBLIC_HOST_PATH=${EXPO_PUBLIC_HOST_PATH}
+
+WORKDIR /app/apps/client-server
 
 ENV PORT=3000
 
-COPY --from=builder /app/node_modules /app/node_modules
-COPY --from=builder /app/apps/client/package.json ./package.json
-COPY --from=builder /app/apps/client/server ./server
+COPY --from=builder /app/apps/client-server .
+RUN npm install
+RUN mkdir -p dist
 COPY --from=builder /app/apps/client/dist ./dist
 
 EXPOSE 3000
-
-CMD ["node", "./server/index.js"]
+CMD ["node", "server/index.js"]
