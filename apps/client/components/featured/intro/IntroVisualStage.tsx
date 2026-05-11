@@ -1,12 +1,22 @@
 import { View } from 'react-native';
 import { StyledLinearGradient } from './StyledLinearGradient';
 import { IntroPersonaPreviewCard } from './IntroPersonaPreviewCard';
+import type { StatItem } from './IntroPersonaPreviewCard';
 
 const STAGE_GRADIENT = ['#3b0764', '#5b21b6', '#7c3aed'] as const;
 const STAGE_GRADIENT_START = { x: 0, y: 0 } as const;
 const STAGE_GRADIENT_END = { x: 1, y: 1 } as const;
 
-export function IntroVisualStage() {
+type IntroVisualStageProps = {
+  personaName?: string;
+  personaSubtitle?: string;
+  movieTitle?: string;
+  movieMeta?: string;
+  stats?: StatItem[];
+};
+
+export function IntroVisualStage({ personaName, personaSubtitle, movieTitle, movieMeta, stats }: IntroVisualStageProps) {
+
   return (
     <View className="relative h-[318px] w-full overflow-hidden rounded-[28px]">
       <StyledLinearGradient
@@ -20,7 +30,13 @@ export function IntroVisualStage() {
       <View className="absolute bottom-4 left-0 h-[104px] w-[104px] rounded-full bg-sky-300/40 dark:bg-sky-400/25" />
 
       <View className="absolute left-[12%] top-10 w-[76%]">
-        <IntroPersonaPreviewCard />
+        <IntroPersonaPreviewCard
+          personaName={personaName}
+          personaSubtitle={personaSubtitle}
+          movieTitle={movieTitle}
+          movieMeta={movieMeta}
+          stats={stats}
+        />
       </View>
     </View>
   );

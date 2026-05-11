@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { Clapperboard } from 'lucide-react-native';
 import { Icon, Text, TextClassContext } from '@kakamu/ui';
 
-type StatItem = {
+export type StatItem = {
   value: string;
   label: string;
   tone?: 'violet' | 'blue';
