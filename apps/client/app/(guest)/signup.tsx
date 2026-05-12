@@ -193,19 +193,24 @@ export default function SignUpScreen() {
           password: data.password,
         },
         {
-          onSuccess: async () => {
+          onSettled: async () => {
             await signOutFirebaseAfterRegister();
+          },
+          onSuccess: () => {
             setSubmitting(false);
             router.replace('/signin');
           },
           onError: async (err) => {
             setSubmitting(false);
-            let message = t('guest.form.signUp.failedRequest');
+            let message = t('guest.form.signUp.failedRequest.description');
+            let title = t('guest.form.signUp.failedRequest.title');
+            let errorCode: string | null = null;
             if (err instanceof HTTPError) {
               try {
                 const body = await err.response.json();
                 if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
                   message = body.message;
+                  errorCode = body.code;
                 }
               } catch {
                 message = err.message;
@@ -213,9 +218,32 @@ export default function SignUpScreen() {
             } else if (err instanceof Error) {
               message = err.message;
             }
+
+            switch(errorCode) {
+              case 'REGISTRATION_FAILED': 
+                title = t('guest.form.signUp.failedRequest.title');
+                message = t('guest.form.signUp.failedRequest.description');
+                break;
+              case 'INVALID_FIREBASE_TOKEN':
+                title = t('guest.form.signUp.invalidFirebaseToken.title');
+                message = t('guest.form.signUp.invalidFirebaseToken.description');
+                break;
+              case 'DUPLICATE_PHONE_NUMBER':
+                title = t('guest.form.signUp.duplicatePhoneNumber.title');
+                message = t('guest.form.signUp.duplicatePhoneNumber.description');
+                break;
+              case 'DUPLICATE_CI_VALUE':
+                title = t('guest.form.signUp.duplicateCiValue.title');
+                message = t('guest.form.signUp.duplicateCiValue.description');
+                break;
+              case 'DUPLICATE_EMAIL':
+                title = t('guest.form.signUp.duplicateEmail.title');
+                message = t('guest.form.signUp.duplicateEmail.description');
+                break;
+            }
             // TODO: 에러 메시지 표시
             openErrorAlert({
-              title: t('guest.form.signUp.failedRequest'),
+              title: title,
               description: message,
             });
           },

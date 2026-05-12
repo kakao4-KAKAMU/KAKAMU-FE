@@ -57,6 +57,16 @@ guest.form.signUp.phoneVerified,휴대전화 인증이 완료되었습니다.,Ph
 guest.form.signUp.smsError,SMS를 보낼 수 없습니다. 잠시 후 다시 시도해 주세요.,Could not send SMS. Please try again.
 guest.form.signUp.otpError,인증번호가 올바르지 않습니다.,Invalid verification code.
 guest.form.signUp.failedRequest,처리 중 문제가 발견되었습니다. 잠시 후 다시 시도해 주세요.,An issue was detected during processing. Please try again.
+guest.form.signUp.failedRequest.title,회원가입에 실패했어요,Sign up failed
+guest.form.signUp.failedRequest.description,요청 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.,Something went wrong while processing your request. Please try again later.
+guest.form.signUp.invalidFirebaseToken.title,인증이 만료되었어요,Authentication expired
+guest.form.signUp.invalidFirebaseToken.description,인증 정보가 유효하지 않습니다. 다시 시도해 주세요.,Your authentication token is invalid. Please try again.
+guest.form.signUp.duplicatePhoneNumber.title,이미 사용 중인 휴대전화 번호예요,Phone number already in use
+guest.form.signUp.duplicatePhoneNumber.description,해당 휴대전화 번호로 가입된 계정이 있습니다. 다른 번호를 입력해 주세요.,An account already exists with this phone number. Please use a different number.
+guest.form.signUp.duplicateCiValue.title,이미 가입된 사용자예요,Account already exists
+guest.form.signUp.duplicateCiValue.description,이미 가입된 계정 정보가 확인되었습니다. 로그인 후 이용해 주세요.,We found an existing account with this identity. Please sign in instead.
+guest.form.signUp.duplicateEmail.title,이미 사용 중인 이메일이에요,Email already in use
+guest.form.signUp.duplicateEmail.description,해당 이메일로 가입된 계정이 있습니다. 다른 이메일을 입력해 주세요.,An account already exists with this email. Please use a different email.
 guest.form.signUp.webRecaptchaHint,웹에서는 아래 영역을 통해 인증이 진행됩니다.,Verification runs through the area below on web.
 guest.form.signUp.username,아이디,Username
 guest.form.signUp.usernamePlaceholder,영문·숫자·밑줄만 사용,Letters numbers and underscores
