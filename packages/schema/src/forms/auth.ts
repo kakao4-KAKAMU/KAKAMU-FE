@@ -101,6 +101,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     .object({
       email,
       username,
+      phone,
       nickname,
       password,
       passwordConfirm: z.string(),
@@ -114,6 +115,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
   const signUpWithTerms = signUpBase
     .extend({
       agreedToTerms: z.boolean(),
+      phoneValid: z.boolean(),
     })
     .strict()
     .superRefine((data, ctx) => {
@@ -123,6 +125,13 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
           code: z.ZodIssueCode.custom,
           message: messages.agreedToTerms.required,
           path: ['agreedToTerms'],
+        });
+      }
+      if (data.phoneValid !== true) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: messages.phone.invalidPhone,
+          path: ['phoneValid'],
         });
       }
     });

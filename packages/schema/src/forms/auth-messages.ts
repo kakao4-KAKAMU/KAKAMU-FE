@@ -8,6 +8,7 @@ export interface AuthEmailMessages {
 export interface AuthPhoneMessages {
   required: string;
   invalid: string;
+  invalidPhone: string;
 }
 
 export interface AuthUsernameMessages {

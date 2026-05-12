@@ -21,6 +21,7 @@ export function buildAuthFormValidationMessages(t: TFunction): AuthFormValidatio
     phone: {
       required: t('guest.validation.phone.required'),
       invalid: t('guest.validation.phone.invalid'),
+      invalidPhone: t('guest.validation.phone.invalidPhone')
     },
     username: {
       required: t('guest.validation.username.required'),
