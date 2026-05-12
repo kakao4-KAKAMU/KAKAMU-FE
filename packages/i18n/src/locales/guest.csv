@@ -45,6 +45,19 @@ guest.form.signIn.a11yShowPassword,비밀번호 표시,Show password
 guest.form.signIn.a11yHidePassword,비밀번호 숨기기,Hide password
 guest.form.signUp.nickname,닉네임,Nickname
 guest.form.signUp.nicknamePlaceholder,필마 팬,Filma fan
+guest.form.signUp.phone,휴대전화,Phone
+guest.form.signUp.phonePlaceholder,+821012345678,+821012345678
+guest.form.signUp.sendSms,인증번호 받기,Get verification code
+guest.form.signUp.smsSending,발송 중…,Sending…
+guest.form.signUp.otpLabel,인증번호,Verification code
+guest.form.signUp.otpPlaceholder,6자리 코드,6-digit code
+guest.form.signUp.verifyOtp,인증 확인,Verify
+guest.form.signUp.otpVerifying,확인 중…,Verifying…
+guest.form.signUp.phoneVerified,휴대전화 인증이 완료되었습니다.,Phone verified.
+guest.form.signUp.smsError,SMS를 보낼 수 없습니다. 잠시 후 다시 시도해 주세요.,Could not send SMS. Please try again.
+guest.form.signUp.otpError,인증번호가 올바르지 않습니다.,Invalid verification code.
+guest.form.signUp.failedRequest,처리 중 문제가 발견되었습니다. 잠시 후 다시 시도해 주세요.,An issue was detected during processing. Please try again.
+guest.form.signUp.webRecaptchaHint,웹에서는 아래 영역을 통해 인증이 진행됩니다.,Verification runs through the area below on web.
 guest.form.signUp.username,아이디,Username
 guest.form.signUp.usernamePlaceholder,영문·숫자·밑줄만 사용,Letters numbers and underscores
 guest.form.signUp.email,이메일,Email
