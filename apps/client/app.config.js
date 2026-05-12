@@ -48,7 +48,13 @@ const config = {
         "expo-build-properties",
         {
           "ios": {
-            "useFrameworks": "static"
+            "useFrameworks": "static",
+            "forceStaticLinking": [
+              "@react-native-firebase/app",
+              "@react-native-firebase/auth",
+              "RNFBApp",
+              "RNFBAuth"
+            ]
           }
         }
       ]
