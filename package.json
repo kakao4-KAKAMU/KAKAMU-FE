@@ -10,6 +10,7 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "ios": "turbo run ios",
+    "android": "turbo run android",
     "changeset": "changeset"
   },
   "devDependencies": {

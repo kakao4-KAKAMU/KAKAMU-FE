@@ -21,6 +21,15 @@ function emailField(messages: AuthFormValidationMessages['email']) {
     .email(messages.invalid);
 }
 
+/** ITU-T E.164: `+` 와 국가코드 이후 7~15자리 숫자 */
+function phoneField(messages: AuthFormValidationMessages['phone']) {
+  return z
+    .string()
+    .trim()
+    .min(1, messages.required)
+    .regex(/^\+[1-9]\d{6,14}$/, messages.invalid);
+}
+
 function usernameField(messages: AuthFormValidationMessages['username']) {
   return z
     .string()
@@ -72,6 +81,7 @@ function passwordConfirmRefine(
 
 export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
   const email = emailField(messages.email);
+  const phone = phoneField(messages.phone);
   const username = usernameField(messages.username);
   const nickname = nicknameField(messages.nickname);
   const password = passwordField(messages.password);
@@ -91,6 +101,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     .object({
       email,
       username,
+      phone,
       nickname,
       password,
       passwordConfirm: z.string(),
@@ -104,6 +115,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
   const signUpWithTerms = signUpBase
     .extend({
       agreedToTerms: z.boolean(),
+      phoneValid: z.boolean(),
     })
     .strict()
     .superRefine((data, ctx) => {
@@ -113,6 +125,13 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
           code: z.ZodIssueCode.custom,
           message: messages.agreedToTerms.required,
           path: ['agreedToTerms'],
+        });
+      }
+      if (data.phoneValid !== true) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: messages.phone.invalidPhone,
+          path: ['phoneValid'],
         });
       }
     });

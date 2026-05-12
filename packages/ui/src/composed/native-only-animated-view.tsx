@@ -14,7 +14,8 @@ function NativeOnlyAnimatedView(
   props: React.ComponentProps<typeof Animated.View> & React.RefAttributes<typeof Animated.View>
 ) {
   if (Platform.OS === 'web') {
-    return <>{props.children as React.ReactNode}</>;
+    // return <>{props.children as React.ReactNode}</>;
+    return <Animated.View {...props} />;
   } else {
     return <Animated.View {...props} />;
   }

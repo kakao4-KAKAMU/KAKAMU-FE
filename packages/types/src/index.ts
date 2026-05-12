@@ -7,9 +7,9 @@ export type {
   FindPassword,
   Password,
   PasswordConfirm,
+  RegisterUserRequest,
   ResetPassword,
   SignIn,
-  SignUp,
   SignUpSNS,
   User,
 } from './auth';

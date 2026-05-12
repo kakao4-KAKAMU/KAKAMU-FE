@@ -15,8 +15,7 @@
   "dependencies": {
     "@kakamu/schema": "workspace:*",
     "i18next": "^25.6.2",
-    "react-i18next": "^16.2.4",
-    "zod": "^3.25.76"
+    "react-i18next": "^16.2.4"
   },
   "peerDependencies": {
     "react": ">=18.2.0"
@@ -27,8 +26,8 @@
     "@types/lodash": "^4.17.21",
     "@types/react": "~19.2.14",
     "csv-parse": "^6.1.0",
-    "lodash": "^4.17.21",
     "eslint": "^9.39.1",
+    "lodash": "^4.17.21",
     "typescript": "^5.9.3"
   }
 }

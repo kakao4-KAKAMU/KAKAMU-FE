@@ -3,7 +3,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import '../global.css';
 import 'react-native-reanimated';
-import { AppErrorBoundary, PortalHost } from '@kakamu/ui';
+import { QueryClient, QueryClientProvider } from '@kakamu/query';
+import { AppErrorBoundary, ErrorAlertDialogProvider, PortalHost } from '@kakamu/ui';
 import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
@@ -60,6 +61,13 @@ const GUEST_ONLY_PREFIXES = ['/signin', '/signup'];
 
 const startsWithPrefix = (pathname: string, prefixes: string[]) =>
   prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: 1 },
+    mutations: { retry: 0 },
+  },
+});
 
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
@@ -149,25 +157,29 @@ export default function RootLayout() {
   }
 
   return (
-    <I18nextProvider i18n={getI18n()}>
-      <ThemeSchemeProvider>
-        <ThemeColorProvider>
-          <AppErrorBoundary>
-            <Stack
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name="(guest)" />
-              <Stack.Screen name="(account)" />
-              <Stack.Screen name="profile/[id]" />
-              <Stack.Screen name="feed/[id]" />
-            </Stack>
-            <PortalHost />
-          </AppErrorBoundary>
-        </ThemeColorProvider>
-      </ThemeSchemeProvider>
-    </I18nextProvider>
+    <QueryClientProvider client={queryClient}>
+      <I18nextProvider i18n={getI18n()}>
+        <ThemeSchemeProvider>
+          <ThemeColorProvider>
+            <AppErrorBoundary>
+              <ErrorAlertDialogProvider>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                >
+                  <Stack.Screen name="(guest)" />
+                  <Stack.Screen name="(account)" />
+                  <Stack.Screen name="profile/[id]" />
+                  <Stack.Screen name="feed/[id]" />
+                </Stack>
+                <PortalHost />
+              </ErrorAlertDialogProvider>
+            </AppErrorBoundary>
+          </ThemeColorProvider>
+        </ThemeSchemeProvider>
+      </I18nextProvider>
+    </QueryClientProvider>
   );
 }
 

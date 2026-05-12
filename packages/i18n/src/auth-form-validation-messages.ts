@@ -18,6 +18,11 @@ export function buildAuthFormValidationMessages(t: TFunction): AuthFormValidatio
       required: t('guest.validation.email.required'),
       invalid: t('guest.validation.email.invalid'),
     },
+    phone: {
+      required: t('guest.validation.phone.required'),
+      invalid: t('guest.validation.phone.invalid'),
+      invalidPhone: t('guest.validation.phone.invalidPhone')
+    },
     username: {
       required: t('guest.validation.username.required'),
       min: t('guest.validation.username.min', { min: AUTH_USERNAME_MIN_LENGTH }),

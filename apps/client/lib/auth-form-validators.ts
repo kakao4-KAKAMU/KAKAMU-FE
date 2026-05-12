@@ -7,7 +7,7 @@ import { createAuthFormSchemas, type AuthFormSchemas } from '@kakamu/schema';
 
 /**
  * 현재 언어의 `t`에 맞춘 Zod 인증 폼 스키마 묶음.
- * - signIn / signInWithRemember: 로그인(rememberMe 포함 시 후자 + `zodResolver`)
+ * - signIn / signInWithRemember: 기본 로그인(rememberMe 포함 시 후자)
  * - signUp: 약관 제외 도메인 가입 필드
  * - signUpWithTerms: 클라이언트 회원가입 화면(약관 동의 포함)
  * - snsSignUp: SNS 가입 — `useForm` + `zodResolver(kit.snsSignUp)` + `Controller` 권장

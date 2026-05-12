@@ -45,6 +45,29 @@ guest.form.signIn.a11yShowPassword,비밀번호 표시,Show password
 guest.form.signIn.a11yHidePassword,비밀번호 숨기기,Hide password
 guest.form.signUp.nickname,닉네임,Nickname
 guest.form.signUp.nicknamePlaceholder,필마 팬,Filma fan
+guest.form.signUp.phone,휴대전화,Phone
+guest.form.signUp.phonePlaceholder,+821012345678,+821012345678
+guest.form.signUp.sendSms,인증번호 받기,Get verification code
+guest.form.signUp.smsSending,발송 중…,Sending…
+guest.form.signUp.otpLabel,인증번호,Verification code
+guest.form.signUp.otpPlaceholder,6자리 코드,6-digit code
+guest.form.signUp.verifyOtp,인증 확인,Verify
+guest.form.signUp.otpVerifying,확인 중…,Verifying…
+guest.form.signUp.phoneVerified,휴대전화 인증이 완료되었습니다.,Phone verified.
+guest.form.signUp.smsError,SMS를 보낼 수 없습니다. 잠시 후 다시 시도해 주세요.,Could not send SMS. Please try again.
+guest.form.signUp.otpError,인증번호가 올바르지 않습니다.,Invalid verification code.
+guest.form.signUp.failedRequest,처리 중 문제가 발견되었습니다. 잠시 후 다시 시도해 주세요.,An issue was detected during processing. Please try again.
+guest.form.signUp.failedRequest.title,회원가입에 실패했어요,Sign up failed
+guest.form.signUp.failedRequest.description,요청 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.,Something went wrong while processing your request. Please try again later.
+guest.form.signUp.invalidFirebaseToken.title,인증이 만료되었어요,Authentication expired
+guest.form.signUp.invalidFirebaseToken.description,인증 정보가 유효하지 않습니다. 다시 시도해 주세요.,Your authentication token is invalid. Please try again.
+guest.form.signUp.duplicatePhoneNumber.title,이미 사용 중인 휴대전화 번호예요,Phone number already in use
+guest.form.signUp.duplicatePhoneNumber.description,해당 휴대전화 번호로 가입된 계정이 있습니다. 다른 번호를 입력해 주세요.,An account already exists with this phone number. Please use a different number.
+guest.form.signUp.duplicateCiValue.title,이미 가입된 사용자예요,Account already exists
+guest.form.signUp.duplicateCiValue.description,이미 가입된 계정 정보가 확인되었습니다. 로그인 후 이용해 주세요.,We found an existing account with this identity. Please sign in instead.
+guest.form.signUp.duplicateEmail.title,이미 사용 중인 이메일이에요,Email already in use
+guest.form.signUp.duplicateEmail.description,해당 이메일로 가입된 계정이 있습니다. 다른 이메일을 입력해 주세요.,An account already exists with this email. Please use a different email.
+guest.form.signUp.webRecaptchaHint,웹에서는 아래 영역을 통해 인증이 진행됩니다.,Verification runs through the area below on web.
 guest.form.signUp.username,아이디,Username
 guest.form.signUp.usernamePlaceholder,영문·숫자·밑줄만 사용,Letters numbers and underscores
 guest.form.signUp.email,이메일,Email
@@ -89,6 +112,9 @@ guest.validation.nickname.min,"닉네임은 {{min}}자 이상이어야 합니다
 guest.validation.nickname.max,"닉네임은 {{max}}자 이하여야 합니다.",Nickname must be at most {{max}} characters.
 guest.validation.email.required,이메일을 입력해 주세요.,Please enter your email.
 guest.validation.email.invalid,올바른 이메일 형식이 아닙니다.,Please enter a valid email address.
+guest.validation.phone.required,휴대전화 번호를 입력해 주세요.,Please enter your phone number.
+guest.validation.phone.invalid,"국제 형식(+국가번호)으로 입력해 주세요. 예: +821012345678","Use international format with country code, e.g. +821012345678"
+guest.validation.phone.invalidPhone,SMS 인증을 완료해 주세요.,Please complete SMS verification.
 guest.validation.password.required,비밀번호를 입력해 주세요.,Please enter your password.
 guest.validation.password.min,"비밀번호는 {{min}}자 이상이어야 합니다.",Password must be at least {{min}} characters.
 guest.validation.password.max,"비밀번호는 {{max}}자 이하여야 합니다.",Password must be at most {{max}} characters.

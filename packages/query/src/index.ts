@@ -1,6 +1,4 @@
 export { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export const feedKeys = {
-  all: ['feed'] as const,
-  list: (cursor?: string) => [...feedKeys.all, 'list', cursor] as const,
-};
+export { userKeys } from './shared/keys/user.keys';
+export { useRegisterUserMutation } from './features/user-register/model/use-register-user-mutation';

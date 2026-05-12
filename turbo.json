@@ -16,6 +16,9 @@
     "ios": {
       "cache": false
     },
+    "android": {
+      "cache": false
+    },
     "web": {
       "cache": false
     },
