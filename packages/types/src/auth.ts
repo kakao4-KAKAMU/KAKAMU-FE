@@ -21,7 +21,13 @@ export interface PasswordConfirm extends Password {
 }
 
 /** `User`에서 `profile` 제외 + 비밀번호/확인 */
-export type SignUp = Omit<User, 'profile'> & PasswordConfirm;
+/** `POST /users/register` 요청 본문 — API 필드명과 동일 */
+export type RegisterUserRequest = Omit<User, 'profile'> & Password & {
+  /** 본인인증 CI 등 — 미연동 시 빈 문자열은 백엔드 정책에 따름 */
+  ci_value: string;
+  firebase_id_token: string;
+  email: string
+};
 
 export interface SignUpSNS extends User {
   snsType: AuthSnsSignUpProvider;
