@@ -41,6 +41,7 @@ jobs:
         repository: kakao4-KAKAMU/kakamu_helm # 헬름 차트 깃허브 레포
         token: ${{ secrets.HELM_REPO_TOKEN }} # 레포 권한이 있는 토큰
         path: helm-charts
+        ref: dev
 
     - name: Update Helm Values # 프론트엔드 values.yaml 이미지 태그값 검증 후 변경
       run: |
@@ -53,7 +54,7 @@ jobs:
         
         if ! git diff --cached --quiet; then
           git commit -m "update frontend image tag to 1.${{ github.run_number }}"
-          git push origin main
+          git push origin HEAD:dev
         else
           echo "No changes to commit"
         fi        
