@@ -1,0 +1,11 @@
+code,ko,en
+account.sonar.headerTitle,예고편 판독기,Trailer takes
+account.sonar.headerInfoA11y,안내,Info
+account.sonar.hint,"예고편을 보고 좌우로 슬라이드해 취향 데이터를 쌓아보세요.","Watch a trailer and swipe sideways to build your taste profile."
+account.sonar.infoDialogTitle,예고편 판독기,Trailer takes
+account.sonar.infoDialogMessage,"예고편을 보고 좌우로 슬라이드해 취향 데이터를 쌓아보세요.","Swipe left for dislike and right for like to improve your recommendations."
+account.sonar.previewDislikeA11y,싫어요,Dislike
+account.sonar.previewLikeA11y,좋아요,Like
+account.sonar.emptyQueue,모든 예고편을 살펴봤어요.,You have seen all trailers for now.
+account.sonar.swipeGuideDislike,싫어요,Dislike
+account.sonar.swipeGuideLike,좋아요,Like

@@ -1,8 +1,9 @@
 /**
  * Reads src/locales/*.csv (header: code,ko,en) and writes nested JSON for i18next.
  * Uses lodash `set` to turn dot-path codes into nested objects.
+ * Multiple CSV files are merged in alphabetical order; duplicate codes use the last occurrence.
  */
-import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'csv-parse/sync';
@@ -26,29 +27,38 @@ function rowsToNestedObject(rows, valueKey) {
   return root;
 }
 
-function loadGuestRows() {
-  const csvPath = join(localesDir, 'guest.csv');
-  const raw = readFileSync(csvPath, 'utf8');
-  const records = parse(raw, {
-    columns: true,
-    skip_empty_lines: true,
-    trim: true,
-  });
-  const header = Object.keys(records[0] ?? {});
-  if (!header.includes('code') || !header.includes('ko') || !header.includes('en')) {
-    throw new Error(
-      `guest.csv must have header columns code, ko, en. Found: ${header.join(', ')}`
-    );
+function loadAllLocaleRows() {
+  const csvFiles = readdirSync(localesDir)
+    .filter((f) => f.endsWith('.csv'))
+    .sort();
+  if (csvFiles.length === 0) {
+    throw new Error(`No .csv files found in ${localesDir}`);
   }
-  return records;
+  const all = [];
+  for (const file of csvFiles) {
+    const csvPath = join(localesDir, file);
+    const raw = readFileSync(csvPath, 'utf8');
+    const records = parse(raw, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+    });
+    const header = Object.keys(records[0] ?? {});
+    if (!header.includes('code') || !header.includes('ko') || !header.includes('en')) {
+      throw new Error(
+        `${file} must have header columns code, ko, en. Found: ${header.join(', ')}`,
+      );
+    }
+    all.push(...records);
+  }
+  return all;
 }
 
 mkdirSync(outDir, { recursive: true });
 
-const rows = loadGuestRows();
+const rows = loadAllLocaleRows();
 const koTranslation = rowsToNestedObject(rows, 'ko');
 const enTranslation = rowsToNestedObject(rows, 'en');
 
 writeFileSync(join(outDir, 'ko.json'), `${JSON.stringify(koTranslation, null, 2)}\n`, 'utf8');
 writeFileSync(join(outDir, 'en.json'), `${JSON.stringify(enTranslation, null, 2)}\n`, 'utf8');
-
