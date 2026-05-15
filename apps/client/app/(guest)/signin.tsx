@@ -12,6 +12,7 @@ import {
   SignUpPrompt,
   type SignInFormValues,
 } from '@/components/featured/auth';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
 const DEFAULT_VALUES: SignInFormValues = {
