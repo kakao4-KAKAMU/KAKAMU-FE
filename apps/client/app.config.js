@@ -21,7 +21,6 @@ const config = {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/google-services-dev.json" : "./firebase-config/google-services-prod.json"
     },
@@ -48,8 +47,7 @@ const config = {
         "@react-native-seoul/kakao-login",
         {
           "kakaoAppKey": process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
-          "overrideKakaoSDKVersion": "2.11.2", // Optional, 
-          "kotlinVersion": "1.9.0" // #392
+          "kotlinVersion": "2.2.0" // #392
         }
       ],
       [
