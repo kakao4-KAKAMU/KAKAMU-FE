@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
-import { useLoginUserMutation } from '@kakamu/query';
+import { useLoginUserMutation, useSocialAuthLoginMutation } from '@kakamu/query';
 import type { SignInWithRememberFormInput } from '@kakamu/schema';
 import { useAuthStore } from '@kakamu/store';
 import { Stack, useRouter } from 'expo-router';
@@ -18,6 +18,7 @@ import {
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
+import { useKakaoLogin } from '@/lib/kakao-login';
 
 const DEFAULT_VALUES: SignInFormValues = {
   email: '',
@@ -32,6 +33,13 @@ export default function SignInScreen() {
   const { open: openErrorAlert } = useErrorAlertDialog();
 
   const apiClient = useBackendApiClient();
+  const socialAuthLoginMutation = useSocialAuthLoginMutation(apiClient, {
+    onSuccess: (res) => {
+      setAccessToken(res.access_token);
+      setSubmitting(false);
+    },
+  });
+
   const loginMutation = useLoginUserMutation(apiClient, {
     onSuccess: (res) => {
       setAccessToken(res.access_token);
@@ -109,7 +117,17 @@ export default function SignInScreen() {
     router.push('./findpassword');
   }, [router]);
 
-  const handleKakaoLogin = useCallback(() => {}, []);
+  const { login: loginWithKakao } = useKakaoLogin();
+  const handleKakaoLogin = useCallback(() => {
+    loginWithKakao().then((token) => {
+      socialAuthLoginMutation.mutate({
+        provider: 'kakao',
+        token: token.accessToken,
+      });
+    }).catch((error) => {
+      console.error(error);
+    });
+  }, []);
 
   const handleGoogleLogin = useCallback(() => {}, []);
 

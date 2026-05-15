@@ -12,5 +12,6 @@ export type {
   ResetPassword,
   SignIn,
   SignUpSNS,
+  SocialAuthLoginRequest,
   User,
 } from './auth';

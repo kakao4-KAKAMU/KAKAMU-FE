@@ -41,6 +41,12 @@ export interface LoginLocalResponse {
   access_token: string;
 }
 
+/** `POST /social-auth/login` 요청 본문 */
+export interface SocialAuthLoginRequest {
+  provider: AuthSnsSignUpProvider;
+  token: string;
+}
+
 export type FindPassword = Email;
 
 export type ResetPassword = PasswordConfirm;
