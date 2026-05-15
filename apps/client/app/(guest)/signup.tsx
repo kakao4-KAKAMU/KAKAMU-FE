@@ -1,31 +1,22 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
 import type { SignUpWithTermsFormInput } from '@kakamu/schema';
 import { useRegisterUserMutation } from '@kakamu/query';
 import { Stack, useRouter } from 'expo-router';
 import { HTTPError } from 'ky';
-import { Alert, useErrorAlertDialog } from '@kakamu/ui';
-import type { RecaptchaVerifier } from 'firebase/auth';
+import { useErrorAlertDialog } from '@kakamu/ui';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import {
   AuthHeader,
-  SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID,
   SignUpForm,
+  SignUpPhoneVerificationForm,
   SignUpPrompt,
-  SocialAuthList,
   type SignUpFormValues,
 } from '@/components/featured/auth';
-import {
-  confirmPhoneSignInCode,
-  ensureFirebaseInitialized,
-  getFirebaseWebAppOrNull,
-  sendPhoneSignInSms,
-  type PhoneSignInConfirmation,
-} from '@/hooks/firebase';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { getFirebaseIdTokenFromPhoneCredential } from '@/lib/firebase-phone-id-token';
+import { usePhoneValidation } from '@/hooks/featured/auth/usePhoneValidation';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
 const DEFAULT_VALUES: SignUpFormValues = {
@@ -38,6 +29,8 @@ const DEFAULT_VALUES: SignUpFormValues = {
   agreedToTerms: false,
   phoneValid: false,
 };
+
+type SignUpStep = 1 | 2;
 
 async function signOutFirebaseAfterRegister(): Promise<void> {
   try {
@@ -64,6 +57,8 @@ export default function SignUpScreen() {
   );
 
   const apiClient = useBackendApiClient();
+  const { open: openErrorAlert } = useErrorAlertDialog();
+
   const registerMutation = useRegisterUserMutation(apiClient, {
     onSettled: async () => {
       await signOutFirebaseAfterRegister();
@@ -113,18 +108,10 @@ export default function SignUpScreen() {
           message = t('guest.form.signUp.duplicateEmail.description');
           break;
       }
-      // TODO: 에러 메시지 표시
-      openErrorAlert({
-        title: title,
-        description: message,
-      });
+
+      openErrorAlert({ title, description: message });
     },
   });
-
-  const confirmationRef = useRef<PhoneSignInConfirmation | null>(null);
-  const firebaseIdTokenRef = useRef<string | null>(null);
-  const firebaseUuidRef = useRef<string | null>(null);
-  const prevPhoneRef = useRef<string>(DEFAULT_VALUES.phone);
 
   const { control, handleSubmit, formState, getValues, setValue, trigger, setError, clearErrors, watch } =
     useForm<SignUpWithTermsFormInput>({
@@ -134,133 +121,71 @@ export default function SignUpScreen() {
       reValidateMode: 'onSubmit',
     });
 
+  const [step, setStep] = useState<SignUpStep>(1);
   const [submitting, setSubmitting] = useState(false);
-  const [smsSending, setSmsSending] = useState(false);
-  const [otpVerifying, setOtpVerifying] = useState(false);
-  const [smsError, setSmsError] = useState<string | null>(null);
-  const [otpError, setOtpError] = useState<string | null>(null);
 
   const phone = watch('phone');
   const phoneValid = watch('phoneValid');
 
-  const { open: openErrorAlert } = useErrorAlertDialog();
-
-  useEffect(() => {
-    if (prevPhoneRef.current === phone) {
-      return;
+  const handlePhoneChange = useCallback(() => {
+    if (step === 2) {
+      setStep(1);
     }
-    prevPhoneRef.current = phone;
-    confirmationRef.current = null;
-    firebaseIdTokenRef.current = null;
-    setValue('phoneValid', false);
-    void trigger('phoneValid');
-    setSmsError(null);
-    setOtpError(null);
-  }, [phone, setValue, trigger]);
+  }, [step]);
 
-  const handleSendSms = useCallback(async () => {
-    setSmsError(null);
-    setOtpError(null);
-    const ok = await trigger('phone');
-    if (!ok) {
-      return;
+  const phoneValidation = usePhoneValidation({
+    getValues,
+    setValue,
+    trigger,
+    phone,
+    phoneValid,
+    onPhoneChange: handlePhoneChange,
+  });
+
+  const handleContinueToDetails = useCallback(async () => {
+    const ok = await phoneValidation.validatePhoneStep();
+    if (ok) {
+      setStep(2);
     }
-    const phoneE164 = getValues('phone').trim();
-    setSmsSending(true);
-    let verifier: RecaptchaVerifier | null = null;
-    try {
-      await ensureFirebaseInitialized();
-      if (Platform.OS === 'web') {
-        const app = await getFirebaseWebAppOrNull();
-        if (!app) {
-          throw new Error('[firebase] 웹 앱 초기화에 실패했습니다.');
-        }
-        const { createWebPhoneRecaptchaVerifier } = await import('@/hooks/firebase/phoneAuthWeb');
-        verifier = createWebPhoneRecaptchaVerifier(app, SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID);
-        const confirmation = await sendPhoneSignInSms(phoneE164, { app, appVerifier: verifier });
-        confirmationRef.current = confirmation;
-      } else {
-        const confirmation = await sendPhoneSignInSms(phoneE164);
-        confirmationRef.current = confirmation;
-      }
-    } catch (e) {
-      const message = e instanceof Error ? e.message : String(e);
-      setSmsError(t('guest.form.signUp.smsError'));
-      if (__DEV__) {
-        console.warn('[signup] sendSms', message);
-      }
-      if (verifier) {
-        verifier.clear()
-      }
-    } finally {
-      setSmsSending(false);
-    }
-  }, [getValues, trigger, t]);
+  }, [phoneValidation]);
 
-  const handleVerifyOtp = useCallback(
-    async (otp: string) => {
-      setOtpError(null);
-      const confirmation = confirmationRef.current;
-      if (!confirmation) {
-        setOtpError(t('guest.form.signUp.smsError'));
-        return;
-      }
-      setOtpVerifying(true);
-      try {
-        const credential = await confirmPhoneSignInCode(confirmation, otp);
-        
-        const idToken = await getFirebaseIdTokenFromPhoneCredential(credential);
-
-        firebaseUuidRef.current = (credential as { user: { uid: string } }).user.uid ?? null;
-        firebaseIdTokenRef.current = idToken;
-        setValue('phoneValid', true);
-        await trigger();
-      } catch (e) {
-        const message = e instanceof Error ? e.message : String(e);
-        setOtpError(t('guest.form.signUp.otpError'));
-        if (__DEV__) {
-          console.warn('[signup] verifyOtp', message);
-        }
-      } finally {
-        setOtpVerifying(false);
-      }
-    },
-    [setValue, trigger, t]
-  );
+  const handleBackToPhone = useCallback(() => {
+    setStep(1);
+  }, []);
 
   const onValid = useCallback(
     (data: SignUpWithTermsFormInput) => {
-      const firebaseIdToken = firebaseIdTokenRef.current;
+      const { firebaseIdToken, firebaseUuid } = phoneValidation.getRegisterPhoneAuth();
       if (!firebaseIdToken) {
         setError('root', { type: 'manual', message: t('guest.validation.token.required') });
+        setStep(1);
         return;
       }
       clearErrors('root');
       setSubmitting(true);
-      registerMutation.mutate(
-        {
-          username: data.username.trim(),
-          nickname: data.nickname.trim(),
-          /** 본인인증 CI — 백엔드 허용 시 빈 문자열 */
-          ci_value: firebaseUuidRef.current ?? '',
-          firebase_id_token: firebaseIdToken,
-          email: data.email.trim(),
-          password: data.password,
-        }
-      );
+      registerMutation.mutate({
+        username: data.username.trim(),
+        nickname: data.nickname.trim(),
+        ci_value: firebaseUuid ?? '',
+        firebase_id_token: firebaseIdToken,
+        email: data.email.trim(),
+        password: data.password,
+      });
     },
-    [clearErrors, registerMutation, router, setError, t]
+    [clearErrors, phoneValidation, registerMutation, setError, t]
   );
 
   const handleShowTerms = useCallback(() => {}, []);
-
-  const handleKakaoSignUp = useCallback(() => {}, []);
-
-  const handleGoogleSignUp = useCallback(() => {}, []);
-
   const handleNavigateSignIn = useCallback(() => {
     router.push('/signin');
   }, [router]);
+
+  const isBusy = submitting || registerMutation.isPending || phoneValidation.isPhoneBusy;
+
+  const stepHeader =
+    step === 1
+      ? { title: t('guest.signUp.stepPhoneTitle'), description: t('guest.signUp.stepPhoneDescription') }
+      : { title: t('guest.signUp.stepDetailsTitle'), description: t('guest.signUp.stepDetailsDescription') };
 
   return (
     <>
@@ -276,31 +201,32 @@ export default function SignUpScreen() {
           className="flex-1"
         >
           <View className="min-h-full grow justify-center px-6 py-8 gap-8">
-            <AuthHeader
-              title={t('guest.signUp.headerTitle')}
-              description={t('guest.signUp.headerDescription')}
-            />
+            <AuthHeader title={stepHeader.title} description={stepHeader.description} />
 
-            <SignUpForm
-              control={control}
-              onSubmit={handleSubmit(onValid)}
-              onPressTerms={handleShowTerms}
-              submitting={submitting}
-              canSubmit={formState.isValid && !registerMutation.isPending}
-              onSendSms={handleSendSms}
-              onVerifyOtp={handleVerifyOtp}
-              smsSending={smsSending}
-              otpVerifying={otpVerifying}
-              phoneVerified={phoneValid === true}
-              smsError={smsError}
-              otpError={otpError}
-            />
-
-            <SocialAuthList
-              onPressKakao={handleKakaoSignUp}
-              onPressGoogle={handleGoogleSignUp}
-              disabled={submitting}
-            />
+            {step === 1 ? (
+              <SignUpPhoneVerificationForm
+                control={control}
+                onSendSms={phoneValidation.sendSms}
+                onVerifyOtp={phoneValidation.verifyOtp}
+                onContinue={handleContinueToDetails}
+                smsSending={phoneValidation.smsSending}
+                otpVerifying={phoneValidation.otpVerifying}
+                phoneVerified={phoneValidation.phoneVerified}
+                smsError={phoneValidation.smsError}
+                otpError={phoneValidation.otpError}
+                continuing={isBusy}
+                canContinue={phoneValidation.phoneVerified}
+              />
+            ) : (
+              <SignUpForm
+                control={control}
+                onSubmit={handleSubmit(onValid)}
+                onPressTerms={handleShowTerms}
+                onBack={handleBackToPhone}
+                submitting={submitting || registerMutation.isPending}
+                canSubmit={formState.isValid && !registerMutation.isPending}
+              />
+            )}
 
             <SignUpPrompt variant="toSignIn" onPress={handleNavigateSignIn} />
           </View>
