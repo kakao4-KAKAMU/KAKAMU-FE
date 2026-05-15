@@ -45,8 +45,19 @@ const config = {
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       [
+        "@react-native-seoul/kakao-login",
+        {
+          "kakaoAppKey": process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
+          "overrideKakaoSDKVersion": "2.11.2", // Optional, 
+          "kotlinVersion": "1.9.0" // #392
+        }
+      ],
+      [
         "expo-build-properties",
         {
+          "android": {
+            "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]
+          },
           "ios": {
             "useFrameworks": "static",
             "forceStaticLinking": [
