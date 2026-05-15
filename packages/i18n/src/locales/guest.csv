@@ -43,6 +43,10 @@ guest.form.signIn.forgotPassword,비밀번호 찾기,Forgot password
 guest.form.signIn.submit,로그인,Sign in
 guest.form.signIn.a11yShowPassword,비밀번호 표시,Show password
 guest.form.signIn.a11yHidePassword,비밀번호 숨기기,Hide password
+guest.form.signIn.failedRequest.title,로그인에 실패했어요,Sign-in failed
+guest.form.signIn.failedRequest.description,요청 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.,Something went wrong while signing you in. Please try again later.
+guest.form.signIn.invalidCredentials.title,이메일 또는 비밀번호를 확인해 주세요,Check your email or password
+guest.form.signIn.invalidCredentials.description,입력하신 정보와 일치하는 계정을 찾지 못했습니다. 다시 시도해 주세요.,We could not find an account matching those details. Please try again.
 guest.form.signUp.nickname,닉네임,Nickname
 guest.form.signUp.nicknamePlaceholder,필마 팬,Filma fan
 guest.form.signUp.phone,휴대전화,Phone

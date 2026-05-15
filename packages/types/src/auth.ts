@@ -36,6 +36,11 @@ export interface SignUpSNS extends User {
 
 export type SignIn = Email & Password;
 
+/** `POST /users/login/local` 응답 — 백엔드에서 내려주는 액세스 토큰 */
+export interface LoginLocalResponse {
+  access_token: string;
+}
+
 export type FindPassword = Email;
 
 export type ResetPassword = PasswordConfirm;

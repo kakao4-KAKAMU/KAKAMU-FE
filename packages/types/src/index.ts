@@ -5,6 +5,7 @@ export type {
   AuthSnsSignUpProvider,
   Email,
   FindPassword,
+  LoginLocalResponse,
   Password,
   PasswordConfirm,
   RegisterUserRequest,
