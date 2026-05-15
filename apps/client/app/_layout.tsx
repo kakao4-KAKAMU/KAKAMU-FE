@@ -1,6 +1,9 @@
+import 'react-native-gesture-handler';
+
 import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@kakamu/query';
@@ -157,29 +160,31 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nextProvider i18n={getI18n()}>
-        <ThemeSchemeProvider>
-          <ThemeColorProvider>
-            <AppErrorBoundary>
-              <ErrorAlertDialogProvider>
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                  }}
-                >
-                  <Stack.Screen name="(guest)" />
-                  <Stack.Screen name="(account)" />
-                  <Stack.Screen name="profile/[id]" />
-                  <Stack.Screen name="feed/[id]" />
-                </Stack>
-                <PortalHost />
-              </ErrorAlertDialogProvider>
-            </AppErrorBoundary>
-          </ThemeColorProvider>
-        </ThemeSchemeProvider>
-      </I18nextProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <I18nextProvider i18n={getI18n()}>
+          <ThemeSchemeProvider>
+            <ThemeColorProvider>
+              <AppErrorBoundary>
+                <ErrorAlertDialogProvider>
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  >
+                    <Stack.Screen name="(guest)" />
+                    <Stack.Screen name="(account)" />
+                    <Stack.Screen name="profile/[id]" />
+                    <Stack.Screen name="feed/[id]" />
+                  </Stack>
+                  <PortalHost />
+                </ErrorAlertDialogProvider>
+              </AppErrorBoundary>
+            </ThemeColorProvider>
+          </ThemeSchemeProvider>
+        </I18nextProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
 
