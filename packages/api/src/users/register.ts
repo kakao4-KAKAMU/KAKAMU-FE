@@ -7,5 +7,5 @@ export async function postUserRegister(
   client: ApiClient,
   body: RegisterUserRequest
 ): Promise<unknown> {
-  return client.post('users/register', { json: body }).json();
+  return client.post('users/register/local', { json: body }).json();
 }
