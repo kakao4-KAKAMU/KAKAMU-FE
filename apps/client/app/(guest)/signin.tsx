@@ -30,6 +30,7 @@ export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setPendingSnsSignUp = useAuthStore((s) => s.setPendingSnsSignUp);
   const { open: openErrorAlert } = useErrorAlertDialog();
 
   const apiClient = useBackendApiClient();
@@ -37,6 +38,36 @@ export default function SignInScreen() {
     onSuccess: (res) => {
       setAccessToken(res.access_token);
       setSubmitting(false);
+    },
+    onError: async (err, variables) => {
+      setSubmitting(false);
+      let message = t('guest.form.signIn.failedRequest.description');
+      let title = t('guest.form.signIn.failedRequest.title');
+      let errorCode: string | null = null;
+      if (err instanceof HTTPError) {
+        try {
+          const body: unknown = await err.response.json();
+          if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
+            message = body.message;
+          }
+          if (body && typeof body === 'object' && 'code' in body) {
+            const c = (body as { code: unknown }).code;
+            errorCode = typeof c === 'string' ? c : null;
+          }
+        } catch {
+          message = err.message;
+        }
+      } else if (err instanceof Error) {
+        message = err.message;
+      }
+
+      if (errorCode === 'SOCIAL_ACCOUNT_NOT_REGISTERED') {
+        setPendingSnsSignUp(variables.provider, variables.token);
+        router.push('./signup-sns');
+        return;
+      }
+
+      openErrorAlert({ title, description: message });
     },
   });
 
@@ -119,15 +150,19 @@ export default function SignInScreen() {
 
   const { login: loginWithKakao } = useKakaoLogin();
   const handleKakaoLogin = useCallback(() => {
-    loginWithKakao().then((token) => {
-      socialAuthLoginMutation.mutate({
-        provider: 'kakao',
-        token: token.accessToken,
+    setSubmitting(true);
+    loginWithKakao()
+      .then((token) => {
+        socialAuthLoginMutation.mutate({
+          provider: 'kakao',
+          token: token.accessToken,
+        });
+      })
+      .catch((error) => {
+        setSubmitting(false);
+        console.error(error);
       });
-    }).catch((error) => {
-      console.error(error);
-    });
-  }, []);
+  }, [loginWithKakao, socialAuthLoginMutation]);
 
   const handleGoogleLogin = useCallback(() => {}, []);
 
@@ -135,7 +170,8 @@ export default function SignInScreen() {
     router.push('/signup');
   }, [router]);
 
-  const isBusy = submitting || loginMutation.isPending;
+  const isBusy =
+    submitting || loginMutation.isPending || socialAuthLoginMutation.isPending;
 
   return (
     <>

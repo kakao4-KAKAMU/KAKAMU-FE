@@ -29,10 +29,7 @@ export type RegisterUserRequest = Omit<User, 'profile'> & Password & {
   email: string
 };
 
-export interface SignUpSNS extends User {
-  snsType: AuthSnsSignUpProvider;
-  token: string;
-}
+export type SignUpSNS = User & SocialAuthLoginRequest
 
 export type SignIn = Email & Password;
 

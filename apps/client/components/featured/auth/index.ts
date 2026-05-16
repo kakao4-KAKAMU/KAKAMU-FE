@@ -4,8 +4,8 @@ export { FindPasswordForm, type FindPasswordFormValues } from './FindPasswordFor
 export { ResetPasswordForm, type ResetPasswordFormValues } from './ResetPasswordForm';
 export { SignInForm, type SignInFormValues } from './SignInForm';
 export { SignUpForm, type SignUpFormValues } from './SignUpForm';
+export { SignUpSnsForm, type SignUpSnsFormValues } from './SignUpSnsForm';
 export {
-  SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID,
   SignUpPhoneVerificationForm,
 } from './SignUpPhoneVerificationForm';
 export { SocialAuthButton } from './SocialAuthButton';
