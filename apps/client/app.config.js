@@ -71,6 +71,12 @@ const config = {
     "experiments": {
       "baseUrl": process.env.EXPO_PUBLIC_HOST_PATH || "/",
       "typedRoutes": true
+    },
+    "owner": "cjhih4",
+    "extra": {
+      "eas": {
+        "projectId": "194e5a01-b828-4038-973c-72e32a224df2"
+      }
     }
   }
 }
