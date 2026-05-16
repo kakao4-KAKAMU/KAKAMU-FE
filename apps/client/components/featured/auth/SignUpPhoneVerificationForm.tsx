@@ -4,9 +4,7 @@ import type { SignUpWithTermsFormInput } from '@kakamu/schema';
 import { Platform, View } from 'react-native';
 import { Controller, type Control } from 'react-hook-form';
 import { Button, Input, Label, Text } from '@kakamu/ui';
-
-/** 웹 전화 인증용 DOM 컨테이너 id — `createWebPhoneRecaptchaVerifier` 와 동일해야 합니다 */
-export const SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID = 'signup-phone-recaptcha';
+import { SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID } from '@/hooks/auth';
 
 type SignUpPhoneVerificationFormProps = {
   control: Control<SignUpWithTermsFormInput>;

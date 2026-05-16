@@ -16,7 +16,7 @@ import {
   type SignUpFormValues,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { usePhoneValidation } from '@/hooks/featured/auth/usePhoneValidation';
+import { firebaseSignOut, usePhoneValidation } from '@/hooks/auth';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
 const DEFAULT_VALUES: SignUpFormValues = {
@@ -32,20 +32,6 @@ const DEFAULT_VALUES: SignUpFormValues = {
 
 type SignUpStep = 1 | 2;
 
-async function signOutFirebaseAfterRegister(): Promise<void> {
-  try {
-    if (Platform.OS === 'web') {
-      const { getFirebaseWebApp } = await import('@/hooks/firebase/initWeb');
-      const { getAuth, signOut } = await import('firebase/auth');
-      await signOut(getAuth(getFirebaseWebApp()));
-    } else {
-      const { default: rnAuth } = await import('@react-native-firebase/auth');
-      await rnAuth().signOut();
-    }
-  } catch {
-    /* 세션 정리 실패는 가입 성공 흐름을 막지 않음 */
-  }
-}
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -56,12 +42,52 @@ export default function SignUpScreen() {
     [authForms.signUpWithTerms]
   );
 
+  const { control, handleSubmit, formState, getValues, setValue, trigger, setError, clearErrors, watch } =
+    useForm<SignUpWithTermsFormInput>({
+      resolver,
+      defaultValues: DEFAULT_VALUES,
+      mode: 'onSubmit',
+      reValidateMode: 'onSubmit',
+    });
+
+  const [step, setStep] = useState<SignUpStep>(1);
+  const [submitting, setSubmitting] = useState(false);
+
+  const phone = watch('phone');
+  const phoneValid = watch('phoneValid');
+
+  const handlePhoneChange = useCallback(() => {
+    if (step === 2) {
+      setStep(1);
+    }
+  }, [step]);
+  
+  const phoneValidation = usePhoneValidation({
+    getValues,
+    setValue,
+    trigger,
+    phone,
+    phoneValid,
+    onPhoneChange: handlePhoneChange,
+  });
+
+  const handleContinueToDetails = useCallback(async () => {
+    const ok = await phoneValidation.validatePhoneStep();
+    if (ok) {
+      setStep(2);
+    }
+  }, [phoneValidation]);
+
+  const handleBackToPhone = useCallback(() => {
+    setStep(1);
+  }, []);
+
+
   const apiClient = useBackendApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
-
   const registerMutation = useRegisterUserMutation(apiClient, {
     onSettled: async () => {
-      await signOutFirebaseAfterRegister();
+      await firebaseSignOut(phoneValidation.firebasePhoneDepsRef ?? undefined);
     },
     onSuccess: () => {
       setSubmitting(false);
@@ -112,46 +138,6 @@ export default function SignUpScreen() {
       openErrorAlert({ title, description: message });
     },
   });
-
-  const { control, handleSubmit, formState, getValues, setValue, trigger, setError, clearErrors, watch } =
-    useForm<SignUpWithTermsFormInput>({
-      resolver,
-      defaultValues: DEFAULT_VALUES,
-      mode: 'onSubmit',
-      reValidateMode: 'onSubmit',
-    });
-
-  const [step, setStep] = useState<SignUpStep>(1);
-  const [submitting, setSubmitting] = useState(false);
-
-  const phone = watch('phone');
-  const phoneValid = watch('phoneValid');
-
-  const handlePhoneChange = useCallback(() => {
-    if (step === 2) {
-      setStep(1);
-    }
-  }, [step]);
-
-  const phoneValidation = usePhoneValidation({
-    getValues,
-    setValue,
-    trigger,
-    phone,
-    phoneValid,
-    onPhoneChange: handlePhoneChange,
-  });
-
-  const handleContinueToDetails = useCallback(async () => {
-    const ok = await phoneValidation.validatePhoneStep();
-    if (ok) {
-      setStep(2);
-    }
-  }, [phoneValidation]);
-
-  const handleBackToPhone = useCallback(() => {
-    setStep(1);
-  }, []);
 
   const onValid = useCallback(
     (data: SignUpWithTermsFormInput) => {

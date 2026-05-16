@@ -3,7 +3,7 @@
  */
 import type { FirebaseApp } from 'firebase/app';
 import type { ApplicationVerifier, ConfirmationResult } from 'firebase/auth';
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from 'firebase/auth';
 
 /**
  * invisible reCAPTCHA 등 웹 전화 인증용 검증기.
@@ -27,4 +27,11 @@ export function sendPhoneSignInSmsWeb(
 ): Promise<ConfirmationResult> {
   const auth = getAuth(app);
   return signInWithPhoneNumber(auth, phoneE164, appVerifier);
+}
+
+export function firebaseSignOutWeb(
+  app: FirebaseApp,
+): Promise<void> {
+  const auth = getAuth(app);
+  return signOut(auth);
 }

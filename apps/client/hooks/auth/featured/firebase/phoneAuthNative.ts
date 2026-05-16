@@ -10,3 +10,7 @@ export function sendPhoneSignInSmsNative(
 ): Promise<FirebaseAuthTypes.ConfirmationResult> {
   return signInWithPhoneNumber(getAuth(), phoneE164);
 }
+
+export function firebaseSignOutNative(): Promise<void> {
+  return getAuth().signOut();
+}
