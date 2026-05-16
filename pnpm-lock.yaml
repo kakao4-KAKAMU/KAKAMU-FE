@@ -357,6 +357,9 @@ importers:
       '@kakamu/types':
         specifier: workspace:*
         version: link:../types
+      '@react-native-async-storage/async-storage':
+        specifier: ^3.0.2
+        version: 3.0.2(react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
       zustand:
         specifier: ^5.0.8
         version: 5.0.13(@types/react@19.2.14)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
@@ -2705,6 +2708,12 @@ packages:
 
   '@radix-ui/rect@1.1.1':
     resolution: {integrity: sha512-HPwpGIzkl28mWyZqG52jiqDJ12waP11Pa1lGoiyUkIEuMLBP0oeK/C89esbXrxsky5we7dfd8U58nm0SgAWpVw==}
+
+  '@react-native-async-storage/async-storage@3.0.2':
+    resolution: {integrity: sha512-XP0zDIl+1XoeuQ7f878qXKdl77zLwzLALPpxvNRc7ZtDh9ew36WSvOdQOhFkexMySapFAWxEbZxS8K8J2DU4eg==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   '@react-native-firebase/app@24.0.0':
     resolution: {integrity: sha512-rLWNd8/4FjKYV7PeDR9uiT5vwYWdJ7dJ1yiIIaZ/eL+Y56Ij2iXbqRCUu4zWkvu/ZrJfaGOyT12Vhy1SLy0NMg==}
@@ -5099,6 +5108,9 @@ packages:
 
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
+
+  idb@8.0.3:
+    resolution: {integrity: sha512-LtwtVyVYO5BqRvcsKuB2iUMnHwPVByPCXFXOpuU96IZPPoPN6xjOGxZQ74pgSVVLQWtUOYgyeL4GE98BY5D3wg==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -9794,6 +9806,12 @@ snapshots:
 
   '@radix-ui/rect@1.1.1': {}
 
+  '@react-native-async-storage/async-storage@3.0.2(react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      idb: 8.0.3
+      react: 19.2.4
+      react-native: 0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4)
+
   '@react-native-firebase/app@24.0.0(expo@55.0.23)(react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
     dependencies:
       firebase: 12.10.0
@@ -9941,6 +9959,15 @@ snapshots:
       nullthrows: 1.1.1
       react: 19.2.0
       react-native: 0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
+    optionalDependencies:
+      '@types/react': 19.2.14
+
+  '@react-native/virtualized-lists@0.83.6(@types/react@19.2.14)(react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      invariant: 2.2.4
+      nullthrows: 1.1.1
+      react: 19.2.4
+      react-native: 0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4)
     optionalDependencies:
       '@types/react': 19.2.14
 
@@ -11789,8 +11816,8 @@ snapshots:
       '@next/eslint-plugin-next': 16.2.4
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0))
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react: 7.37.5(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react-hooks: 7.1.1(eslint@9.39.4(jiti@2.7.0))
@@ -11812,7 +11839,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0)):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3
@@ -11823,21 +11850,21 @@ snapshots:
       tinyglobby: 0.2.16
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0)):
+  eslint-module-utils@2.12.1(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0)):
+  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -11848,7 +11875,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.12.1(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
+      eslint-module-utils: 2.12.1(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
       hasown: 2.0.3
       is-core-module: 2.16.2
       is-glob: 4.0.3
@@ -12618,6 +12645,8 @@ snapshots:
       safer-buffer: 2.1.2
 
   idb@7.1.1: {}
+
+  idb@8.0.3: {}
 
   ignore@5.3.2: {}
 
@@ -13945,6 +13974,54 @@ snapshots:
       pretty-format: 29.7.0
       promise: 8.3.0
       react: 19.2.0
+      react-devtools-core: 6.1.5
+      react-refresh: 0.14.2
+      regenerator-runtime: 0.13.11
+      scheduler: 0.27.0
+      semver: 7.7.4
+      stacktrace-parser: 0.1.11
+      whatwg-fetch: 3.6.20
+      ws: 7.5.10
+      yargs: 17.7.2
+    optionalDependencies:
+      '@types/react': 19.2.14
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@react-native-community/cli'
+      - '@react-native/metro-config'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4):
+    dependencies:
+      '@jest/create-cache-key-function': 29.7.0
+      '@react-native/assets-registry': 0.83.6
+      '@react-native/codegen': 0.83.6(@babel/core@7.29.0)
+      '@react-native/community-cli-plugin': 0.83.6
+      '@react-native/gradle-plugin': 0.83.6
+      '@react-native/js-polyfills': 0.83.6
+      '@react-native/normalize-colors': 0.83.6
+      '@react-native/virtualized-lists': 0.83.6(@types/react@19.2.14)(react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+      abort-controller: 3.0.0
+      anser: 1.4.10
+      ansi-regex: 5.0.1
+      babel-jest: 29.7.0(@babel/core@7.29.0)
+      babel-plugin-syntax-hermes-parser: 0.32.0
+      base64-js: 1.5.1
+      commander: 12.1.0
+      flow-enums-runtime: 0.0.6
+      glob: 7.2.3
+      hermes-compiler: 0.14.1
+      invariant: 2.2.4
+      jest-environment-node: 29.7.0
+      memoize-one: 5.2.1
+      metro-runtime: 0.83.7
+      metro-source-map: 0.83.7
+      nullthrows: 1.1.1
+      pretty-format: 29.7.0
+      promise: 8.3.0
+      react: 19.2.4
       react-devtools-core: 6.1.5
       react-refresh: 0.14.2
       regenerator-runtime: 0.13.11

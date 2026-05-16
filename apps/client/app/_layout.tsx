@@ -84,7 +84,7 @@ export default function RootLayout() {
 
     const restoreAuth = async () => {
       try {
-        await Promise.resolve();
+        await useAuthStore.persist.rehydrate();
       } finally {
         if (isMounted) {
           setAuthReady(true);
