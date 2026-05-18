@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import type { SignUpWithTermsFormInput } from '@kakamu/schema';
-import type { RecaptchaVerifier } from 'firebase/auth';
 import { Platform } from 'react-native';
 import type { UseFormGetValues, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 

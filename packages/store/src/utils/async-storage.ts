@@ -3,7 +3,7 @@ import {
   createJSONStorage,
   type PersistStorage,
   type StateStorage,
-} from 'zustand/middleware';
+} from 'expo-zustand-persist';
 
 /**
  * Zustand `persist` middleware용 `StateStorage`.

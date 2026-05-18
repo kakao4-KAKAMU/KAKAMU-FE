@@ -1,6 +1,6 @@
 import type { AuthSnsSignUpProvider } from '@kakamu/types';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist } from 'expo-zustand-persist';
 import { createAsyncStorageJSONStorage } from '../utils/async-storage';
 
 type AuthSlice = {
@@ -11,8 +11,6 @@ type AuthSlice = {
   setPendingSnsSignUp: (provider: AuthSnsSignUpProvider, token: string) => void;
   clearPendingSnsSignUp: () => void;
 };
-
-type AuthPersistedState = Pick<AuthSlice, 'accessToken'>;
 
 export const useAuthStore = create<AuthSlice>()(
   persist(
@@ -28,8 +26,11 @@ export const useAuthStore = create<AuthSlice>()(
     }),
     {
       name: 'auth',
-      storage: createAsyncStorageJSONStorage<AuthPersistedState>(),
-      partialize: (state) => ({ accessToken: state.accessToken }),
-    },
+      storage: createAsyncStorageJSONStorage<AuthSlice>(),
+      partialize: (state) => ({
+        ...state,
+        accessToken: state.accessToken,
+      }),
+    }
   ),
 );
