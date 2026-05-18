@@ -33,9 +33,12 @@ export type SignUpSNS = User & SocialAuthLoginRequest
 
 export type SignIn = Email & Password;
 
+export type SignInSocial = SocialAuthLoginRequest;
+
 /** `POST /users/login/local` 응답 — 백엔드에서 내려주는 액세스 토큰 */
-export interface LoginLocalResponse {
+export interface LoginResponse {
   access_token: string;
+  refresh_token: string;
 }
 
 /** `POST /social-auth/login` 요청 본문 */

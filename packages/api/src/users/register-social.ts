@@ -1,4 +1,4 @@
-import type { LoginLocalResponse, SignUpSNS } from '@kakamu/types';
+import type { LoginResponse, SignUpSNS } from '@kakamu/types';
 
 import type { ApiClient } from '../client';
 
@@ -6,6 +6,6 @@ import type { ApiClient } from '../client';
 export async function postUserRegisterSocial(
   client: ApiClient,
   body: SignUpSNS,
-): Promise<LoginLocalResponse> {
+): Promise<LoginResponse> {
   return client.post('users/register/social', { json: body }).json();
 }
