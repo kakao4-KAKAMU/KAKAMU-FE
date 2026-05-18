@@ -84,6 +84,7 @@ export default function RootLayout() {
 
     const restoreAuth = async () => {
       try {
+        // @ts-ignore
         await useAuthStore.persist.rehydrate();
       } finally {
         if (isMounted) {
