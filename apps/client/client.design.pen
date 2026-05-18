@@ -3387,6 +3387,445 @@
     },
     {
       "type": "frame",
+      "id": "lyvHH",
+      "x": 1808,
+      "y": -468,
+      "name": "Page/계정 및 SNS 로그인",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$p:--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "id": "hcQey",
+          "type": "ref",
+          "ref": "WpI9p",
+          "name": "statusBar",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "Lgl3r",
+          "name": "content",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            0,
+            20,
+            24,
+            20
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "D3t3lU",
+              "name": "header",
+              "width": "fill_container",
+              "padding": [
+                4,
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ay7Uu",
+                  "name": "backBtn",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "$p:--secondary",
+                  "cornerRadius": 18,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "C3MgRH",
+                      "name": "backIcon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-left",
+                      "iconFontFamily": "lucide",
+                      "fill": "$p:--secondary-foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "iNsZ6",
+                  "name": "headerTitle",
+                  "fill": "$p:--foreground",
+                  "content": "계정 및 SNS 로그인",
+                  "lineHeight": 1.2,
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "v8Ckq",
+                  "name": "headerSpacer",
+                  "width": 32,
+                  "height": 32
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dTx0W",
+              "name": "accountSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OW8iI",
+                  "name": "accountLabel",
+                  "fill": "$p:--muted-foreground",
+                  "content": "로그인 계정",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "xZioG",
+                  "name": "accountList",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 10,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tCl0C",
+                      "name": "emailRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ecQ43",
+                          "name": "emailLabel",
+                          "fill": "$p:--foreground",
+                          "content": "이메일",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "CP4hU",
+                          "name": "emailValue",
+                          "fill": "$p:--muted-foreground",
+                          "content": "minji@kakamu.app",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Pq1Wp",
+                      "name": "pwRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "JMdlF",
+                          "name": "pwLabel",
+                          "fill": "$p:--foreground",
+                          "content": "비밀번호",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "zesHt",
+                          "name": "pwIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "chevron-right",
+                          "iconFontFamily": "lucide",
+                          "fill": "$p:--muted-foreground"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "n5zw1r",
+              "name": "snsSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vT1Fx",
+                  "name": "snsLabel",
+                  "fill": "$p:--muted-foreground",
+                  "content": "SNS 연동",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "XOGf7",
+                  "name": "snsList",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 10,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SOf0K",
+                      "name": "kakaoRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QhtSa",
+                          "name": "kakaoLeft",
+                          "gap": 10,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "lb2dK",
+                              "name": "kakaoIconWrap",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#FEE500",
+                              "cornerRadius": 16,
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "N2h4y",
+                                  "name": "kakaoIcon",
+                                  "width": 18,
+                                  "height": 18,
+                                  "iconFontName": "message-circle",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#3C1E1E"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "TkclJ",
+                              "name": "kakaoTextWrap",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "rM9MB",
+                                  "name": "kakaoName",
+                                  "fill": "$p:--foreground",
+                                  "content": "카카오",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "QGnuz",
+                                  "name": "kakaoMeta",
+                                  "fill": "$p:--muted-foreground",
+                                  "content": "연결됨 · minji_kakao",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "O9g9yU",
+                          "name": "kakaoBadge",
+                          "fill": "$p:--secondary",
+                          "cornerRadius": 16,
+                          "padding": [
+                            2,
+                            8
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "bBXC3",
+                              "name": "kakaoBadgeText",
+                              "fill": "$p:--secondary-foreground",
+                              "content": "연결됨",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OPect",
+                      "name": "googleRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "YDWL7",
+                          "name": "googleLeft",
+                          "gap": 10,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "SYOC0",
+                              "name": "googleIconWrap",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "$p:--secondary",
+                              "cornerRadius": 16,
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "svl1W",
+                                  "name": "googleIcon",
+                                  "width": 18,
+                                  "height": 18,
+                                  "iconFontName": "globe",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "$p:--muted-foreground"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "RbFWH",
+                              "name": "googleTextWrap",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "j04IVx",
+                                  "name": "googleName",
+                                  "fill": "$p:--foreground",
+                                  "content": "Google",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "J3OECz",
+                                  "name": "googleMeta",
+                                  "fill": "$p:--muted-foreground",
+                                  "content": "연결되지 않음",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "s5gX6l",
+                          "name": "googleAction",
+                          "fill": "$p:--foreground",
+                          "content": "연결하기",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "WGVMF",
+              "name": "helperNote",
+              "fill": "$p:--muted-foreground",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "SNS 계정을 연결하면 해당 서비스로도 로그인할 수 있습니다. 연결 해제는 각 제공사 설정에서 진행할 수 있습니다.",
+              "lineHeight": 1.4,
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
       "id": "Tsjkb",
       "x": 908,
       "y": -1350,
