@@ -21,7 +21,7 @@ import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 import { useKakaoLogin } from '@/lib/kakao-login';
 
 const DEFAULT_VALUES: SignInFormValues = {
-  email: '',
+  username: '',
   password: '',
   rememberMe: false,
 };
@@ -140,10 +140,10 @@ export default function SignInScreen() {
 
   const onValid = useCallback(
     (data: SignInWithRememberFormInput) => {
-      const { email, password } = data;
+      const { username, password } = data;
       setSubmitting(true);
       loginMutation.mutate(
-        { email: email.trim(), password: password.trim() }
+        { username: username.trim(), password: password.trim() }
       );
     },
     [loginMutation, openErrorAlert, setAccessToken, t]

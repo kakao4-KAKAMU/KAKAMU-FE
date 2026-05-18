@@ -42,7 +42,7 @@ export function SignInForm({
     <View className="gap-4">
       <Controller
         control={control}
-        name="email"
+        name="username"
         render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
           <View className="gap-2">
             <Label nativeID="signin-email-label" className="text-sm text-muted-foreground">

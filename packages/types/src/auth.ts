@@ -33,7 +33,7 @@ export type SignUpSNS = User &
     firebase_id_token: string;
   };
 
-export type SignIn = Email & Password;
+export type SignIn = { username: string } & Password;
 
 export type SignInSocial = SocialAuthLoginRequest;
 
