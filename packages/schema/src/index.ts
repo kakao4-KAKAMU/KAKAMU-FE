@@ -34,7 +34,7 @@ export {
   type ResetPasswordFormInput,
   type SignInFormInput,
   type SignInWithRememberFormInput,
-  type SignUpFormInput,
+  type PhoneValidationFormInput,
   type SignUpWithTermsFormInput,
   type SnsSignUpFormInput,
 } from './forms/auth';

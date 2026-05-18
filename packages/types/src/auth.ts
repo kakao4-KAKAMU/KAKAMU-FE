@@ -39,6 +39,7 @@ export type SignInSocial = SocialAuthLoginRequest;
 
 /** `POST /users/login/local` 응답 — 백엔드에서 내려주는 액세스 토큰 */
 export interface LoginResponse {
+  is_new_user: boolean;
   access_token: string;
   refresh_token: string;
 }

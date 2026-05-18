@@ -35,7 +35,12 @@ export default function SignInScreen() {
 
   const apiClient = useBackendApiClient();
   const socialAuthLoginMutation = useSocialAuthLoginMutation(apiClient, {
-    onSuccess: (res) => {
+    onSuccess: (res, variables) => {
+      if(res.is_new_user) {
+        setPendingSnsSignUp(variables.provider, variables.provided_token);
+        router.push('./signup-sns');
+        return;
+      }
       setAccessToken(res.access_token);
       setSubmitting(false);
     },

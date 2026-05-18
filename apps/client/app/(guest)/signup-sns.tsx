@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
-import type { SignUpWithTermsFormInput, SnsSignUpFormInput } from '@kakamu/schema';
+import type { SnsSignUpFormInput } from '@kakamu/schema';
 import { useRegisterSocialUserMutation } from '@kakamu/query';
 import { useAuthStore } from '@kakamu/store';
 import { Stack, useRouter } from 'expo-router';
 import { HTTPError } from 'ky';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import { useForm, type Control, type Resolver, type UseFormGetValues, type UseFormSetValue, type UseFormTrigger } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import {
   AuthHeader,
   SignUpPhoneVerificationForm,
@@ -81,9 +81,10 @@ export default function SignUpSnsScreen() {
   }, [step]);
 
   const phoneValidation = usePhoneValidation({
-    getValues: getValues as unknown as UseFormGetValues<SignUpWithTermsFormInput>,
-    setValue: setValue as unknown as UseFormSetValue<SignUpWithTermsFormInput>,
-    trigger: trigger as unknown as UseFormTrigger<SignUpWithTermsFormInput>,
+    getPhone: () => getValues('phone'),
+    setPhoneValid: (value) => setValue('phoneValid', value),
+    triggerPhone: () => trigger('phone'),
+    triggerPhoneStep: () => trigger(['phone', 'phoneValid']),
     phone,
     phoneValid,
     onPhoneChange: handlePhoneChange,
@@ -231,7 +232,7 @@ export default function SignUpSnsScreen() {
 
             {step === 1 ? (
               <SignUpPhoneVerificationForm
-                control={control as unknown as Control<SignUpWithTermsFormInput>}
+                control={control}
                 onSendSms={phoneValidation.sendSms}
                 onVerifyOtp={phoneValidation.verifyOtp}
                 onContinue={handleContinueToDetails}
@@ -242,6 +243,7 @@ export default function SignUpSnsScreen() {
                 otpError={phoneValidation.otpError}
                 continuing={isBusy}
                 canContinue={phoneValidation.phoneVerified}
+                recaptchaContainerId={SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID}
               />
             ) : (
               <SignUpSnsForm

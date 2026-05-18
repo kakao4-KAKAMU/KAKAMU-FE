@@ -22,16 +22,15 @@ import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 const DEFAULT_VALUES: SignUpFormValues = {
   username: '',
   phone: '',
+  phoneValid: false,
   nickname: '',
   email: '',
   password: '',
   passwordConfirm: '',
   agreedToTerms: false,
-  phoneValid: false,
 };
 
 type SignUpStep = 1 | 2;
-
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -61,11 +60,12 @@ export default function SignUpScreen() {
       setStep(1);
     }
   }, [step]);
-  
+
   const phoneValidation = usePhoneValidation({
-    getValues,
-    setValue,
-    trigger,
+    getPhone: () => getValues('phone'),
+    setPhoneValid: (value) => setValue('phoneValid', value),
+    triggerPhone: () => trigger('phone'),
+    triggerPhoneStep: () => trigger(['phone', 'phoneValid']),
     phone,
     phoneValid,
     onPhoneChange: handlePhoneChange,
@@ -81,7 +81,6 @@ export default function SignUpScreen() {
   const handleBackToPhone = useCallback(() => {
     setStep(1);
   }, []);
-
 
   const apiClient = useBackendApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
@@ -141,7 +140,7 @@ export default function SignUpScreen() {
 
   const onValid = useCallback(
     (data: SignUpWithTermsFormInput) => {
-      const { firebaseIdToken, firebaseUuid } = phoneValidation.getRegisterPhoneAuth();
+      const { firebaseIdToken } = phoneValidation.getRegisterPhoneAuth();
       if (!firebaseIdToken) {
         setError('root', { type: 'manual', message: t('guest.validation.token.required') });
         setStep(1);

@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
-import type { SignUpWithTermsFormInput } from '@kakamu/schema';
 import { Platform } from 'react-native';
-import type { UseFormGetValues, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 
 import {
   type FirebasePhoneDeps,
@@ -18,20 +16,16 @@ import { getFirebaseIdTokenFromPhoneCredential } from '@/lib/firebase-phone-id-t
 export const SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID = 'signup-phone-recaptcha';
 export const SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID = 'signup-sns-phone-recaptcha';
 
-export type PhoneVerificationFormFields = {
-  phone: string;
-  phoneValid: boolean;
-};
-
 export type PhoneRegisterAuth = {
   firebaseIdToken: string | null;
   firebaseUuid: string | null;
 };
 
 export type UsePhoneValidationOptions = {
-  getValues: UseFormGetValues<SignUpWithTermsFormInput>;
-  setValue: UseFormSetValue<SignUpWithTermsFormInput>;
-  trigger: UseFormTrigger<SignUpWithTermsFormInput>;
+  getPhone: () => string;
+  setPhoneValid: (value: boolean) => void;
+  triggerPhone: () => Promise<boolean>;
+  triggerPhoneStep: () => Promise<boolean>;
   phone: string;
   phoneValid: boolean;
   /** 휴대전화 번호 변경 시 (예: 회원가입 step 1 복귀) */
@@ -40,9 +34,10 @@ export type UsePhoneValidationOptions = {
 };
 
 export function usePhoneValidation({
-  getValues,
-  setValue,
-  trigger,
+  getPhone,
+  setPhoneValid,
+  triggerPhone,
+  triggerPhoneStep,
   phone,
   phoneValid,
   onPhoneChange,
@@ -64,29 +59,26 @@ export function usePhoneValidation({
   useEffect(() => {
     const tempApp: FirebasePhoneDeps = { app: undefined, appVerifier: undefined };
     if (Platform.OS === 'web') {
-      getFirebaseWebAppOrNull().then((app) => {
+      void getFirebaseWebAppOrNull().then((app) => {
         if (!app) {
-          throw new Error('[firebase] 웹 앱 초기화에 실패했습니다.');
+          return;
         }
         tempApp.app = app;
-
-        import('@/hooks/auth/featured/firebase/phoneAuthWeb').then(({ createWebPhoneRecaptchaVerifier }) => {
-          if(!tempApp.app) {
+        void import('@/hooks/auth/featured/firebase/phoneAuthWeb').then(({ createWebPhoneRecaptchaVerifier }) => {
+          if (!tempApp.app) {
             return;
           }
           tempApp.appVerifier = createWebPhoneRecaptchaVerifier(tempApp.app, recaptchaContainerId);
-          firebasePhoneDepsRef.current = tempApp
-        })
-      })
+          firebasePhoneDepsRef.current = tempApp;
+        });
+      });
     }
     return () => {
-      if (firebasePhoneDepsRef.current) {
-        if (Platform.OS === 'web') {
-          firebasePhoneDepsRef.current.appVerifier?.clear();
-        }
+      if (Platform.OS === 'web') {
+        firebasePhoneDepsRef.current?.appVerifier?.clear();
       }
-    }
-  }, [])
+    };
+  }, [recaptchaContainerId]);
 
   useEffect(() => {
     if (prevPhoneRef.current === phone) {
@@ -96,12 +88,12 @@ export function usePhoneValidation({
     confirmationRef.current = null;
     firebaseIdTokenRef.current = null;
     firebaseUuidRef.current = null;
-    setValue('phoneValid', false);
-    void trigger('phoneValid');
+    setPhoneValid(false);
+    void triggerPhoneStep();
     setSmsError(null);
     setOtpError(null);
     onPhoneChange?.();
-  }, [onPhoneChange, phone, setValue, trigger]);
+  }, [onPhoneChange, phone, setPhoneValid, triggerPhoneStep]);
 
   const getRegisterPhoneAuth = useCallback((): PhoneRegisterAuth => {
     return {
@@ -113,18 +105,21 @@ export function usePhoneValidation({
   const sendSms = useCallback(async () => {
     setSmsError(null);
     setOtpError(null);
-    const ok = await trigger('phone');
+    const ok = await triggerPhone();
     if (!ok) {
       return;
     }
-    const phoneE164 = getValues('phone').trim();
+    const phoneE164 = getPhone().trim();
     setSmsSending(true);
     try {
       await ensureFirebaseInitialized();
-      if (!firebasePhoneDepsRef.current) {
+      if (Platform.OS === 'web' && !firebasePhoneDepsRef.current) {
         throw new Error('[firebase] 웹 앱 초기화에 실패했습니다.');
       }
-      const confirmation = await sendPhoneSignInSms(phoneE164, firebasePhoneDepsRef.current);
+      const confirmation = await sendPhoneSignInSms(
+        phoneE164,
+        Platform.OS === 'web' ? firebasePhoneDepsRef.current! : undefined
+      );
       confirmationRef.current = confirmation;
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
@@ -135,7 +130,7 @@ export function usePhoneValidation({
     } finally {
       setSmsSending(false);
     }
-  }, [getValues, recaptchaContainerId, trigger, t]);
+  }, [getPhone, triggerPhone, t]);
 
   const verifyOtp = useCallback(
     async (otp: string) => {
@@ -152,8 +147,8 @@ export function usePhoneValidation({
 
         firebaseUuidRef.current = (credential as { user: { uid: string } }).user.uid ?? null;
         firebaseIdTokenRef.current = idToken;
-        setValue('phoneValid', true);
-        await trigger(['phone', 'phoneValid']);
+        setPhoneValid(true);
+        await triggerPhoneStep();
       } catch (e) {
         const message = e instanceof Error ? e.message : String(e);
         setOtpError(t('guest.form.signUp.otpError'));
@@ -164,13 +159,13 @@ export function usePhoneValidation({
         setOtpVerifying(false);
       }
     },
-    [setValue, trigger, t]
+    [setPhoneValid, triggerPhoneStep, t]
   );
 
   const validatePhoneStep = useCallback(async () => {
-    const ok = await trigger(['phone', 'phoneValid']);
+    const ok = await triggerPhoneStep();
     return ok && phoneValid === true;
-  }, [phoneValid, trigger]);
+  }, [phoneValid, triggerPhoneStep]);
 
   const isPhoneBusy = smsSending || otpVerifying;
 

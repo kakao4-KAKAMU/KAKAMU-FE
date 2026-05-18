@@ -97,41 +97,46 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     rememberMe: z.boolean(),
   });
 
+  const phoneValidation = z
+    .object({
+      phone,
+      phoneValid: z.boolean(),
+    })
+    .strict()
+  const phoneValidationRefine = (data: z.infer<typeof phoneValidation>, ctx: z.RefinementCtx) => {
+    if (data.phoneValid !== true) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: messages.phone.invalidPhone,
+        path: ['phoneValid'],
+      });
+    }
+  }
+
   const signUpBase = z
     .object({
       email,
       username,
-      phone,
       nickname,
       password,
       passwordConfirm: z.string(),
     })
     .strict();
 
-  const signUp = signUpBase.superRefine((data, ctx) =>
-    passwordConfirmRefine(messages.passwordConfirm, data, ctx)
-  );
-
   const signUpWithTerms = signUpBase
     .extend({
       agreedToTerms: z.boolean(),
-      phoneValid: z.boolean(),
     })
+    .merge(phoneValidation)
     .strict()
     .superRefine((data, ctx) => {
       passwordConfirmRefine(messages.passwordConfirm, data, ctx);
+      phoneValidationRefine(data, ctx);
       if (data.agreedToTerms !== true) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: messages.agreedToTerms.required,
           path: ['agreedToTerms'],
-        });
-      }
-      if (data.phoneValid !== true) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: messages.phone.invalidPhone,
-          path: ['phoneValid'],
         });
       }
     });
@@ -141,8 +146,6 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
       email,
       username,
       nickname,
-      phone,
-      phoneValid: z.boolean(),
       profile: z.preprocess(
         (val) => (val === '' || val === null || val === undefined ? undefined : val),
         z.string().max(AUTH_PROFILE_MAX_LENGTH, messages.profile.max).optional()
@@ -154,15 +157,8 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
       token: z.string().min(1, messages.token.required),
     })
     .strict()
-    .superRefine((data, ctx) => {
-      if (data.phoneValid !== true) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: messages.phone.invalidPhone,
-          path: ['phoneValid'],
-        });
-      }
-    });
+    .merge(phoneValidation)
+    .superRefine((data, ctx) => phoneValidationRefine(data, ctx));
 
   const findPassword = z
     .object({
@@ -181,7 +177,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
   return {
     signIn,
     signInWithRemember,
-    signUp,
+    phoneValidation,
     signUpWithTerms,
     snsSignUp,
     findPassword,
@@ -190,10 +186,9 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
 }
 
 export type AuthFormSchemas = ReturnType<typeof createAuthFormSchemas>;
-
+export type PhoneValidationFormInput = z.infer<AuthFormSchemas['phoneValidation']>;
 export type SignInFormInput = z.infer<AuthFormSchemas['signIn']>;
 export type SignInWithRememberFormInput = z.infer<AuthFormSchemas['signInWithRemember']>;
-export type SignUpFormInput = z.infer<AuthFormSchemas['signUp']>;
 export type SignUpWithTermsFormInput = z.infer<AuthFormSchemas['signUpWithTerms']>;
 export type SnsSignUpFormInput = z.infer<AuthFormSchemas['snsSignUp']>;
 export type FindPasswordFormInput = z.infer<AuthFormSchemas['findPassword']>;
