@@ -28,6 +28,8 @@ jobs:
 
         build-args: |
           env=dev
+          EXPO_PUBLIC_KAKAO_APP_KEY=${{ secrets.EXPO_PUBLIC_KAKAO_APP_KEY_DEV }}
+          EXPO_PUBLIC_KAKAO_JS_KEY=${{ secrets.EXPO_PUBLIC_KAKAO_JS_KEY_DEV }}
 
         push: true
         tags: |
