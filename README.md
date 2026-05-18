@@ -403,7 +403,7 @@ push → Turborepo affected 분석
 ## 5. 패키지 의존성 다이어그램
 
 ```
-apps/mobile ──┬──→ packages/ui
+apps/client ──┬──→ packages/ui
               ├──→ packages/api
               ├──→ packages/query
               ├──→ packages/store
