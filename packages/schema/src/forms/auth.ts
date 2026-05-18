@@ -88,7 +88,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
 
   const signIn = z
     .object({
-      username: email,
+      email,
       password: z.string().min(1, messages.password.required),
     })
     .strict();
