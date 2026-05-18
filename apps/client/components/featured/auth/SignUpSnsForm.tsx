@@ -9,6 +9,7 @@ export type SignUpSnsFormValues = SnsSignUpFormInput;
 type SignUpSnsFormProps = {
   control: Control<SignUpSnsFormValues>;
   onSubmit: () => void;
+  onBack?: () => void;
   submitting?: boolean;
   canSubmit?: boolean;
 };
@@ -16,6 +17,7 @@ type SignUpSnsFormProps = {
 export function SignUpSnsForm({
   control,
   onSubmit,
+  onBack,
   submitting = false,
   canSubmit = true,
 }: SignUpSnsFormProps) {
@@ -104,16 +106,30 @@ export function SignUpSnsForm({
         )}
       />
 
-      <Button
-        variant="default"
-        size="lg"
-        onPress={onSubmit}
-        disabled={submitting || !canSubmit}
-        accessibilityRole="button"
-        className="h-12 rounded-xl"
-      >
-        <Text className="text-base font-bold">{t('guest.form.signUpSns.submit')}</Text>
-      </Button>
+      <View className="flex-row gap-2">
+        {onBack ? (
+          <Button
+            variant="secondary"
+            size="lg"
+            onPress={onBack}
+            disabled={submitting}
+            accessibilityRole="button"
+            className="h-12 flex-1 rounded-xl"
+          >
+            <Text className="text-base font-bold">{t('guest.form.signUp.back')}</Text>
+          </Button>
+        ) : null}
+        <Button
+          variant="default"
+          size="lg"
+          onPress={onSubmit}
+          disabled={submitting || !canSubmit}
+          accessibilityRole="button"
+          className={`h-12 rounded-xl ${onBack ? 'flex-1' : ''}`}
+        >
+          <Text className="text-base font-bold">{t('guest.form.signUpSns.submit')}</Text>
+        </Button>
+      </View>
     </View>
   );
 }

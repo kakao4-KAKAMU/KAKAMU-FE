@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
-import type { SignUpWithTermsFormInput } from '@kakamu/schema';
+import type { PhoneValidationFormInput } from '@kakamu/schema';
 import { Platform, View } from 'react-native';
-import { Controller, type Control } from 'react-hook-form';
+import { Controller, type Control, type FieldValues, type Path } from 'react-hook-form';
 import { Button, Input, Label, Text } from '@kakamu/ui';
 import { SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID } from '@/hooks/auth';
 
-type SignUpPhoneVerificationFormProps = {
-  control: Control<SignUpWithTermsFormInput>;
+type SignUpPhoneVerificationFormProps<TFieldValues extends FieldValues & PhoneValidationFormInput> = {
+  control: Control<TFieldValues>;
   onSendSms: () => void | Promise<void>;
   onVerifyOtp: (otp: string) => void | Promise<void>;
   onContinue?: () => void;
@@ -18,9 +18,10 @@ type SignUpPhoneVerificationFormProps = {
   otpError?: string | null;
   continuing?: boolean;
   canContinue?: boolean;
+  recaptchaContainerId?: string
 };
 
-export function SignUpPhoneVerificationForm({
+export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & PhoneValidationFormInput>({
   control,
   onSendSms,
   onVerifyOtp,
@@ -32,7 +33,8 @@ export function SignUpPhoneVerificationForm({
   otpError = null,
   continuing = false,
   canContinue = false,
-}: SignUpPhoneVerificationFormProps) {
+  recaptchaContainerId = SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID,
+}: SignUpPhoneVerificationFormProps<TFieldValues>) {
   const { t } = useTranslation();
   const [otp, setOtp] = useState('');
 
@@ -49,7 +51,7 @@ export function SignUpPhoneVerificationForm({
     <View className="gap-4">
       <Controller
         control={control}
-        name="phone"
+        name={'phone' as Path<TFieldValues>}
         render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
           <View className="gap-2">
             <Label nativeID="signup-phone-label" className="text-sm text-muted-foreground">
@@ -79,8 +81,8 @@ export function SignUpPhoneVerificationForm({
                 <Text className="text-xs text-muted-foreground">{t('guest.form.signUp.webRecaptchaHint')}</Text>
                 <View
                   {...(Platform.OS === 'web'
-                    ? { id: SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID }
-                    : { nativeID: SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID })}
+                    ? { id: recaptchaContainerId }
+                    : { nativeID: recaptchaContainerId })}
                   className="h-px w-full overflow-hidden opacity-0"
                   accessibilityElementsHidden
                   importantForAccessibility="no-hide-descendants"
@@ -142,7 +144,7 @@ export function SignUpPhoneVerificationForm({
 
       <Controller
         control={control}
-        name="phoneValid"
+        name={'phoneValid' as Path<TFieldValues>}
         render={({ fieldState: { error } }) =>
           error?.message ? (
             <Text className="text-sm text-destructive">{error.message}</Text>

@@ -35,7 +35,12 @@ export default function SignInScreen() {
 
   const apiClient = useBackendApiClient();
   const socialAuthLoginMutation = useSocialAuthLoginMutation(apiClient, {
-    onSuccess: (res) => {
+    onSuccess: (res, variables) => {
+      if(res.is_new_user) {
+        setPendingSnsSignUp(variables.provider, variables.provided_token);
+        router.push('./signup-sns');
+        return;
+      }
       setAccessToken(res.access_token);
       setSubmitting(false);
     },
@@ -62,7 +67,7 @@ export default function SignInScreen() {
       }
 
       if (errorCode === 'SOCIAL_ACCOUNT_NOT_REGISTERED') {
-        setPendingSnsSignUp(variables.provider, variables.token);
+        setPendingSnsSignUp(variables.provider, variables.provided_token);
         router.push('./signup-sns');
         return;
       }
@@ -155,7 +160,7 @@ export default function SignInScreen() {
       .then((token) => {
         socialAuthLoginMutation.mutate({
           provider: 'kakao',
-          token: token.accessToken,
+          provided_token: token.accessToken,
         });
       })
       .catch((error) => {
