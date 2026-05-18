@@ -84,7 +84,7 @@ export default function RootLayout() {
 
     const restoreAuth = async () => {
       try {
-        await Promise.resolve();
+        await useAuthStore.persist.rehydrate();
       } finally {
         if (isMounted) {
           setAuthReady(true);
@@ -170,8 +170,7 @@ export default function RootLayout() {
                 >
                   <Stack.Screen name="(guest)" />
                   <Stack.Screen name="(account)" />
-                  <Stack.Screen name="profile/[id]" />
-                  <Stack.Screen name="feed/[id]" />
+                  <Stack.Screen name="(shared)" />
                 </Stack>
                 <PortalHost />
               </ErrorAlertDialogProvider>

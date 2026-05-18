@@ -1,13 +1,16 @@
 import { Platform } from 'react-native';
 
+import type { RecaptchaVerifier } from 'firebase/auth';
+import type { FirebaseApp } from 'firebase/app';
+
 /** Native / Web 공통 — `confirm(code)` 로 SMS 코드 제출 */
 export type PhoneSignInConfirmation = {
   confirm: (code: string) => Promise<unknown>;
 };
 
-type WebPhoneDeps = {
-  app: import('firebase/app').FirebaseApp;
-  appVerifier: import('firebase/auth').ApplicationVerifier;
+export type FirebasePhoneDeps = {
+  app?: FirebaseApp;
+  appVerifier?: RecaptchaVerifier;
 };
 
 /**
@@ -17,10 +20,10 @@ type WebPhoneDeps = {
  */
 export async function sendPhoneSignInSms(
   phoneE164: string,
-  web?: WebPhoneDeps
+  web?: FirebasePhoneDeps
 ): Promise<PhoneSignInConfirmation> {
   if (Platform.OS === 'web') {
-    if (!web) {
+    if (!web || !web.app || !web.appVerifier) {
       throw new Error(
         '[firebase] 웹 전화 인증은 FirebaseApp 과 Recaptcha ApplicationVerifier 가 필요합니다.'
       );
@@ -38,4 +41,21 @@ export async function confirmPhoneSignInCode(
   smsCode: string
 ): Promise<unknown> {
   return confirmation.confirm(smsCode.trim());
+}
+
+export async function firebaseSignOut(
+  web?: FirebasePhoneDeps
+): Promise<void> {
+  if (Platform.OS === 'web') {
+    if (!web || !web.app) {
+      throw new Error(
+        '[firebase] 웹 전화 인증은 FirebaseApp 과 Recaptcha ApplicationVerifier 가 필요합니다.'
+      );
+    }
+    const { firebaseSignOutWeb } = await import('./phoneAuthWeb');
+    return firebaseSignOutWeb(web.app);
+  } else {
+    const { firebaseSignOutNative } = await import('./phoneAuthNative');
+    return firebaseSignOutNative();
+  }
 }

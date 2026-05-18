@@ -21,7 +21,6 @@ const config = {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/google-services-dev.json" : "./firebase-config/google-services-prod.json"
     },
@@ -45,8 +44,18 @@ const config = {
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       [
+        "@react-native-seoul/kakao-login",
+        {
+          "kakaoAppKey": process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
+          "kotlinVersion": "2.2.0" // #392
+        }
+      ],
+      [
         "expo-build-properties",
         {
+          "android": {
+            "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]
+          },
           "ios": {
             "useFrameworks": "static",
             "forceStaticLinking": [
@@ -62,6 +71,12 @@ const config = {
     "experiments": {
       "baseUrl": process.env.EXPO_PUBLIC_HOST_PATH || "/",
       "typedRoutes": true
+    },
+    "owner": "cjhih4",
+    "extra": {
+      "eas": {
+        "projectId": "194e5a01-b828-4038-973c-72e32a224df2"
+      }
     }
   }
 }

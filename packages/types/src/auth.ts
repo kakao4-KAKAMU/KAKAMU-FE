@@ -29,12 +29,20 @@ export type RegisterUserRequest = Omit<User, 'profile'> & Password & {
   email: string
 };
 
-export interface SignUpSNS extends User {
-  snsType: AuthSnsSignUpProvider;
-  token: string;
-}
+export type SignUpSNS = User & SocialAuthLoginRequest
 
 export type SignIn = Email & Password;
+
+/** `POST /users/login/local` 응답 — 백엔드에서 내려주는 액세스 토큰 */
+export interface LoginLocalResponse {
+  access_token: string;
+}
+
+/** `POST /social-auth/login` 요청 본문 */
+export interface SocialAuthLoginRequest {
+  provider: AuthSnsSignUpProvider;
+  token: string;
+}
 
 export type FindPassword = Email;
 

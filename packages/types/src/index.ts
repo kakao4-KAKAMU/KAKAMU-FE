@@ -5,11 +5,13 @@ export type {
   AuthSnsSignUpProvider,
   Email,
   FindPassword,
+  LoginLocalResponse,
   Password,
   PasswordConfirm,
   RegisterUserRequest,
   ResetPassword,
   SignIn,
   SignUpSNS,
+  SocialAuthLoginRequest,
   User,
 } from './auth';
