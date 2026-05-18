@@ -14,20 +14,43 @@ export function useBackendApiClient(): ApiClient {
 
 
   const prefixUrl = raw?.replace(/\/$/, '') ?? '';
-  const client = useMemo(() => createApiClient(prefixUrl, {}), [prefixUrl]);
+  const client = useMemo(() => createApiClient(prefixUrl, {
+    retry: {
+      limit: 3,
+      statusCodes: [401]
+    }
+  }), [prefixUrl]);
 
   const kyInstance = useMemo(() => {
-
     return client.extend({
       hooks: {
+        beforeError: [
+          async (error: HTTPError) => {
+            const {response} = error
+            let body = { code: 'UNKNOWN_ERROR', message: 'UNKNOWN_ERROR' }
+            try {
+              const res = await response.json<{code: string, message: string}>()
+              body.code = res.code
+              body.message = res.message
+            } catch {
+              const res = error.message
+              body.message = res
+            }
+            error.message = JSON.stringify(body)
+            return error
+          }
+        ],
         beforeRequest: [
           async (request: Request) => {
             request.headers.set('Authorization', `Bearer ${accessToken}`);
           }
         ],
         beforeRetry: [
-          async ({ request }) => {
-            if (!refreshToken) return client.stop
+          async ({ request, error }) => {
+            const body = JSON.parse(error.message as string).message || { code: 'UNKNOWN_ERROR' }
+            if (body.code !== 'TOKEN_EXPIRED' || !refreshToken) {
+              return client.stop
+            }
             const tokens = await client.post('users/login/refresh', {
               json: {
                 refresh_token: refreshToken
