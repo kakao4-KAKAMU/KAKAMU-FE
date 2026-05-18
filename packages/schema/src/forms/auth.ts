@@ -141,6 +141,8 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
       email,
       username,
       nickname,
+      phone,
+      phoneValid: z.boolean(),
       profile: z.preprocess(
         (val) => (val === '' || val === null || val === undefined ? undefined : val),
         z.string().max(AUTH_PROFILE_MAX_LENGTH, messages.profile.max).optional()
@@ -151,7 +153,16 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
       }),
       token: z.string().min(1, messages.token.required),
     })
-    .strict();
+    .strict()
+    .superRefine((data, ctx) => {
+      if (data.phoneValid !== true) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: messages.phone.invalidPhone,
+          path: ['phoneValid'],
+        });
+      }
+    });
 
   const findPassword = z
     .object({

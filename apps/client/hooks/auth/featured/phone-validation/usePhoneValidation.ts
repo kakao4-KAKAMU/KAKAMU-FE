@@ -16,6 +16,12 @@ import { getFirebaseIdTokenFromPhoneCredential } from '@/lib/firebase-phone-id-t
 
 /** 웹 전화 인증용 DOM 컨테이너 id — `createWebPhoneRecaptchaVerifier` 와 동일해야 합니다 */
 export const SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID = 'signup-phone-recaptcha';
+export const SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID = 'signup-sns-phone-recaptcha';
+
+export type PhoneVerificationFormFields = {
+  phone: string;
+  phoneValid: boolean;
+};
 
 export type PhoneRegisterAuth = {
   firebaseIdToken: string | null;

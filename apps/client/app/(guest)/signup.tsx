@@ -152,7 +152,6 @@ export default function SignUpScreen() {
       registerMutation.mutate({
         username: data.username.trim(),
         nickname: data.nickname.trim(),
-        ci_value: firebaseUuid ?? '',
         firebase_id_token: firebaseIdToken,
         email: data.email.trim(),
         password: data.password,

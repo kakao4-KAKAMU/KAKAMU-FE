@@ -24,12 +24,14 @@ export interface PasswordConfirm extends Password {
 /** `POST /users/register` 요청 본문 — API 필드명과 동일 */
 export type RegisterUserRequest = Omit<User, 'profile'> & Password & {
   /** 본인인증 CI 등 — 미연동 시 빈 문자열은 백엔드 정책에 따름 */
-  ci_value: string;
   firebase_id_token: string;
   email: string
 };
 
-export type SignUpSNS = User & SocialAuthLoginRequest
+export type SignUpSNS = User &
+  SocialAuthLoginRequest & {
+    firebase_id_token: string;
+  };
 
 export type SignIn = Email & Password;
 
@@ -44,7 +46,7 @@ export interface LoginResponse {
 /** `POST /social-auth/login` 요청 본문 */
 export interface SocialAuthLoginRequest {
   provider: AuthSnsSignUpProvider;
-  token: string;
+  provided_token: string;
 }
 
 export type FindPassword = Email;

@@ -1,29 +1,39 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
-import type { SnsSignUpFormInput } from '@kakamu/schema';
+import type { SignUpWithTermsFormInput, SnsSignUpFormInput } from '@kakamu/schema';
 import { useRegisterSocialUserMutation } from '@kakamu/query';
 import { useAuthStore } from '@kakamu/store';
 import { Stack, useRouter } from 'expo-router';
 import { HTTPError } from 'ky';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import { useForm, type Resolver } from 'react-hook-form';
+import { useForm, type Control, type Resolver, type UseFormGetValues, type UseFormSetValue, type UseFormTrigger } from 'react-hook-form';
 import {
   AuthHeader,
+  SignUpPhoneVerificationForm,
   SignUpPrompt,
   SignUpSnsForm,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import {
+  SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID,
+  firebaseSignOut,
+  usePhoneValidation,
+} from '@/hooks/auth';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
 const DEFAULT_VALUES: SnsSignUpFormInput = {
   username: '',
   nickname: '',
   email: '',
+  phone: '',
+  phoneValid: false,
   snsType: 'kakao',
   token: '',
 };
+
+type SignUpSnsStep = 1 | 2;
 
 export default function SignUpSnsScreen() {
   const router = useRouter();
@@ -33,25 +43,26 @@ export default function SignUpSnsScreen() {
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const clearPendingSnsSignUp = useAuthStore((s) => s.clearPendingSnsSignUp);
 
-  useEffect(() => {
-    clearPendingSnsSignUp();
-  }, [])
-
   const authForms = useAuthFormValidationKit(t);
   const resolver = useMemo(
     () => zodResolver(authForms.snsSignUp) as Resolver<SnsSignUpFormInput>,
     [authForms.snsSignUp],
   );
 
-  const { control, handleSubmit, formState, setValue } = useForm<SnsSignUpFormInput>({
-    resolver,
-    defaultValues: DEFAULT_VALUES,
-    mode: 'onSubmit',
-    reValidateMode: 'onSubmit',
-  });
+  const { control, handleSubmit, formState, setValue, getValues, trigger, setError, clearErrors, watch } =
+    useForm<SnsSignUpFormInput>({
+      resolver,
+      defaultValues: DEFAULT_VALUES,
+      mode: 'onSubmit',
+      reValidateMode: 'onSubmit',
+    });
 
+  const [step, setStep] = useState<SignUpSnsStep>(1);
   const [submitting, setSubmitting] = useState(false);
   const [formReady, setFormReady] = useState(false);
+
+  const phone = watch('phone');
+  const phoneValid = watch('phoneValid');
 
   useEffect(() => {
     if (!pendingSnsProvider || !pendingSnsToken) {
@@ -62,6 +73,33 @@ export default function SignUpSnsScreen() {
     setValue('token', pendingSnsToken);
     setFormReady(true);
   }, [pendingSnsProvider, pendingSnsToken, router, setValue]);
+
+  const handlePhoneChange = useCallback(() => {
+    if (step === 2) {
+      setStep(1);
+    }
+  }, [step]);
+
+  const phoneValidation = usePhoneValidation({
+    getValues: getValues as unknown as UseFormGetValues<SignUpWithTermsFormInput>,
+    setValue: setValue as unknown as UseFormSetValue<SignUpWithTermsFormInput>,
+    trigger: trigger as unknown as UseFormTrigger<SignUpWithTermsFormInput>,
+    phone,
+    phoneValid,
+    onPhoneChange: handlePhoneChange,
+    recaptchaContainerId: SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID,
+  });
+
+  const handleContinueToDetails = useCallback(async () => {
+    const ok = await phoneValidation.validatePhoneStep();
+    if (ok) {
+      setStep(2);
+    }
+  }, [phoneValidation]);
+
+  const handleBackToPhone = useCallback(() => {
+    setStep(1);
+  }, []);
 
   const headerDescription = useMemo(() => {
     if (pendingSnsProvider === 'kakao') {
@@ -77,7 +115,11 @@ export default function SignUpSnsScreen() {
   const { open: openErrorAlert } = useErrorAlertDialog();
 
   const registerMutation = useRegisterSocialUserMutation(apiClient, {
+    onSettled: async () => {
+      await firebaseSignOut(phoneValidation.firebasePhoneDepsRef ?? undefined);
+    },
     onSuccess: (res) => {
+      clearPendingSnsSignUp();
       setAccessToken(res.access_token);
       setSubmitting(false);
     },
@@ -123,20 +165,37 @@ export default function SignUpSnsScreen() {
         router.replace('/signin');
         return;
       }
+      const { firebaseIdToken } = phoneValidation.getRegisterPhoneAuth();
+      if (!firebaseIdToken) {
+        setError('root', { type: 'manual', message: t('guest.validation.token.required') });
+        setStep(1);
+        return;
+      }
+      clearErrors('root');
       setSubmitting(true);
       registerMutation.mutate({
         username: data.username.trim(),
         nickname: data.nickname.trim(),
         email: data.email.trim(),
         provider: pendingSnsProvider,
-        token: pendingSnsToken,
+        provided_token: pendingSnsToken,
+        firebase_id_token: firebaseIdToken,
         ...(data.profile ? { profile: data.profile } : {}),
       });
     },
-    [pendingSnsProvider, pendingSnsToken, registerMutation, router],
+    [
+      clearErrors,
+      pendingSnsProvider,
+      pendingSnsToken,
+      phoneValidation,
+      registerMutation,
+      router,
+      setError,
+      t,
+    ],
   );
 
-  const handleNavigateSignIn = useCallback(() => {;
+  const handleNavigateSignIn = useCallback(() => {
     router.push('/signin');
   }, [router]);
 
@@ -144,7 +203,15 @@ export default function SignUpSnsScreen() {
     return null;
   }
 
-  const isBusy = submitting || registerMutation.isPending;
+  const isBusy = submitting || registerMutation.isPending || phoneValidation.isPhoneBusy;
+
+  const stepHeader =
+    step === 1
+      ? { title: t('guest.signUp.stepPhoneTitle'), description: t('guest.signUp.stepPhoneDescription') }
+      : {
+          title: t('guest.signUpSns.headerTitle'),
+          description: headerDescription,
+        };
 
   return (
     <>
@@ -160,17 +227,31 @@ export default function SignUpSnsScreen() {
           className="flex-1"
         >
           <View className="min-h-full grow justify-center px-6 py-8 gap-8">
-            <AuthHeader
-              title={t('guest.signUpSns.headerTitle')}
-              description={headerDescription}
-            />
+            <AuthHeader title={stepHeader.title} description={stepHeader.description} />
 
-            <SignUpSnsForm
-              control={control}
-              onSubmit={handleSubmit(onValid)}
-              submitting={isBusy}
-              canSubmit={formState.isValid && !registerMutation.isPending}
-            />
+            {step === 1 ? (
+              <SignUpPhoneVerificationForm
+                control={control as unknown as Control<SignUpWithTermsFormInput>}
+                onSendSms={phoneValidation.sendSms}
+                onVerifyOtp={phoneValidation.verifyOtp}
+                onContinue={handleContinueToDetails}
+                smsSending={phoneValidation.smsSending}
+                otpVerifying={phoneValidation.otpVerifying}
+                phoneVerified={phoneValidation.phoneVerified}
+                smsError={phoneValidation.smsError}
+                otpError={phoneValidation.otpError}
+                continuing={isBusy}
+                canContinue={phoneValidation.phoneVerified}
+              />
+            ) : (
+              <SignUpSnsForm
+                control={control}
+                onSubmit={handleSubmit(onValid)}
+                onBack={handleBackToPhone}
+                submitting={submitting || registerMutation.isPending}
+                canSubmit={formState.isValid && !registerMutation.isPending}
+              />
+            )}
 
             <SignUpPrompt variant="toSignIn" onPress={handleNavigateSignIn} />
           </View>
