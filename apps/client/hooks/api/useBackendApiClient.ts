@@ -21,7 +21,7 @@ export function useBackendApiClient(): ApiClient {
         beforeError: [
           async (error: HTTPError) => {
             if (error.response.status === 401) {
-              setAccessToken(null);
+              setAccessToken(null, null);
             }
             return error;
           }

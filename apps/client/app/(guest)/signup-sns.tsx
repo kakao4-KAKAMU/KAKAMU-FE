@@ -121,7 +121,7 @@ export default function SignUpSnsScreen() {
     },
     onSuccess: (res) => {
       clearPendingSnsSignUp();
-      setAccessToken(res.access_token);
+      setAccessToken(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
     onError: async (err) => {

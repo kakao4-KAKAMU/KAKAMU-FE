@@ -41,7 +41,7 @@ export default function SignInScreen() {
         router.push('./signup-sns');
         return;
       }
-      setAccessToken(res.access_token);
+      setAccessToken(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
     onError: async (err, variables) => {
@@ -78,7 +78,7 @@ export default function SignInScreen() {
 
   const loginMutation = useLoginUserMutation(apiClient, {
     onSuccess: (res) => {
-      setAccessToken(res.access_token);
+      setAccessToken(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
     onError: async (err) => {
