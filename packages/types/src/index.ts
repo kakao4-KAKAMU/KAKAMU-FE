@@ -4,6 +4,8 @@ export type Brand<T, B extends string> = T & { readonly __brand: B };
 export type { ApiErrorBody, ApiErrorCode } from './api-error';
 export { API_ERROR_CODES } from './api-error';
 
+export type { Persona } from './persona';
+
 export type {
   AuthSnsSignUpProvider,
   Email,
