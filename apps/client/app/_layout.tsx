@@ -10,6 +10,9 @@ import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
 import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
 import { useAuthStore } from '@kakamu/store';
+import { ApiClientProvider } from '@/providers/ApiClientProvider';
+import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
+import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -71,21 +74,25 @@ const queryClient = new QueryClient({
 
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
-  const [bootstrapReady, setBootstrapReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
   const isAuthenticated = !!accessToken;
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
-  const isAppReady = authReady && bootstrapReady;
 
   useEffect(() => {
     let isMounted = true;
 
     const restoreAuth = async () => {
       try {
-        // @ts-ignore
+        // @ts-expect-error expo-zustand-persist rehydrate
         await useAuthStore.persist.rehydrate();
+
+        const prefixUrl = getBackendApiPrefixUrl();
+        const accessToken = useAuthStore.getState().accessToken;
+        if (!accessToken && prefixUrl) {
+          await restoreSessionFromRefreshToken(prefixUrl);
+        }
       } finally {
         if (isMounted) {
           setAuthReady(true);
@@ -101,35 +108,15 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const runBootstrap = async () => {
-      try {
-        await Promise.resolve();
-      } finally {
-        if (isMounted) {
-          setBootstrapReady(true);
-        }
-      }
-    };
-
-    runBootstrap();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isAppReady) {
+    if (!authReady) {
       return;
     }
 
     SplashScreen.hideAsync();
-  }, [isAppReady]);
+  }, [authReady]);
 
   useEffect(() => {
-    if (!isAppReady) {
+    if (!authReady) {
       return;
     }
 
@@ -151,14 +138,15 @@ export default function RootLayout() {
       router.replace('/(guest)');
       return;
     }
-  }, [isAppReady, isAuthenticated, pathname, router, segments]);
+  }, [authReady, isAuthenticated, pathname, router, segments]);
 
-  if (!isAppReady) {
+  if (!authReady) {
     return null;
   }
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ApiClientProvider>
       <I18nextProvider i18n={getI18n()}>
         <ThemeSchemeProvider>
           <ThemeColorProvider>
@@ -179,6 +167,7 @@ export default function RootLayout() {
           </ThemeColorProvider>
         </ThemeSchemeProvider>
       </I18nextProvider>
+      </ApiClientProvider>
     </QueryClientProvider>
   );
 }

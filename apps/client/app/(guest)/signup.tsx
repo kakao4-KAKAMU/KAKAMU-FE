@@ -4,7 +4,6 @@ import { useTranslation } from '@kakamu/i18n';
 import type { SignUpWithTermsFormInput } from '@kakamu/schema';
 import { useRegisterUserMutation } from '@kakamu/query';
 import { Stack, useRouter } from 'expo-router';
-import { HTTPError } from 'ky';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
@@ -16,6 +15,7 @@ import {
   type SignUpFormValues,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { parseApiError } from '@/lib/auth/parse-api-error';
 import { firebaseSignOut, usePhoneValidation } from '@/hooks/auth';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
@@ -92,24 +92,11 @@ export default function SignUpScreen() {
       setSubmitting(false);
       router.replace('/signin');
     },
-    onError: async (err) => {
+    onError: (err) => {
       setSubmitting(false);
-      let message = t('guest.form.signUp.failedRequest.description');
+      const fallback = t('guest.form.signUp.failedRequest.description');
       let title = t('guest.form.signUp.failedRequest.title');
-      let errorCode: string | null = null;
-      if (err instanceof HTTPError) {
-        try {
-          const body = await err.response.json();
-          if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
-            message = body.message;
-            errorCode = body.code;
-          }
-        } catch {
-          message = err.message;
-        }
-      } else if (err instanceof Error) {
-        message = err.message;
-      }
+      let { message, code: errorCode } = parseApiError(err, fallback);
 
       switch (errorCode) {
         case 'REGISTRATION_FAILED':
