@@ -104,7 +104,7 @@ export function ThemeColorProvider({ children }: { children: React.ReactNode }) 
       <VariableContextProvider value={parsedTheme}>
         <ThemeProvider value={navigationTheme}>
           <TextClassContext.Provider value="text-foreground">
-            <View className="bg-background h-full w-full overflow-scroll">
+            <View className="bg-background h-full w-full overflow-scroll pt-safe">
               {children}
             </View>
           </TextClassContext.Provider>
