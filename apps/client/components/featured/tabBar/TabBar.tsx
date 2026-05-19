@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { TextClassContext } from "@kakamu/ui";
 import { StyledLinearGradient } from "../intro/StyledLinearGradient";
 import { useColors } from "@/components/themeColor";
+import { formatRgb, parse } from "culori";
 
 type TabBarProps = {
   children: React.ReactNode;
@@ -11,7 +12,14 @@ export function TabBar({ children }: TabBarProps) {
   const colors = useColors()
   const backgroundColor = colors['--background']
 
-  
+  const backgroundColorAlpha = parse(backgroundColor)
+
+  let backgroundColorAlphaString = 'rgb(0,0,0,0)'
+  if (backgroundColorAlpha) {
+    backgroundColorAlpha.alpha = 0
+    backgroundColorAlphaString = formatRgb(backgroundColorAlpha)
+  }
+
   return (
     <TextClassContext.Provider value="text-card-foreground">
       <View
@@ -22,7 +30,7 @@ export function TabBar({ children }: TabBarProps) {
           start={{ x: 0, y: 1 }}
           end={{ x: 0, y: 0 }}
           locations={[0, 1]}
-          colors={[backgroundColor, 'transparent']}
+          colors={[backgroundColor, backgroundColorAlphaString]}
           className="absolute -top-4 left-0 right-0 h-4"
         />
         <View className="bg-background absolute top-0 left-0 right-0 bottom-0" />
