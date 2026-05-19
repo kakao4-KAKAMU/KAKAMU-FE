@@ -4,9 +4,9 @@ import { persist } from 'expo-zustand-persist';
 import { createAsyncStorageJSONStorage } from '../utils/async-storage';
 
 type AuthSlice = {
+  /** 메모리 전용 — persist 대상 아님 */
   accessToken: string | null;
-  refreshToken: string | null;
-  setAccessToken: (accessToken: string | null, refreshToken: string | null) => void;
+  setAccessToken: (accessToken: string | null) => void;
   pendingSnsProvider: AuthSnsSignUpProvider | null;
   pendingSnsToken: string | null;
   setPendingSnsSignUp: (provider: AuthSnsSignUpProvider, token: string) => void;
@@ -17,8 +17,7 @@ export const useAuthStore = create<AuthSlice>()(
   persist(
     (set) => ({
       accessToken: null,
-      refreshToken: null,
-      setAccessToken: (accessToken, refreshToken) => set({ accessToken, refreshToken }),
+      setAccessToken: (accessToken) => set({ accessToken }),
       pendingSnsProvider: null,
       pendingSnsToken: null,
       setPendingSnsSignUp: (provider, token) =>
@@ -29,11 +28,11 @@ export const useAuthStore = create<AuthSlice>()(
     {
       name: 'auth',
       storage: createAsyncStorageJSONStorage<AuthSlice>(),
-      partialize: (state) => ({
-        ...state,
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
-      }),
-    }
+      partialize: (state) =>
+        ({
+          pendingSnsProvider: state.pendingSnsProvider,
+          pendingSnsToken: state.pendingSnsToken,
+        }) as AuthSlice,
+    },
   ),
 );
