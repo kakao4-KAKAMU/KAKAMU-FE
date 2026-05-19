@@ -11,6 +11,10 @@ type ErrorAlertDialogProps = {
   description: string;
 }
 
+type ErrorAlertDialogItem = ErrorAlertDialogProps & {
+  datetime: string;
+}
+
 
 export function ErrorAlertDialog({ title, description }: ErrorAlertDialogProps) {
   return (
@@ -36,9 +40,10 @@ export const useErrorAlertDialog = () => {
 }
 
 export const ErrorAlertDialogProvider = ({children}: {children: React.ReactNode}) => {
-  const [props, setProps] = useState<ErrorAlertDialogProps[]>([]);
+  const [props, setProps] = useState<ErrorAlertDialogItem[]>([]);
   const open = useCallback((props: ErrorAlertDialogProps) => {
-    setProps((prev) => [...prev, props]);
+    const datetime = new Date().toISOString();
+    setProps((prev) => [...prev, { ...props, datetime }]);
     setTimeout(() => {
       setProps((prev) => prev.slice(1));
     }, 2000);
@@ -48,9 +53,9 @@ export const ErrorAlertDialogProvider = ({children}: {children: React.ReactNode}
       {children}
       <Portal name="error-alert-dialog">
         <View className="absolute left-0 right-0 bottom-0 z-50 bg-transparent flex-col gap-2 pb-4 px-4">
-            {props.map((props) => (
-          <NativeOnlyAnimatedView key={props.title} entering={FadeInDown.duration(200)} exiting={FadeOutUp.duration(200)}>
-              <ErrorAlertDialog key={props.title} {...props} />
+          {props.map((props) => (
+            <NativeOnlyAnimatedView key={props.datetime} entering={FadeInDown.duration(200)} exiting={FadeOutUp.duration(200)}>
+              <ErrorAlertDialog {...props} />
             </NativeOnlyAnimatedView>
           ))}
         </View>
