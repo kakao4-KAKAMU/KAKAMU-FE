@@ -9,7 +9,7 @@ import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
 import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
-import { useAuthStore } from '@kakamu/store';
+import { useAuthStore, usePersonaStore } from '@kakamu/store';
 import { ApiClientProvider } from '@/providers/ApiClientProvider';
 import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
 import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
@@ -62,8 +62,20 @@ const ACCOUNT_ONLY_PREFIXES = [
 
 const GUEST_ONLY_PREFIXES = ['/signin', '/signup'];
 
+const ACCOUNT_TAB_PREFIXES = ['/search', '/chat', '/sonar', '/profile/my'];
+
 const startsWithPrefix = (pathname: string, prefixes: string[]) =>
   prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
+const isPersonaPath = (pathname: string) =>
+  pathname === '/persona' || pathname.startsWith('/persona/');
+
+const isAccountTabPath = (pathname: string) => {
+  if (pathname === '/') {
+    return true;
+  }
+  return startsWithPrefix(pathname, ACCOUNT_TAB_PREFIXES);
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,7 +87,9 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
+  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
   const isAuthenticated = !!accessToken;
+  const hasSelectedPersona = !!selectedPersonaId;
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
@@ -129,8 +143,19 @@ export default function RootLayout() {
 
     if (isAuthenticated && !isAccountRoute) {
       if (isGuestRoute || isGuestOnlyCommonRoute) {
-        router.replace('/persona');
+        router.replace(hasSelectedPersona ? '/' : '/persona');
       }
+      return;
+    }
+
+    if (
+      isAuthenticated &&
+      isAccountRoute &&
+      !hasSelectedPersona &&
+      !isPersonaPath(pathname) &&
+      isAccountTabPath(pathname)
+    ) {
+      router.replace('/persona');
       return;
     }
 
@@ -138,7 +163,7 @@ export default function RootLayout() {
       router.replace('/(guest)');
       return;
     }
-  }, [authReady, isAuthenticated, pathname, router, segments]);
+  }, [authReady, hasSelectedPersona, isAuthenticated, pathname, router, segments]);
 
   if (!authReady) {
     return null;
