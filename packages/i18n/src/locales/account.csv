@@ -1,0 +1,11 @@
+code,ko,en
+account.layout.persona,페르소나,Personas
+account.layout.personaCreate,페르소나 생성,Create persona
+account.persona.title,누구로 감상할까요?,Who are you watching as?
+account.persona.description,독립된 취향 데이터와 추천 알고리즘을 선택합니다.,Pick separate taste data and recommendation settings.
+account.persona.addNew,새 페르소나,New persona
+account.persona.manage,페르소나 관리,Manage personas
+account.persona.manageDone,완료,Done
+account.persona.deleteA11y,페르소나 삭제,Delete persona
+account.persona.selectA11y,{name} 페르소나 선택,Select {name} persona
+account.persona.create.placeholder,페르소나를 생성하는 페이지,Create a new persona
