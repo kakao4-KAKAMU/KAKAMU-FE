@@ -39,7 +39,7 @@ export function ProfileSubTabs({ isMy, userId }: ProfileSubTabsProps) {
           const isActive = activeTab === key;
           return (
             <Pressable
-              key={key}
+              key={`${key}-${isActive}`}
               accessibilityRole="tab"
               accessibilityState={{ selected: isActive }}
               onPress={() => onTabPress(key)}
