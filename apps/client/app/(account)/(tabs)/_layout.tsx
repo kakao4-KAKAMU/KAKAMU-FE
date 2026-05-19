@@ -18,7 +18,7 @@ export default function AccountTabsLayout() {
 
   return (
     <Tabs>
-      <TabSlot style={{ flex: 1 }}/>
+      <TabSlot style={{ flex: 1, paddingBottom: 84 }}/>
       <TabList asChild>
         <TabBar>
           <TabTrigger name="index" href="/" asChild>

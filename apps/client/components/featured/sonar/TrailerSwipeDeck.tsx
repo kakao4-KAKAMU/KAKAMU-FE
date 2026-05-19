@@ -1,6 +1,6 @@
 import { useTranslation } from '@kakamu/i18n';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { Platform, useWindowDimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets'
 import Animated, {
@@ -202,10 +202,10 @@ export function TrailerSwipeDeck({ initialItems, onVote }: TrailerSwipeDeckProps
     .sort((a, b) => b.stackIndex - a.stackIndex);
 
   return (
-    <View className="flex-1 flex-col pb-2">
-      <View className="flex-1 w-full justify-center px-5">
+    <View className="flex-1 flex-col pb-4 gap-4">
+      <View className="grow w-full justify-center px-5">
         <View
-          className="relative w-full min-h-[540px]"
+          className="relative w-full grow"
           onLayout={(e) => {
             widthSv.value = e.nativeEvent.layout.width;
           }}
@@ -230,19 +230,23 @@ export function TrailerSwipeDeck({ initialItems, onVote }: TrailerSwipeDeckProps
           )}
         </View>
       </View>
-      <View className="px-5">
-        <TrailerVoteButtons
-          disabled={blocking || queue.length === 0}
-          onDislike={() => {
-            if (blocking || queue.length === 0) return;
-            startFlyOut(-1);
-          }}
-          onLike={() => {
-            if (blocking || queue.length === 0) return;
-            startFlyOut(1);
-          }}
-        />
-      </View>
+      {
+        Platform.OS === 'web' ? (
+          <View className="px-5">
+            <TrailerVoteButtons
+              disabled={blocking || queue.length === 0}
+              onDislike={() => {
+                if (blocking || queue.length === 0) return;
+                startFlyOut(-1);
+              }}
+              onLike={() => {
+                if (blocking || queue.length === 0) return;
+                startFlyOut(1);
+              }}
+            />
+          </View>
+        ) : null
+      }
     </View>
   );
 }
