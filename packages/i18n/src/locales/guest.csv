@@ -136,6 +136,7 @@ guest.validation.phone.invalidPhone,SMS 인증을 완료해 주세요.,Please co
 guest.validation.password.required,비밀번호를 입력해 주세요.,Please enter your password.
 guest.validation.password.min,"비밀번호는 {{min}}자 이상이어야 합니다.",Password must be at least {{min}} characters.
 guest.validation.password.max,"비밀번호는 {{max}}자 이하여야 합니다.",Password must be at most {{max}} characters.
+guest.validation.password.pattern,비밀번호는 영문과 숫자를 모두 포함해야 합니다.,Password must include both letters and numbers.
 guest.validation.passwordConfirm.required,비밀번호 확인을 입력해 주세요.,Please confirm your password.
 guest.validation.passwordConfirm.mismatch,비밀번호가 일치하지 않습니다.,Passwords do not match.
 guest.validation.snsType.invalid,지원하지 않는 소셜 로그인 유형입니다.,This social sign-in type is not supported.

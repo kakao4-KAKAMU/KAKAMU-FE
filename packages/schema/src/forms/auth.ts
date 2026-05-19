@@ -5,6 +5,7 @@ import {
   AUTH_NICKNAME_MIN_LENGTH,
   AUTH_PASSWORD_MAX_LENGTH,
   AUTH_PASSWORD_MIN_LENGTH,
+  AUTH_PASSWORD_PATTERN,
   AUTH_PROFILE_MAX_LENGTH,
   AUTH_SNS_SIGN_UP_PROVIDERS,
   AUTH_USERNAME_MAX_LENGTH,
@@ -54,7 +55,8 @@ function passwordField(messages: AuthFormValidationMessages['password']) {
     .string()
     .min(1, messages.required)
     .min(AUTH_PASSWORD_MIN_LENGTH, messages.min)
-    .max(AUTH_PASSWORD_MAX_LENGTH, messages.max);
+    .max(AUTH_PASSWORD_MAX_LENGTH, messages.max)
+    .regex(AUTH_PASSWORD_PATTERN, messages.pattern);
 }
 
 function passwordConfirmRefine(
