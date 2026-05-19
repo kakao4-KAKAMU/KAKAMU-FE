@@ -1,6 +1,7 @@
 /**
  * Reads src/locales/*.csv (header: code,ko,en) and writes nested JSON for i18next.
  * Uses lodash `set` to turn dot-path codes into nested objects.
+ * Multiple CSV files are merged in alphabetical order; duplicate codes use the last occurrence.
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';

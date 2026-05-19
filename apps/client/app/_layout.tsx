@@ -1,6 +1,9 @@
+import 'react-native-gesture-handler';
+
 import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@kakamu/query';
@@ -170,30 +173,32 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ApiClientProvider>
-      <I18nextProvider i18n={getI18n()}>
-        <ThemeSchemeProvider>
-          <ThemeColorProvider>
-            <AppErrorBoundary>
-              <ErrorAlertDialogProvider>
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                  }}
-                >
-                  <Stack.Screen name="(guest)" />
-                  <Stack.Screen name="(account)" />
-                  <Stack.Screen name="(shared)" />
-                </Stack>
-                <PortalHost />
-              </ErrorAlertDialogProvider>
-            </AppErrorBoundary>
-          </ThemeColorProvider>
-        </ThemeSchemeProvider>
-      </I18nextProvider>
-      </ApiClientProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <ApiClientProvider>
+        <I18nextProvider i18n={getI18n()}>
+          <ThemeSchemeProvider>
+            <ThemeColorProvider>
+              <AppErrorBoundary>
+                <ErrorAlertDialogProvider>
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  >
+                    <Stack.Screen name="(guest)" />
+                    <Stack.Screen name="(account)" />
+                    <Stack.Screen name="(shared)" />
+                  </Stack>
+                  <PortalHost />
+                </ErrorAlertDialogProvider>
+              </AppErrorBoundary>
+            </ThemeColorProvider>
+          </ThemeSchemeProvider>
+        </I18nextProvider>
+        </ApiClientProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
 
