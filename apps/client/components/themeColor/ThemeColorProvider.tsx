@@ -1,7 +1,7 @@
 import { DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native';
 import { VariableContextProvider } from 'nativewind';
 import { useThemeScheme } from '../themeScheme';
-import { Platform, View } from 'react-native';
+import { Platform, ScrollView } from 'react-native';
 import { parse, formatRgb } from 'culori'
 import { ColorContext } from './ColorContext';
 import { TextClassContext} from '@kakamu/ui'
@@ -83,7 +83,7 @@ const THEME = {
   unspecified: LIGHT_THEME
 }
 
-export function ThemeColorProvider({ children }: { children: React.ReactNode }) {
+export function ThemeColorProvider({ children,  }: { children: React.ReactNode }) {
   const { colorScheme } = useThemeScheme()
   const choosenTheme = THEME[colorScheme]
   const parsedTheme = Object.fromEntries(Object.entries(choosenTheme).map(([key, value]) => [key, formatRgb(parse(value as string))])) as ThemeVariables
@@ -107,14 +107,16 @@ export function ThemeColorProvider({ children }: { children: React.ReactNode }) 
       <VariableContextProvider value={parsedTheme}>
         <ThemeProvider value={navigationTheme}>
           <TextClassContext.Provider value="text-foreground">
-            <View className="bg-background h-full w-full overflow-scroll" style={{
+            <ScrollView
+              contentContainerClassName="bg-background h-full w-full"
+              style={{
               paddingTop: safeAreaInsets.top,
               paddingBottom: paddingBottom,
               paddingLeft: safeAreaInsets.left,
               paddingRight: safeAreaInsets.right
             }}>
               {children}
-            </View>
+            </ScrollView>
           </TextClassContext.Provider>
         </ThemeProvider>
       </VariableContextProvider>
