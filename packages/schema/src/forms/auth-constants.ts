@@ -1,9 +1,9 @@
 import type { AuthSnsSignUpProvider } from '@kakamu/types';
 
-export const AUTH_USERNAME_MIN_LENGTH = 3;
+export const AUTH_USERNAME_MIN_LENGTH = 2;
 export const AUTH_USERNAME_MAX_LENGTH = 20;
 /** 영문, 숫자, 밑줄 */
-export const AUTH_USERNAME_PATTERN = /^[a-zA-Z0-9_]+$/;
+export const AUTH_USERNAME_PATTERN = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z| ]+$/;
 
 export const AUTH_NICKNAME_MIN_LENGTH = 2;
 export const AUTH_NICKNAME_MAX_LENGTH = 20;
