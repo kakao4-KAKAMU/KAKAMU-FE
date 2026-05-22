@@ -32,6 +32,7 @@ export interface AuthPasswordMessages {
   required: string;
   min: string;
   max: string;
+  pattern: string;
 }
 
 export interface AuthPasswordConfirmMessages {

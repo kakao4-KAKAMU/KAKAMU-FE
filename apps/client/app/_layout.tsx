@@ -1,6 +1,9 @@
+import 'react-native-gesture-handler';
+
 import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@kakamu/query';
@@ -9,7 +12,10 @@ import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
 import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
-import { useAuthStore } from '@kakamu/store';
+import { useAuthStore, usePersonaStore } from '@kakamu/store';
+import { ApiClientProvider } from '@/providers/ApiClientProvider';
+import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
+import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -59,8 +65,20 @@ const ACCOUNT_ONLY_PREFIXES = [
 
 const GUEST_ONLY_PREFIXES = ['/signin', '/signup'];
 
+const ACCOUNT_TAB_PREFIXES = ['/search', '/chat', '/sonar', '/profile/my'];
+
 const startsWithPrefix = (pathname: string, prefixes: string[]) =>
   prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
+const isPersonaPath = (pathname: string) =>
+  pathname === '/persona' || pathname.startsWith('/persona/');
+
+const isAccountTabPath = (pathname: string) => {
+  if (pathname === '/') {
+    return true;
+  }
+  return startsWithPrefix(pathname, ACCOUNT_TAB_PREFIXES);
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,21 +89,27 @@ const queryClient = new QueryClient({
 
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
-  const [bootstrapReady, setBootstrapReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
+  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
   const isAuthenticated = !!accessToken;
+  const hasSelectedPersona = !!selectedPersonaId;
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
-  const isAppReady = authReady && bootstrapReady;
 
   useEffect(() => {
     let isMounted = true;
 
     const restoreAuth = async () => {
       try {
-        // @ts-ignore
+        // @ts-expect-error expo-zustand-persist rehydrate
         await useAuthStore.persist.rehydrate();
+
+        const prefixUrl = getBackendApiPrefixUrl();
+        const accessToken = useAuthStore.getState().accessToken;
+        if (!accessToken && prefixUrl) {
+          await restoreSessionFromRefreshToken(prefixUrl);
+        }
       } finally {
         if (isMounted) {
           setAuthReady(true);
@@ -101,35 +125,15 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const runBootstrap = async () => {
-      try {
-        await Promise.resolve();
-      } finally {
-        if (isMounted) {
-          setBootstrapReady(true);
-        }
-      }
-    };
-
-    runBootstrap();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isAppReady) {
+    if (!authReady) {
       return;
     }
 
     SplashScreen.hideAsync();
-  }, [isAppReady]);
+  }, [authReady]);
 
   useEffect(() => {
-    if (!isAppReady) {
+    if (!authReady) {
       return;
     }
 
@@ -142,8 +146,19 @@ export default function RootLayout() {
 
     if (isAuthenticated && !isAccountRoute) {
       if (isGuestRoute || isGuestOnlyCommonRoute) {
-        router.replace('/persona');
+        router.replace(hasSelectedPersona ? '/' : '/persona');
       }
+      return;
+    }
+
+    if (
+      isAuthenticated &&
+      isAccountRoute &&
+      !hasSelectedPersona &&
+      !isPersonaPath(pathname) &&
+      isAccountTabPath(pathname)
+    ) {
+      router.replace('/persona');
       return;
     }
 
@@ -151,35 +166,39 @@ export default function RootLayout() {
       router.replace('/(guest)');
       return;
     }
-  }, [isAppReady, isAuthenticated, pathname, router, segments]);
+  }, [authReady, hasSelectedPersona, isAuthenticated, pathname, router, segments]);
 
-  if (!isAppReady) {
+  if (!authReady) {
     return null;
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nextProvider i18n={getI18n()}>
-        <ThemeSchemeProvider>
-          <ThemeColorProvider>
-            <AppErrorBoundary>
-              <ErrorAlertDialogProvider>
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                  }}
-                >
-                  <Stack.Screen name="(guest)" />
-                  <Stack.Screen name="(account)" />
-                  <Stack.Screen name="(shared)" />
-                </Stack>
-                <PortalHost />
-              </ErrorAlertDialogProvider>
-            </AppErrorBoundary>
-          </ThemeColorProvider>
-        </ThemeSchemeProvider>
-      </I18nextProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <ApiClientProvider>
+        <I18nextProvider i18n={getI18n()}>
+          <ThemeSchemeProvider>
+            <ThemeColorProvider>
+              <AppErrorBoundary>
+                <ErrorAlertDialogProvider>
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  >
+                    <Stack.Screen name="(guest)" />
+                    <Stack.Screen name="(account)" />
+                    <Stack.Screen name="(shared)" />
+                  </Stack>
+                  <PortalHost />
+                </ErrorAlertDialogProvider>
+              </AppErrorBoundary>
+            </ThemeColorProvider>
+          </ThemeSchemeProvider>
+        </I18nextProvider>
+        </ApiClientProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
 

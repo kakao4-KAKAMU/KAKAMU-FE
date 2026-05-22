@@ -1,10 +1,11 @@
 import { DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native';
 import { VariableContextProvider } from 'nativewind';
 import { useThemeScheme } from '../themeScheme';
-import { View } from 'react-native';
+import { ColorSchemeName, Platform, View } from 'react-native';
 import { parse, formatRgb } from 'culori'
 import { ColorContext } from './ColorContext';
-import { TextClassContext} from '@kakamu/ui'
+import { TextClassContext } from '@kakamu/ui'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ThemeVariables = Record<`--${string}`, string>
 
@@ -82,9 +83,15 @@ const THEME = {
   unspecified: LIGHT_THEME
 }
 
-export function ThemeColorProvider({ children }: { children: React.ReactNode }) {
+type ThemeColorProviderProps = {
+  children: React.ReactNode
+  colors?: Record<ColorSchemeName, ThemeVariables>,
+  values?: ThemeVariables
+}
+
+export function ThemeColorProvider({ children, colors }: ThemeColorProviderProps) {
   const { colorScheme } = useThemeScheme()
-  const choosenTheme = THEME[colorScheme]
+  const choosenTheme = Object.assign({}, THEME[colorScheme], colors?.[colorScheme] ?? {})
   const parsedTheme = Object.fromEntries(Object.entries(choosenTheme).map(([key, value]) => [key, formatRgb(parse(value as string))])) as ThemeVariables
 
   const navigationTheme: Theme = {
@@ -99,12 +106,21 @@ export function ThemeColorProvider({ children }: { children: React.ReactNode }) 
     },
   }
 
+  const safeAreaInsets = useSafeAreaInsets();
+  const paddingBottom = Platform.OS === 'android' ? safeAreaInsets.bottom : 0;
   return (
     <ColorContext.Provider value={parsedTheme}>
       <VariableContextProvider value={parsedTheme}>
         <ThemeProvider value={navigationTheme}>
           <TextClassContext.Provider value="text-foreground">
-            <View className="bg-background h-full w-full overflow-scroll">
+            <View
+              className="bg-background h-full w-full"
+              style={{
+                paddingTop: safeAreaInsets.top,
+                paddingBottom: paddingBottom,
+                paddingLeft: safeAreaInsets.left,
+                paddingRight: safeAreaInsets.right
+              }}>
               {children}
             </View>
           </TextClassContext.Provider>

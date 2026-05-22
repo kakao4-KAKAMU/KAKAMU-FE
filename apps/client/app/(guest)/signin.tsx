@@ -5,7 +5,6 @@ import { useLoginUserMutation, useSocialAuthLoginMutation } from '@kakamu/query'
 import type { SignInWithRememberFormInput } from '@kakamu/schema';
 import { useAuthStore } from '@kakamu/store';
 import { Stack, useRouter } from 'expo-router';
-import { HTTPError } from 'ky';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useErrorAlertDialog } from '@kakamu/ui';
@@ -17,6 +16,8 @@ import {
   type SignInFormValues,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { parseApiError } from '@/lib/auth/parse-api-error';
+import { setAuthTokens } from '@/lib/auth/set-auth-tokens';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 import { useKakaoLogin } from '@/lib/kakao-login';
 
@@ -29,7 +30,6 @@ const DEFAULT_VALUES: SignInFormValues = {
 export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setPendingSnsSignUp = useAuthStore((s) => s.setPendingSnsSignUp);
   const { open: openErrorAlert } = useErrorAlertDialog();
 
@@ -41,30 +41,14 @@ export default function SignInScreen() {
         router.push('./signup-sns');
         return;
       }
-      setAccessToken(res.access_token);
+      void setAuthTokens(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
-    onError: async (err, variables) => {
+    onError: (err, variables) => {
       setSubmitting(false);
-      let message = t('guest.form.signIn.failedRequest.description');
-      let title = t('guest.form.signIn.failedRequest.title');
-      let errorCode: string | null = null;
-      if (err instanceof HTTPError) {
-        try {
-          const body: unknown = await err.response.json();
-          if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
-            message = body.message;
-          }
-          if (body && typeof body === 'object' && 'code' in body) {
-            const c = (body as { code: unknown }).code;
-            errorCode = typeof c === 'string' ? c : null;
-          }
-        } catch {
-          message = err.message;
-        }
-      } else if (err instanceof Error) {
-        message = err.message;
-      }
+      const fallback = t('guest.form.signIn.failedRequest.description');
+      const title = t('guest.form.signIn.failedRequest.title');
+      const { message, code: errorCode } = parseApiError(err, fallback);
 
       if (errorCode === 'SOCIAL_ACCOUNT_NOT_REGISTERED') {
         setPendingSnsSignUp(variables.provider, variables.provided_token);
@@ -78,30 +62,14 @@ export default function SignInScreen() {
 
   const loginMutation = useLoginUserMutation(apiClient, {
     onSuccess: (res) => {
-      setAccessToken(res.access_token);
+      void setAuthTokens(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
-    onError: async (err) => {
+    onError: (err) => {
       setSubmitting(false);
-      let message = t('guest.form.signIn.failedRequest.description');
+      const fallback = t('guest.form.signIn.failedRequest.description');
       let title = t('guest.form.signIn.failedRequest.title');
-      let errorCode: string | null = null;
-      if (err instanceof HTTPError) {
-        try {
-          const body: unknown = await err.response.json();
-          if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
-            message = body.message;
-          }
-          if (body && typeof body === 'object' && 'code' in body) {
-            const c = (body as { code: unknown }).code;
-            errorCode = typeof c === 'string' ? c : null;
-          }
-        } catch {
-          message = err.message;
-        }
-      } else if (err instanceof Error) {
-        message = err.message;
-      }
+      let { message, code: errorCode } = parseApiError(err, fallback);
 
       switch (errorCode) {
         case 'INVALID_CREDENTIALS':
@@ -146,7 +114,7 @@ export default function SignInScreen() {
         { email: email.trim(), password: password.trim() }
       );
     },
-    [loginMutation, openErrorAlert, setAccessToken, t]
+    [loginMutation]
   );
 
   const handleForgotPassword = useCallback(() => {

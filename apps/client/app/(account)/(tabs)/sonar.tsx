@@ -1,14 +1,25 @@
-import { Stack } from 'expo-router';
-import { ScrollView } from 'react-native';
-import { Text } from '@kakamu/ui';
+import { useTranslation } from '@kakamu/i18n';
+import { Alert, View } from 'react-native';
+
+import {
+  SonarHeader,
+  SonarHint,
+  SONAR_MOCK_TRAILERS,
+  TrailerSwipeDeck,
+} from '@/components/featured/sonar';
 
 export default function SonarScreen() {
+  const { t } = useTranslation();
+
   return (
-    <>
-      <Stack.Screen options={{ title: '소나' }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 16 }}>
-        <Text selectable>영화 예고편 선호(좋아요/싫어요) 선택 페이지</Text>
-      </ScrollView>
-    </>
+    <View className="flex-1">
+      <SonarHeader
+        onInfoPress={() =>
+          Alert.alert(t('account.sonar.infoDialogTitle'), t('account.sonar.infoDialogMessage'))
+        }
+        />
+      <SonarHint />
+      <TrailerSwipeDeck initialItems={SONAR_MOCK_TRAILERS} />
+    </View>
   );
 }

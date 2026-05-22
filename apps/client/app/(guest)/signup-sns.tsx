@@ -5,7 +5,6 @@ import type { SnsSignUpFormInput } from '@kakamu/schema';
 import { useRegisterSocialUserMutation } from '@kakamu/query';
 import { useAuthStore } from '@kakamu/store';
 import { Stack, useRouter } from 'expo-router';
-import { HTTPError } from 'ky';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useForm, type Resolver } from 'react-hook-form';
@@ -16,6 +15,8 @@ import {
   SignUpSnsForm,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { parseApiError } from '@/lib/auth/parse-api-error';
+import { setAuthTokens } from '@/lib/auth/set-auth-tokens';
 import {
   SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID,
   firebaseSignOut,
@@ -40,7 +41,6 @@ export default function SignUpSnsScreen() {
   const { t } = useTranslation();
   const pendingSnsProvider = useAuthStore((s) => s.pendingSnsProvider);
   const pendingSnsToken = useAuthStore((s) => s.pendingSnsToken);
-  const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const clearPendingSnsSignUp = useAuthStore((s) => s.clearPendingSnsSignUp);
 
   const authForms = useAuthFormValidationKit(t);
@@ -121,27 +121,14 @@ export default function SignUpSnsScreen() {
     },
     onSuccess: (res) => {
       clearPendingSnsSignUp();
-      setAccessToken(res.access_token);
+      void setAuthTokens(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
-    onError: async (err) => {
+    onError: (err) => {
       setSubmitting(false);
-      let message = t('guest.form.signUpSns.failedRequest.description');
+      const fallback = t('guest.form.signUpSns.failedRequest.description');
       let title = t('guest.form.signUpSns.failedRequest.title');
-      let errorCode: string | null = null;
-      if (err instanceof HTTPError) {
-        try {
-          const body = await err.response.json();
-          if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
-            message = body.message;
-            errorCode = 'code' in body && typeof body.code === 'string' ? body.code : null;
-          }
-        } catch {
-          message = err.message;
-        }
-      } else if (err instanceof Error) {
-        message = err.message;
-      }
+      let { message, code: errorCode } = parseApiError(err, fallback);
 
       switch (errorCode) {
         case 'REGISTRATION_FAILED':

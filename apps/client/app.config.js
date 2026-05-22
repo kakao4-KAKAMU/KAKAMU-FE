@@ -13,7 +13,12 @@ const config = {
     "ios": {
       "bundleIdentifier": "com.kakamu.filma",
       "supportsTablet": true,
-      "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/GoogleService-Info-Dev.plist" : "./firebase-config/GoogleService-Info-Prod.plist"
+      "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/GoogleService-Info-Dev.plist" : "./firebase-config/GoogleService-Info-Prod.plist",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      },
     },
     "android": {
       "package": "com.kakamu.filma",
@@ -54,7 +59,8 @@ const config = {
         "expo-build-properties",
         {
           "android": {
-            "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]
+            "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"],
+            "usesCleartextTraffic": true
           },
           "ios": {
             "useFrameworks": "static",

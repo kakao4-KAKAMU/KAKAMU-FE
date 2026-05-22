@@ -41,6 +41,7 @@ export function buildAuthFormValidationMessages(t: TFunction): AuthFormValidatio
       required: t('guest.validation.password.required'),
       min: t('guest.validation.password.min', { min: AUTH_PASSWORD_MIN_LENGTH }),
       max: t('guest.validation.password.max', { max: AUTH_PASSWORD_MAX_LENGTH }),
+      pattern: t('guest.validation.password.pattern'),
     },
     passwordConfirm: {
       required: t('guest.validation.passwordConfirm.required'),

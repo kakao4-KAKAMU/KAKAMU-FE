@@ -358,9 +358,10 @@ API Layer (packages/api)
 ```
 
 ### 4-3. 인증 플로우
-- Access Token: 메모리 (Zustand auth store)
-- Refresh Token: SecureStore (mobile) / httpOnly Cookie (web)
-- ky `beforeError` 훅에서 401, 403 감지 → silent refresh → 원래 요청 재시도
+- Access Token: 메모리 (`@kakamu/store` Zustand, persist 제외)
+- Refresh Token: `expo-secure-store` (iOS/Android) / AsyncStorage (Expo web)
+- HTTP: `@kakamu/api` `createAuthenticatedApiClient` — `TOKEN_EXPIRED` 시 single-flight refresh 후 401 재시도
+- 앱 연동: `apps/client` `ApiClientProvider` + `TokenBridge` 주입
 
 ### 4-4. 실시간 처리 전략
 | 기능 | 방식 |

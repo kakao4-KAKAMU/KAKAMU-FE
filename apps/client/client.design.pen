@@ -2328,7 +2328,7 @@
     {
       "type": "frame",
       "id": "w0tfSg",
-      "x": 1770,
+      "x": 480,
       "y": 1380,
       "name": "Page/프로필",
       "clip": true,
@@ -2405,7 +2405,7 @@
         {
           "type": "frame",
           "id": "BisYY",
-          "name": "Content",
+          "name": "profileScroll",
           "clip": true,
           "width": "fill_container",
           "height": "fill_container",
@@ -2420,283 +2420,84 @@
           "children": [
             {
               "type": "frame",
-              "id": "rFOX0",
-              "name": "profileHeader",
+              "id": "v0614w",
+              "name": "profileHero",
               "width": "fill_container",
-              "padding": [
-                4,
-                16
-              ],
-              "justifyContent": "space_between",
-              "alignItems": "center",
+              "layout": "vertical",
+              "gap": 10,
               "children": [
                 {
-                  "type": "text",
-                  "id": "ZtdC1",
-                  "name": "Page Title",
-                  "fill": "$p:--foreground",
-                  "content": "프로필",
-                  "lineHeight": 1.2,
-                  "fontFamily": "Inter",
-                  "fontSize": 22,
-                  "fontWeight": "700"
-                },
-                {
                   "type": "frame",
-                  "id": "w5ZJU",
-                  "name": "Header Action",
-                  "width": 32,
-                  "height": 32,
-                  "fill": "$p:--secondary",
-                  "cornerRadius": 18,
-                  "layout": "vertical",
-                  "justifyContent": "center",
+                  "id": "rFOX0",
+                  "name": "profileHeader",
+                  "width": "fill_container",
+                  "padding": [
+                    4,
+                    16
+                  ],
+                  "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
-                      "id": "DXat3",
-                      "name": "pageActionIcon",
-                      "width": 18,
-                      "height": 18,
-                      "iconFontName": "settings",
-                      "iconFontFamily": "lucide",
-                      "fill": "$p:--secondary-foreground"
+                      "type": "text",
+                      "id": "ZtdC1",
+                      "name": "Page Title",
+                      "fill": "$p:--foreground",
+                      "content": "프로필",
+                      "lineHeight": 1.2,
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "w5ZJU",
+                      "name": "Header Action",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 18,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "DXat3",
+                          "name": "pageActionIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "settings",
+                          "iconFontFamily": "lucide",
+                          "fill": "$p:--secondary-foreground"
+                        }
+                      ]
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "cz9I7",
-              "name": "Profile Summary",
-              "width": "fill_container",
-              "fill": "$p:--card",
-              "cornerRadius": 14,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "$p:--border"
-              },
-              "layout": "vertical",
-              "gap": 10,
-              "padding": 16,
-              "alignItems": "center",
-              "children": [
+                },
                 {
                   "type": "frame",
-                  "id": "qpLas",
-                  "name": "profileAvatar",
-                  "width": 64,
-                  "height": 64,
-                  "fill": "$p:--muted",
-                  "cornerRadius": 9999,
+                  "id": "cz9I7",
+                  "name": "Profile Summary",
+                  "width": "fill_container",
+                  "fill": "$p:--card",
+                  "cornerRadius": 14,
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
                     "fill": "$p:--border"
                   },
                   "layout": "vertical",
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "path",
-                      "id": "zGNyW",
-                      "name": "Fallback SVG/Person",
-                      "geometry": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
-                      "viewBox": [
-                        0,
-                        0,
-                        24,
-                        24
-                      ],
-                      "fill": "$p:--muted-foreground",
-                      "width": 22,
-                      "height": 22
-                    }
-                  ]
-                },
-                {
-                  "type": "text",
-                  "id": "GJrBf",
-                  "name": "profileName",
-                  "fill": "$p:--foreground",
-                  "content": "Choe Cinema",
-                  "fontFamily": "Inter",
-                  "fontSize": 20,
-                  "fontWeight": "800"
-                },
-                {
-                  "type": "text",
-                  "id": "bzdHm",
-                  "name": "profileBio",
-                  "fill": "$p:--muted-foreground",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "페르소나 3개 · 작성 피드 42개 · 저장 영화 128개",
-                  "textAlign": "center",
-                  "fontFamily": "Inter",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "F3ilV",
-              "name": "profileStats",
-              "width": "fill_container",
-              "gap": 8,
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "gxSzb",
-                  "name": "statFeed",
-                  "width": "fill_container",
-                  "fill": "$p:--secondary",
-                  "cornerRadius": 10,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 10,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "e8vqD",
-                      "name": "statFeedNum",
-                      "fill": "$p:--secondary-foreground",
-                      "content": "42",
-                      "fontFamily": "Inter",
-                      "fontSize": 20,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Bhbpf",
-                      "name": "statFeedLabel",
-                      "fill": "$p:--muted-foreground",
-                      "content": "FEED",
-                      "fontFamily": "Inter",
-                      "fontSize": 10,
-                      "fontWeight": "700"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "PWnxM",
-                  "name": "statSave",
-                  "width": "fill_container",
-                  "fill": "$p:--secondary",
-                  "cornerRadius": 10,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 10,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Fr8si",
-                      "name": "statSaveNum",
-                      "fill": "$p:--secondary-foreground",
-                      "content": "128",
-                      "fontFamily": "Inter",
-                      "fontSize": 20,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "gxWZa",
-                      "name": "statSaveLabel",
-                      "fill": "$p:--muted-foreground",
-                      "content": "SAVE",
-                      "fontFamily": "Inter",
-                      "fontSize": 10,
-                      "fontWeight": "700"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "SC0H5",
-                  "name": "statPersona",
-                  "width": "fill_container",
-                  "fill": "$p:--secondary",
-                  "cornerRadius": 10,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 10,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "pfb9t",
-                      "name": "statPersonaNum",
-                      "fill": "$p:--secondary-foreground",
-                      "content": "3",
-                      "fontFamily": "Inter",
-                      "fontSize": 20,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "i9NfYz",
-                      "name": "statPersonaLabel",
-                      "fill": "$p:--muted-foreground",
-                      "content": "PERSONA",
-                      "fontFamily": "Inter",
-                      "fontSize": 10,
-                      "fontWeight": "700"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "wGhfe",
-              "name": "profileActivity",
-              "width": "fill_container",
-              "layout": "vertical",
-              "gap": 10,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "GUaBE",
-                  "name": "profileActivityTitle",
-                  "fill": "$p:--foreground",
-                  "content": "최근 활동",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "700"
-                },
-                {
-                  "type": "frame",
-                  "id": "hJHjV",
-                  "name": "profileDense",
-                  "width": "fill_container",
-                  "fill": "$p:--background",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": {
-                      "bottom": 1
-                    },
-                    "fill": "$p:--border"
-                  },
                   "gap": 10,
-                  "padding": [
-                    12,
-                    0
-                  ],
+                  "padding": 16,
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "frame",
-                      "id": "uiNR5",
-                      "name": "compactAvatar",
-                      "width": 36,
-                      "height": 36,
+                      "id": "qpLas",
+                      "name": "profileAvatar",
+                      "width": 64,
+                      "height": 64,
                       "fill": "$p:--muted",
                       "cornerRadius": 9999,
                       "stroke": {
@@ -2710,7 +2511,7 @@
                       "children": [
                         {
                           "type": "path",
-                          "id": "YdvCF",
+                          "id": "zGNyW",
                           "name": "Fallback SVG/Person",
                           "geometry": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
                           "viewBox": [
@@ -2726,245 +2527,199 @@
                       ]
                     },
                     {
-                      "type": "frame",
-                      "id": "sGROI",
-                      "name": "Post Body",
+                      "type": "text",
+                      "id": "GJrBf",
+                      "name": "profileName",
+                      "fill": "$p:--foreground",
+                      "content": "Choe Cinema",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bzdHm",
+                      "name": "profileBio",
+                      "fill": "$p:--muted-foreground",
+                      "textGrowth": "fixed-width",
                       "width": "fill_container",
+                      "content": "페르소나 3개 · 작성 피드 42개 · 저장 영화 128개",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "F3ilV",
+                  "name": "profileStats",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "gxSzb",
+                      "name": "statFeed",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
                       "layout": "vertical",
-                      "gap": 6,
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "frame",
-                          "id": "sD0Tr",
-                          "name": "compactMeta",
-                          "width": "fill_container",
-                          "gap": 4,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "Bp9Hz",
-                              "name": "Author",
-                              "fill": "$p:--foreground",
-                              "content": "Choe Cinema",
-                              "fontFamily": "Inter",
-                              "fontSize": 14,
-                              "fontWeight": "700"
-                            },
-                            {
-                              "type": "text",
-                              "id": "kTkpA",
-                              "name": "Handle",
-                              "fill": "$p:--muted-foreground",
-                              "content": "@choe · 최근 활동",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "e8vqD",
+                          "name": "statFeedNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "42",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
                         },
                         {
                           "type": "text",
-                          "id": "QdJvG",
-                          "name": "Post Text",
-                          "fill": "$p:--foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "오늘의 감정 기록: 조용하지만 오래 남는 엔딩.",
-                          "lineHeight": 1.42,
+                          "id": "Bhbpf",
+                          "name": "statFeedLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "FEED",
                           "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PWnxM",
+                      "name": "statSave",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Fr8si",
+                          "name": "statSaveNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "128",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
                         },
                         {
-                          "type": "frame",
-                          "id": "rOV1O",
-                          "name": "compactMovie",
-                          "width": "fill_container",
-                          "fill": "$p:--card",
-                          "cornerRadius": 8,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "$p:--border"
-                          },
-                          "gap": 12,
-                          "padding": 12,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "nVNAF",
-                              "name": "movieThumbC",
-                              "width": 60,
-                              "height": 45,
-                              "fill": "$p:--muted",
-                              "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "$p:--border"
-                              },
-                              "layout": "vertical",
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "path",
-                                  "id": "J2Pov",
-                                  "name": "Fallback SVG/Movie",
-                                  "geometry": "M3 5h18v14h-18v-14z m2 2v10h14v-10h-14z m2-4l2 4m4-4l2 4m4-4l2 4",
-                                  "viewBox": [
-                                    0,
-                                    0,
-                                    24,
-                                    24
-                                  ],
-                                  "width": 24,
-                                  "height": 24,
-                                  "stroke": {
-                                    "align": "center",
-                                    "thickness": 1.8,
-                                    "join": "round",
-                                    "cap": "round",
-                                    "fill": "$p:--muted-foreground"
-                                  }
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "QOBhK",
-                              "name": "Movie Info",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 3,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "e5L90d",
-                                  "name": "Title",
-                                  "fill": "$p:--foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "Past Lives",
-                                  "lineHeight": 1.35,
-                                  "fontFamily": "Inter",
-                                  "fontSize": 14,
-                                  "fontWeight": "600"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "R54esS",
-                                  "name": "Playtime",
-                                  "fill": "$p:--muted-foreground",
-                                  "content": "106 min",
-                                  "lineHeight": 1.3,
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
+                          "type": "text",
+                          "id": "gxWZa",
+                          "name": "statSaveLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "SAVE",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SC0H5",
+                      "name": "statPersona",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pfb9t",
+                          "name": "statPersonaNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "3",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
                         },
                         {
-                          "type": "frame",
-                          "id": "u1RKB",
-                          "name": "compactActions",
-                          "width": "fill_container",
-                          "padding": [
-                            2,
-                            0,
-                            0,
-                            0
-                          ],
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "P3xMQl",
-                              "name": "compactReply",
-                              "gap": 4,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "KpXYN",
-                                  "name": "compactReplyIcon",
-                                  "width": 15,
-                                  "height": 15,
-                                  "iconFontName": "message-circle",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "$p:--muted-foreground"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "qOqn3",
-                                  "name": "compactReplyText",
-                                  "fill": "$p:--muted-foreground",
-                                  "content": "3",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "W9Z6pu",
-                              "name": "compactLike",
-                              "gap": 4,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "BEwwj",
-                                  "name": "compactLikeIcon",
-                                  "width": 15,
-                                  "height": 15,
-                                  "iconFontName": "heart",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "$p:--muted-foreground"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "xs424",
-                                  "name": "compactLikeText",
-                                  "fill": "$p:--muted-foreground",
-                                  "content": "19",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "icon_font",
-                              "id": "StRtE",
-                              "name": "compactSave",
-                              "width": 15,
-                              "height": 15,
-                              "iconFontName": "bookmark",
-                              "iconFontFamily": "lucide",
-                              "fill": "$p:--muted-foreground"
-                            },
-                            {
-                              "type": "icon_font",
-                              "id": "d4k4V",
-                              "name": "compactMenu",
-                              "width": 15,
-                              "height": 15,
-                              "iconFontName": "ellipsis",
-                              "iconFontFamily": "lucide",
-                              "fill": "$p:--muted-foreground"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "i9NfYz",
+                          "name": "statPersonaLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "PERSONA",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
                         }
                       ]
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "id": "zZ2wD",
+              "type": "ref",
+              "ref": "EHAVF",
+              "name": "profileSubTabs",
+              "width": "fill_container"
+            },
+            {
+              "type": "frame",
+              "id": "mIk6R",
+              "name": "profileTabPanel",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "id": "z9D6W",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "width": "fill_container",
+                  "name": "pfPost1",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Choe Cinema"
+                    },
+                    "CJs4p": {
+                      "content": "@choe · 2h"
+                    },
+                    "J9ENsy": {
+                      "content": "오늘의 감정 기록: 조용하지만 오래 남는 엔딩."
+                    },
+                    "MupSW": {
+                      "content": "Past Lives"
+                    }
+                  }
+                },
+                {
+                  "id": "AbsJp",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "width": "fill_container",
+                  "name": "pfPost2",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Choe Cinema"
+                    },
+                    "CJs4p": {
+                      "content": "@choe · 어제"
+                    },
+                    "J9ENsy": {
+                      "content": "예고편은 짧았지만 장면의 온도가 좋았다. #LittleForest"
+                    },
+                    "MupSW": {
+                      "content": "Little Forest"
+                    }
+                  }
                 }
               ]
             }
@@ -2975,7 +2730,36 @@
           "type": "ref",
           "ref": "tYMLC",
           "x": 0,
-          "y": 749
+          "y": 530,
+          "width": "fill_container",
+          "descendants": {
+            "KvUqd": {
+              "fill": []
+            },
+            "YeDfu": {
+              "fill": "$p:--muted-foreground"
+            },
+            "rjF59": {
+              "fill": "$p:--muted-foreground"
+            },
+            "e54MC": {
+              "fill": "$p:--primary"
+            },
+            "hBmmF": {
+              "fill": "$p:--primary-foreground"
+            },
+            "WpEuE": {
+              "fill": "$p:--primary-foreground"
+            }
+          }
+        },
+        {
+          "type": "note",
+          "id": "i5OPD",
+          "name": "routeNote",
+          "width": 200,
+          "height": 60,
+          "content": "route: /profile/my"
         }
       ]
     },
@@ -3382,6 +3166,445 @@
           "ref": "tYMLC",
           "x": 0,
           "y": 749
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "lyvHH",
+      "x": 1808,
+      "y": -468,
+      "name": "Page/계정 및 SNS 로그인",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$p:--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "id": "hcQey",
+          "type": "ref",
+          "ref": "WpI9p",
+          "name": "statusBar",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "Lgl3r",
+          "name": "content",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            0,
+            20,
+            24,
+            20
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "D3t3lU",
+              "name": "header",
+              "width": "fill_container",
+              "padding": [
+                4,
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ay7Uu",
+                  "name": "backBtn",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "$p:--secondary",
+                  "cornerRadius": 18,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "C3MgRH",
+                      "name": "backIcon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-left",
+                      "iconFontFamily": "lucide",
+                      "fill": "$p:--secondary-foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "iNsZ6",
+                  "name": "headerTitle",
+                  "fill": "$p:--foreground",
+                  "content": "계정 및 SNS 로그인",
+                  "lineHeight": 1.2,
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "v8Ckq",
+                  "name": "headerSpacer",
+                  "width": 32,
+                  "height": 32
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dTx0W",
+              "name": "accountSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OW8iI",
+                  "name": "accountLabel",
+                  "fill": "$p:--muted-foreground",
+                  "content": "로그인 계정",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "xZioG",
+                  "name": "accountList",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 10,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tCl0C",
+                      "name": "emailRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ecQ43",
+                          "name": "emailLabel",
+                          "fill": "$p:--foreground",
+                          "content": "이메일",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "CP4hU",
+                          "name": "emailValue",
+                          "fill": "$p:--muted-foreground",
+                          "content": "minji@kakamu.app",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Pq1Wp",
+                      "name": "pwRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "JMdlF",
+                          "name": "pwLabel",
+                          "fill": "$p:--foreground",
+                          "content": "비밀번호",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "zesHt",
+                          "name": "pwIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "chevron-right",
+                          "iconFontFamily": "lucide",
+                          "fill": "$p:--muted-foreground"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "n5zw1r",
+              "name": "snsSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vT1Fx",
+                  "name": "snsLabel",
+                  "fill": "$p:--muted-foreground",
+                  "content": "SNS 연동",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "XOGf7",
+                  "name": "snsList",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 10,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SOf0K",
+                      "name": "kakaoRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QhtSa",
+                          "name": "kakaoLeft",
+                          "gap": 10,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "lb2dK",
+                              "name": "kakaoIconWrap",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#FEE500",
+                              "cornerRadius": 16,
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "N2h4y",
+                                  "name": "kakaoIcon",
+                                  "width": 18,
+                                  "height": 18,
+                                  "iconFontName": "message-circle",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#3C1E1E"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "TkclJ",
+                              "name": "kakaoTextWrap",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "rM9MB",
+                                  "name": "kakaoName",
+                                  "fill": "$p:--foreground",
+                                  "content": "카카오",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "QGnuz",
+                                  "name": "kakaoMeta",
+                                  "fill": "$p:--muted-foreground",
+                                  "content": "연결됨 · minji_kakao",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "O9g9yU",
+                          "name": "kakaoBadge",
+                          "fill": "$p:--secondary",
+                          "cornerRadius": 16,
+                          "padding": [
+                            2,
+                            8
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "bBXC3",
+                              "name": "kakaoBadgeText",
+                              "fill": "$p:--secondary-foreground",
+                              "content": "연결됨",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OPect",
+                      "name": "googleRow",
+                      "width": "fill_container",
+                      "fill": "$p:--card",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "padding": 16,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "YDWL7",
+                          "name": "googleLeft",
+                          "gap": 10,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "SYOC0",
+                              "name": "googleIconWrap",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "$p:--secondary",
+                              "cornerRadius": 16,
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "svl1W",
+                                  "name": "googleIcon",
+                                  "width": 18,
+                                  "height": 18,
+                                  "iconFontName": "globe",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "$p:--muted-foreground"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "RbFWH",
+                              "name": "googleTextWrap",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "j04IVx",
+                                  "name": "googleName",
+                                  "fill": "$p:--foreground",
+                                  "content": "Google",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "J3OECz",
+                                  "name": "googleMeta",
+                                  "fill": "$p:--muted-foreground",
+                                  "content": "연결되지 않음",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "s5gX6l",
+                          "name": "googleAction",
+                          "fill": "$p:--foreground",
+                          "content": "연결하기",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "WGVMF",
+              "name": "helperNote",
+              "fill": "$p:--muted-foreground",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "SNS 계정을 연결하면 해당 서비스로도 로그인할 수 있습니다. 연결 해제는 각 제공사 설정에서 진행할 수 있습니다.",
+              "lineHeight": 1.4,
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
         }
       ]
     },
@@ -9779,537 +10002,64 @@
                   ]
                 }
               ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "frame",
-      "id": "UK9av",
-      "x": 480,
-      "y": 1380,
-      "name": "Page/프로필-피드 목록",
-      "clip": true,
-      "width": 390,
-      "height": 844,
-      "fill": "$p:--background",
-      "layout": "vertical",
-      "children": [
-        {
-          "id": "fQjIA",
-          "type": "ref",
-          "ref": "WpI9p",
-          "width": "fill_container",
-          "name": "pfStatus"
-        },
-        {
-          "type": "frame",
-          "id": "fekAW",
-          "name": "Content",
-          "clip": true,
-          "width": "fill_container",
-          "height": "fill_container",
-          "layout": "vertical",
-          "gap": 10,
-          "padding": [
-            0,
-            16,
-            16,
-            16
-          ],
-          "children": [
-            {
-              "id": "P6feVi",
-              "type": "ref",
-              "ref": "a3gP8H",
-              "width": "fill_container",
-              "name": "pfHeader",
-              "descendants": {
-                "N4X9Ps": {
-                  "content": "내 피드"
-                },
-                "gDZFD": {
-                  "iconFontName": "plus"
-                }
-              }
             },
             {
               "type": "frame",
-              "id": "DJ8BT",
-              "name": "pfProfile",
-              "width": "fill_container",
+              "id": "EHAVF",
+              "name": "Mobile/Profile Sub Tabs",
+              "reusable": true,
+              "width": 358,
+              "height": 40,
+              "fill": "$p:--secondary",
+              "cornerRadius": 6,
               "stroke": {
                 "align": "inside",
-                "thickness": {
-                  "bottom": 1
-                },
+                "thickness": 1,
                 "fill": "$p:--border"
               },
-              "gap": 10,
-              "padding": [
-                10,
-                0
-              ],
+              "gap": 4,
+              "padding": 4,
               "alignItems": "center",
               "children": [
                 {
-                  "id": "yNG4G",
+                  "id": "I1WBxw",
                   "type": "ref",
-                  "ref": "Y1Q9t",
-                  "width": 42,
-                  "height": 42,
-                  "name": "pfAvatar"
-                },
-                {
-                  "type": "frame",
-                  "id": "gDCvg",
-                  "name": "pfProfileText",
+                  "ref": "p:coMmv",
+                  "name": "pstTabFeed",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 2,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "NAucv",
-                      "name": "pfName",
-                      "fill": "$p:--foreground",
-                      "content": "Choe Cinema",
-                      "fontFamily": "Inter",
-                      "fontSize": 15,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "GXiYi",
-                      "name": "pfMeta",
-                      "fill": "$p:--muted-foreground",
-                      "content": "작성 피드 42 · 댓글 120 · 저장 128",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "z9D6W",
-              "type": "ref",
-              "ref": "PXvWh",
-              "width": "fill_container",
-              "name": "pfPost1",
-              "descendants": {
-                "du6ju": {
-                  "content": "Choe Cinema"
-                },
-                "CJs4p": {
-                  "content": "@choe · 2h"
-                },
-                "J9ENsy": {
-                  "content": "오늘의 감정 기록: 조용하지만 오래 남는 엔딩."
-                },
-                "MupSW": {
-                  "content": "Past Lives"
-                }
-              }
-            },
-            {
-              "id": "AbsJp",
-              "type": "ref",
-              "ref": "PXvWh",
-              "width": "fill_container",
-              "name": "pfPost2",
-              "descendants": {
-                "du6ju": {
-                  "content": "Choe Cinema"
-                },
-                "CJs4p": {
-                  "content": "@choe · 어제"
-                },
-                "J9ENsy": {
-                  "content": "예고편은 짧았지만 장면의 온도가 좋았다. #LittleForest"
-                },
-                "MupSW": {
-                  "content": "Little Forest"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "id": "Z5Vjzk",
-          "type": "ref",
-          "ref": "tYMLC",
-          "width": "fill_container",
-          "name": "pfTab"
-        }
-      ]
-    },
-    {
-      "type": "frame",
-      "id": "J8P3R",
-      "x": 910,
-      "y": 1380,
-      "name": "Page/프로필-좋아요 목록",
-      "clip": true,
-      "width": 390,
-      "height": 844,
-      "fill": "$p:--background",
-      "layout": "vertical",
-      "children": [
-        {
-          "id": "InIS5",
-          "type": "ref",
-          "ref": "WpI9p",
-          "width": "fill_container",
-          "name": "plStatus"
-        },
-        {
-          "type": "frame",
-          "id": "DhWWf",
-          "name": "Content",
-          "clip": true,
-          "width": "fill_container",
-          "height": "fill_container",
-          "layout": "vertical",
-          "gap": 10,
-          "padding": [
-            0,
-            16,
-            16,
-            16
-          ],
-          "children": [
-            {
-              "id": "cZ34h",
-              "type": "ref",
-              "ref": "a3gP8H",
-              "width": "fill_container",
-              "name": "plHeader",
-              "descendants": {
-                "N4X9Ps": {
-                  "content": "좋아요"
-                },
-                "gDZFD": {
-                  "iconFontName": "heart"
-                }
-              }
-            },
-            {
-              "type": "frame",
-              "id": "Ot3Ro",
-              "name": "plSegment",
-              "width": "fill_container",
-              "gap": 6,
-              "children": [
-                {
-                  "id": "YoAl4",
-                  "type": "ref",
-                  "ref": "p:UjXug",
-                  "name": "plAll",
                   "descendants": {
-                    "p:zHpCv": {
-                      "content": "전체"
+                    "p:qYQHc": {
+                      "content": "피드"
                     }
                   }
                 },
                 {
-                  "id": "mV8qk",
+                  "id": "w4Fa3",
                   "type": "ref",
-                  "ref": "p:WuUMk",
-                  "name": "plMovie",
+                  "ref": "p:QY0Ka",
+                  "name": "pstTabLike",
+                  "width": "fill_container",
                   "descendants": {
-                    "p:zHpCv": {
-                      "content": "영화"
+                    "p:qYQHc": {
+                      "content": "좋아요"
                     }
                   }
                 },
                 {
-                  "id": "FtrQb",
+                  "id": "sBBHp",
                   "type": "ref",
-                  "ref": "p:WuUMk",
-                  "name": "plFeed",
+                  "ref": "p:QY0Ka",
+                  "name": "pstTabSave",
+                  "width": "fill_container",
                   "descendants": {
-                    "p:zHpCv": {
-                      "content": "Feed"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "id": "dQZuB",
-              "type": "ref",
-              "ref": "PXvWh",
-              "width": "fill_container",
-              "name": "likedPost1",
-              "descendants": {
-                "du6ju": {
-                  "content": "Seo Cine"
-                },
-                "CJs4p": {
-                  "content": "@seofilm · 좋아요함"
-                },
-                "J9ENsy": {
-                  "content": "엔딩 크레딧 이후에도 잔향이 긴 영화. 저장해둘 가치가 있어요."
-                },
-                "MupSW": {
-                  "content": "After Yang"
-                },
-                "n30bV": {
-                  "content": "204"
-                }
-              }
-            },
-            {
-              "id": "h9GN0",
-              "type": "ref",
-              "ref": "PXvWh",
-              "width": "fill_container",
-              "name": "likedPost2",
-              "descendants": {
-                "du6ju": {
-                  "content": "Movie Sommelier"
-                },
-                "CJs4p": {
-                  "content": "@taste_curator · 좋아요함"
-                },
-                "J9ENsy": {
-                  "content": "슬픔보다 더 오래 남는 온도. #LittleForest"
-                },
-                "MupSW": {
-                  "content": "Little Forest"
-                },
-                "n30bV": {
-                  "content": "88"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "id": "xxNET",
-          "type": "ref",
-          "ref": "tYMLC",
-          "width": "fill_container",
-          "name": "plTab"
-        }
-      ]
-    },
-    {
-      "type": "frame",
-      "id": "UMdSC",
-      "x": 1340,
-      "y": 1380,
-      "name": "Page/프로필-저장 목록 categorized",
-      "clip": true,
-      "width": 390,
-      "height": 844,
-      "fill": "$p:--background",
-      "layout": "vertical",
-      "children": [
-        {
-          "id": "jtsWl",
-          "type": "ref",
-          "ref": "WpI9p",
-          "width": "fill_container",
-          "name": "psStatus"
-        },
-        {
-          "type": "frame",
-          "id": "u6kbgM",
-          "name": "Content",
-          "clip": true,
-          "width": "fill_container",
-          "height": "fill_container",
-          "layout": "vertical",
-          "gap": 10,
-          "padding": [
-            0,
-            16,
-            16,
-            16
-          ],
-          "children": [
-            {
-              "id": "I2iLw0",
-              "type": "ref",
-              "ref": "a3gP8H",
-              "width": "fill_container",
-              "name": "psHeader",
-              "descendants": {
-                "N4X9Ps": {
-                  "content": "저장"
-                },
-                "gDZFD": {
-                  "iconFontName": "folder-plus"
-                }
-              }
-            },
-            {
-              "type": "frame",
-              "id": "dj9nu",
-              "name": "psCategoryRow",
-              "width": "fill_container",
-              "gap": 8,
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "kozof",
-                  "name": "psCat1",
-                  "width": "fill_container",
-                  "fill": "$p:--primary",
-                  "cornerRadius": 14,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "j9tll",
-                      "name": "psCat1Title",
-                      "fill": "$p:--primary-foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "보고 싶은 영화",
-                      "fontFamily": "Inter",
-                      "fontSize": 13,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "T3OUk",
-                      "name": "psCat1Meta",
-                      "opacity": 0.72,
-                      "fill": "$p:--primary-foreground",
-                      "content": "32 items",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "bipDT",
-                  "name": "psCat2",
-                  "width": "fill_container",
-                  "fill": "$p:--secondary",
-                  "cornerRadius": 14,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Sf4I3",
-                      "name": "psCat2Title",
-                      "fill": "$p:--secondary-foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "인생 영화",
-                      "fontFamily": "Inter",
-                      "fontSize": 13,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "WFjE6",
-                      "name": "psCat2Meta",
-                      "fill": "$p:--muted-foreground",
-                      "content": "14 items",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "g0imU",
-                  "name": "psCat3",
-                  "width": "fill_container",
-                  "fill": "$p:--secondary",
-                  "cornerRadius": 14,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "d3ssc8",
-                      "name": "psCat3Title",
-                      "fill": "$p:--secondary-foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "리뷰 참고",
-                      "fontFamily": "Inter",
-                      "fontSize": 13,
-                      "fontWeight": "800"
-                    },
-                    {
-                      "type": "text",
-                      "id": "GCGoW",
-                      "name": "psCat3Meta",
-                      "fill": "$p:--muted-foreground",
-                      "content": "21 items",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "u2Fcy",
-              "name": "psSavedList",
-              "width": "fill_container",
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {
-                  "id": "QjHPj",
-                  "type": "ref",
-                  "ref": "xERJx",
-                  "width": "fill_container",
-                  "name": "psSaved1",
-                  "descendants": {
-                    "SOIft": {
-                      "content": "Past Lives"
-                    },
-                    "fbgFi": {
-                      "content": "보고 싶은 영화 · 106 min"
-                    }
-                  }
-                },
-                {
-                  "id": "hDnLS",
-                  "type": "ref",
-                  "ref": "xERJx",
-                  "width": "fill_container",
-                  "name": "psSaved2",
-                  "descendants": {
-                    "SOIft": {
-                      "content": "Dune: Part Two"
-                    },
-                    "fbgFi": {
-                      "content": "리뷰 참고 · 166 min"
+                    "p:qYQHc": {
+                      "content": "저장"
                     }
                   }
                 }
               ]
             }
           ]
-        },
-        {
-          "id": "AM6io",
-          "type": "ref",
-          "ref": "tYMLC",
-          "width": "fill_container",
-          "name": "psTab"
         }
       ]
     },
@@ -11037,6 +10787,1323 @@
               "fontWeight": "normal"
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "htcWL",
+      "x": 910,
+      "y": 1380,
+      "name": "Page/프로필-좋아요",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$p:--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "E45bw",
+          "name": "profileStatus",
+          "width": "fill_container",
+          "height": 62,
+          "fill": "$p:--background",
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "h8NCU",
+              "name": "statusTime",
+              "fill": "$p:--foreground",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "nozkS",
+              "name": "Status Icons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "otstv",
+                  "name": "signalIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "JpTKq",
+                  "name": "wifiIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "vXukF",
+                  "name": "batteryIcon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "battery",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "zcqAn",
+          "name": "profileScroll",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [
+            0,
+            16,
+            16,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "wE5Ec",
+              "name": "profileHero",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "YX6S0",
+                  "name": "profileHeader",
+                  "width": "fill_container",
+                  "padding": [
+                    4,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ZotFa",
+                      "name": "Page Title",
+                      "fill": "$p:--foreground",
+                      "content": "프로필",
+                      "lineHeight": 1.2,
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ECrHW",
+                      "name": "Header Action",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 18,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "B7kFvs",
+                          "name": "pageActionIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "settings",
+                          "iconFontFamily": "lucide",
+                          "fill": "$p:--secondary-foreground"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "XSB5D",
+                  "name": "Profile Summary",
+                  "width": "fill_container",
+                  "fill": "$p:--card",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$p:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 10,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CBPfp",
+                      "name": "profileAvatar",
+                      "width": 64,
+                      "height": 64,
+                      "fill": "$p:--muted",
+                      "cornerRadius": 9999,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "path",
+                          "id": "kdeNa",
+                          "name": "Fallback SVG/Person",
+                          "geometry": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
+                          "viewBox": [
+                            0,
+                            0,
+                            24,
+                            24
+                          ],
+                          "fill": "$p:--muted-foreground",
+                          "width": 22,
+                          "height": 22
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "s3uGgE",
+                      "name": "profileName",
+                      "fill": "$p:--foreground",
+                      "content": "Choe Cinema",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "C2TwAv",
+                      "name": "profileBio",
+                      "fill": "$p:--muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "페르소나 3개 · 작성 피드 42개 · 저장 영화 128개",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "jAG8U",
+                  "name": "profileStats",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "DO6ti",
+                      "name": "statFeed",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j4Xm4",
+                          "name": "statFeedNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "42",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cvCTG",
+                          "name": "statFeedLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "FEED",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lxsEu",
+                      "name": "statSave",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "UlmFS",
+                          "name": "statSaveNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "128",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "A3LHP",
+                          "name": "statSaveLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "SAVE",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "WHDTA",
+                      "name": "statPersona",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Sb9U2",
+                          "name": "statPersonaNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "3",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DIFGr",
+                          "name": "statPersonaLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "PERSONA",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "X4VhMI",
+              "type": "ref",
+              "ref": "EHAVF",
+              "name": "profileSubTabs",
+              "width": "fill_container",
+              "descendants": {
+                "I1WBxw": {
+                  "effect": [],
+                  "fill": []
+                },
+                "I1WBxw/p:qYQHc": {
+                  "fill": "$p:--muted-foreground"
+                },
+                "w4Fa3": {
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000d",
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "blur": 1.75
+                  },
+                  "fill": "$p:--background"
+                },
+                "w4Fa3/p:qYQHc": {
+                  "fill": "$p:--foreground"
+                },
+                "sBBHp": {
+                  "effect": [],
+                  "fill": []
+                },
+                "sBBHp/p:qYQHc": {
+                  "fill": "$p:--muted-foreground"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "WoGzH",
+              "name": "profileTabPanel",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cX9QG",
+                  "name": "plSegment",
+                  "width": "fill_container",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "id": "E4M4FL",
+                      "type": "ref",
+                      "ref": "p:UjXug",
+                      "descendants": {
+                        "p:zHpCv": {
+                          "content": "전체"
+                        }
+                      }
+                    },
+                    {
+                      "id": "cgIN0",
+                      "type": "ref",
+                      "ref": "p:WuUMk",
+                      "descendants": {
+                        "p:zHpCv": {
+                          "content": "영화"
+                        }
+                      }
+                    },
+                    {
+                      "id": "X8hNGJ",
+                      "type": "ref",
+                      "ref": "p:WuUMk",
+                      "descendants": {
+                        "p:zHpCv": {
+                          "content": "Feed"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "WonmI",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "name": "likedPost1",
+                  "width": "fill_container",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Seo Cine"
+                    },
+                    "CJs4p": {
+                      "content": "@seofilm · 좋아요함"
+                    },
+                    "J9ENsy": {
+                      "content": "엔딩 크레딧 이후에도 잔향이 긴 영화. 저장해둘 가치가 있어요."
+                    },
+                    "MupSW": {
+                      "content": "After Yang"
+                    },
+                    "n30bV": {
+                      "content": "204"
+                    }
+                  }
+                },
+                {
+                  "id": "i1YFM0",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "name": "likedPost2",
+                  "width": "fill_container",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Movie Sommelier"
+                    },
+                    "CJs4p": {
+                      "content": "@taste_curator · 좋아요함"
+                    },
+                    "J9ENsy": {
+                      "content": "슬픔보다 더 오래 남는 온도. #LittleForest"
+                    },
+                    "MupSW": {
+                      "content": "Little Forest"
+                    },
+                    "n30bV": {
+                      "content": "88"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q7lEB",
+          "type": "ref",
+          "ref": "tYMLC",
+          "x": 0,
+          "y": 530,
+          "width": "fill_container",
+          "descendants": {
+            "KvUqd": {
+              "fill": []
+            },
+            "YeDfu": {
+              "fill": "$p:--muted-foreground"
+            },
+            "rjF59": {
+              "fill": "$p:--muted-foreground"
+            },
+            "e54MC": {
+              "fill": "$p:--primary"
+            },
+            "hBmmF": {
+              "fill": "$p:--primary-foreground"
+            },
+            "WpEuE": {
+              "fill": "$p:--primary-foreground"
+            }
+          }
+        },
+        {
+          "type": "note",
+          "id": "CqqQY",
+          "name": "routeNote",
+          "width": 200,
+          "height": 60,
+          "content": "route: /profile/my/like"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "nK7yj",
+      "x": 1340,
+      "y": 1380,
+      "name": "Page/프로필-저장",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$p:--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "H3NFth",
+          "name": "profileStatus",
+          "width": "fill_container",
+          "height": 62,
+          "fill": "$p:--background",
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "ejUJ6",
+              "name": "statusTime",
+              "fill": "$p:--foreground",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "T09y4",
+              "name": "Status Icons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "O7RPz",
+                  "name": "signalIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "C3pMf",
+                  "name": "wifiIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "BKLa4",
+                  "name": "batteryIcon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "battery",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sHJjt",
+          "name": "profileScroll",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [
+            0,
+            16,
+            16,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "nyzqx",
+              "name": "profileHero",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xU5TQ",
+                  "name": "profileHeader",
+                  "width": "fill_container",
+                  "padding": [
+                    4,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fykcq",
+                      "name": "Page Title",
+                      "fill": "$p:--foreground",
+                      "content": "프로필",
+                      "lineHeight": 1.2,
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mFWRo",
+                      "name": "Header Action",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 18,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "m2tD4E",
+                          "name": "pageActionIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "settings",
+                          "iconFontFamily": "lucide",
+                          "fill": "$p:--secondary-foreground"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Xz3aB",
+                  "name": "Profile Summary",
+                  "width": "fill_container",
+                  "fill": "$p:--card",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$p:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 10,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "A9AiBz",
+                      "name": "profileAvatar",
+                      "width": 64,
+                      "height": 64,
+                      "fill": "$p:--muted",
+                      "cornerRadius": 9999,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$p:--border"
+                      },
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "path",
+                          "id": "sPzxK",
+                          "name": "Fallback SVG/Person",
+                          "geometry": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
+                          "viewBox": [
+                            0,
+                            0,
+                            24,
+                            24
+                          ],
+                          "fill": "$p:--muted-foreground",
+                          "width": 22,
+                          "height": 22
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "YBJGw",
+                      "name": "profileName",
+                      "fill": "$p:--foreground",
+                      "content": "Choe Cinema",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jcAi7",
+                      "name": "profileBio",
+                      "fill": "$p:--muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "페르소나 3개 · 작성 피드 42개 · 저장 영화 128개",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "l2gX5",
+                  "name": "profileStats",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Lj7W5",
+                      "name": "statFeed",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Id6Ir",
+                          "name": "statFeedNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "42",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "vTKRB",
+                          "name": "statFeedLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "FEED",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "R8e3y",
+                      "name": "statSave",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "s5T9J5",
+                          "name": "statSaveNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "128",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DRbPr",
+                          "name": "statSaveLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "SAVE",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "RHKg1",
+                      "name": "statPersona",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 10,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kRezy",
+                          "name": "statPersonaNum",
+                          "fill": "$p:--secondary-foreground",
+                          "content": "3",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Pu8N8",
+                          "name": "statPersonaLabel",
+                          "fill": "$p:--muted-foreground",
+                          "content": "PERSONA",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "sFY4A",
+              "type": "ref",
+              "ref": "EHAVF",
+              "name": "profileSubTabs",
+              "width": "fill_container",
+              "descendants": {
+                "I1WBxw": {
+                  "effect": [],
+                  "fill": []
+                },
+                "I1WBxw/p:qYQHc": {
+                  "fill": "$p:--muted-foreground"
+                },
+                "w4Fa3": {
+                  "effect": [],
+                  "fill": []
+                },
+                "w4Fa3/p:qYQHc": {
+                  "fill": "$p:--muted-foreground"
+                },
+                "sBBHp": {
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000d",
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "blur": 1.75
+                  },
+                  "fill": "$p:--background"
+                },
+                "sBBHp/p:qYQHc": {
+                  "fill": "$p:--foreground"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "osOUi",
+              "name": "profileTabPanel",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Fn3h5",
+                  "name": "psCategoryRow",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OdLKn",
+                      "name": "psCat1",
+                      "width": "fill_container",
+                      "fill": "$p:--primary",
+                      "cornerRadius": 14,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 12,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "IloMV",
+                          "fill": "$p:--primary-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "보고 싶은 영화",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mYQf6",
+                          "opacity": 0.72,
+                          "fill": "$p:--primary-foreground",
+                          "content": "32 items",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "l9TDYf",
+                      "name": "psCat2",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 14,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 12,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "T9aPGh",
+                          "fill": "$p:--secondary-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "인생 영화",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "QDLDw",
+                          "fill": "$p:--muted-foreground",
+                          "content": "14 items",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "IoxAm",
+                      "name": "psCat3",
+                      "width": "fill_container",
+                      "fill": "$p:--secondary",
+                      "cornerRadius": 14,
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": 12,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "X3Lehr",
+                          "fill": "$p:--secondary-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "리뷰 참고",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Rdr76",
+                          "fill": "$p:--muted-foreground",
+                          "content": "21 items",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "I0fW0v",
+                  "name": "psSavedList",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "id": "YjRfW",
+                      "type": "ref",
+                      "ref": "xERJx",
+                      "name": "psSaved1",
+                      "width": "fill_container",
+                      "descendants": {
+                        "SOIft": {
+                          "content": "Past Lives"
+                        },
+                        "fbgFi": {
+                          "content": "보고 싶은 영화 · 106 min"
+                        }
+                      }
+                    },
+                    {
+                      "id": "raPaW",
+                      "type": "ref",
+                      "ref": "xERJx",
+                      "name": "psSaved2",
+                      "width": "fill_container",
+                      "descendants": {
+                        "SOIft": {
+                          "content": "Dune: Part Two"
+                        },
+                        "fbgFi": {
+                          "content": "리뷰 참고 · 166 min"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "f0575",
+          "type": "ref",
+          "ref": "tYMLC",
+          "x": 0,
+          "y": 530,
+          "width": "fill_container",
+          "descendants": {
+            "KvUqd": {
+              "fill": []
+            },
+            "YeDfu": {
+              "fill": "$p:--muted-foreground"
+            },
+            "rjF59": {
+              "fill": "$p:--muted-foreground"
+            },
+            "e54MC": {
+              "fill": "$p:--primary"
+            },
+            "hBmmF": {
+              "fill": "$p:--primary-foreground"
+            },
+            "WpEuE": {
+              "fill": "$p:--primary-foreground"
+            }
+          }
+        },
+        {
+          "type": "note",
+          "id": "Xiut2",
+          "name": "routeNote",
+          "width": 200,
+          "height": 60,
+          "content": "route: /profile/my/saved"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "bEhRI",
+      "x": 1770,
+      "y": 1380,
+      "name": "Page/프로필 (스크롤·탭 고정)",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$p:--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "DgxkA",
+          "name": "profileStatus",
+          "width": "fill_container",
+          "height": 62,
+          "fill": "$p:--background",
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "dzqO2",
+              "name": "statusTime",
+              "fill": "$p:--foreground",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "ZzZy0",
+              "name": "Status Icons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "x20IS",
+                  "name": "signalIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "wTBpw",
+                  "name": "wifiIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "Mk8xu",
+                  "name": "batteryIcon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "battery",
+                  "iconFontFamily": "lucide",
+                  "fill": "$p:--foreground"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Gk0cf",
+          "type": "ref",
+          "ref": "EHAVF",
+          "name": "profileSubTabs",
+          "width": "fill_container",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$p:--border"
+          },
+          "fill": "$p:--background",
+          "padding": [
+            0,
+            16
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "NzRtr",
+          "name": "profileScroll",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [
+            8,
+            16,
+            16,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "JTyWN",
+              "name": "profileTabPanel",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "id": "hGvlF",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "width": "fill_container",
+                  "name": "pfPost1",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Choe Cinema"
+                    },
+                    "CJs4p": {
+                      "content": "@choe · 2h"
+                    },
+                    "J9ENsy": {
+                      "content": "오늘의 감정 기록: 조용하지만 오래 남는 엔딩."
+                    },
+                    "MupSW": {
+                      "content": "Past Lives"
+                    }
+                  }
+                },
+                {
+                  "id": "njkCx",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "width": "fill_container",
+                  "name": "pfPost2",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Choe Cinema"
+                    },
+                    "CJs4p": {
+                      "content": "@choe · 어제"
+                    },
+                    "J9ENsy": {
+                      "content": "예고편은 짧았지만 장면의 온도가 좋았다. #LittleForest"
+                    },
+                    "MupSW": {
+                      "content": "Little Forest"
+                    }
+                  }
+                },
+                {
+                  "id": "O47po",
+                  "type": "ref",
+                  "ref": "PXvWh",
+                  "name": "pfPost3",
+                  "width": "fill_container",
+                  "descendants": {
+                    "du6ju": {
+                      "content": "Choe Cinema"
+                    },
+                    "CJs4p": {
+                      "content": "@choe · 3일 전"
+                    },
+                    "J9ENsy": {
+                      "content": "다시 보고 싶은 장면이 많은 작품. #PastLives"
+                    },
+                    "MupSW": {
+                      "content": "Past Lives"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ziaXK",
+          "type": "ref",
+          "ref": "tYMLC",
+          "x": 0,
+          "y": 530,
+          "width": "fill_container",
+          "descendants": {
+            "KvUqd": {
+              "fill": []
+            },
+            "YeDfu": {
+              "fill": "$p:--muted-foreground"
+            },
+            "rjF59": {
+              "fill": "$p:--muted-foreground"
+            },
+            "e54MC": {
+              "fill": "$p:--primary"
+            },
+            "hBmmF": {
+              "fill": "$p:--primary-foreground"
+            },
+            "WpEuE": {
+              "fill": "$p:--primary-foreground"
+            }
+          }
+        },
+        {
+          "type": "note",
+          "id": "T8w3Tv",
+          "name": "routeNote",
+          "width": 200,
+          "height": 60,
+          "content": "behavior: scroll 시 profileSubTabs 상단 고정\nroute: /profile/my"
         }
       ]
     }

@@ -25,8 +25,8 @@ function Switch({
             web: 'pointer-events-none block ring-0',
           }),
           props.checked
-            ? 'dark:bg-primary-foreground translate-x-3.5'
-            : 'dark:bg-foreground translate-x-0'
+            ? 'dark:bg-primary-foreground translate-x-5.5'
+            : 'dark:bg-foreground translate-x-1'
         )}
       />
     </SwitchPrimitives.Root>

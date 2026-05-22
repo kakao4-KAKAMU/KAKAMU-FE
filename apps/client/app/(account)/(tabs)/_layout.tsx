@@ -1,12 +1,24 @@
+import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 import { Tabs, TabList, TabSlot, TabTrigger } from 'expo-router/ui';
 import { Clapperboard, House, MessageCircle, Search, User } from 'lucide-react-native';
+import { usePersonaStore } from '@kakamu/store';
 
 import { TabBar, TabButton } from '@/components/featured/tabBar';
 
 export default function AccountTabsLayout() {
+  const router = useRouter();
+  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
+
+  useEffect(() => {
+    if (!selectedPersonaId) {
+      router.replace('/persona');
+    }
+  }, [router, selectedPersonaId]);
+
   return (
     <Tabs>
-      <TabSlot />
+      <TabSlot style={{ flex: 1, paddingBottom: 84 }}/>
       <TabList asChild>
         <TabBar>
           <TabTrigger name="index" href="/" asChild>
