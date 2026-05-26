@@ -9,6 +9,47 @@ account.persona.manageDone,완료,Done
 account.persona.deleteA11y,페르소나 삭제,Delete persona
 account.persona.selectA11y,{name} 페르소나 선택,Select {name} persona
 account.persona.create.placeholder,페르소나를 생성하는 페이지,Create a new persona
+account.persona.create.step1Title,페르소나 기본 정보,Persona basics
+account.persona.create.step1Description,이름과 소개를 입력해 주세요.,Enter a name and short intro.
+account.persona.create.step2Title,취향 선택,Taste picks
+account.persona.create.step2Description,관심 장르·영화·배우를 골라 추천을 맞춥니다.,Pick genres to search and favorite movies and cast.
+account.persona.create.nameLabel,페르소나 명,Persona name
+account.persona.create.namePlaceholder,예: 감성파, e.g. Mood watcher
+account.persona.create.thumbnailLabel,섬네일 URL (선택),Thumbnail URL (optional)
+account.persona.create.thumbnailPlaceholder,https://...,https://...
+account.persona.create.descriptionLabel,페르소나 설명,Description
+account.persona.create.descriptionPlaceholder,이 페르소나의 취향을 소개해 주세요.,Describe this persona's taste.
+account.persona.create.genresLabel,관심 장르,Genres
+account.persona.create.genresHint,영화 검색 필터에만 사용됩니다.,Used only to filter movie search.
+account.persona.create.moviesLabel,관심 영화,Favorite movies
+account.persona.create.personsLabel,관심 배우·인물,Favorite people
+account.persona.create.searchPlaceholder,이름으로 검색,Search by name
+account.persona.create.yearPlaceholder,개봉 연도 (선택),Release year (optional)
+account.persona.create.sortLabel,정렬,Sort
+account.persona.create.sort.yearDesc,연도 최신순,Year newest
+account.persona.create.sort.yearAsc,연도 오래된순,Year oldest
+account.persona.create.sort.nameDesc,이름 내림차순,Name Z–A
+account.persona.create.sort.nameAsc,이름 오름차순,Name A–Z
+account.persona.create.job.actor,배우,Actor
+account.persona.create.job.director,감독,Director
+account.persona.create.job.writer,작가,Writer
+account.persona.create.job.producer,제작,Producer
+account.persona.create.continue,다음,Continue
+account.persona.create.back,이전,Back
+account.persona.create.submit,페르소나 생성,Create persona
+account.persona.create.emptyResults,검색 결과가 없습니다.,No results found.
+account.persona.create.loadMore,더 보기,Load more
+account.persona.create.failedRequest.title,생성에 실패했습니다,Could not create persona
+account.persona.create.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.persona.create.validation.name.required,페르소나 명을 입력해 주세요.,Enter a persona name.
+account.persona.create.validation.name.min,페르소나 명을 입력해 주세요.,Enter a persona name.
+account.persona.create.validation.name.max,페르소나 명은 {max}자 이하로 입력해 주세요.,Name must be at most {max} characters.
+account.persona.create.validation.description.required,설명을 입력해 주세요.,Enter a description.
+account.persona.create.validation.description.min,설명을 입력해 주세요.,Enter a description.
+account.persona.create.validation.description.max,설명은 {max}자 이하로 입력해 주세요.,Description must be at most {max} characters.
+account.persona.create.validation.thumbnail.invalid,올바른 URL을 입력해 주세요.,Enter a valid URL.
+account.persona.create.validation.movies.required,관심 영화를 1개 이상 선택해 주세요.,Select at least one movie.
+account.persona.create.validation.persons.required,관심 인물을 1개 이상 선택해 주세요.,Select at least one person.
 account.sonar.headerTitle,예고편 판독기,Trailer takes
 account.sonar.headerInfoA11y,안내,Info
 account.sonar.hint,"예고편을 보고 좌우로 슬라이드해 취향 데이터를 쌓아보세요.","Watch a trailer and swipe sideways to build your taste profile."

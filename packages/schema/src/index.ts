@@ -40,6 +40,21 @@ export {
   type SnsSignUpFormInput,
 } from './forms/auth';
 
+export {
+  PERSONA_DESCRIPTION_MAX_LENGTH,
+  PERSONA_DESCRIPTION_MIN_LENGTH,
+  PERSONA_NAME_MAX_LENGTH,
+  PERSONA_NAME_MIN_LENGTH,
+} from './forms/persona-constants';
+
+export type { PersonaFormValidationMessages } from './forms/persona-messages';
+
+export {
+  createPersonaFormSchemas,
+  type PersonaCreateFormInput,
+  type PersonaFormSchemas,
+} from './forms/persona';
+
 export const paginationSchema = z.object({
   cursor: z.string().optional(),
   limit: z.coerce.number().min(1).max(50).default(20),

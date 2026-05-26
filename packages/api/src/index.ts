@@ -11,3 +11,7 @@ export { postUserLoginLocal, postUserLoginSocial } from './users/login';
 export { postUserLoginRefresh } from './users/refresh';
 export { postUserRegister } from './users/register';
 export { postUserRegisterSocial } from './users/register-social';
+export { getGenreList } from './genre/list';
+export { getSearchMovies } from './search/movie';
+export { getSearchPersons } from './search/person';
+export { postProfilePersona } from './profile/persona';
