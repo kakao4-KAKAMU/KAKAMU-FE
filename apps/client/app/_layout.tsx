@@ -43,7 +43,7 @@ export const unstable_settings = {
   account: {
     path: '(account)',
     initialRouteName: 'index',
-  },
+  }
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -53,32 +53,9 @@ SplashScreen.setOptions({
 })
 SplashScreen.preventAutoHideAsync();
 
-const ACCOUNT_ONLY_PREFIXES = [
-  '/persona',
-  '/profile/my',
-  '/profile/setting',
-  '/chat',
-  '/sonar',
-  '/feed/write',
-  '/search',
-];
-
-const GUEST_ONLY_PREFIXES = ['/signin', '/signup'];
-
-const ACCOUNT_TAB_PREFIXES = ['/search', '/chat', '/sonar', '/profile/my'];
-
-const startsWithPrefix = (pathname: string, prefixes: string[]) =>
-  prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
-
 const isPersonaPath = (pathname: string) =>
   pathname === '/persona' || pathname.startsWith('/persona/');
 
-const isAccountTabPath = (pathname: string) => {
-  if (pathname === '/') {
-    return true;
-  }
-  return startsWithPrefix(pathname, ACCOUNT_TAB_PREFIXES);
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -140,30 +117,24 @@ export default function RootLayout() {
     const rootSegment = segments[0];
     const isAccountRoute = rootSegment === '(account)';
     const isGuestRoute = rootSegment === '(guest)';
-    const isGroupedRoute = isAccountRoute || isGuestRoute;
-    const isAccountOnlyCommonRoute = startsWithPrefix(pathname, ACCOUNT_ONLY_PREFIXES);
-    const isGuestOnlyCommonRoute = startsWithPrefix(pathname, GUEST_ONLY_PREFIXES);
 
-    if (isAuthenticated && !isAccountRoute) {
-      if (isGuestRoute || isGuestOnlyCommonRoute) {
-        router.replace(hasSelectedPersona ? '/' : '/persona');
+    if (
+      isAuthenticated &&
+      !hasSelectedPersona
+    ) {
+      if (!isPersonaPath(pathname)) {
+        router.replace('/(account)/persona');
       }
       return;
     }
 
-    if (
-      isAuthenticated &&
-      isAccountRoute &&
-      !hasSelectedPersona &&
-      !isPersonaPath(pathname) &&
-      isAccountTabPath(pathname)
-    ) {
-      router.replace('/persona');
+    if (!isAuthenticated && isAccountRoute) {
+      router.replace('/(guest)');
       return;
     }
 
-    if (!isAuthenticated && (isAccountRoute || (!isGroupedRoute && isAccountOnlyCommonRoute))) {
-      router.replace('/(guest)');
+    if (isAuthenticated && isGuestRoute) {
+      router.replace('/(account)/(tabs)');
       return;
     }
   }, [authReady, hasSelectedPersona, isAuthenticated, pathname, router, segments]);
@@ -176,26 +147,26 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       <QueryClientProvider client={queryClient}>
         <ApiClientProvider>
-        <I18nextProvider i18n={getI18n()}>
-          <ThemeSchemeProvider>
-            <ThemeColorProvider>
-              <AppErrorBoundary>
-                <ErrorAlertDialogProvider>
-                  <Stack
-                    screenOptions={{
-                      headerShown: false,
-                    }}
-                  >
-                    <Stack.Screen name="(guest)" />
-                    <Stack.Screen name="(account)" />
-                    <Stack.Screen name="(shared)" />
-                  </Stack>
-                  <PortalHost />
-                </ErrorAlertDialogProvider>
-              </AppErrorBoundary>
-            </ThemeColorProvider>
-          </ThemeSchemeProvider>
-        </I18nextProvider>
+          <I18nextProvider i18n={getI18n()}>
+            <ThemeSchemeProvider>
+              <ThemeColorProvider>
+                <AppErrorBoundary>
+                  <ErrorAlertDialogProvider>
+                    <Stack
+                      screenOptions={{
+                        headerShown: false,
+                      }}
+                    >
+                      <Stack.Screen name="(guest)" />
+                      <Stack.Screen name="(account)" />
+                      <Stack.Screen name="(shared)" />
+                    </Stack>
+                    <PortalHost />
+                  </ErrorAlertDialogProvider>
+                </AppErrorBoundary>
+              </ThemeColorProvider>
+            </ThemeSchemeProvider>
+          </I18nextProvider>
         </ApiClientProvider>
       </QueryClientProvider>
     </GestureHandlerRootView>
