@@ -3,3 +3,5 @@ export { PersonaCard } from './PersonaCard';
 export { PersonaGrid } from './PersonaGrid';
 export { PersonaIntro } from './PersonaIntro';
 export { PersonaManageButton } from './PersonaManageButton';
+export { PersonaCreateStep1Form } from './PersonaCreateStep1Form';
+export { PersonaCreateStep2Form } from './PersonaCreateStep2Form';
