@@ -53,3 +53,9 @@ export interface SocialAuthLoginRequest {
 export type FindPassword = Email;
 
 export type ResetPassword = PasswordConfirm;
+
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}

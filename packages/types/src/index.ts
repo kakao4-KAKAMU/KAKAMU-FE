@@ -8,6 +8,7 @@ export type { Persona } from './persona';
 
 export type {
   AuthSnsSignUpProvider,
+  ChangePasswordRequest,
   Email,
   FindPassword,
   LoginResponse,

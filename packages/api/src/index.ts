@@ -8,6 +8,7 @@ export {
   isApiHttpError,
 } from './errors/api-http-error';
 export { postUserLoginLocal, postUserLoginSocial } from './users/login';
+export { patchUserPassword } from './users/password';
 export { postUserLoginRefresh } from './users/refresh';
 export { postUserRegister } from './users/register';
 export { postUserRegisterSocial } from './users/register-social';
