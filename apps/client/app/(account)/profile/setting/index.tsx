@@ -11,11 +11,6 @@ export default function ProfileSettingScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const { toggleColorScheme, colorScheme } = useThemeScheme();
 
-
-  const onProfilePress = useCallback(() => {
-    router.push('/profile/my');
-  }, [router]);
-
   const onAccountSetupPress = useCallback(() => {
     router.push('/profile/setting/accountSetup');
   }, [router]);
@@ -38,8 +33,8 @@ export default function ProfileSettingScreen() {
             <ProfileSettingsHeader
               title="설정"
               actionIcon={User}
-              actionAccessibilityLabel="내 프로필"
-              onActionPress={onProfilePress}
+              isDropdownMenu={false}
+              actionAccessibilityLabel="설정 메뉴"
             />
 
             <View className="flex-col gap-2.5">
