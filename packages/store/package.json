@@ -1,0 +1,29 @@
+{
+  "name": "@kakamu/store",
+  "version": "0.0.0",
+  "private": true,
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0"
+  },
+  "dependencies": {
+    "@kakamu/types": "workspace:*",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "expo-zustand-persist": "^1.0.5",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@kakamu/eslint-config": "workspace:*",
+    "@kakamu/typescript-config": "workspace:*",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3"
+  }
+}
