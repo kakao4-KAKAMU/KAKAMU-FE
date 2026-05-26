@@ -4,10 +4,13 @@ import { ScrollView, View } from 'react-native';
 import { ChevronRight, ShieldAlert, User } from 'lucide-react-native';
 import { Button, Icon, Switch, Text, TextClassContext } from '@kakamu/ui';
 import { ProfileSettingRow, ProfileSettingsHeader } from '@/components/featured/profile';
+import { useThemeScheme } from '@/components/themeScheme';
 
 export default function ProfileSettingScreen() {
   const router = useRouter();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const { toggleColorScheme, colorScheme } = useThemeScheme();
+
 
   const onProfilePress = useCallback(() => {
     router.push('/profile/my');
@@ -16,6 +19,10 @@ export default function ProfileSettingScreen() {
   const onAccountSetupPress = useCallback(() => {
     router.push('/profile/setting/accountSetup');
   }, [router]);
+
+  const onThemeSwitchPress = useCallback(() => {
+    toggleColorScheme();
+  }, [toggleColorScheme]);
 
   return (
     <>
@@ -45,6 +52,16 @@ export default function ProfileSettingScreen() {
                   </TextClassContext.Provider>
                 }
               />
+              
+              <ProfileSettingRow
+                label="테마 변경"
+                trailing={
+                  <Switch
+                    checked={colorScheme === 'dark'}
+                    onCheckedChange={onThemeSwitchPress}
+                  />
+                }
+              />
 
               <ProfileSettingRow
                 label="알림 수신"
@@ -53,7 +70,6 @@ export default function ProfileSettingScreen() {
                     checked={notificationsEnabled}
                     onCheckedChange={(checked) => setNotificationsEnabled(checked === true)}
                     accessibilityLabel="알림 수신"
-                    className="h-6 w-11"
                   />
                 }
               />
