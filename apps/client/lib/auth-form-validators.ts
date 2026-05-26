@@ -13,6 +13,7 @@ import { createAuthFormSchemas, type AuthFormSchemas } from '@kakamu/schema';
  * - snsSignUp: SNS 가입 — `useForm` + `zodResolver(kit.snsSignUp)` + `Controller` 권장
  * - findPassword: 이메일만
  * - resetPassword: 새 비밀번호 + 확인
+ * - changePassword: 현재 비밀번호 + 새 비밀번호 + 확인
  */
 export function useAuthFormValidationKit(t: TFunction) {
   return useMemo(

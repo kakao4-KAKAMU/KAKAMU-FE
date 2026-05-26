@@ -62,13 +62,14 @@ function passwordField(messages: AuthFormValidationMessages['password']) {
 function passwordConfirmRefine(
   messages: AuthFormValidationMessages['passwordConfirm'],
   data: { password: string; passwordConfirm: string },
-  ctx: z.RefinementCtx
+  ctx: z.RefinementCtx,
+  path: string = 'passwordConfirm'
 ) {
   if (!data.passwordConfirm?.length) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: messages.required,
-      path: ['passwordConfirm'],
+      path: [path],
     });
     return;
   }
@@ -76,7 +77,7 @@ function passwordConfirmRefine(
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: messages.mismatch,
-      path: ['passwordConfirm'],
+      path: [path],
     });
   }
 }
@@ -176,6 +177,22 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     .strict()
     .superRefine((data, ctx) => passwordConfirmRefine(messages.passwordConfirm, data, ctx));
 
+  const changePassword = z
+    .object({
+      oldPassword: z.string().min(1, messages.password.required),
+      newPassword: password,
+      newPasswordConfirm: z.string(),
+    })
+    .strict()
+    .superRefine((data, ctx) =>
+      passwordConfirmRefine(
+        messages.passwordConfirm,
+        { password: data.newPassword, passwordConfirm: data.newPasswordConfirm },
+        ctx,
+        'newPasswordConfirm'
+      )
+    );
+
   return {
     signIn,
     signInWithRemember,
@@ -184,6 +201,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     snsSignUp,
     findPassword,
     resetPassword,
+    changePassword,
   };
 }
 
@@ -195,3 +213,4 @@ export type SignUpWithTermsFormInput = z.infer<AuthFormSchemas['signUpWithTerms'
 export type SnsSignUpFormInput = z.infer<AuthFormSchemas['snsSignUp']>;
 export type FindPasswordFormInput = z.infer<AuthFormSchemas['findPassword']>;
 export type ResetPasswordFormInput = z.infer<AuthFormSchemas['resetPassword']>;
+export type ChangePasswordFormInput = z.infer<AuthFormSchemas['changePassword']>;
