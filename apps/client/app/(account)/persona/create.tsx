@@ -14,6 +14,7 @@ import {
   PersonaCreateStep2Form,
   PersonaIntro,
 } from '@/components/featured/persona';
+import { usePersonaCreateStep2Data } from '@/hooks/persona/usePersonaCreateStep2Data';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { parseApiError } from '@/lib/auth/parse-api-error';
 import { mapPersonaFromCreateResponse } from '@/lib/persona/map-persona-from-create-response';
@@ -45,6 +46,7 @@ export default function PersonaCreateScreen() {
 
   const [step, setStep] = useState<PersonaCreateStep>(1);
   const [submitting, setSubmitting] = useState(false);
+  const step2Data = usePersonaCreateStep2Data({ control });
 
   const addPersona = usePersonaStore((state) => state.addPersona);
   const selectPersona = usePersonaStore((state) => state.selectPersona);
@@ -152,6 +154,31 @@ export default function PersonaCreateScreen() {
                 onBack={handleBackToBasics}
                 onSubmit={handleSubmitPersona}
                 submitting={isBusy}
+                canSubmit={!createMutation.isPending}
+                genres={step2Data.genreQuery.data ?? []}
+                genresLoading={step2Data.genreQuery.isLoading}
+                movieKeyword={step2Data.movieKeyword}
+                onMovieKeywordChange={step2Data.setMovieKeyword}
+                movieYear={step2Data.movieYear}
+                onMovieYearChange={step2Data.setMovieYear}
+                movieSort={step2Data.movieSort}
+                onMovieSortChange={step2Data.setMovieSort}
+                movieItems={step2Data.movieItems}
+                movieLoading={step2Data.movieSearchQuery.isLoading}
+                movieFetchingNext={step2Data.movieSearchQuery.isFetchingNextPage}
+                movieHasNextPage={step2Data.movieSearchQuery.hasNextPage}
+                onLoadMoreMovies={() => step2Data.movieSearchQuery.fetchNextPage()}
+                personKeyword={step2Data.personKeyword}
+                onPersonKeywordChange={step2Data.setPersonKeyword}
+                personSort={step2Data.personSort}
+                onPersonSortChange={step2Data.setPersonSort}
+                selectedJobs={step2Data.selectedJobs}
+                onToggleJob={step2Data.toggleJob}
+                personItems={step2Data.personItems}
+                personLoading={step2Data.personSearchQuery.isLoading}
+                personFetchingNext={step2Data.personSearchQuery.isFetchingNextPage}
+                personHasNextPage={step2Data.personSearchQuery.hasNextPage}
+                onLoadMorePersons={() => step2Data.personSearchQuery.fetchNextPage()}
               />
             )}
           </View>

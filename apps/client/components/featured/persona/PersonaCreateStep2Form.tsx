@@ -1,19 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 import type { MovieSearchItem, MovieSort, PersonSearchItem, PersonSort } from '@kakamu/types';
-import {
-  useGenreListQuery,
-  useSearchMoviesInfiniteQuery,
-  useSearchPersonsInfiniteQuery,
-} from '@kakamu/query';
 import { Controller, type Control, useWatch } from 'react-hook-form';
 import { Badge, Button, Input, Label, Text } from '@kakamu/ui';
 import { cn } from '@kakamu/ui';
-
-import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 
 import {
   getSortLabel,
@@ -30,6 +22,31 @@ type PersonaCreateStep2FormProps = {
   onBack: () => void;
   onSubmit: () => void;
   submitting?: boolean;
+  canSubmit?: boolean;
+  genres: { id: string; name: string }[];
+  genresLoading?: boolean;
+  movieKeyword: string;
+  onMovieKeywordChange: (value: string) => void;
+  movieYear: string;
+  onMovieYearChange: (value: string) => void;
+  movieSort: MovieSort;
+  onMovieSortChange: (value: MovieSort) => void;
+  movieItems: MovieSearchItem[];
+  movieLoading?: boolean;
+  movieFetchingNext?: boolean;
+  movieHasNextPage?: boolean;
+  onLoadMoreMovies?: () => void;
+  personKeyword: string;
+  onPersonKeywordChange: (value: string) => void;
+  personSort: PersonSort;
+  onPersonSortChange: (value: PersonSort) => void;
+  selectedJobs: PersonSearchJob[];
+  onToggleJob: (job: PersonSearchJob) => void;
+  personItems: PersonSearchItem[];
+  personLoading?: boolean;
+  personFetchingNext?: boolean;
+  personHasNextPage?: boolean;
+  onLoadMorePersons?: () => void;
 };
 
 export function PersonaCreateStep2Form({
@@ -37,58 +54,37 @@ export function PersonaCreateStep2Form({
   onBack,
   onSubmit,
   submitting = false,
+  canSubmit = true,
+  genres,
+  genresLoading = false,
+  movieKeyword,
+  onMovieKeywordChange,
+  movieYear,
+  onMovieYearChange,
+  movieSort,
+  onMovieSortChange,
+  movieItems,
+  movieLoading = false,
+  movieFetchingNext = false,
+  movieHasNextPage = false,
+  onLoadMoreMovies,
+  personKeyword,
+  onPersonKeywordChange,
+  personSort,
+  onPersonSortChange,
+  selectedJobs,
+  onToggleJob,
+  personItems,
+  personLoading = false,
+  personFetchingNext = false,
+  personHasNextPage = false,
+  onLoadMorePersons,
 }: PersonaCreateStep2FormProps) {
   const { t } = useTranslation();
-  const client = useBackendApiClient();
 
   const selectedGenreIds = useWatch({ control, name: 'selectedGenreIds' }) ?? [];
   const selectedMovies = useWatch({ control, name: 'selectedMovies' }) ?? [];
   const selectedPersons = useWatch({ control, name: 'selectedPersons' }) ?? [];
-
-  const [movieKeyword, setMovieKeyword] = useState('');
-  const [movieYear, setMovieYear] = useState('');
-  const [movieSort, setMovieSort] = useState<MovieSort>('year-desc');
-  const [personKeyword, setPersonKeyword] = useState('');
-  const [personSort, setPersonSort] = useState<PersonSort>('name-asc');
-  const [selectedJobs, setSelectedJobs] = useState<PersonSearchJob[]>([]);
-
-  const debouncedMovieKeyword = useDebouncedValue(movieKeyword);
-  const debouncedPersonKeyword = useDebouncedValue(personKeyword);
-
-  const parsedMovieYear = useMemo(() => {
-    const year = Number.parseInt(movieYear.trim(), 10);
-    return Number.isFinite(year) && year > 0 ? year : undefined;
-  }, [movieYear]);
-
-  const genreQuery = useGenreListQuery(client);
-  const movieSearchQuery = useSearchMoviesInfiniteQuery(
-    client,
-    {
-      genre: selectedGenreIds.length > 0 ? selectedGenreIds : undefined,
-      name: debouncedMovieKeyword || undefined,
-      year: parsedMovieYear,
-      sort: movieSort,
-    },
-    true,
-  );
-  const personSearchQuery = useSearchPersonsInfiniteQuery(
-    client,
-    {
-      name: debouncedPersonKeyword || undefined,
-      job: selectedJobs.length > 0 ? selectedJobs : undefined,
-      sort: personSort,
-    },
-    true,
-  );
-
-  const movieItems = useMemo(
-    () => movieSearchQuery.data?.pages.flatMap((page) => page.items) ?? [],
-    [movieSearchQuery.data],
-  );
-  const personItems = useMemo(
-    () => personSearchQuery.data?.pages.flatMap((page) => page.items) ?? [],
-    [personSearchQuery.data],
-  );
 
   const movieSortOptions = useMemo(
     () =>
@@ -143,12 +139,6 @@ export function PersonaCreateStep2Form({
     [selectedPersons],
   );
 
-  const toggleJob = useCallback((job: PersonSearchJob) => {
-    setSelectedJobs((current) =>
-      current.includes(job) ? current.filter((j) => j !== job) : [...current, job],
-    );
-  }, []);
-
   return (
     <View className="gap-6">
       <Controller
@@ -161,10 +151,10 @@ export function PersonaCreateStep2Form({
             </Label>
             <Text className="text-xs text-muted-foreground">{t('account.persona.create.genresHint')}</Text>
             <GenreMultiSelect
-              genres={genreQuery.data ?? []}
+              genres={genres}
               selectedIds={value ?? []}
               onToggle={(id) => toggleGenre(id, value ?? [], onChange)}
-              isLoading={genreQuery.isLoading}
+              isLoading={genresLoading}
             />
           </View>
         )}
@@ -179,13 +169,13 @@ export function PersonaCreateStep2Form({
             searchPlaceholder={t('account.persona.create.searchPlaceholder')}
             sortOptions={movieSortOptions}
             sort={movieSort}
-            onSortChange={(value) => setMovieSort(value as MovieSort)}
+            onSortChange={(value) => onMovieSortChange(value as MovieSort)}
             keyword={movieKeyword}
-            onKeywordChange={setMovieKeyword}
+            onKeywordChange={onMovieKeywordChange}
             filterSlot={
               <Input
                 value={movieYear}
-                onChangeText={setMovieYear}
+                onChangeText={onMovieYearChange}
                 placeholder={t('account.persona.create.yearPlaceholder')}
                 keyboardType="number-pad"
                 className="h-11 rounded-xl"
@@ -195,10 +185,10 @@ export function PersonaCreateStep2Form({
             selected={selectedMovies}
             onToggle={(item) => toggleMovie(item, onChange)}
             getSubtitle={(item) => (item.year != null ? String(item.year) : undefined)}
-            isLoading={movieSearchQuery.isLoading}
-            isFetchingNextPage={movieSearchQuery.isFetchingNextPage}
-            hasNextPage={movieSearchQuery.hasNextPage}
-            onLoadMore={() => movieSearchQuery.fetchNextPage()}
+            isLoading={movieLoading}
+            isFetchingNextPage={movieFetchingNext}
+            hasNextPage={movieHasNextPage}
+            onLoadMore={onLoadMoreMovies}
             emptyLabel={t('account.persona.create.emptyResults')}
             loadMoreLabel={t('account.persona.create.loadMore')}
             errorMessage={error?.message}
@@ -215,15 +205,15 @@ export function PersonaCreateStep2Form({
             searchPlaceholder={t('account.persona.create.searchPlaceholder')}
             sortOptions={personSortOptions}
             sort={personSort}
-            onSortChange={(value) => setPersonSort(value as PersonSort)}
+            onSortChange={(value) => onPersonSortChange(value as PersonSort)}
             keyword={personKeyword}
-            onKeywordChange={setPersonKeyword}
+            onKeywordChange={onPersonKeywordChange}
             filterSlot={
               <View className="flex-row flex-wrap gap-2">
                 {PERSON_SEARCH_JOBS.map((job) => {
                   const active = selectedJobs.includes(job);
                   return (
-                    <Pressable key={job} onPress={() => toggleJob(job)} accessibilityRole="button">
+                    <Pressable key={job} onPress={() => onToggleJob(job)} accessibilityRole="button">
                       <Badge variant={active ? 'default' : 'outline'} className={cn('px-3 py-1')}>
                         <Text
                           className={cn(
@@ -243,10 +233,10 @@ export function PersonaCreateStep2Form({
             selected={selectedPersons}
             onToggle={(item) => togglePerson(item, onChange)}
             getSubtitle={(item) => item.job}
-            isLoading={personSearchQuery.isLoading}
-            isFetchingNextPage={personSearchQuery.isFetchingNextPage}
-            hasNextPage={personSearchQuery.hasNextPage}
-            onLoadMore={() => personSearchQuery.fetchNextPage()}
+            isLoading={personLoading}
+            isFetchingNextPage={personFetchingNext}
+            hasNextPage={personHasNextPage}
+            onLoadMore={onLoadMorePersons}
             emptyLabel={t('account.persona.create.emptyResults')}
             loadMoreLabel={t('account.persona.create.loadMore')}
             errorMessage={error?.message}
@@ -258,7 +248,7 @@ export function PersonaCreateStep2Form({
         <Button variant="outline" onPress={onBack} disabled={submitting} className="h-12 flex-1 rounded-xl">
           <Text>{t('account.persona.create.back')}</Text>
         </Button>
-        <Button onPress={onSubmit} disabled={submitting} className="h-12 flex-1 rounded-xl">
+        <Button onPress={onSubmit} disabled={submitting || !canSubmit} className="h-12 flex-1 rounded-xl">
           <Text>{t('account.persona.create.submit')}</Text>
         </Button>
       </View>
