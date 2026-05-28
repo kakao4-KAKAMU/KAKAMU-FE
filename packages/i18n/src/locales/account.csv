@@ -60,3 +60,49 @@ account.sonar.previewLikeA11y,좋아요,Like
 account.sonar.emptyQueue,모든 예고편을 살펴봤어요.,You have seen all trailers for now.
 account.sonar.swipeGuideDislike,싫어요,Dislike
 account.sonar.swipeGuideLike,좋아요,Like
+account.layout.profileSettings,프로필 설정,Profile settings
+account.layout.passwordChange,비밀번호 변경,Change password
+account.layout.savedFeedCategory,저장한 피드 카테고리,Saved feed category
+account.layout.feedWrite,피드 작성,Create feed
+account.layout.feedEdit,피드 수정,Edit feed
+account.layout.personaChat,페르소나 챗,Persona chat
+account.layout.feedSearchResult,피드 검색 결과,Feed search results
+account.layout.personSearchResult,사람 검색 결과,Person search results
+account.layout.movieSearchResult,영화 검색 결과,Movie search results
+account.password.pageTitle,비밀번호 변경,Change password
+account.password.pageDescription,계정 보호를 위해 현재 비밀번호를 확인한 뒤 새 비밀번호로 변경합니다.,"Verify your current password, then set a new one to keep your account secure."
+account.password.success.title,비밀번호 변경 완료,Password updated
+account.password.success.description,새 비밀번호로 변경되었습니다.,Your password has been changed.
+account.password.error.default.title,비밀번호 변경 실패,Password change failed
+account.password.error.default.description,비밀번호 변경 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.,"Something went wrong while changing your password. Please try again later."
+account.password.error.invalidCurrentPassword.title,현재 비밀번호를 확인해주세요,Check your current password
+account.password.error.invalidCurrentPassword.description,입력한 현재 비밀번호가 올바르지 않습니다.,The current password you entered is incorrect.
+account.password.form.currentPassword.label,현재 비밀번호,Current password
+account.password.form.currentPassword.placeholder,현재 비밀번호를 입력하세요,Enter your current password
+account.password.form.currentPassword.showA11y,현재 비밀번호 보이기,Show current password
+account.password.form.currentPassword.hideA11y,현재 비밀번호 숨기기,Hide current password
+account.password.form.newPassword.label,새 비밀번호,New password
+account.password.form.newPassword.placeholder,새 비밀번호를 입력하세요,Enter a new password
+account.password.form.newPassword.showA11y,새 비밀번호 보이기,Show new password
+account.password.form.newPassword.hideA11y,새 비밀번호 숨기기,Hide new password
+account.password.form.newPasswordConfirm.label,새 비밀번호 확인,Confirm new password
+account.password.form.newPasswordConfirm.placeholder,새 비밀번호를 다시 입력하세요,Re-enter your new password
+account.password.form.newPasswordConfirm.showA11y,새 비밀번호 확인 보이기,Show confirm password
+account.password.form.newPasswordConfirm.hideA11y,새 비밀번호 확인 숨기기,Hide confirm password
+account.password.form.submit,비밀번호 변경,Change password
+account.password.form.submitA11y,비밀번호 변경,Change password
+account.profile.menu.accountSettings,계정 설정,Account settings
+account.profile.menu.personaSettings,페르소나 설정,Persona settings
+account.profile.menu.logout,로그아웃,Log out
+account.profile.tabs.feed,피드,Feed
+account.profile.tabs.like,좋아요,Likes
+account.profile.tabs.saved,저장,Saved
+account.mainFeed.title,메인,Main
+account.mainFeed.description,피드 목록을 조회할 수 있는 메인 페이지,Main page where you can browse feed items
+account.searchHistory.title,검색,Search
+account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
+account.personaChat.title,페르소나 챗,Persona chat
+account.personaChat.description,선택된 페르소나 기준으로 LLM과 대화하는 페이지,Chat with an LLM based on the selected persona
+shared.feedDetail.title,피드 상세,Feed detail
+shared.feedDetail.description,피드 {id}의 상세 페이지,Detail page for feed {id}
+common.navigation.back,뒤로 가기,Go back

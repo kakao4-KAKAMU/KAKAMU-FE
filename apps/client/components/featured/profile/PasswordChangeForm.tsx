@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import type { ChangePasswordFormInput } from '@kakamu/schema';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { Pressable, type TextInputProps, View } from 'react-native';
@@ -91,42 +92,44 @@ export function PasswordChangeForm({
   submitting = false,
   canSubmit = true,
 }: PasswordChangeFormProps) {
+  const { t } = useTranslation();
+
   return (
     <View className="gap-4">
       <PasswordField
         control={control}
         name="oldPassword"
-        label="현재 비밀번호"
-        placeholder="현재 비밀번호를 입력하세요"
+        label={t('account.password.form.currentPassword.label')}
+        placeholder={t('account.password.form.currentPassword.placeholder')}
         nativeID="change-password-old-password-label"
         autoComplete="current-password"
         textContentType="password"
-        showAccessibilityLabel="현재 비밀번호 보이기"
-        hideAccessibilityLabel="현재 비밀번호 숨기기"
+        showAccessibilityLabel={t('account.password.form.currentPassword.showA11y')}
+        hideAccessibilityLabel={t('account.password.form.currentPassword.hideA11y')}
       />
 
       <PasswordField
         control={control}
         name="newPassword"
-        label="새 비밀번호"
-        placeholder="새 비밀번호를 입력하세요"
+        label={t('account.password.form.newPassword.label')}
+        placeholder={t('account.password.form.newPassword.placeholder')}
         nativeID="change-password-new-password-label"
         autoComplete="new-password"
         textContentType="newPassword"
-        showAccessibilityLabel="새 비밀번호 보이기"
-        hideAccessibilityLabel="새 비밀번호 숨기기"
+        showAccessibilityLabel={t('account.password.form.newPassword.showA11y')}
+        hideAccessibilityLabel={t('account.password.form.newPassword.hideA11y')}
       />
 
       <PasswordField
         control={control}
         name="newPasswordConfirm"
-        label="새 비밀번호 확인"
-        placeholder="새 비밀번호를 다시 입력하세요"
+        label={t('account.password.form.newPasswordConfirm.label')}
+        placeholder={t('account.password.form.newPasswordConfirm.placeholder')}
         nativeID="change-password-new-password-confirm-label"
         autoComplete="new-password"
         textContentType="newPassword"
-        showAccessibilityLabel="새 비밀번호 확인 보이기"
-        hideAccessibilityLabel="새 비밀번호 확인 숨기기"
+        showAccessibilityLabel={t('account.password.form.newPasswordConfirm.showA11y')}
+        hideAccessibilityLabel={t('account.password.form.newPasswordConfirm.hideA11y')}
       />
 
       <Button
@@ -135,10 +138,10 @@ export function PasswordChangeForm({
         onPress={onSubmit}
         disabled={submitting || !canSubmit}
         accessibilityRole="button"
-        accessibilityLabel="비밀번호 변경"
+        accessibilityLabel={t('account.password.form.submitA11y')}
         className="h-12 rounded-md"
       >
-        <Text className="text-sm font-medium">비밀번호 변경</Text>
+        <Text className="text-sm font-medium">{t('account.password.form.submit')}</Text>
       </Button>
     </View>
   );

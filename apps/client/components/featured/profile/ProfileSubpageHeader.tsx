@@ -1,5 +1,6 @@
 import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from '@kakamu/i18n';
 import { ChevronLeft } from 'lucide-react-native';
 import { Icon, Text, TextClassContext } from '@kakamu/ui';
 
@@ -10,6 +11,7 @@ type ProfileSubpageHeaderProps = {
 
 export function ProfileSubpageHeader({ title, onBackPress }: ProfileSubpageHeaderProps) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleBack = onBackPress ?? (() => router.back());
 
@@ -17,7 +19,7 @@ export function ProfileSubpageHeader({ title, onBackPress }: ProfileSubpageHeade
     <View className="flex-row items-center justify-between py-1">
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="뒤로 가기"
+        accessibilityLabel={t('common.navigation.back')}
         onPress={handleBack}
         hitSlop={8}
         className="h-8 w-8 items-center justify-center rounded-full bg-secondary active:opacity-70"

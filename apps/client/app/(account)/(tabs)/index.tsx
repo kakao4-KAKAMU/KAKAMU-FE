@@ -1,13 +1,16 @@
 import { Stack } from 'expo-router';
+import { useTranslation } from '@kakamu/i18n';
 import { ScrollView } from 'react-native';
 import { Text } from '@kakamu/ui';
 
 export default function MainFeedScreen() {
+  const { t } = useTranslation();
+
   return (
     <>
-      <Stack.Screen options={{ title: '메인' }} />
+      <Stack.Screen options={{ title: t('account.mainFeed.title') }} />
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 16 }}>
-        <Text selectable>피드 목록을 조회할 수 있는 메인 페이지</Text>
+        <Text selectable>{t('account.mainFeed.description')}</Text>
       </ScrollView>
     </>
   );
