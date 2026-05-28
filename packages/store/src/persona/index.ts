@@ -11,7 +11,7 @@ type PersonaSlice = {
 export const usePersonaStore = create<PersonaSlice>()(
   persist(
     (set) => ({
-      selectedPersonaId: '1',
+      selectedPersonaId: null,
       selectPersona: (id) => {
         set({ selectedPersonaId: id });
       },
