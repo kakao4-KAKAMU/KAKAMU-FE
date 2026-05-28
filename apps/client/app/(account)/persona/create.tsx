@@ -17,7 +17,6 @@ import {
 import { usePersonaCreateStep2Data } from '@/hooks/persona/usePersonaCreateStep2Data';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapPersonaCreateError } from '@/lib/error-message-map/persona/persona-create-error';
-import { mapPersonaFromCreateResponse } from '@/lib/persona/map-persona-from-create-response';
 import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
 
 const DEFAULT_VALUES: PersonaCreateFormInput = {
@@ -66,8 +65,7 @@ export default function PersonaCreateScreen() {
 
   const createMutation = useCreatePersonaMutation(apiClient, {
     onSuccess: (response) => {
-      const persona = mapPersonaFromCreateResponse(response);
-      selectPersona(persona.id);
+      selectPersona(response.id);
       setSubmitting(false);
       router.replace('/persona');
     },
@@ -80,16 +78,15 @@ export default function PersonaCreateScreen() {
   const onValid = useCallback(
     (data: PersonaCreateFormInput) => {
       clearErrors('root');
-      const body: PersonaCreateRequest = {
-        name: data.name.trim(),
-        description: data.description.trim(),
-        movie_ids: data.selectedMovies.map((movie) => movie.id),
-        person_ids: data.selectedPersons.map((person) => person.id),
-      };
       const thumbnail = data.profile_image_url.trim();
-      if (thumbnail) {
-        body.profile_image_url = thumbnail;
-      }
+      const body: PersonaCreateRequest = {
+        nickname: data.name.trim(),
+        profile_image_url: thumbnail,
+        profile_msg: data.description.trim(),
+        fav_movie_ids: data.selectedMovies.map((movie) => movie.id),
+        fav_genre_ids: data.selectedGenreIds,
+        fav_people_ids: data.selectedPersons.map((person) => person.id),
+      };
       setSubmitting(true);
       createMutation.mutate(body);
     },

@@ -2,18 +2,22 @@ import { useCallback, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
+import { useDeletePersonaMutation, usePersonasQuery } from '@kakamu/query';
 import { usePersonaStore } from '@kakamu/store';
 import {
   PersonaGrid,
   PersonaIntro,
   PersonaManageButton,
 } from '@/components/featured/persona';
-import { Persona } from '@kakamu/types';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 export default function PersonaScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [personas, ] = useState<Persona[]>([]);
+  const apiClient = useBackendApiClient();
+  const personasQuery = usePersonasQuery(apiClient);
+  const personas = personasQuery.data ?? [];
+  const deleteMutation = useDeletePersonaMutation(apiClient);
   const selectPersona = usePersonaStore((state) => state.selectPersona);
   const [isManaging, setIsManaging] = useState(false);
 
@@ -31,8 +35,9 @@ export default function PersonaScreen() {
 
   const onDelete = useCallback(
     (id: string) => {
+      deleteMutation.mutate({ personaId: id });
     },
-    [],
+    [deleteMutation],
   );
 
   const onManagePress = useCallback(() => {

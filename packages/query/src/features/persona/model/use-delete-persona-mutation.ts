@@ -1,41 +1,35 @@
 import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
-import { createPersona } from '@kakamu/api';
-import type { Persona, PersonaCreateRequest, PersonaCreateResponse } from '@kakamu/types';
+import { deletePersona } from '@kakamu/api';
+import type { Persona } from '@kakamu/types';
 import { personaKeys } from '../../../shared/keys/persona.keys';
 
-const NO_MUTATION_CACHE = { gcTime: 0 } as const;
-type CreatePersonaContext = { previousPersonas: Persona[] };
+type DeletePersonaVariables = {
+  personaId: string;
+};
 
-export function useCreatePersonaMutation(
+type DeletePersonaContext = {
+  previousPersonas: Persona[];
+};
+
+const NO_MUTATION_CACHE = { gcTime: 0 } as const;
+
+export function useDeletePersonaMutation(
   client: ApiClient,
-  options?: UseMutationOptions<
-    PersonaCreateResponse,
-    Error,
-    PersonaCreateRequest,
-    CreatePersonaContext
-  >,
+  options?: UseMutationOptions<void, Error, DeletePersonaVariables, DeletePersonaContext>,
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body: PersonaCreateRequest) => createPersona(client, body),
-    onMutate: async (body) => {
+    mutationFn: ({ personaId }) => deletePersona(client, personaId),
+    onMutate: async ({ personaId }) => {
       await queryClient.cancelQueries({ queryKey: personaKeys.list() });
       const previousPersonas =
         queryClient.getQueryData<Persona[]>(personaKeys.list()) ?? [];
-      const optimisticPersona: Persona = {
-        id: `optimistic-persona-${Date.now()}`,
-        user_id: '',
-        nickname: body.nickname,
-        tag: '',
-        persona_msg: body.profile_msg,
-        profile_image_url: body.profile_image_url,
-      };
-      queryClient.setQueryData<Persona[]>(personaKeys.list(), [
-        ...previousPersonas,
-        optimisticPersona,
-      ]);
+      queryClient.setQueryData<Persona[]>(
+        personaKeys.list(),
+        previousPersonas.filter((persona) => persona.id !== personaId),
+      );
       return { previousPersonas };
     },
     onError: (_error, _variables, context) => {
