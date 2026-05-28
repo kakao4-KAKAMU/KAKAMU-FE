@@ -16,7 +16,7 @@ import {
 } from '@/components/featured/persona';
 import { usePersonaCreateStep2Data } from '@/hooks/persona/usePersonaCreateStep2Data';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { parseApiError } from '@/lib/auth/parse-api-error';
+import { mapPersonaCreateError } from '@/lib/error-message-map/persona/persona-create-error';
 import { mapPersonaFromCreateResponse } from '@/lib/persona/map-persona-from-create-response';
 import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
 
@@ -75,12 +75,7 @@ export default function PersonaCreateScreen() {
     },
     onError: (err) => {
       setSubmitting(false);
-      const fallback = t('account.persona.create.failedRequest.description');
-      const { message } = parseApiError(err, fallback);
-      openErrorAlert({
-        title: t('account.persona.create.failedRequest.title'),
-        description: message,
-      });
+      openErrorAlert(mapPersonaCreateError(err, t));
     },
   });
 

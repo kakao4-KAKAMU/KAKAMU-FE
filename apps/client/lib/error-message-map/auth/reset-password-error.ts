@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
 
-import { parseApiError } from './parse-api-error';
+import { parseApiError } from '../../auth/parse-api-error';
 
 type ResetPasswordErrorView = {
   title: string;

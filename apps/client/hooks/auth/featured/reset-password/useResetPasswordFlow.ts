@@ -10,7 +10,7 @@ import { useErrorAlertDialog } from '@kakamu/ui';
 import type { TFunction } from 'i18next';
 import { useForm } from 'react-hook-form';
 
-import { mapPhoneVerificationError, mapResetPasswordError } from '@/lib/auth/reset-password-error';
+import { mapPhoneVerificationError, mapResetPasswordError } from '@/lib/error-message-map/auth/reset-password-error';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { firebaseSignOut, usePhoneValidation } from '@/hooks/auth';

@@ -15,7 +15,7 @@ import {
   SignUpSnsForm,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { parseApiError } from '@/lib/auth/parse-api-error';
+import { mapSignUpSnsError } from '@/lib/error-message-map/auth/sign-up-sns-error';
 import { setAuthTokens } from '@/lib/auth/set-auth-tokens';
 import {
   SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID,
@@ -126,24 +126,7 @@ export default function SignUpSnsScreen() {
     },
     onError: (err) => {
       setSubmitting(false);
-      const fallback = t('guest.form.signUpSns.failedRequest.description');
-      let title = t('guest.form.signUpSns.failedRequest.title');
-      let { message, code: errorCode } = parseApiError(err, fallback);
-
-      switch (errorCode) {
-        case 'REGISTRATION_FAILED':
-          title = t('guest.form.signUpSns.failedRequest.title');
-          message = t('guest.form.signUpSns.failedRequest.description');
-          break;
-        case 'DUPLICATE_EMAIL':
-          title = t('guest.form.signUp.duplicateEmail.title');
-          message = t('guest.form.signUp.duplicateEmail.description');
-          break;
-        default:
-          break;
-      }
-
-      openErrorAlert({ title, description: message });
+      openErrorAlert(mapSignUpSnsError(err, t));
     },
   });
 

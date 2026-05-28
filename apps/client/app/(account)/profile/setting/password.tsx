@@ -13,7 +13,7 @@ import {
   type PasswordChangeFormValues,
 } from '@/components/featured/profile';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { parseApiError } from '@/lib/auth/parse-api-error';
+import { mapPasswordChangeError } from '@/lib/error-message-map/account/password-change-error';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
 const DEFAULT_VALUES: PasswordChangeFormValues = {
@@ -54,25 +54,7 @@ export default function PasswordSettingScreen() {
     },
     onError: (err) => {
       setSubmitting(false);
-      const fallback = t('account.password.error.default.description');
-      let title = t('account.password.error.default.title');
-      let { message, code: errorCode } = parseApiError(err, fallback);
-
-      switch (errorCode) {
-        case 'INVALID_CREDENTIALS':
-        case 'UNAUTHORIZED':
-        case 'WRONG_PASSWORD':
-          title = t('account.password.error.invalidCurrentPassword.title');
-          message = t('account.password.error.invalidCurrentPassword.description');
-          break;
-        case 'PASSWORD_CHANGE_FAILED':
-          message = fallback;
-          break;
-        default:
-          break;
-      }
-
-      openErrorAlert({ title, description: message });
+      openErrorAlert(mapPasswordChangeError(err, t));
     },
   });
 
