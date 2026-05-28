@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
+import { useUserPhoneVerificationMutation, useUserResetPasswordMutation } from '@kakamu/query';
 import type {
   ResetPasswordEmailFormInput,
   PhoneValidationFormInput,
@@ -9,9 +10,13 @@ import type {
 import { Stack, useRouter } from 'expo-router';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
-import { Controller, useForm } from 'react-hook-form';
-import { Input, Label, Text } from '@kakamu/ui';
-import { AuthHeader, ResetPasswordForm, SignUpPhoneVerificationForm } from '@/components/featured/auth';
+import { useForm } from 'react-hook-form';
+import { Text } from '@kakamu/ui';
+import {
+  AuthHeader,
+  ResetPasswordForm,
+  ResetPasswordVerificationForm,
+} from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { firebaseSignOut, usePhoneValidation } from '@/hooks/auth';
 import { parseApiError } from '@/lib/auth/parse-api-error';
@@ -59,7 +64,6 @@ export default function ResetPasswordScreen() {
   });
 
   const [step, setStep] = useState<ResetPasswordStep>(1);
-  const [submitting, setSubmitting] = useState(false);
   const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
   const [verifiedFirebaseIdToken, setVerifiedFirebaseIdToken] = useState<string | null>(null);
 
@@ -89,6 +93,57 @@ export default function ResetPasswordScreen() {
     router.replace('/signin');
   }, [router]);
 
+  const phoneVerificationMutation = useUserPhoneVerificationMutation(apiClient, {
+    onSuccess: (_, variables) => {
+      setVerifiedEmail(variables.email);
+      setVerifiedFirebaseIdToken(variables.firebase_id_token);
+      setStep(2);
+    },
+    onError: (err) => {
+      const fallback = t('guest.resetPassword.error.default.description');
+      let title = t('guest.resetPassword.error.default.title');
+      let { message, code: errorCode } = parseApiError(err, fallback);
+
+      if (errorCode === 'USER_NOT_FOUND') {
+        title = t('guest.resetPassword.error.USER_NOT_FOUND.title');
+        message = t('guest.resetPassword.error.USER_NOT_FOUND.description');
+      }
+
+      openErrorAlert({ title, description: message });
+    },
+  });
+
+  const resetPasswordMutation = useUserResetPasswordMutation(apiClient, {
+    onSuccess: () => {
+      router.replace('/signin');
+    },
+    onError: (err) => {
+      const fallback = t('guest.resetPassword.error.default.description');
+      let title = t('guest.resetPassword.error.default.title');
+      let { message, code: errorCode } = parseApiError(err, fallback);
+
+      switch (errorCode) {
+        case 'USER_NOT_FOUND':
+          title = t('guest.resetPassword.error.USER_NOT_FOUND.title');
+          message = t('guest.resetPassword.error.USER_NOT_FOUND.description');
+          break;
+        case 'INVALID_FIREBASE_TOKEN':
+          title = t('guest.resetPassword.error.INVALID_FIREBASE_TOKEN.title');
+          message = t('guest.resetPassword.error.INVALID_FIREBASE_TOKEN.description');
+          break;
+        case 'AUTH_MISMATCH':
+          title = t('guest.resetPassword.error.AUTH_MISMATCH.title');
+          message = t('guest.resetPassword.error.AUTH_MISMATCH.description');
+          break;
+      }
+
+      openErrorAlert({ title, description: message });
+    },
+    onSettled: async () => {
+      await firebaseSignOut(phoneValidation.firebasePhoneDepsRef ?? undefined);
+    },
+  });
+
   const handleContinueToReset = useCallback(async () => {
     const phoneStepOk = await phoneValidation.validatePhoneStep();
     if (!phoneStepOk) {
@@ -102,96 +157,42 @@ export default function ResetPasswordScreen() {
 
     const { firebaseIdToken } = phoneValidation.getRegisterPhoneAuth();
     if (!firebaseIdToken) {
-      step1Form.setError('root', { type: 'manual', message: t('guest.resetPassword.error.INVALID_FIREBASE_TOKEN.description') });
+      step1Form.setError('root', {
+        type: 'manual',
+        message: t('guest.resetPassword.error.INVALID_FIREBASE_TOKEN.description'),
+      });
+      setStep(1);
       return;
     }
 
-    setSubmitting(true);
     step1Form.clearErrors('root');
-
-    try {
-      const email = step1Form.getValues('email').trim();
-      await apiClient.post('users/local/phone-verification', {
-        json: {
-          email,
-          firebase_id_token: firebaseIdToken,
-        },
-      });
-
-      setVerifiedEmail(email);
-      setVerifiedFirebaseIdToken(firebaseIdToken);
-      setStep(2);
-    } catch (err) {
-      const fallback = t('guest.resetPassword.error.default.description');
-      let title = t('guest.resetPassword.error.default.title');
-      let { message, code: errorCode } = parseApiError(err, fallback);
-
-      if (errorCode === 'USER_NOT_FOUND') {
-        title = t('guest.resetPassword.error.USER_NOT_FOUND.title');
-        message = t('guest.resetPassword.error.USER_NOT_FOUND.description');
-      }
-
-      openErrorAlert({ title, description: message });
-    } finally {
-      setSubmitting(false);
-    }
-  }, [apiClient, openErrorAlert, phoneValidation, step1Form, t]);
+    phoneVerificationMutation.mutate({
+      email: step1Form.getValues('email').trim(),
+      firebase_id_token: firebaseIdToken,
+    });
+  }, [phoneValidation, step1Form, t, phoneVerificationMutation]);
 
   const handleResetPassword = useCallback(
-    async (values: ResetPasswordFormInput) => {
+    (values: ResetPasswordFormInput) => {
       if (!verifiedEmail || !verifiedFirebaseIdToken) {
         setStep(1);
         return;
       }
-
-      setSubmitting(true);
-      try {
-        await apiClient.post('users/local/reset-password', {
-          json: {
-            email: verifiedEmail,
-            firebase_id_token: verifiedFirebaseIdToken,
-            password: values.password,
-          },
-        });
-        router.replace('/signin');
-      } catch (err) {
-        const fallback = t('guest.resetPassword.error.default.description');
-        let title = t('guest.resetPassword.error.default.title');
-        let { message, code: errorCode } = parseApiError(err, fallback);
-
-        switch (errorCode) {
-          case 'USER_NOT_FOUND':
-            title = t('guest.resetPassword.error.USER_NOT_FOUND.title');
-            message = t('guest.resetPassword.error.USER_NOT_FOUND.description');
-            break;
-          case 'INVALID_FIREBASE_TOKEN':
-            title = t('guest.resetPassword.error.INVALID_FIREBASE_TOKEN.title');
-            message = t('guest.resetPassword.error.INVALID_FIREBASE_TOKEN.description');
-            break;
-          case 'AUTH_MISMATCH':
-            title = t('guest.resetPassword.error.AUTH_MISMATCH.title');
-            message = t('guest.resetPassword.error.AUTH_MISMATCH.description');
-            break;
-        }
-
-        openErrorAlert({ title, description: message });
-      } finally {
-        setSubmitting(false);
-        await firebaseSignOut(phoneValidation.firebasePhoneDepsRef ?? undefined);
-      }
+      resetPasswordMutation.mutate({
+        email: verifiedEmail.trim(),
+        firebase_id_token: verifiedFirebaseIdToken,
+        password: values.password,
+      });
     },
     [
-      apiClient,
-      openErrorAlert,
-      phoneValidation.firebasePhoneDepsRef,
-      router,
-      t,
+      resetPasswordMutation,
       verifiedEmail,
       verifiedFirebaseIdToken,
     ]
   );
 
-  const isBusy = submitting || phoneValidation.isPhoneBusy;
+  const isBusy =
+    phoneValidation.isPhoneBusy || phoneVerificationMutation.isPending || resetPasswordMutation.isPending;
   const stepHeader =
     step === 1
       ? { title: t('guest.resetPassword.step1Title'), description: t('guest.resetPassword.step1Description') }
@@ -214,53 +215,25 @@ export default function ResetPasswordScreen() {
             <AuthHeader title={stepHeader.title} description={stepHeader.description} />
 
             {step === 1 ? (
-              <View className="gap-4">
-                <Controller
-                  control={step1Form.control}
-                  name="email"
-                  render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                    <View className="gap-1.5">
-                      <Label nativeID="resetpassword-email-label" className="text-sm font-medium text-foreground">
-                        {t('guest.resetPassword.emailLabel')}
-                      </Label>
-                      <Input
-                        value={value}
-                        onChangeText={onChange}
-                        onBlur={onBlur}
-                        placeholder={t('guest.resetPassword.emailPlaceholder')}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        autoComplete="email"
-                        textContentType="emailAddress"
-                        aria-labelledby="resetpassword-email-label"
-                        className="h-12 rounded-md"
-                      />
-                      {error?.message ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
-                    </View>
-                  )}
-                />
-
-                <SignUpPhoneVerificationForm
-                  control={step1Form.control}
-                  onSendSms={phoneValidation.sendSms}
-                  onVerifyOtp={phoneValidation.verifyOtp}
-                  onContinue={handleContinueToReset}
-                  smsSending={phoneValidation.smsSending}
-                  otpVerifying={phoneValidation.otpVerifying}
-                  phoneVerified={phoneValidation.phoneVerified}
-                  smsError={phoneValidation.smsError}
-                  otpError={phoneValidation.otpError}
-                  continuing={isBusy}
-                  canContinue={phoneValidation.phoneVerified}
-                />
-              </View>
+              <ResetPasswordVerificationForm
+                control={step1Form.control}
+                onSendSms={phoneValidation.sendSms}
+                onVerifyOtp={phoneValidation.verifyOtp}
+                onContinue={handleContinueToReset}
+                smsSending={phoneValidation.smsSending}
+                otpVerifying={phoneValidation.otpVerifying}
+                phoneVerified={phoneValidation.phoneVerified}
+                smsError={phoneValidation.smsError}
+                otpError={phoneValidation.otpError}
+                submitting={isBusy}
+                canSubmit={phoneValidation.phoneVerified}
+              />
             ) : (
               <ResetPasswordForm
                 control={step2Form.control}
                 onSubmit={step2Form.handleSubmit(handleResetPassword)}
-                submitting={submitting}
-                canSubmit={step2Form.formState.isValid}
+                submitting={resetPasswordMutation.isPending}
+                canSubmit={step2Form.formState.isValid && !resetPasswordMutation.isPending}
               />
             )}
 
