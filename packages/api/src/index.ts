@@ -9,6 +9,7 @@ export {
 } from './errors/api-http-error';
 export { postUserLoginLocal, postUserLoginSocial } from './users/login';
 export { patchUserPassword } from './users/password';
+export { postUserPhoneVerification, postUserResetPassword } from './users/reset-password';
 export { postUserLoginRefresh } from './users/refresh';
 export { postUserRegister } from './users/register';
 export { postUserRegisterSocial } from './users/register-social';

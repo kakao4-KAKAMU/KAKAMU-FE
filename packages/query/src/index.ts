@@ -9,6 +9,8 @@ export { useSearchPersonsInfiniteQuery } from './features/search-persons/model/u
 export { useCreatePersonaMutation } from './features/persona-create/model/use-create-persona-mutation';
 export { useLoginUserMutation } from './features/user-login/model/use-login-user-mutation';
 export { useChangePasswordMutation } from './features/user-password/model/use-change-password-mutation';
+export { useUserPhoneVerificationMutation } from './features/user-phone-verification/model/use-user-phone-verification-mutation';
+export { useUserResetPasswordMutation } from './features/user-reset-password/model/use-user-reset-password-mutation';
 export { useRegisterUserMutation } from './features/user-register/model/use-register-user-mutation';
 export { useRegisterSocialUserMutation } from './features/user-register-social/model/use-register-social-user-mutation';
 export { useSocialAuthLoginMutation } from './features/social-auth-login/model/use-social-auth-login-mutation';
