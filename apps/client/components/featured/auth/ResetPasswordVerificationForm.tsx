@@ -11,7 +11,7 @@ type ResetPasswordVerificationFormProps = {
   control: Control<ResetPasswordVerificationFormValues>;
   onSendSms: () => void | Promise<void>;
   onVerifyOtp: (otp: string) => void | Promise<void>;
-  onContinue: () => void | Promise<void>;
+  onSubmit: () => void | Promise<void>;
   smsSending?: boolean;
   otpVerifying?: boolean;
   phoneVerified?: boolean;
@@ -25,7 +25,7 @@ export function ResetPasswordVerificationForm({
   control,
   onSendSms,
   onVerifyOtp,
-  onContinue,
+  onSubmit,
   smsSending = false,
   otpVerifying = false,
   phoneVerified = false,
@@ -68,7 +68,7 @@ export function ResetPasswordVerificationForm({
         control={control}
         onSendSms={onSendSms}
         onVerifyOtp={onVerifyOtp}
-        onContinue={onContinue}
+        onContinue={onSubmit}
         smsSending={smsSending}
         otpVerifying={otpVerifying}
         phoneVerified={phoneVerified}
