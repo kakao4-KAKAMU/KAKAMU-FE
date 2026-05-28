@@ -118,7 +118,7 @@ export default function SignInScreen() {
   );
 
   const handleForgotPassword = useCallback(() => {
-    router.push('./findpassword');
+    router.push('./resetpassword');
   }, [router]);
 
   const { login: loginWithKakao } = useKakaoLogin();

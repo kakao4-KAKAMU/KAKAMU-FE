@@ -32,7 +32,7 @@ export {
   createAuthFormSchemas,
   type AuthFormSchemas,
   type ChangePasswordFormInput,
-  type FindPasswordFormInput,
+  type ResetPasswordEmailFormInput,
   type ResetPasswordFormInput,
   type SignInFormInput,
   type SignInWithRememberFormInput,

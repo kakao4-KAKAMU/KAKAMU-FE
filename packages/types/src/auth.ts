@@ -50,7 +50,7 @@ export interface SocialAuthLoginRequest {
   provided_token: string;
 }
 
-export type FindPassword = Email;
+export type ResetPasswordEmail = Email;
 
 export type ResetPassword = PasswordConfirm;
 
