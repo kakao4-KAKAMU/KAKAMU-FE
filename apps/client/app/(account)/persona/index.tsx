@@ -8,13 +8,13 @@ import {
   PersonaIntro,
   PersonaManageButton,
 } from '@/components/featured/persona';
+import { Persona } from '@kakamu/types';
 
 export default function PersonaScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const personas = usePersonaStore((state) => state.personas);
+  const [personas, ] = useState<Persona[]>([]);
   const selectPersona = usePersonaStore((state) => state.selectPersona);
-  const removePersona = usePersonaStore((state) => state.removePersona);
   const [isManaging, setIsManaging] = useState(false);
 
   const onAddPress = useCallback(() => {
@@ -31,9 +31,8 @@ export default function PersonaScreen() {
 
   const onDelete = useCallback(
     (id: string) => {
-      removePersona(id);
     },
-    [removePersona],
+    [],
   );
 
   const onManagePress = useCallback(() => {

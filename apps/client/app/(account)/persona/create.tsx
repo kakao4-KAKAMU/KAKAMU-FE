@@ -48,7 +48,6 @@ export default function PersonaCreateScreen() {
   const [submitting, setSubmitting] = useState(false);
   const step2Data = usePersonaCreateStep2Data({ control });
 
-  const addPersona = usePersonaStore((state) => state.addPersona);
   const selectPersona = usePersonaStore((state) => state.selectPersona);
 
   const handleContinueToTaste = useCallback(async () => {
@@ -68,7 +67,6 @@ export default function PersonaCreateScreen() {
   const createMutation = useCreatePersonaMutation(apiClient, {
     onSuccess: (response) => {
       const persona = mapPersonaFromCreateResponse(response);
-      addPersona(persona);
       selectPersona(persona.id);
       setSubmitting(false);
       router.replace('/persona');
