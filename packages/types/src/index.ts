@@ -19,6 +19,7 @@ export type {
 
 export type {
   AuthSnsSignUpProvider,
+  ChangePasswordRequest,
   Email,
   FindPassword,
   LoginResponse,

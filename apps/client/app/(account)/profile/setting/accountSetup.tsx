@@ -1,4 +1,5 @@
-import { Stack } from 'expo-router';
+import { useCallback } from 'react';
+import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { ChevronRight, Globe, MessageCircle } from 'lucide-react-native';
 import { Badge, Icon, Text, TextClassContext } from '@kakamu/ui';
@@ -9,6 +10,12 @@ import {
 } from '@/components/featured/profile';
 
 export default function AccountSetupScreen() {
+  const router = useRouter();
+
+  const onPasswordPress = useCallback(() => {
+    router.push('/profile/setting/password');
+  }, [router]);
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -35,7 +42,7 @@ export default function AccountSetupScreen() {
 
                 <ProfileSettingRow
                   label="비밀번호"
-                  onPress={() => {}}
+                  onPress={onPasswordPress}
                   trailing={
                     <TextClassContext.Provider value="text-muted-foreground">
                       <Icon as={ChevronRight} size={18} />

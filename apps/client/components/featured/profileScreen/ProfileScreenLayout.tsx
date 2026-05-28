@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import { ProfileHero } from './ProfileHero';
 import { ProfileStats } from './ProfileStats';
 import { ProfileSubTabs } from './ProfileSubTabs';
@@ -15,11 +15,11 @@ type ProfileScreenLayoutProps = {
 
 export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { user } = useProfileScreenData({ isMy, userId });
 
-  const onSettingsPress = useCallback(() => {
-    router.push('/profile/setting');
-  }, [router]);
+  const isSettings = useMemo(() => pathname === '/profile/my', [pathname]);
+
 
   const onBackPress = useCallback(() => {
     router.back();
@@ -37,7 +37,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
           <ProfileHero
             user={user}
             isMy={isMy}
-            onSettingsPress={onSettingsPress}
+            isSettings={isSettings}
             onBackPress={onBackPress}
           />
           <ProfileStats user={user} />

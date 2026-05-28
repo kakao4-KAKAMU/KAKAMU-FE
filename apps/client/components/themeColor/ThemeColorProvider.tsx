@@ -6,6 +6,7 @@ import { parse, formatRgb } from 'culori'
 import { ColorContext } from './ColorContext';
 import { TextClassContext } from '@kakamu/ui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useEffect, useMemo } from 'react';
 
 export type ThemeVariables = Record<`--${string}`, string>
 
@@ -91,26 +92,44 @@ type ThemeColorProviderProps = {
 
 export function ThemeColorProvider({ children, colors }: ThemeColorProviderProps) {
   const { colorScheme } = useThemeScheme()
-  const choosenTheme = Object.assign({}, THEME[colorScheme], colors?.[colorScheme] ?? {})
-  const parsedTheme = Object.fromEntries(Object.entries(choosenTheme).map(([key, value]) => [key, formatRgb(parse(value as string))])) as ThemeVariables
+  const theme = useMemo(() => {
+    const choosenTheme = Object.assign({}, THEME[colorScheme], colors?.[colorScheme] ?? {})
+    const parsedTheme = Object.fromEntries(Object.entries(choosenTheme).map(([key, value]) => [key, formatRgb(parse(value as string))])) as ThemeVariables
+    return parsedTheme
+  }, [colorScheme, colors])
+
+  useEffect(() => {
+    if(Platform.OS !== 'web') {
+      return
+    }
+    // TODO: on web platform, apply theme to document.documentElement.style.setProperty(key, value)
+    Object.entries(theme).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(key, value)
+    })
+    return () => {
+      Object.keys(theme).forEach((key) => {
+        document.documentElement.style.removeProperty(key)
+      })
+    }
+  }, [theme])
 
   const navigationTheme: Theme = {
     ...DefaultTheme,
     colors: {
-      primary: parsedTheme['--primary'],
-      background: parsedTheme['--background'],
-      card: parsedTheme['--card'],
-      text: parsedTheme['--foreground'],
-      border: parsedTheme['--border'],
-      notification: parsedTheme['--destructive'],
+      primary: theme['--primary'],
+      background: theme['--background'],
+      card: theme['--card'],
+      text: theme['--foreground'],
+      border: theme['--border'],
+      notification: theme['--destructive'],
     },
   }
 
   const safeAreaInsets = useSafeAreaInsets();
   const paddingBottom = Platform.OS === 'android' ? safeAreaInsets.bottom : 0;
   return (
-    <ColorContext.Provider value={parsedTheme}>
-      <VariableContextProvider value={parsedTheme}>
+    <ColorContext.Provider value={theme}>
+      <VariableContextProvider value={theme}>
         <ThemeProvider value={navigationTheme}>
           <TextClassContext.Provider value="text-foreground">
             <View

@@ -31,6 +31,7 @@ export type {
 export {
   createAuthFormSchemas,
   type AuthFormSchemas,
+  type ChangePasswordFormInput,
   type FindPasswordFormInput,
   type ResetPasswordFormInput,
   type SignInFormInput,
