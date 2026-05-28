@@ -66,7 +66,7 @@ export default function SignUpSnsScreen() {
 
   useEffect(() => {
     if (!pendingSnsProvider || !pendingSnsToken) {
-      router.replace('/signin');
+      router.replace('./signin');
       return;
     }
     setValue('snsType', pendingSnsProvider);
@@ -150,7 +150,7 @@ export default function SignUpSnsScreen() {
   const onValid = useCallback(
     (data: SnsSignUpFormInput) => {
       if (!pendingSnsProvider || !pendingSnsToken) {
-        router.replace('/signin');
+        router.replace('./signin');
         return;
       }
       const { firebaseIdToken } = phoneValidation.getRegisterPhoneAuth();
@@ -184,7 +184,7 @@ export default function SignUpSnsScreen() {
   );
 
   const handleNavigateSignIn = useCallback(() => {
-    router.push('/signin');
+    router.push('./signin');
   }, [router]);
 
   if (!formReady || !pendingSnsProvider || !pendingSnsToken) {

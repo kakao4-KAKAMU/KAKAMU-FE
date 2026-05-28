@@ -131,16 +131,19 @@ export default function SignInScreen() {
           provided_token: token.accessToken,
         });
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         setSubmitting(false);
-        console.error(error);
+        const fallback = t('guest.form.signIn.failedRequest.description');
+        const title = t('guest.form.signIn.failedRequest.title');
+        const { message } = parseApiError(error, fallback);
+        openErrorAlert({ title, description: message });
       });
-  }, [loginWithKakao, socialAuthLoginMutation]);
+  }, [loginWithKakao, openErrorAlert, socialAuthLoginMutation, t]);
 
   const handleGoogleLogin = useCallback(() => {}, []);
 
   const handleNavigateSignUp = useCallback(() => {
-    router.push('/signup');
+    router.push('./signup');
   }, [router]);
 
   const isBusy =

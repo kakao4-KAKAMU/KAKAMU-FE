@@ -90,7 +90,7 @@ export default function SignUpScreen() {
     },
     onSuccess: () => {
       setSubmitting(false);
-      router.replace('/signin');
+      router.replace('./signin');
     },
     onError: (err) => {
       setSubmitting(false);
@@ -148,7 +148,7 @@ export default function SignUpScreen() {
 
   const handleShowTerms = useCallback(() => {}, []);
   const handleNavigateSignIn = useCallback(() => {
-    router.push('/signin');
+    router.push('./signin');
   }, [router]);
 
   const isBusy = submitting || registerMutation.isPending || phoneValidation.isPhoneBusy;

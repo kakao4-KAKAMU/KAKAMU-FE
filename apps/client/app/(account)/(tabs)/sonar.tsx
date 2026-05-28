@@ -1,5 +1,6 @@
 import { useTranslation } from '@kakamu/i18n';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
+import { useErrorAlertDialog } from '@kakamu/ui';
 
 import {
   SonarHeader,
@@ -10,14 +11,18 @@ import {
 
 export default function SonarScreen() {
   const { t } = useTranslation();
+  const { open: openErrorAlert } = useErrorAlertDialog();
 
   return (
     <View className="flex-1">
       <SonarHeader
         onInfoPress={() =>
-          Alert.alert(t('account.sonar.infoDialogTitle'), t('account.sonar.infoDialogMessage'))
+          openErrorAlert({
+            title: t('account.sonar.infoDialogTitle'),
+            description: t('account.sonar.infoDialogMessage'),
+          })
         }
-        />
+      />
       <SonarHint />
       <TrailerSwipeDeck initialItems={SONAR_MOCK_TRAILERS} />
     </View>
