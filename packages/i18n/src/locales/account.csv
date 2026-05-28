@@ -41,6 +41,24 @@ account.persona.create.emptyResults,검색 결과가 없습니다.,No results fo
 account.persona.create.loadMore,더 보기,Load more
 account.persona.create.failedRequest.title,생성에 실패했습니다,Could not create persona
 account.persona.create.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.persona.create.error.limitExceeded.title,페르소나는 최대 5개까지 만들 수 있어요,You can create up to 5 personas
+account.persona.create.error.limitExceeded.description,기존 페르소나를 삭제한 뒤 다시 시도해 주세요.,Delete an existing persona and try again.
+account.persona.list.failedRequest.title,페르소나 목록을 불러오지 못했어요,Could not load personas
+account.persona.list.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.persona.update.failedRequest.title,페르소나 수정에 실패했어요,Could not update persona
+account.persona.update.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.persona.update.error.notFound.title,페르소나를 찾을 수 없어요,Persona not found
+account.persona.update.error.notFound.description,이미 삭제되었거나 존재하지 않는 페르소나예요.,This persona no longer exists.
+account.persona.update.error.forbidden.title,수정 권한이 없어요,No permission to update
+account.persona.update.error.forbidden.description,해당 페르소나를 수정할 권한이 없습니다.,You do not have permission to update this persona.
+account.persona.delete.failedRequest.title,페르소나 삭제에 실패했어요,Could not delete persona
+account.persona.delete.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.persona.delete.error.minimumRequired.title,최소 1개의 페르소나는 필요해요,At least one persona is required
+account.persona.delete.error.minimumRequired.description,마지막 페르소나는 삭제할 수 없습니다.,You cannot delete the last remaining persona.
+account.persona.delete.error.notFound.title,페르소나를 찾을 수 없어요,Persona not found
+account.persona.delete.error.notFound.description,이미 삭제되었거나 존재하지 않는 페르소나예요.,This persona no longer exists.
+account.persona.delete.error.forbidden.title,삭제 권한이 없어요,No permission to delete
+account.persona.delete.error.forbidden.description,해당 페르소나를 삭제할 권한이 없습니다.,You do not have permission to delete this persona.
 account.persona.create.validation.name.required,페르소나 명을 입력해 주세요.,Enter a persona name.
 account.persona.create.validation.name.min,페르소나 명을 입력해 주세요.,Enter a persona name.
 account.persona.create.validation.name.max,페르소나 명은 {max}자 이하로 입력해 주세요.,Name must be at most {max} characters.

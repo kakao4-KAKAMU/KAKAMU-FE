@@ -1,25 +1,40 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
 import { useDeletePersonaMutation, usePersonasQuery } from '@kakamu/query';
 import { usePersonaStore } from '@kakamu/store';
+import { useErrorAlertDialog } from '@kakamu/ui';
 import {
   PersonaGrid,
   PersonaIntro,
   PersonaManageButton,
 } from '@/components/featured/persona';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { mapPersonaDeleteError } from '@/lib/error-message-map/persona/persona-delete-error';
+import { mapPersonaListError } from '@/lib/error-message-map/persona/persona-list-error';
 
 export default function PersonaScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const apiClient = useBackendApiClient();
+  const { open: openErrorAlert } = useErrorAlertDialog();
   const personasQuery = usePersonasQuery(apiClient);
   const personas = personasQuery.data ?? [];
-  const deleteMutation = useDeletePersonaMutation(apiClient);
+  const deleteMutation = useDeletePersonaMutation(apiClient, {
+    onError: (err) => {
+      openErrorAlert(mapPersonaDeleteError(err, t));
+    },
+  });
   const selectPersona = usePersonaStore((state) => state.selectPersona);
   const [isManaging, setIsManaging] = useState(false);
+
+  useEffect(() => {
+    if (!personasQuery.error) {
+      return;
+    }
+    openErrorAlert(mapPersonaListError(personasQuery.error, t));
+  }, [openErrorAlert, personasQuery.error, t]);
 
   const onAddPress = useCallback(() => {
     router.push('/persona/create');
