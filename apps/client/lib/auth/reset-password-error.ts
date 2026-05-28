@@ -1,4 +1,4 @@
-import type { TFunction } from '@kakamu/i18n';
+import type { TFunction } from 'i18next';
 
 import { parseApiError } from './parse-api-error';
 
