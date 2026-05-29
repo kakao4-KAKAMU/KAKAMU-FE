@@ -18,9 +18,9 @@ export function usePersonaCreateStep2Data({ control }: UsePersonaCreateStep2Data
 
   const [movieKeyword, setMovieKeyword] = useState('');
   const [movieYear, setMovieYear] = useState('');
-  const [movieSort, setMovieSort] = useState<MovieSort>('year-desc');
+  const [movieSort, setMovieSort] = useState<MovieSort>('year_desc');
   const [personKeyword, setPersonKeyword] = useState('');
-  const [personSort, setPersonSort] = useState<PersonSort>('name-asc');
+  const [personSort, setPersonSort] = useState<PersonSort>('name_asc');
   const [selectedJobs, setSelectedJobs] = useState<PersonSearchJob[]>([]);
 
   const debouncedMovieKeyword = useDebouncedValue(movieKeyword);
