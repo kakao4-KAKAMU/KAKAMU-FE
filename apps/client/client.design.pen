@@ -7079,63 +7079,18 @@
                   "fontWeight": "normal"
                 },
                 {
-                  "type": "frame",
-                  "id": "goYUr",
-                  "name": "Input Group/Default",
+                  "id": "t90pv",
+                  "type": "ref",
+                  "ref": "NdaBU",
+                  "name": "Input",
                   "width": "fill_container",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1
-                  },
-                  "layout": "vertical",
-                  "gap": 6,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "bc7ZJ",
-                      "name": "Label Text",
-                      "width": "fill_container",
-                      "fill": {
-                        "type": "color",
-                        "color": "#ffffffff",
-                        "enabled": false
-                      },
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1
-                      },
-                      "gap": 8,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "XK9Ri",
-                          "name": "Label Text",
-                          "fill": "#0a0a0a",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Label Text",
-                          "lineHeight": 1.4285714285714286,
-                          "textAlignVertical": "middle",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "t90pv",
-                      "type": "ref",
-                      "ref": "NdaBU",
-                      "name": "Input",
-                      "width": "fill_container",
-                      "descendants": {
-                        "Oj8vs": {
-                          "content": "페르소나 이름을 입력해주세요"
-                        }
-                      }
+                  "x": 0,
+                  "y": 28,
+                  "descendants": {
+                    "Oj8vs": {
+                      "content": "페르소나 이름을 입력해주세요"
                     }
-                  ]
+                  }
                 }
               ]
             },
@@ -7214,7 +7169,7 @@
                               "fill": "#0a0a0a",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Label Text",
+                              "content": "파일 선택",
                               "lineHeight": 1.4285714285714286,
                               "textAlignVertical": "middle",
                               "fontFamily": "Inter",
@@ -7231,7 +7186,7 @@
                           "width": "fill_container",
                           "descendants": {
                             "Oj8vs": {
-                              "content": "이미지 URL을 입력해주세요"
+                              "content": "이미지 파일을 선택해주세요. "
                             }
                           }
                         }
@@ -7259,77 +7214,30 @@
                 },
                 {
                   "type": "frame",
-                  "id": "ocuGl",
-                  "name": "Textarea Group/Default",
+                  "id": "WxU8g",
+                  "name": "Textarea",
                   "width": "fill_container",
+                  "height": 80,
+                  "fill": "$background",
+                  "cornerRadius": "$radius-md",
                   "stroke": {
                     "align": "inside",
-                    "thickness": 1
+                    "thickness": 1,
+                    "fill": "$border"
                   },
                   "layout": "vertical",
-                  "gap": 6,
+                  "padding": 12,
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "aXlSj",
-                      "name": "Label Text",
-                      "width": "fill_container",
-                      "fill": {
-                        "type": "color",
-                        "color": "#ffffffff",
-                        "enabled": false
-                      },
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1
-                      },
-                      "gap": 8,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "ToKc6",
-                          "name": "Label Text",
-                          "fill": "#0a0a0a",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Label Text",
-                          "lineHeight": 1.4285714285714286,
-                          "textAlignVertical": "middle",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "WxU8g",
-                      "name": "Textarea",
-                      "width": "fill_container",
-                      "height": 80,
-                      "fill": "$background",
-                      "cornerRadius": "$radius-md",
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "$border"
-                      },
-                      "layout": "vertical",
-                      "padding": 12,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "Nyr45",
-                          "name": "Placeholder",
-                          "fill": "$muted-foreground",
-                          "content": "페르소나에 대한 소개를 입력해주세요",
-                          "lineHeight": 1.45,
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
-                        }
-                      ]
+                      "type": "text",
+                      "id": "Nyr45",
+                      "name": "Placeholder",
+                      "fill": "$muted-foreground",
+                      "content": "페르소나에 대한 소개를 입력해주세요",
+                      "lineHeight": 1.45,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -8683,6 +8591,8 @@
                               "id": "Oj8vs",
                               "name": "Placeholder",
                               "fill": "$muted-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
                               "content": "Enter text...",
                               "fontFamily": "Inter",
                               "fontSize": 14,
@@ -8731,6 +8641,9 @@
                               "id": "CMlvT",
                               "name": "Placeholder",
                               "fill": "$muted-foreground",
+                              "textGrowth": "fixed-width-height",
+                              "width": "fill_container",
+                              "height": "fill_container",
                               "content": "Enter message...",
                               "lineHeight": 1.45,
                               "fontFamily": "Inter",
@@ -8772,11 +8685,11 @@
                             "thickness": 1,
                             "fill": "$border"
                           },
+                          "gap": 12,
                           "padding": [
                             0,
                             12
                           ],
-                          "justifyContent": "space_between",
                           "alignItems": "center",
                           "children": [
                             {
@@ -8784,6 +8697,8 @@
                               "id": "w2rkjQ",
                               "name": "Label",
                               "fill": "$foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
                               "content": "Select option",
                               "fontFamily": "Inter",
                               "fontSize": 14,
