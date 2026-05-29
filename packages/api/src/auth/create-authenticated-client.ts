@@ -4,6 +4,7 @@ import ky, { HTTPError, type Options } from 'ky';
 import { createApiClient, type ApiClient } from '../client';
 import { ApiHttpError, getApiErrorCode } from '../errors/api-http-error';
 import { refreshTokensSingleFlight } from './refresh-single-flight';
+import type { PersonaBridge } from './persona-bridge';
 import type { TokenBridge } from './token-bridge';
 
 const REFRESH_PATH = 'users/login/refresh';
@@ -24,6 +25,7 @@ function isRefreshRequest(request: Request): boolean {
 export function createAuthenticatedApiClient(
   prefixUrl: string,
   tokenBridge: TokenBridge,
+  personaBridge?: PersonaBridge,
   options?: Partial<Options>,
 ): ApiClient {
   const bareClient = createApiClient(prefixUrl, { retry: { limit: 0 } });
@@ -44,6 +46,10 @@ export function createAuthenticatedApiClient(
             if (token) {
               request.headers.set('Authorization', `Bearer ${token}`);
             }
+          }
+          const personaId = personaBridge?.getSelectedPersonaId();
+          if (personaId) {
+            request.headers.set('x-persona-id', personaId);
           }
         },
       ],

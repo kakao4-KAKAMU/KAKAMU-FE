@@ -1,4 +1,5 @@
 export { createAuthenticatedApiClient } from './auth/create-authenticated-client';
+export type { PersonaBridge } from './auth/persona-bridge';
 export type { TokenBridge } from './auth/token-bridge';
 export { createApiClient, type ApiClient } from './client';
 export {
