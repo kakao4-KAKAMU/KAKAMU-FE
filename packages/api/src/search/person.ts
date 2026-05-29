@@ -10,22 +10,24 @@ import type { ApiClient } from '../client';
 const DEFAULT_SORT = 'name_asc' satisfies PersonSearchRequestBody['sort'];
 const DEFAULT_LIMIT = 20;
 
-function toPersonSearchBody(params: PersonSearchParams): PersonSearchRequestBody {
-  return {
-    name: params.name?.trim() ?? '',
-    job: params.job ?? [],
-    sort: params.sort ?? DEFAULT_SORT,
-    page: params.page ?? 1,
-    limit: params.limit ?? DEFAULT_LIMIT,
-  };
+function toPersonSearchParams(params: PersonSearchParams): URLSearchParams {
+  const searchParams = new URLSearchParams();
+  searchParams.set('name', params.name?.trim() ?? '');
+  for (const job of params.job ?? []) {
+    searchParams.append('job[]', job);
+  }
+  searchParams.set('sort', params.sort ?? DEFAULT_SORT);
+  searchParams.set('page', String(params.page ?? 1));
+  searchParams.set('limit', String(params.limit ?? DEFAULT_LIMIT));
+  return searchParams;
 }
 
-/** `POST .../search/person` */
+/** `POST .../v1/search/person` */
 export async function postSearchPersons(
   client: ApiClient,
   params: PersonSearchParams = {},
 ): Promise<SearchPageResponse<PersonSearchItem>> {
   return client
-    .post('search/person', { json: toPersonSearchBody(params) })
+    .get('v1/search/person', { searchParams: toPersonSearchParams(params) })
     .json<SearchPageResponse<PersonSearchItem>>();
 }
