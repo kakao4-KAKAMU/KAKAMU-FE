@@ -1,11 +1,18 @@
-export type MovieSort = 'year-desc' | 'year-asc' | 'name-desc' | 'name-asc';
+export type MovieSort = 'year_asc' | 'year_desc' | 'name_asc' | 'name_desc';
 
-export type PersonSort = 'name-desc' | 'name-asc';
+export type PersonSort = 'name_asc' | 'name_desc';
+
+export type FeedContentType = 'review' | 'short' | 'question';
+
+export type FeedPeriod = 'today' | 'week' | 'month';
+
+export type FeedSort = 'latest' | 'popular' | 'relevance';
 
 export type MovieSearchItem = {
   id: string;
   name: string;
   year?: number;
+  genres?: string[];
   poster_url?: string;
 };
 
@@ -16,12 +23,29 @@ export type PersonSearchItem = {
   profile_image_url?: string;
 };
 
+export type MovieSearchRequestBody = {
+  name: string;
+  genre: string[];
+  year?: number;
+  sort: MovieSort;
+  skip: number;
+  limit: number;
+};
+
+export type PersonSearchRequestBody = {
+  name: string;
+  job: string[];
+  sort: PersonSort;
+  page: number;
+  limit: number;
+};
+
 export type MovieSearchParams = {
-  genre?: string[];
   name?: string;
+  genre?: string[];
   year?: number;
   sort?: MovieSort;
-  cursor?: string;
+  skip?: number;
   limit?: number;
 };
 
@@ -29,8 +53,36 @@ export type PersonSearchParams = {
   name?: string;
   job?: string[];
   sort?: PersonSort;
+  page?: number;
+  limit?: number;
+};
+
+export type FeedSearchItem = {
+  id: string;
+  body?: string;
+  content_type?: FeedContentType;
+  author_name?: string;
+  author_handle?: string;
+  movie_title?: string;
+  like_count?: number;
+  comment_count?: number;
+  created_at?: string;
+};
+
+export type FeedSearchParams = {
+  q?: string;
+  content_type?: FeedContentType;
+  period?: FeedPeriod;
+  sort?: FeedSort;
   cursor?: string;
   limit?: number;
+};
+
+export type SearchPageResponse<T> = {
+  items: T[];
+  page: number;
+  limit: number;
+  total?: number;
 };
 
 export type PaginatedResponse<T> = {

@@ -14,13 +14,21 @@ export type {
 } from './persona-create';
 export type { Genre, GenreListResponse } from './genre';
 export type {
+  FeedContentType,
+  FeedPeriod,
+  FeedSearchItem,
+  FeedSearchParams,
+  FeedSort,
   MovieSearchItem,
   MovieSearchParams,
+  MovieSearchRequestBody,
   MovieSort,
   PaginatedResponse,
   PersonSearchItem,
   PersonSearchParams,
+  PersonSearchRequestBody,
   PersonSort,
+  SearchPageResponse,
 } from './search';
 
 export type {
