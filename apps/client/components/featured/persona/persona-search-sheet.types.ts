@@ -1,4 +1,4 @@
-import type { MovieSearchItem, PersonSearchItem, SearchPageResponse } from '@kakamu/types';
+import type { MovieItem, PersonSearchItem, SearchPageResponse } from '@kakamu/types';
 import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import type { MovieSort, PersonSort } from '@kakamu/types';
 
@@ -13,7 +13,7 @@ export type PersonaMovieSearchControl = {
   setSort: (value: MovieSort) => void;
   filterGenreIds: number[];
   setFilterGenreIds: (value: number[]) => void;
-  items: MovieSearchItem[];
+  items: MovieItem[];
 };
 
 export type PersonaPersonSearchControl = {
@@ -27,7 +27,7 @@ export type PersonaPersonSearchControl = {
 };
 
 export type PersonaMovieSearchQuery = UseInfiniteQueryResult<
-  InfiniteData<SearchPageResponse<MovieSearchItem>>
+  InfiniteData<SearchPageResponse<MovieItem>>
 >;
 
 export type PersonaPersonSearchQuery = UseInfiniteQueryResult<

@@ -19,10 +19,6 @@ export type {
   FeedSearchItem,
   FeedSearchParams,
   FeedSort,
-  MovieSearchItem,
-  MovieSearchParams,
-  MovieSearchRequestBody,
-  MovieSort,
   PaginatedResponse,
   PersonSearchItem,
   PersonSearchParams,
@@ -30,6 +26,13 @@ export type {
   PersonSort,
   SearchPageResponse,
 } from './search';
+
+export type {
+  MovieSort,
+  MovieItem,
+  MovieSearchParams,
+  MovieSearchRequestBody,
+} from './movie';
 
 export type {
   AuthSnsSignUpProvider,

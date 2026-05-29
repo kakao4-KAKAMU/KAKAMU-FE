@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SlidersHorizontal } from 'lucide-react-native';
 import { useTranslation } from '@kakamu/i18n';
-import type { Genre, MovieSearchItem } from '@kakamu/types';
+import type { Genre, MovieItem } from '@kakamu/types';
 import { Button, Icon, Input, Text, TextClassContext } from '@kakamu/ui';
 
 import type { PersonaCreateFormInput } from '@kakamu/schema';
@@ -48,7 +48,7 @@ export function PersonaMovieSearchSheet({
 
   const isSelected = useCallback((id: number) => draft.some((item) => item.id === id), [draft]);
 
-  const toggleItem = useCallback((item: MovieSearchItem) => {
+  const toggleItem = useCallback((item: MovieItem) => {
     setDraft((current) => {
       const exists = current.some((movie) => movie.id === item.id);
       if (exists) {

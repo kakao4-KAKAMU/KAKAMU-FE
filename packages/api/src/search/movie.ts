@@ -1,5 +1,5 @@
 import type {
-  MovieSearchItem,
+  MovieItem,
   MovieSearchParams,
   MovieSearchRequestBody,
   SearchPageResponse,
@@ -31,8 +31,8 @@ function toMovieSearchParams(params: MovieSearchParams): URLSearchParams {
 export async function postSearchMovies(
   client: ApiClient,
   params: MovieSearchParams = {},
-): Promise<SearchPageResponse<MovieSearchItem>> {
+): Promise<SearchPageResponse<MovieItem>> {
   return client
     .get('v1/search/movie', { searchParams: toMovieSearchParams(params) })
-    .json<SearchPageResponse<MovieSearchItem>>();
+    .json<SearchPageResponse<MovieItem>>();
 }
