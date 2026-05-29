@@ -9,15 +9,15 @@ export type FeedPeriod = 'today' | 'week' | 'month';
 export type FeedSort = 'latest' | 'popular' | 'relevance';
 
 export type MovieSearchItem = {
-  id: string;
-  name: string;
-  year?: number;
+  id: number;
+  title: string;
+  release_date?: string;
   genres?: string[];
   poster_url?: string;
 };
 
 export type PersonSearchItem = {
-  id: string;
+  id: number;
   name: string;
   job?: string;
   profile_image_url?: string;
@@ -42,7 +42,7 @@ export type PersonSearchRequestBody = {
 
 export type MovieSearchParams = {
   name?: string;
-  genre?: string[];
+  genre?: number[];
   year?: number;
   sort?: MovieSort;
   skip?: number;

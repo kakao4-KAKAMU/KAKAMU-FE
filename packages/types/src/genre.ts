@@ -1,6 +1,6 @@
 export type Genre = {
-  id: string;
+  id: number;
   name: string;
 };
 
-export type GenreListResponse = Genre[];
+export type GenreListResponse = { genres: Genre[] };
