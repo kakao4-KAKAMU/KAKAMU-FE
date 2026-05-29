@@ -35,6 +35,17 @@ export type {
 } from './movie';
 
 export type {
+  PostCreateRequest,
+  PostCreateResponse,
+  PostCursorListResponse,
+  PostDeleteResponse,
+  PostItem,
+  PostListParams,
+  PostUpdateRequest,
+  PostUpdateResponse,
+} from './post';
+
+export type {
   AuthSnsSignUpProvider,
   ChangePasswordRequest,
   Email,
