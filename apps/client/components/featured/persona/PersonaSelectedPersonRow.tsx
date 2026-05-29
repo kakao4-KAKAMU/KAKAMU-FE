@@ -1,5 +1,7 @@
-import { Pressable, View } from 'react-native';
-import { Checkbox, Text } from '@kakamu/ui';
+import { Platform, Pressable, View } from 'react-native';
+import { Icon, Text } from '@kakamu/ui';
+import { ConditionalRender } from '@/components/utils';
+import { Check } from 'lucide-react-native';
 
 type PersonaSelectedPersonRowProps = {
   name: string;
@@ -24,7 +26,19 @@ export function PersonaSelectedPersonRow({
         {job ? <Text className="text-xs text-muted-foreground">{job}</Text> : null}
         <Text className="text-sm font-semibold text-foreground">{name}</Text>
       </View>
-      <Checkbox checked={checked} onCheckedChange={onToggle} />
+
+      <ConditionalRender.Boolean
+        condition={checked}
+        render={{
+          true:
+            <Icon
+              as={Check}
+              size={16}
+              strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
+              className="text-primary-foreground"
+            />,
+        }}
+      />
     </Pressable>
   );
 }

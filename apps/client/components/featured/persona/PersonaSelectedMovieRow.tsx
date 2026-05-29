@@ -1,5 +1,7 @@
-import { Pressable, View } from 'react-native';
-import { Checkbox, Text } from '@kakamu/ui';
+import { Platform, Pressable, View } from 'react-native';
+import { Checkbox, Icon, Text } from '@kakamu/ui';
+import { Check, X } from 'lucide-react-native';
+import { ConditionalRender } from '../../utils';
 
 type PersonaSelectedMovieRowProps = {
   title: string;
@@ -24,7 +26,18 @@ export function PersonaSelectedMovieRow({
         <Text className="text-sm font-semibold text-foreground">{title}</Text>
         {release_date != null ? <Text className="text-xs text-muted-foreground">{release_date}</Text> : null}
       </View>
-      <Checkbox checked={checked} onCheckedChange={onToggle} />
+      <ConditionalRender.Boolean
+        condition={checked}
+        render={{
+          true:
+            <Icon
+              as={Check}
+              size={16}
+              strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
+              className="text-primary-foreground"
+            />,
+        }}
+      />
     </Pressable>
   );
 }
