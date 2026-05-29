@@ -12,6 +12,10 @@ export type PersonaFormValidationMessages = {
   profileImageUrl: {
     invalid: string;
   };
+  genres: {
+    required: string;
+    max: string;
+  };
   movies: {
     required: string;
   };
