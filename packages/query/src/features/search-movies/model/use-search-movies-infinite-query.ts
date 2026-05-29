@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
-import { getSearchMovies } from '@kakamu/api';
+import { postSearchMovies } from '@kakamu/api';
 import type { MovieSearchParams } from '@kakamu/types';
 
 import { searchKeys } from '../../../shared/keys/search.keys';
@@ -9,19 +9,27 @@ const DEFAULT_LIMIT = 20;
 
 export function useSearchMoviesInfiniteQuery(
   client: ApiClient,
-  params: Omit<MovieSearchParams, 'cursor' | 'limit'>,
+  params: Omit<MovieSearchParams, 'skip' | 'limit'>,
   enabled = true,
 ) {
   return useInfiniteQuery({
     queryKey: searchKeys.movies(params),
     queryFn: ({ pageParam }) =>
-      getSearchMovies(client, {
+      postSearchMovies(client, {
         ...params,
-        cursor: pageParam,
+        skip: pageParam,
         limit: DEFAULT_LIMIT,
       }),
-    initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) => lastPage.next_cursor ?? undefined,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.items.length < lastPage.limit) {
+        return undefined;
+      }
+      if (lastPage.total != null && lastPage.page * lastPage.limit >= lastPage.total) {
+        return undefined;
+      }
+      return lastPage.page + 1;
+    },
     enabled,
   });
 }

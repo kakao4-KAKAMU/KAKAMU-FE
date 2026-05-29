@@ -1,7 +1,12 @@
-import type { MovieSearchParams, PersonSearchParams } from '@kakamu/types';
+import type { FeedSearchParams, MovieSearchParams, PersonSearchParams } from '@kakamu/types';
 
 export const searchKeys = {
   all: ['search'] as const,
-  movies: (params: MovieSearchParams) => [...searchKeys.all, 'movies', params] as const,
-  persons: (params: PersonSearchParams) => [...searchKeys.all, 'persons', params] as const,
+  lists: () => [...searchKeys.all, 'list'] as const,
+  movies: (params: Omit<MovieSearchParams, 'page' | 'limit'>) =>
+    [...searchKeys.lists(), 'movies', params] as const,
+  persons: (params: Omit<PersonSearchParams, 'page' | 'limit'>) =>
+    [...searchKeys.lists(), 'persons', params] as const,
+  feeds: (params: Omit<FeedSearchParams, 'cursor' | 'limit'>) =>
+    [...searchKeys.lists(), 'feeds', params] as const,
 };
