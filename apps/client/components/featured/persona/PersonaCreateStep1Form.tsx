@@ -19,7 +19,7 @@ export function PersonaCreateStep1Form({
   const { t } = useTranslation();
 
   return (
-    <View className="gap-4">
+    <View className="gap-6">
       <Controller
         control={control}
         name="name"
@@ -36,7 +36,7 @@ export function PersonaCreateStep1Form({
               autoCapitalize="none"
               autoCorrect={false}
               aria-labelledby="persona-name-label"
-              className="h-12 rounded-xl"
+              className="h-11 rounded-md"
             />
             {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
           </View>
@@ -65,17 +65,22 @@ export function PersonaCreateStep1Form({
                   </TextClassContext.Provider>
                 )}
               </View>
-              <Input
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder={t('account.persona.create.thumbnailPlaceholder')}
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="url"
-                aria-labelledby="persona-thumbnail-label"
-                className="h-12 flex-1 rounded-xl"
-              />
+              <View className="min-w-0 flex-1 gap-1.5">
+                <Text className="text-sm font-semibold text-foreground">
+                  {t('account.persona.create.pickFileLabel')}
+                </Text>
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={t('account.persona.create.thumbnailPlaceholder')}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="url"
+                  aria-labelledby="persona-thumbnail-label"
+                  className="h-11 rounded-md"
+                />
+              </View>
             </View>
             {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
           </View>
@@ -99,14 +104,14 @@ export function PersonaCreateStep1Form({
               numberOfLines={4}
               textAlignVertical="top"
               aria-labelledby="persona-description-label"
-              className="min-h-[100px] rounded-xl py-3"
+              className="min-h-20 rounded-md py-3"
             />
             {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
           </View>
         )}
       />
 
-      <Button onPress={onContinue} disabled={continuing} className="h-12 rounded-xl">
+      <Button onPress={onContinue} disabled={continuing} className="h-11 rounded-md">
         <Text>{t('account.persona.create.continue')}</Text>
       </Button>
     </View>

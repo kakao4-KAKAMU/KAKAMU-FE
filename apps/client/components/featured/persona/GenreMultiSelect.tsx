@@ -7,6 +7,7 @@ type GenreMultiSelectProps = {
   selectedIds: string[];
   onToggle: (genreId: string) => void;
   isLoading?: boolean;
+  maxCount?: number;
 };
 
 export function GenreMultiSelect({
@@ -14,6 +15,7 @@ export function GenreMultiSelect({
   selectedIds,
   onToggle,
   isLoading = false,
+  maxCount,
 }: GenreMultiSelectProps) {
   if (isLoading) {
     return (
@@ -33,8 +35,14 @@ export function GenreMultiSelect({
     >
       {genres.map((genre) => {
         const selected = selectedIds.includes(genre.id);
+        const atMax = maxCount != null && selectedIds.length >= maxCount && !selected;
         return (
-          <Pressable key={genre.id} onPress={() => onToggle(genre.id)} accessibilityRole="button">
+          <Pressable
+            key={genre.id}
+            onPress={() => onToggle(genre.id)}
+            accessibilityRole="button"
+            disabled={atMax}
+          >
             <Badge
               variant={selected ? 'default' : 'outline'}
               className={cn('px-3 py-1', selected && 'bg-primary')}

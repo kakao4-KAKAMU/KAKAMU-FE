@@ -12,9 +12,12 @@ import { useForm } from 'react-hook-form';
 import {
   PersonaCreateStep1Form,
   PersonaCreateStep2Form,
-  PersonaIntro,
+  PersonaCreateStep3Form,
+  PersonaCreateStep4Form,
 } from '@/components/featured/persona';
-import { usePersonaCreateStep2Data } from '@/hooks/persona/usePersonaCreateStep2Data';
+import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
+import { usePersonaCreateStep3Search } from '@/hooks/persona/usePersonaCreateStep3Search';
+import { usePersonaCreateStep4Search } from '@/hooks/persona/usePersonaCreateStep4Search';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapPersonaCreateError } from '@/lib/error-message-map/persona/persona-create-error';
 import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
@@ -28,7 +31,7 @@ const DEFAULT_VALUES: PersonaCreateFormInput = {
   selectedPersons: [],
 };
 
-type PersonaCreateStep = 1 | 2;
+type PersonaCreateStep = 1 | 2 | 3 | 4;
 
 export default function PersonaCreateScreen() {
   const router = useRouter();
@@ -45,19 +48,38 @@ export default function PersonaCreateScreen() {
 
   const [step, setStep] = useState<PersonaCreateStep>(1);
   const [submitting, setSubmitting] = useState(false);
-  const step2Data = usePersonaCreateStep2Data({ control });
+
+  const genreQuery = usePersonaCreateGenreList();
+  const step3Search = usePersonaCreateStep3Search(step === 3);
+  const step4Search = usePersonaCreateStep4Search(step === 4);
 
   const selectPersona = usePersonaStore((state) => state.selectPersona);
 
-  const handleContinueToTaste = useCallback(async () => {
-    const ok = await trigger(['name', 'description', 'profile_image_url']);
+  const handleContinueFromStep1 = useCallback(async () => {
+    const ok = await trigger(['name', 'description', 'profile_image_url'], {
+      shouldFocus: true,
+    });
     if (ok) {
       setStep(2);
     }
   }, [trigger]);
 
-  const handleBackToBasics = useCallback(() => {
-    setStep(1);
+  const handleContinueFromStep2 = useCallback(async () => {
+    const ok = await trigger(['selectedGenreIds'], { shouldFocus: true });
+    if (ok) {
+      setStep(3);
+    }
+  }, [trigger]);
+
+  const handleContinueFromStep3 = useCallback(async () => {
+    const ok = await trigger(['selectedMovies'], { shouldFocus: true });
+    if (ok) {
+      setStep(4);
+    }
+  }, [trigger]);
+
+  const handleBack = useCallback(() => {
+    setStep((current) => (current > 1 ? ((current - 1) as PersonaCreateStep) : current));
   }, []);
 
   const apiClient = useBackendApiClient();
@@ -94,8 +116,8 @@ export default function PersonaCreateScreen() {
   );
 
   const onInvalid = useCallback(async () => {
-    if (step === 2) {
-      await trigger(['selectedMovies', 'selectedPersons']);
+    if (step === 4) {
+      await trigger(['selectedPersons'], { shouldFocus: true });
     }
   }, [step, trigger]);
 
@@ -104,17 +126,7 @@ export default function PersonaCreateScreen() {
   }, [handleSubmit, onInvalid, onValid]);
 
   const isBusy = submitting || createMutation.isPending;
-
-  const stepHeader =
-    step === 1
-      ? {
-          title: t('account.persona.create.step1Title'),
-          description: t('account.persona.create.step1Description'),
-        }
-      : {
-          title: t('account.persona.create.step2Title'),
-          description: t('account.persona.create.step2Description'),
-        };
+  const genres = genreQuery.data ?? [];
 
   return (
     <>
@@ -129,48 +141,57 @@ export default function PersonaCreateScreen() {
           showsVerticalScrollIndicator={false}
           className="flex-1"
         >
-          <View className="gap-8 px-5 py-7">
-            <PersonaIntro title={stepHeader.title} description={stepHeader.description} />
-
+          <View className="min-h-full gap-8 px-5 py-6">
             {step === 1 ? (
               <PersonaCreateStep1Form
                 control={control}
-                onContinue={handleContinueToTaste}
+                onContinue={handleContinueFromStep1}
                 continuing={isBusy}
               />
-            ) : (
+            ) : null}
+
+            {step === 2 ? (
               <PersonaCreateStep2Form
                 control={control}
-                onBack={handleBackToBasics}
+                onBack={handleBack}
+                onContinue={handleContinueFromStep2}
+                continuing={isBusy}
+                genres={genres}
+                genresLoading={genreQuery.isLoading}
+              />
+            ) : null}
+
+            {step === 3 ? (
+              <PersonaCreateStep3Form
+                control={control}
+                onBack={handleBack}
+                onContinue={handleContinueFromStep3}
+                continuing={isBusy}
+                genres={genres}
+                sheetOpen={step3Search.sheetOpen}
+                onSheetOpenChange={step3Search.setSheetOpen}
+                filterOpen={step3Search.filterOpen}
+                onFilterOpenChange={step3Search.setFilterOpen}
+                search={step3Search.search}
+                searchQuery={step3Search.searchQuery}
+              />
+            ) : null}
+
+            {step === 4 ? (
+              <PersonaCreateStep4Form
+                control={control}
+                onBack={handleBack}
                 onSubmit={handleSubmitPersona}
                 submitting={isBusy}
                 canSubmit={!createMutation.isPending}
-                genres={step2Data.genreQuery.data ?? []}
-                genresLoading={step2Data.genreQuery.isLoading}
-                movieKeyword={step2Data.movieKeyword}
-                onMovieKeywordChange={step2Data.setMovieKeyword}
-                movieYear={step2Data.movieYear}
-                onMovieYearChange={step2Data.setMovieYear}
-                movieSort={step2Data.movieSort}
-                onMovieSortChange={step2Data.setMovieSort}
-                movieItems={step2Data.movieItems}
-                movieLoading={step2Data.movieSearchQuery.isLoading}
-                movieFetchingNext={step2Data.movieSearchQuery.isFetchingNextPage}
-                movieHasNextPage={step2Data.movieSearchQuery.hasNextPage}
-                onLoadMoreMovies={() => step2Data.movieSearchQuery.fetchNextPage()}
-                personKeyword={step2Data.personKeyword}
-                onPersonKeywordChange={step2Data.setPersonKeyword}
-                personSort={step2Data.personSort}
-                onPersonSortChange={step2Data.setPersonSort}
-                selectedJobs={step2Data.selectedJobs}
-                onToggleJob={step2Data.toggleJob}
-                personItems={step2Data.personItems}
-                personLoading={step2Data.personSearchQuery.isLoading}
-                personFetchingNext={step2Data.personSearchQuery.isFetchingNextPage}
-                personHasNextPage={step2Data.personSearchQuery.hasNextPage}
-                onLoadMorePersons={() => step2Data.personSearchQuery.fetchNextPage()}
+                sheetOpen={step4Search.sheetOpen}
+                onSheetOpenChange={step4Search.setSheetOpen}
+                filterOpen={step4Search.filterOpen}
+                onFilterOpenChange={step4Search.setFilterOpen}
+                search={step4Search.search}
+                searchQuery={step4Search.searchQuery}
               />
-            )}
+            ) : null}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
