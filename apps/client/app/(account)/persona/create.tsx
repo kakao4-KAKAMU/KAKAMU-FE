@@ -21,6 +21,7 @@ import { usePersonaCreateStep4Search } from '@/hooks/persona/usePersonaCreateSte
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapPersonaCreateError } from '@/lib/error-message-map/persona/persona-create-error';
 import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
+import { ConditionalRender } from '@/components/utils';
 
 const DEFAULT_VALUES: PersonaCreateFormInput = {
   name: '',
@@ -126,7 +127,7 @@ export default function PersonaCreateScreen() {
   }, [handleSubmit, onInvalid, onValid]);
 
   const isBusy = submitting || createMutation.isPending;
-  const genres = genreQuery.data ?? [];
+  const genres = genreQuery.data?.genres ?? [];
 
   return (
     <>
@@ -142,56 +143,50 @@ export default function PersonaCreateScreen() {
           className="flex-1"
         >
           <View className="min-h-full gap-8 px-5 py-6">
-            {step === 1 ? (
-              <PersonaCreateStep1Form
-                control={control}
-                onContinue={handleContinueFromStep1}
-                continuing={isBusy}
-              />
-            ) : null}
-
-            {step === 2 ? (
-              <PersonaCreateStep2Form
-                control={control}
-                onBack={handleBack}
-                onContinue={handleContinueFromStep2}
-                continuing={isBusy}
-                genres={genres}
-                genresLoading={genreQuery.isLoading}
-              />
-            ) : null}
-
-            {step === 3 ? (
-              <PersonaCreateStep3Form
-                control={control}
-                onBack={handleBack}
-                onContinue={handleContinueFromStep3}
-                continuing={isBusy}
-                genres={genres}
-                sheetOpen={step3Search.sheetOpen}
-                onSheetOpenChange={step3Search.setSheetOpen}
-                filterOpen={step3Search.filterOpen}
-                onFilterOpenChange={step3Search.setFilterOpen}
-                search={step3Search.search}
-                searchQuery={step3Search.searchQuery}
-              />
-            ) : null}
-
-            {step === 4 ? (
-              <PersonaCreateStep4Form
-                control={control}
-                onBack={handleBack}
-                onSubmit={handleSubmitPersona}
-                submitting={isBusy}
-                canSubmit={!createMutation.isPending}
-                sheetOpen={step4Search.sheetOpen}
-                onSheetOpenChange={step4Search.setSheetOpen}
-                filterOpen={step4Search.filterOpen}
-                onFilterOpenChange={step4Search.setFilterOpen}
-                search={step4Search.search}
-                searchQuery={step4Search.searchQuery}
-              />
-            ) : null}
+            <ConditionalRender
+              render={{
+                1: <PersonaCreateStep1Form
+                  control={control}
+                  onContinue={handleContinueFromStep1}
+                  continuing={isBusy}
+                />,
+                2: <PersonaCreateStep2Form
+                  control={control}
+                  onBack={handleBack}
+                  onContinue={handleContinueFromStep2}
+                  continuing={isBusy}
+                  genres={genres}
+                  genresLoading={genreQuery.isLoading}
+                />,
+                3: <PersonaCreateStep3Form
+                  control={control}
+                  onBack={handleBack}
+                  onContinue={handleContinueFromStep3}
+                  continuing={isBusy}
+                  genres={genres}
+                  sheetOpen={step3Search.sheetOpen}
+                  onSheetOpenChange={step3Search.setSheetOpen}
+                  filterOpen={step3Search.filterOpen}
+                  onFilterOpenChange={step3Search.setFilterOpen}
+                  search={step3Search.search}
+                  searchQuery={step3Search.searchQuery}
+                />,
+                4: <PersonaCreateStep4Form
+                  control={control}
+                  onBack={handleBack}
+                  onSubmit={handleSubmitPersona}
+                  submitting={isBusy}
+                  canSubmit={!createMutation.isPending}
+                  sheetOpen={step4Search.sheetOpen}
+                  onSheetOpenChange={step4Search.setSheetOpen}
+                  filterOpen={step4Search.filterOpen}
+                  onFilterOpenChange={step4Search.setFilterOpen}
+                  search={step4Search.search}
+                  searchQuery={step4Search.searchQuery}
+                />,
+              }}
+              condition={step}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

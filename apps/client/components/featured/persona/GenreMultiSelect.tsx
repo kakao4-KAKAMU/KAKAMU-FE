@@ -4,8 +4,8 @@ import { Badge, cn, Text } from '@kakamu/ui';
 
 type GenreMultiSelectProps = {
   genres: Genre[];
-  selectedIds: string[];
-  onToggle: (genreId: string) => void;
+  selectedIds: number[];
+  onToggle: (genreId: number) => void;
   isLoading?: boolean;
   maxCount?: number;
 };

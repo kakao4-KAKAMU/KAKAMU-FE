@@ -44,7 +44,7 @@ export function PersonaPersonSearchSheet({
     }
   }, [visible, selected]);
 
-  const isSelected = useCallback((id: string) => draft.some((item) => item.id === id), [draft]);
+  const isSelected = useCallback((id: number) => draft.some((item) => item.id === id), [draft]);
 
   const toggleItem = useCallback((item: PersonSearchItem) => {
     setDraft((current) => {

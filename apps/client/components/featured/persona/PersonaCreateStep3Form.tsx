@@ -80,8 +80,8 @@ export function PersonaCreateStep3Form({
                     {selected.map((movie) => (
                       <PersonaSelectedMovieRow
                         key={movie.id}
-                        name={movie.name}
-                        year={movie.year}
+                        title={movie.name}
+                        release_date={movie.release_date}
                         checked
                         onToggle={() => toggleMovie(movie, selected, onChange)}
                       />

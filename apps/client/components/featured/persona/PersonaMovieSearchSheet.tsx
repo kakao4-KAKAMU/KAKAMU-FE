@@ -46,7 +46,7 @@ export function PersonaMovieSearchSheet({
     }
   }, [visible, selected]);
 
-  const isSelected = useCallback((id: string) => draft.some((item) => item.id === id), [draft]);
+  const isSelected = useCallback((id: number) => draft.some((item) => item.id === id), [draft]);
 
   const toggleItem = useCallback((item: MovieSearchItem) => {
     setDraft((current) => {
@@ -54,7 +54,7 @@ export function PersonaMovieSearchSheet({
       if (exists) {
         return current.filter((movie) => movie.id !== item.id);
       }
-      return [...current, { id: item.id, name: item.name, year: item.year }];
+      return [...current, { id: item.id, name: item.title, release_date: item.release_date }];
     });
   }, []);
 
@@ -109,8 +109,8 @@ export function PersonaMovieSearchSheet({
               items.map((item) => (
                 <PersonaSelectedMovieRow
                   key={item.id}
-                  name={item.name}
-                  year={item.year}
+                  title={item.title}
+                  release_date={item.release_date}
                   checked={isSelected(item.id)}
                   onToggle={() => toggleItem(item)}
                 />

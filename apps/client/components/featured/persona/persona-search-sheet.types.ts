@@ -11,8 +11,8 @@ export type PersonaMovieSearchControl = {
   setYear: (value: string) => void;
   sort: MovieSort;
   setSort: (value: MovieSort) => void;
-  filterGenreIds: string[];
-  setFilterGenreIds: (value: string[]) => void;
+  filterGenreIds: number[];
+  setFilterGenreIds: (value: number[]) => void;
   items: MovieSearchItem[];
 };
 
