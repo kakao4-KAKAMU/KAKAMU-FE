@@ -4,8 +4,8 @@
     {
       "type": "frame",
       "id": "QZISI",
-      "x": 3051,
-      "y": -1350,
+      "x": 1320,
+      "y": 5437,
       "name": "Page/페르소나 생성 - Step 2",
       "clip": true,
       "width": 390,
@@ -203,7 +203,7 @@
       "type": "frame",
       "id": "h0Kb4",
       "x": 480,
-      "y": -468,
+      "y": -353,
       "name": "Page/Main",
       "clip": true,
       "width": 390,
@@ -956,8 +956,8 @@
     {
       "type": "frame",
       "id": "Q4alFE",
-      "x": 908,
-      "y": -468,
+      "x": 480,
+      "y": 1556,
       "name": "Page/검색",
       "clip": true,
       "width": 390,
@@ -1164,8 +1164,8 @@
     {
       "type": "frame",
       "id": "u8tpTj",
-      "x": 480,
-      "y": 1380,
+      "x": 460,
+      "y": 2509,
       "name": "Page/프로필",
       "clip": true,
       "width": 390,
@@ -1854,8 +1854,8 @@
     {
       "type": "frame",
       "id": "EmH3Q",
-      "x": 1338,
-      "y": -468,
+      "x": 460,
+      "y": 3440,
       "name": "Page/설정",
       "clip": true,
       "width": 390,
@@ -2195,8 +2195,8 @@
     {
       "type": "frame",
       "id": "nMSfV",
-      "x": 1768,
-      "y": -468,
+      "x": 890,
+      "y": 3440,
       "name": "Page/계정 및 SNS 로그인",
       "clip": true,
       "width": 390,
@@ -3005,7 +3005,7 @@
       "type": "frame",
       "id": "FrciP",
       "x": 480,
-      "y": 456,
+      "y": 595,
       "name": "Page/예고편 판독기",
       "clip": true,
       "width": 390,
@@ -3112,7 +3112,12 @@
                   "id": "S9nSbj",
                   "type": "ref",
                   "ref": "W5jn8Y",
-                  "name": "Trailer Swipe Card"
+                  "name": "Trailer Swipe Card",
+                  "descendants": {
+                    "ESkEr": {
+                      "height": 300
+                    }
+                  }
                 }
               ]
             },
@@ -3176,14 +3181,22 @@
               ]
             }
           ]
+        },
+        {
+          "id": "F3D31D",
+          "type": "ref",
+          "ref": "R1Pqqy",
+          "name": "Mobile/Pill Tab Bar",
+          "x": 0,
+          "y": 749
         }
       ]
     },
     {
       "type": "frame",
       "id": "GFekj",
-      "x": 910,
-      "y": 456,
+      "x": 948,
+      "y": 593,
       "name": "Page/알림",
       "clip": true,
       "width": 390,
@@ -3624,8 +3637,8 @@
     {
       "type": "frame",
       "id": "DWUTG",
-      "x": 1340,
-      "y": 456,
+      "x": 460,
+      "y": 5437,
       "name": "Page/페르소나",
       "clip": true,
       "width": 390,
@@ -3823,8 +3836,8 @@
     {
       "type": "frame",
       "id": "or6zj",
-      "x": 1770,
-      "y": 456,
+      "x": 948,
+      "y": -353,
       "name": "Page/피드 상세",
       "clip": true,
       "width": 390,
@@ -3951,8 +3964,8 @@
     {
       "type": "frame",
       "id": "RnVyS",
-      "x": 2200,
-      "y": 456,
+      "x": 460,
+      "y": 4382,
       "name": "Page/쳇팅",
       "clip": true,
       "width": 390,
@@ -5062,8 +5075,8 @@
     {
       "type": "frame",
       "id": "p1avMk",
-      "x": 910,
-      "y": 1380,
+      "x": 890,
+      "y": 2509,
       "name": "Page/프로필-좋아요",
       "clip": true,
       "width": 390,
@@ -5815,8 +5828,8 @@
     {
       "type": "frame",
       "id": "t5qW6c",
-      "x": 1340,
-      "y": 1380,
+      "x": 1320,
+      "y": 2509,
       "name": "Page/프로필-저장",
       "clip": true,
       "width": 390,
@@ -6335,8 +6348,8 @@
     {
       "type": "frame",
       "id": "e1Hu2T",
-      "x": 1770,
-      "y": 1380,
+      "x": 1750,
+      "y": 2509,
       "name": "Page/프로필 (스크롤·탭 고정)",
       "clip": true,
       "width": 390,
@@ -7033,8 +7046,8 @@
     {
       "type": "frame",
       "id": "pbGki",
-      "x": 2621,
-      "y": -1350,
+      "x": 890,
+      "y": 5437,
       "name": "Page/페르소나 생성 - Step 1",
       "clip": true,
       "width": 390,
@@ -13872,8 +13885,8 @@
     {
       "type": "frame",
       "id": "v1SnK",
-      "x": 3481,
-      "y": -1350,
+      "x": 1750,
+      "y": 5437,
       "name": "Page/페르소나 생성 - Step 3",
       "clip": true,
       "width": 390,
@@ -14092,8 +14105,8 @@
     {
       "type": "frame",
       "id": "eegZJ",
-      "x": 3911,
-      "y": -1350,
+      "x": 2180,
+      "y": 5437,
       "name": "Page/페르소나 생성 - Step 4",
       "clip": true,
       "width": 390,
@@ -14272,8 +14285,8 @@
     {
       "type": "frame",
       "id": "R8sYf7",
-      "x": 3481,
-      "y": -426,
+      "x": 1750,
+      "y": 6361,
       "name": "Page/페르소나 생성 - Step 3/영화 검색 모달",
       "clip": true,
       "width": 390,
@@ -14713,8 +14726,8 @@
     {
       "type": "frame",
       "id": "E1tXLM",
-      "x": 3911,
-      "y": -426,
+      "x": 2180,
+      "y": 6361,
       "name": "Page/페르소나 생성 - Step 4/인물 검색 모달",
       "clip": true,
       "width": 390,
