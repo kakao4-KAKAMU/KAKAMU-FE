@@ -1413,420 +1413,18 @@
               "gap": 10,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "Xmtp0",
-                  "name": "pfPost1",
-                  "width": "fill_container",
-                  "fill": "#fafafa",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": {
-                      "bottom": 1
-                    },
-                    "fill": "#e5e5e5"
-                  },
-                  "gap": 10,
-                  "padding": [
-                    12,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "lCfTJ",
-                      "name": "compactAvatar",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#f5f5f5",
-                      "cornerRadius": 9999,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#e5e5e5"
-                      },
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "path",
-                          "id": "WKnmK",
-                          "name": "Fallback SVG/Person",
-                          "geometry": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
-                          "viewBox": [
-                            0,
-                            0,
-                            24,
-                            24
-                          ],
-                          "fill": "#737373",
-                          "width": 22,
-                          "height": 22
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "N86Mg",
-                      "name": "Post Body",
-                      "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 6,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "w8urc",
-                          "name": "compactMeta",
-                          "width": "fill_container",
-                          "gap": 4,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "C5nt4",
-                              "name": "Author",
-                              "fill": "#0a0a0a",
-                              "content": "Choe Cinema",
-                              "fontFamily": "Inter",
-                              "fontSize": 14,
-                              "fontWeight": "700"
-                            },
-                            {
-                              "type": "text",
-                              "id": "r1qPXL",
-                              "name": "Handle",
-                              "fill": "#737373",
-                              "content": "@choe · 2h",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "i4CKCm",
-                          "name": "Post Text",
-                          "fill": "#0a0a0a",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "오늘의 감정 기록: 조용하지만 오래 남는 엔딩.",
-                          "lineHeight": 1.42,
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "id": "cPDHC",
-                          "type": "ref",
-                          "ref": "n5Zvu",
-                          "name": "Movie/Card"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "B9n87",
-                          "name": "compactActions",
-                          "width": "fill_container",
-                          "padding": [
-                            2,
-                            0,
-                            0,
-                            0
-                          ],
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "aMec0",
-                              "name": "compactReply",
-                              "gap": 4,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "fvBkZ",
-                                  "name": "compactReplyIcon",
-                                  "width": 15,
-                                  "height": 15,
-                                  "iconFontName": "message-circle",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "#737373"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "kTUSI",
-                                  "name": "compactReplyText",
-                                  "fill": "#737373",
-                                  "content": "12",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "HnHVd",
-                              "name": "compactLike",
-                              "gap": 4,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "ADnwh",
-                                  "name": "compactLikeIcon",
-                                  "width": 15,
-                                  "height": 15,
-                                  "iconFontName": "heart",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "#737373"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "mvhbo",
-                                  "name": "compactLikeText",
-                                  "fill": "#737373",
-                                  "content": "86",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "icon_font",
-                              "id": "aN9Su",
-                              "name": "compactSave",
-                              "width": 15,
-                              "height": 15,
-                              "iconFontName": "bookmark",
-                              "iconFontFamily": "lucide",
-                              "fill": "#737373"
-                            },
-                            {
-                              "type": "icon_font",
-                              "id": "Z30HZ9",
-                              "name": "compactMenu",
-                              "width": 15,
-                              "height": 15,
-                              "iconFontName": "ellipsis",
-                              "iconFontFamily": "lucide",
-                              "fill": "#737373"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
+                  "id": "Oxjaq",
+                  "type": "ref",
+                  "ref": "X4oe1",
+                  "x": 0,
+                  "y": 0
                 },
                 {
-                  "type": "frame",
-                  "id": "Dtggn",
-                  "name": "pfPost2",
-                  "width": "fill_container",
-                  "fill": "#fafafa",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": {
-                      "bottom": 1
-                    },
-                    "fill": "#e5e5e5"
-                  },
-                  "gap": 10,
-                  "padding": [
-                    12,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "gSKfx",
-                      "name": "compactAvatar",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#f5f5f5",
-                      "cornerRadius": 9999,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#e5e5e5"
-                      },
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "path",
-                          "id": "zzPPS",
-                          "name": "Fallback SVG/Person",
-                          "geometry": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
-                          "viewBox": [
-                            0,
-                            0,
-                            24,
-                            24
-                          ],
-                          "fill": "#737373",
-                          "width": 22,
-                          "height": 22
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "xXjz5",
-                      "name": "Post Body",
-                      "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 6,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "I7xjr",
-                          "name": "compactMeta",
-                          "width": "fill_container",
-                          "gap": 4,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "k7qCJ",
-                              "name": "Author",
-                              "fill": "#0a0a0a",
-                              "content": "Choe Cinema",
-                              "fontFamily": "Inter",
-                              "fontSize": 14,
-                              "fontWeight": "700"
-                            },
-                            {
-                              "type": "text",
-                              "id": "lesms",
-                              "name": "Handle",
-                              "fill": "#737373",
-                              "content": "@choe · 어제",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "nXekg",
-                          "name": "Post Text",
-                          "fill": "#0a0a0a",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "예고편은 짧았지만 장면의 온도가 좋았다. #LittleForest",
-                          "lineHeight": 1.42,
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "id": "kA8x3",
-                          "type": "ref",
-                          "ref": "n5Zvu",
-                          "name": "Movie/Card"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "OmSSh",
-                          "name": "compactActions",
-                          "width": "fill_container",
-                          "padding": [
-                            2,
-                            0,
-                            0,
-                            0
-                          ],
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "U64Hjg",
-                              "name": "compactReply",
-                              "gap": 4,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "D1ynI",
-                                  "name": "compactReplyIcon",
-                                  "width": 15,
-                                  "height": 15,
-                                  "iconFontName": "message-circle",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "#737373"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "po6iO",
-                                  "name": "compactReplyText",
-                                  "fill": "#737373",
-                                  "content": "12",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "S6MPq0",
-                              "name": "compactLike",
-                              "gap": 4,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "ixD4u",
-                                  "name": "compactLikeIcon",
-                                  "width": 15,
-                                  "height": 15,
-                                  "iconFontName": "heart",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "#737373"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "DgVlF",
-                                  "name": "compactLikeText",
-                                  "fill": "#737373",
-                                  "content": "86",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "icon_font",
-                              "id": "P7hLQM",
-                              "name": "compactSave",
-                              "width": 15,
-                              "height": 15,
-                              "iconFontName": "bookmark",
-                              "iconFontFamily": "lucide",
-                              "fill": "#737373"
-                            },
-                            {
-                              "type": "icon_font",
-                              "id": "i9xeTx",
-                              "name": "compactMenu",
-                              "width": 15,
-                              "height": 15,
-                              "iconFontName": "ellipsis",
-                              "iconFontFamily": "lucide",
-                              "fill": "#737373"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
+                  "id": "CotHE",
+                  "type": "ref",
+                  "ref": "X4oe1",
+                  "x": 0,
+                  "y": 217
                 }
               ]
             }
@@ -3798,36 +3396,17 @@
               ]
             },
             {
-              "type": "frame",
-              "id": "vcXWG",
-              "name": "personaManage",
+              "id": "pKdOQ",
+              "type": "ref",
+              "ref": "FD82s",
+              "x": 20,
+              "y": 490,
               "width": "fill_container",
-              "height": 44,
-              "fill": "$background",
-              "cornerRadius": "$radius-md",
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "$border"
-              },
-              "padding": [
-                12,
-                24
-              ],
-              "justifyContent": "center",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "I5KBZc",
-                  "name": "Label",
-                  "fill": "$foreground",
-                  "content": "페르소나 관리",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "500"
+              "descendants": {
+                "y0Fzcr": {
+                  "content": "페르소나 관리"
                 }
-              ]
+              }
             }
           ]
         }
@@ -7226,33 +6805,16 @@
                   "fontWeight": "normal"
                 },
                 {
-                  "type": "frame",
-                  "id": "WxU8g",
-                  "name": "Textarea",
-                  "width": "fill_container",
-                  "height": 80,
-                  "fill": "$background",
-                  "cornerRadius": "$radius-md",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "$border"
-                  },
-                  "layout": "vertical",
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Nyr45",
-                      "name": "Placeholder",
-                      "fill": "$muted-foreground",
-                      "content": "페르소나에 대한 소개를 입력해주세요",
-                      "lineHeight": 1.45,
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "normal"
+                  "id": "ITkRw",
+                  "type": "ref",
+                  "ref": "A4ioW",
+                  "x": 0,
+                  "y": 28,
+                  "descendants": {
+                    "CMlvT": {
+                      "content": "페르소나에 대한 소개를 입력해주세요\n"
                     }
-                  ]
+                  }
                 }
               ]
             },
@@ -7264,31 +6826,15 @@
               "layout": "vertical"
             },
             {
-              "type": "frame",
-              "id": "naOmb",
-              "name": "Button/Large/Default",
+              "id": "JvTur",
+              "type": "ref",
+              "ref": "u53yz",
               "width": "fill_container",
-              "height": 44,
-              "fill": "$primary",
-              "cornerRadius": "$radius-md",
-              "padding": [
-                12,
-                24
-              ],
-              "justifyContent": "center",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "nNpCT",
-                  "name": "Label",
-                  "fill": "$primary-foreground",
-                  "content": "다음",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "500"
+              "descendants": {
+                "C2jp8": {
+                  "content": "다음"
                 }
-              ]
+              }
             }
           ]
         }
@@ -14043,68 +13589,36 @@
             },
             {
               "type": "frame",
-              "id": "j780e",
+              "id": "yJdfs",
               "width": "fill_container",
               "gap": 12,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "J6HOz2",
-                  "name": "Button/Large/Outline",
+                  "id": "BoqYD",
+                  "type": "ref",
+                  "ref": "FD82s",
+                  "x": 0,
+                  "y": 0,
                   "width": "fill_container",
-                  "height": 44,
-                  "fill": "$background",
-                  "cornerRadius": "$radius-md",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "$border"
-                  },
-                  "padding": [
-                    12,
-                    24
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "y7BvU",
-                      "name": "Label",
-                      "fill": "$foreground",
-                      "content": "이전",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                  "descendants": {
+                    "y0Fzcr": {
+                      "content": "이전"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "DVMR2",
-                  "name": "Button/Large/Default",
+                  "id": "f9kgX",
+                  "type": "ref",
+                  "ref": "u53yz",
+                  "x": 181.0666584447389,
+                  "y": 0,
                   "width": "fill_container",
-                  "height": 44,
-                  "fill": "$primary",
-                  "cornerRadius": "$radius-md",
-                  "padding": [
-                    12,
-                    24
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Qix4A",
-                      "name": "Label",
-                      "fill": "$primary-foreground",
-                      "content": "다음",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                  "rotation": -0.08680111394051311,
+                  "descendants": {
+                    "C2jp8": {
+                      "content": "완료"
                     }
-                  ]
+                  }
                 }
               ]
             }
@@ -14228,63 +13742,31 @@
               "gap": 12,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "PUFmZ",
-                  "name": "Button/Large/Outline",
+                  "id": "jHKkj",
+                  "type": "ref",
+                  "ref": "FD82s",
+                  "x": 0,
+                  "y": 0,
                   "width": "fill_container",
-                  "height": 44,
-                  "fill": "$background",
-                  "cornerRadius": "$radius-md",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "$border"
-                  },
-                  "padding": [
-                    12,
-                    24
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "IQf0t",
-                      "name": "Label",
-                      "fill": "$foreground",
-                      "content": "이전",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                  "descendants": {
+                    "y0Fzcr": {
+                      "content": "이전"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "jT4i9",
-                  "name": "Button/Large/Default",
+                  "id": "SacBU",
+                  "type": "ref",
+                  "ref": "u53yz",
+                  "x": 181.0666584447389,
+                  "y": 0,
                   "width": "fill_container",
-                  "height": 44,
-                  "fill": "$primary",
-                  "cornerRadius": "$radius-md",
-                  "padding": [
-                    12,
-                    24
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "SQ5Dv",
-                      "name": "Label",
-                      "fill": "$primary-foreground",
-                      "content": "완료",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                  "rotation": -0.08680111394051311,
+                  "descendants": {
+                    "C2jp8": {
+                      "content": "완료"
                     }
-                  ]
+                  }
                 }
               ]
             }
@@ -14736,31 +14218,17 @@
               "gap": 12,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "gVzYY",
-                  "name": "Confirm Button",
+                  "id": "EkcKZ",
+                  "type": "ref",
+                  "ref": "u53yz",
+                  "x": 0,
+                  "y": 0,
                   "width": "fill_container",
-                  "height": 44,
-                  "fill": "#007595",
-                  "cornerRadius": 5.76,
-                  "padding": [
-                    12,
-                    24
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "uJdyI",
-                      "name": "Label",
-                      "fill": "#ecfeff",
-                      "content": "선택 완료",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                  "descendants": {
+                    "C2jp8": {
+                      "content": "선택 완료 "
                     }
-                  ]
+                  }
                 }
               ]
             }
@@ -15172,31 +14640,17 @@
               "layout": "vertical",
               "children": [
                 {
-                  "type": "frame",
-                  "id": "t44ZZ",
-                  "name": "Confirm Button",
+                  "id": "x5IcOo",
+                  "type": "ref",
+                  "ref": "u53yz",
+                  "x": 0,
+                  "y": 0,
                   "width": "fill_container",
-                  "height": 44,
-                  "fill": "#007595",
-                  "cornerRadius": 5.76,
-                  "padding": [
-                    12,
-                    24
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "S878Nb",
-                      "name": "Label",
-                      "fill": "#ecfeff",
-                      "content": "선택 완료",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                  "descendants": {
+                    "C2jp8": {
+                      "content": "선택 완료 "
                     }
-                  ]
+                  }
                 }
               ]
             }
@@ -17722,6 +17176,13 @@
           ]
         }
       ]
+    },
+    {
+      "id": "xfKML",
+      "type": "ref",
+      "ref": "FD82s",
+      "x": 3042,
+      "y": -1350
     }
   ],
   "themes": {
