@@ -13,14 +13,35 @@ account.persona.create.step1Title,페르소나 기본 정보,Persona basics
 account.persona.create.step1Description,이름과 소개를 입력해 주세요.,Enter a name and short intro.
 account.persona.create.step2Title,취향 선택,Taste picks
 account.persona.create.step2Description,관심 장르·영화·배우를 골라 추천을 맞춥니다.,Pick genres to search and favorite movies and cast.
-account.persona.create.nameLabel,페르소나 명,Persona name
-account.persona.create.namePlaceholder,예: 감성파, e.g. Mood watcher
-account.persona.create.thumbnailLabel,섬네일 URL (선택),Thumbnail URL (optional)
-account.persona.create.thumbnailPlaceholder,https://...,https://...
-account.persona.create.descriptionLabel,페르소나 설명,Description
-account.persona.create.descriptionPlaceholder,이 페르소나의 취향을 소개해 주세요.,Describe this persona's taste.
-account.persona.create.genresLabel,관심 장르,Genres
-account.persona.create.genresHint,영화 검색 필터에만 사용됩니다.,Used only to filter movie search.
+account.persona.create.nameLabel,이름,Name
+account.persona.create.namePlaceholder,페르소나 이름을 입력해주세요,Enter a persona name
+account.persona.create.thumbnailLabel,프로필 이미지,Profile image
+account.persona.create.pickFileLabel,파일 선택,Choose file
+account.persona.create.thumbnailPlaceholder,이미지 파일을 선택해주세요.,Choose an image file.
+account.persona.create.descriptionLabel,소개,Introduction
+account.persona.create.descriptionPlaceholder,페르소나에 대한 소개를 입력해주세요,Describe this persona.
+account.persona.create.genresLabel,좋아하는 장르,Favorite genres
+account.persona.create.genresHint,최대 3개까지 선택할 수 있어요,You can pick up to 3.
+account.persona.create.movieSearchTrigger,영화 검색하여 추가,Search and add movies
+account.persona.create.personSearchTrigger,인물 검색하여 추가,Search and add people
+account.persona.create.movieSearchTitle,영화 검색,Search movies
+account.persona.create.personSearchTitle,인물 검색,Search people
+account.persona.create.confirmSelection,선택 완료,Done selecting
+account.persona.create.complete,완료,Complete
+account.persona.create.movieFilterTitle,영화 필터,Movie filters
+account.persona.create.personFilterTitle,사람 필터,People filters
+account.persona.create.filterJob,직업,Job
+account.persona.create.filterGenre,장르,Genre
+account.persona.create.filterYear,개봉 연도,Release year
+account.persona.create.filterSortSection,정렬,Sort
+account.persona.create.filterReset,초기화,Reset
+account.persona.create.filterApply,적용,Apply
+account.persona.create.filterSort.yearDesc,최신 개봉순,Newest release
+account.persona.create.filterSort.yearAsc,오래된 개봉순,Oldest release
+account.persona.create.filterSort.nameAsc,이름 가나다순,Name A–Z
+account.persona.create.filterSort.nameDesc,이름 역순,Name Z–A
+account.persona.create.filterSort.personNameAsc,이름 가나다순,Name A–Z
+account.persona.create.filterSort.personNameDesc,이름 역순,Name Z–A
 account.persona.create.moviesLabel,관심 영화,Favorite movies
 account.persona.create.personsLabel,관심 배우·인물,Favorite people
 account.persona.create.searchPlaceholder,이름으로 검색,Search by name
@@ -33,7 +54,8 @@ account.persona.create.sort.nameAsc,이름 오름차순,Name A–Z
 account.persona.create.job.actor,배우,Actor
 account.persona.create.job.director,감독,Director
 account.persona.create.job.writer,작가,Writer
-account.persona.create.job.producer,제작,Producer
+account.persona.create.job.producer,프로듀서,Producer
+account.persona.create.job.other,기타,Other
 account.persona.create.continue,다음,Continue
 account.persona.create.back,이전,Back
 account.persona.create.submit,페르소나 생성,Create persona
@@ -66,6 +88,8 @@ account.persona.create.validation.description.required,설명을 입력해 주�
 account.persona.create.validation.description.min,설명을 입력해 주세요.,Enter a description.
 account.persona.create.validation.description.max,설명은 {max}자 이하로 입력해 주세요.,Description must be at most {max} characters.
 account.persona.create.validation.thumbnail.invalid,올바른 URL을 입력해 주세요.,Enter a valid URL.
+account.persona.create.validation.genres.required,장르를 1개 이상 선택해 주세요.,Select at least one genre.
+account.persona.create.validation.genres.max,장르는 최대 {max}개까지 선택할 수 있어요.,You can select up to {max} genres.
 account.persona.create.validation.movies.required,관심 영화를 1개 이상 선택해 주세요.,Select at least one movie.
 account.persona.create.validation.persons.required,관심 인물을 1개 이상 선택해 주세요.,Select at least one person.
 account.sonar.headerTitle,예고편 판독기,Trailer takes

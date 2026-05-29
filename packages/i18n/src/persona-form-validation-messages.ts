@@ -27,6 +27,10 @@ export function buildPersonaFormValidationMessages(t: TFunction): PersonaFormVal
     profileImageUrl: {
       invalid: t('account.persona.create.validation.thumbnail.invalid'),
     },
+    genres: {
+      required: t('account.persona.create.validation.genres.required'),
+      max: t('account.persona.create.validation.genres.max', { max: 3 }),
+    },
     movies: {
       required: t('account.persona.create.validation.movies.required'),
     },
