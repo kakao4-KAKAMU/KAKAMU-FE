@@ -14115,8 +14115,8 @@
     {
       "type": "frame",
       "id": "eegZJ",
-      "x": 2180,
-      "y": 5437,
+      "x": 1750,
+      "y": 6361,
       "name": "Page/페르소나 생성 - Step 4",
       "clip": true,
       "width": 390,
@@ -14295,8 +14295,8 @@
     {
       "type": "frame",
       "id": "R8sYf7",
-      "x": 1750,
-      "y": 6361,
+      "x": 2180,
+      "y": 5437,
       "name": "Page/페르소나 생성 - Step 3/영화 검색 모달",
       "clip": true,
       "width": 390,
@@ -15937,8 +15937,8 @@
     {
       "type": "frame",
       "id": "Gutgo",
-      "x": 2650,
-      "y": 6361,
+      "x": 2612,
+      "y": 5437,
       "name": "Page/페르소나 생성 - Step 3/영화 검색 + 영화 필터",
       "clip": true,
       "width": 390,
@@ -16944,7 +16944,7 @@
     {
       "type": "frame",
       "id": "o7kRl",
-      "x": 3120,
+      "x": 2612,
       "y": 6361,
       "name": "Page/페르소나 생성 - Step 4/인물 검색 + 사람 필터",
       "clip": true,
