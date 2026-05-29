@@ -1,26 +1,32 @@
-import type { MovieSearchParams, PaginatedResponse, MovieSearchItem } from '@kakamu/types';
+import type {
+  MovieSearchItem,
+  MovieSearchParams,
+  MovieSearchRequestBody,
+  SearchPageResponse,
+} from '@kakamu/types';
 
 import type { ApiClient } from '../client';
 
-import { buildSearchParams } from './build-search-params';
+const DEFAULT_SORT = 'year_desc' satisfies MovieSearchRequestBody['sort'];
+const DEFAULT_LIMIT = 20;
 
-function toMovieSearchParams(params: MovieSearchParams) {
-  return buildSearchParams({
-    genre: params.genre?.length ? params.genre : undefined,
-    name: params.name?.trim() || undefined,
+function toMovieSearchBody(params: MovieSearchParams): MovieSearchRequestBody {
+  return {
+    name: params.name?.trim() ?? '',
+    genre: params.genre ?? [],
     year: params.year,
-    sort: params.sort,
-    cursor: params.cursor,
-    limit: params.limit,
-  });
+    sort: params.sort ?? DEFAULT_SORT,
+    skip: params.skip ?? 1,
+    limit: params.limit ?? DEFAULT_LIMIT,
+  };
 }
 
-/** `GET .../search/movie` */
-export async function getSearchMovies(
+/** `POST .../search/movie` */
+export async function postSearchMovies(
   client: ApiClient,
   params: MovieSearchParams = {},
-): Promise<PaginatedResponse<MovieSearchItem>> {
+): Promise<SearchPageResponse<MovieSearchItem>> {
   return client
-    .get('search/movie', { searchParams: toMovieSearchParams(params) })
-    .json<PaginatedResponse<MovieSearchItem>>();
+    .post('search/movie', { json: toMovieSearchBody(params) })
+    .json<SearchPageResponse<MovieSearchItem>>();
 }

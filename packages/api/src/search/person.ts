@@ -1,25 +1,31 @@
-import type { PaginatedResponse, PersonSearchItem, PersonSearchParams } from '@kakamu/types';
+import type {
+  PersonSearchItem,
+  PersonSearchParams,
+  PersonSearchRequestBody,
+  SearchPageResponse,
+} from '@kakamu/types';
 
 import type { ApiClient } from '../client';
 
-import { buildSearchParams } from './build-search-params';
+const DEFAULT_SORT = 'name_asc' satisfies PersonSearchRequestBody['sort'];
+const DEFAULT_LIMIT = 20;
 
-function toPersonSearchParams(params: PersonSearchParams) {
-  return buildSearchParams({
-    name: params.name?.trim() || undefined,
-    job: params.job?.length ? params.job : undefined,
-    sort: params.sort,
-    cursor: params.cursor,
-    limit: params.limit,
-  });
+function toPersonSearchBody(params: PersonSearchParams): PersonSearchRequestBody {
+  return {
+    name: params.name?.trim() ?? '',
+    job: params.job ?? [],
+    sort: params.sort ?? DEFAULT_SORT,
+    page: params.page ?? 1,
+    limit: params.limit ?? DEFAULT_LIMIT,
+  };
 }
 
-/** `GET .../search/person` */
-export async function getSearchPersons(
+/** `POST .../search/person` */
+export async function postSearchPersons(
   client: ApiClient,
   params: PersonSearchParams = {},
-): Promise<PaginatedResponse<PersonSearchItem>> {
+): Promise<SearchPageResponse<PersonSearchItem>> {
   return client
-    .get('search/person', { searchParams: toPersonSearchParams(params) })
-    .json<PaginatedResponse<PersonSearchItem>>();
+    .post('search/person', { json: toPersonSearchBody(params) })
+    .json<SearchPageResponse<PersonSearchItem>>();
 }
