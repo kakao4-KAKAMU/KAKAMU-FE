@@ -145,6 +145,30 @@ account.searchHistory.title,검색,Search
 account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
 account.personaChat.title,페르소나 챗,Persona chat
 account.personaChat.description,선택된 페르소나 기준으로 LLM과 대화하는 페이지,Chat with an LLM based on the selected persona
+account.post.create.failedRequest.title,게시물 작성에 실패했어요,Could not create post
+account.post.create.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.create.error.hashtagLimitExceeded.title,해시태그 개수를 초과했어요,Too many hashtags
+account.post.create.error.hashtagLimitExceeded.description,해시태그는 최대 10개까지만 등록할 수 있어요.,You can add up to 10 hashtags.
+account.post.create.error.invalidReferenceData.title,참조 데이터를 확인해 주세요,Check reference data
+account.post.create.error.invalidReferenceData.description,잘못된 참조 데이터가 포함되어 있습니다.,Invalid reference data was included.
+account.post.update.failedRequest.title,게시물 수정에 실패했어요,Could not update post
+account.post.update.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.update.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.update.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
+account.post.update.error.forbidden.title,수정 권한이 없어요,No permission to update
+account.post.update.error.forbidden.description,본인이 작성한 게시물만 수정할 수 있어요.,You can only edit posts you created.
+account.post.update.error.hashtagLimitExceeded.title,해시태그 개수를 초과했어요,Too many hashtags
+account.post.update.error.hashtagLimitExceeded.description,해시태그는 최대 10개까지만 등록할 수 있어요.,You can add up to 10 hashtags.
+account.post.delete.failedRequest.title,게시물 삭제에 실패했어요,Could not delete post
+account.post.delete.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.delete.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.delete.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
+account.post.delete.error.forbidden.title,삭제 권한이 없어요,No permission to delete
+account.post.delete.error.forbidden.description,본인이 작성한 게시물만 삭제할 수 있어요.,You can only delete posts you created.
+account.post.detail.failedRequest.title,게시물을 불러오지 못했어요,Could not load post
+account.post.detail.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.detail.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.detail.error.notFound.description,해당 게시물을 조회할 수 없어요.,This post could not be found.
 shared.feedDetail.title,피드 상세,Feed detail
 shared.feedDetail.description,피드 {id}의 상세 페이지,Detail page for feed {id}
 common.navigation.back,뒤로 가기,Go back
