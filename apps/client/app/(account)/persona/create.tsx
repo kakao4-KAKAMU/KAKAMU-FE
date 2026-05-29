@@ -1,20 +1,195 @@
-import { Stack } from 'expo-router';
-import { ScrollView } from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
-import { Text } from '@kakamu/ui';
+import type { PersonaCreateFormInput } from '@kakamu/schema';
+import type { PersonaCreateRequest } from '@kakamu/types';
+import { useCreatePersonaMutation } from '@kakamu/query';
+import { usePersonaStore } from '@kakamu/store';
+import { Stack, useRouter } from 'expo-router';
+import { useErrorAlertDialog } from '@kakamu/ui';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { useForm } from 'react-hook-form';
+import {
+  PersonaCreateStep1Form,
+  PersonaCreateStep2Form,
+  PersonaCreateStep3Form,
+  PersonaCreateStep4Form,
+} from '@/components/featured/persona';
+import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
+import { usePersonaCreateStep3Search } from '@/hooks/persona/usePersonaCreateStep3Search';
+import { usePersonaCreateStep4Search } from '@/hooks/persona/usePersonaCreateStep4Search';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { mapPersonaCreateError } from '@/lib/error-message-map/persona/persona-create-error';
+import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
+import { ConditionalRender } from '@/components/utils';
+
+const DEFAULT_VALUES: PersonaCreateFormInput = {
+  name: '',
+  description: '',
+  profile_image_url: '',
+  selectedGenreIds: [],
+  selectedMovies: [],
+  selectedPersons: [],
+};
+
+type PersonaCreateStep = 1 | 2 | 3 | 4;
 
 export default function PersonaCreateScreen() {
+  const router = useRouter();
   const { t } = useTranslation();
+  const personaForms = usePersonaFormValidationKit(t);
+  const resolver = useMemo(() => zodResolver(personaForms.full), [personaForms.full]);
+
+  const { control, handleSubmit, trigger, clearErrors } = useForm<PersonaCreateFormInput>({
+    resolver,
+    defaultValues: DEFAULT_VALUES,
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+  });
+
+  const [step, setStep] = useState<PersonaCreateStep>(1);
+  const [submitting, setSubmitting] = useState(false);
+
+  const genreQuery = usePersonaCreateGenreList();
+  const step3Search = usePersonaCreateStep3Search(step === 3);
+  const step4Search = usePersonaCreateStep4Search(step === 4);
+
+  const selectPersona = usePersonaStore((state) => state.selectPersona);
+
+  const handleContinueFromStep1 = useCallback(async () => {
+    const ok = await trigger(['name', 'description', 'profile_image_url'], {
+      shouldFocus: true,
+    });
+    if (ok) {
+      setStep(2);
+    }
+  }, [trigger]);
+
+  const handleContinueFromStep2 = useCallback(async () => {
+    const ok = await trigger(['selectedGenreIds'], { shouldFocus: true });
+    if (ok) {
+      setStep(3);
+    }
+  }, [trigger]);
+
+  const handleContinueFromStep3 = useCallback(async () => {
+    const ok = await trigger(['selectedMovies'], { shouldFocus: true });
+    if (ok) {
+      setStep(4);
+    }
+  }, [trigger]);
+
+  const handleBack = useCallback(() => {
+    setStep((current) => (current > 1 ? ((current - 1) as PersonaCreateStep) : current));
+  }, []);
+
+  const apiClient = useBackendApiClient();
+  const { open: openErrorAlert } = useErrorAlertDialog();
+
+  const createMutation = useCreatePersonaMutation(apiClient, {
+    onSuccess: (response) => {
+      selectPersona(response.id);
+      setSubmitting(false);
+      router.replace('/persona');
+    },
+    onError: (err) => {
+      setSubmitting(false);
+      openErrorAlert(mapPersonaCreateError(err, t));
+    },
+  });
+
+  const onValid = useCallback(
+    (data: PersonaCreateFormInput) => {
+      clearErrors('root');
+      const thumbnail = data.profile_image_url.trim();
+      const body: PersonaCreateRequest = {
+        nickname: data.name.trim(),
+        profile_image_url: thumbnail,
+        profile_msg: data.description.trim(),
+        fav_movie_ids: data.selectedMovies.map((movie) => movie.id),
+        fav_genre_ids: data.selectedGenreIds,
+        fav_people_ids: data.selectedPersons.map((person) => person.id),
+      };
+      setSubmitting(true);
+      createMutation.mutate(body);
+    },
+    [clearErrors, createMutation],
+  );
+
+  const onInvalid = useCallback(async () => {
+    if (step === 4) {
+      await trigger(['selectedPersons'], { shouldFocus: true });
+    }
+  }, [step, trigger]);
+
+  const handleSubmitPersona = useCallback(() => {
+    void handleSubmit(onValid, onInvalid)();
+  }, [handleSubmit, onInvalid, onValid]);
+
+  const isBusy = submitting || createMutation.isPending;
+  const genres = genreQuery.data?.genres ?? [];
 
   return (
     <>
       <Stack.Screen options={{ title: t('account.layout.personaCreate') }} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ padding: 16, gap: 12 }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        className="flex-1 bg-background"
       >
-        <Text selectable>{t('account.persona.create.placeholder')}</Text>
-      </ScrollView>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          className="flex-1"
+        >
+          <View className="min-h-full gap-8 px-5 py-6">
+            <ConditionalRender
+              render={{
+                1: <PersonaCreateStep1Form
+                  control={control}
+                  onContinue={handleContinueFromStep1}
+                  continuing={isBusy}
+                />,
+                2: <PersonaCreateStep2Form
+                  control={control}
+                  onBack={handleBack}
+                  onContinue={handleContinueFromStep2}
+                  continuing={isBusy}
+                  genres={genres}
+                  genresLoading={genreQuery.isLoading}
+                />,
+                3: <PersonaCreateStep3Form
+                  control={control}
+                  onBack={handleBack}
+                  onContinue={handleContinueFromStep3}
+                  continuing={isBusy}
+                  genres={genres}
+                  sheetOpen={step3Search.sheetOpen}
+                  onSheetOpenChange={step3Search.setSheetOpen}
+                  filterOpen={step3Search.filterOpen}
+                  onFilterOpenChange={step3Search.setFilterOpen}
+                  search={step3Search.search}
+                  searchQuery={step3Search.searchQuery}
+                />,
+                4: <PersonaCreateStep4Form
+                  control={control}
+                  onBack={handleBack}
+                  onSubmit={handleSubmitPersona}
+                  submitting={isBusy}
+                  canSubmit={!createMutation.isPending}
+                  sheetOpen={step4Search.sheetOpen}
+                  onSheetOpenChange={step4Search.setSheetOpen}
+                  filterOpen={step4Search.filterOpen}
+                  onFilterOpenChange={step4Search.setFilterOpen}
+                  search={step4Search.search}
+                  searchQuery={step4Search.searchQuery}
+                />,
+              }}
+              condition={step}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 }

@@ -163,7 +163,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     .merge(phoneValidation)
     .superRefine((data, ctx) => phoneValidationRefine(data, ctx));
 
-  const findPassword = z
+  const resetPasswordEmail = z
     .object({
       email,
     })
@@ -199,7 +199,7 @@ export function createAuthFormSchemas(messages: AuthFormValidationMessages) {
     phoneValidation,
     signUpWithTerms,
     snsSignUp,
-    findPassword,
+    resetPasswordEmail,
     resetPassword,
     changePassword,
   };
@@ -211,6 +211,6 @@ export type SignInFormInput = z.infer<AuthFormSchemas['signIn']>;
 export type SignInWithRememberFormInput = z.infer<AuthFormSchemas['signInWithRemember']>;
 export type SignUpWithTermsFormInput = z.infer<AuthFormSchemas['signUpWithTerms']>;
 export type SnsSignUpFormInput = z.infer<AuthFormSchemas['snsSignUp']>;
-export type FindPasswordFormInput = z.infer<AuthFormSchemas['findPassword']>;
+export type ResetPasswordEmailFormInput = z.infer<AuthFormSchemas['resetPasswordEmail']>;
 export type ResetPasswordFormInput = z.infer<AuthFormSchemas['resetPassword']>;
 export type ChangePasswordFormInput = z.infer<AuthFormSchemas['changePassword']>;

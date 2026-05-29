@@ -32,7 +32,7 @@ export {
   createAuthFormSchemas,
   type AuthFormSchemas,
   type ChangePasswordFormInput,
-  type FindPasswordFormInput,
+  type ResetPasswordEmailFormInput,
   type ResetPasswordFormInput,
   type SignInFormInput,
   type SignInWithRememberFormInput,
@@ -40,6 +40,22 @@ export {
   type SignUpWithTermsFormInput,
   type SnsSignUpFormInput,
 } from './forms/auth';
+
+export {
+  PERSONA_DESCRIPTION_MAX_LENGTH,
+  PERSONA_DESCRIPTION_MIN_LENGTH,
+  PERSONA_GENRE_MAX_COUNT,
+  PERSONA_NAME_MAX_LENGTH,
+  PERSONA_NAME_MIN_LENGTH,
+} from './forms/persona-constants';
+
+export type { PersonaFormValidationMessages } from './forms/persona-messages';
+
+export {
+  createPersonaFormSchemas,
+  type PersonaCreateFormInput,
+  type PersonaFormSchemas,
+} from './forms/persona';
 
 export const paginationSchema = z.object({
   cursor: z.string().optional(),

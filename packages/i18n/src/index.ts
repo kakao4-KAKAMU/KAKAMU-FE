@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next, useTranslation } from 'react-i18next';
 
 export { buildAuthFormValidationMessages } from './auth-form-validation-messages';
+export { buildPersonaFormValidationMessages } from './persona-form-validation-messages';
 
 import enTranslation from './generated/en.json';
 import koTranslation from './generated/ko.json';

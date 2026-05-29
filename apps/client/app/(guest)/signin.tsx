@@ -16,7 +16,7 @@ import {
   type SignInFormValues,
 } from '@/components/featured/auth';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { parseApiError } from '@/lib/auth/parse-api-error';
+import { mapSignInError, parseSocialSignInError } from '@/lib/error-message-map/auth/sign-in-error';
 import { setAuthTokens } from '@/lib/auth/set-auth-tokens';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 import { useKakaoLogin } from '@/lib/kakao-login';
@@ -46,17 +46,15 @@ export default function SignInScreen() {
     },
     onError: (err, variables) => {
       setSubmitting(false);
-      const fallback = t('guest.form.signIn.failedRequest.description');
-      const title = t('guest.form.signIn.failedRequest.title');
-      const { message, code: errorCode } = parseApiError(err, fallback);
+      const socialError = parseSocialSignInError(err, t);
 
-      if (errorCode === 'SOCIAL_ACCOUNT_NOT_REGISTERED') {
+      if (socialError.code === 'SOCIAL_ACCOUNT_NOT_REGISTERED') {
         setPendingSnsSignUp(variables.provider, variables.provided_token);
         router.push('./signup-sns');
         return;
       }
 
-      openErrorAlert({ title, description: message });
+      openErrorAlert(socialError.alert);
     },
   });
 
@@ -67,27 +65,7 @@ export default function SignInScreen() {
     },
     onError: (err) => {
       setSubmitting(false);
-      const fallback = t('guest.form.signIn.failedRequest.description');
-      let title = t('guest.form.signIn.failedRequest.title');
-      let { message, code: errorCode } = parseApiError(err, fallback);
-
-      switch (errorCode) {
-        case 'INVALID_CREDENTIALS':
-        case 'UNAUTHORIZED':
-        case 'WRONG_PASSWORD':
-        case 'USER_NOT_FOUND':
-          title = t('guest.form.signIn.invalidCredentials.title');
-          message = t('guest.form.signIn.invalidCredentials.description');
-          break;
-        case 'LOGIN_FAILED':
-          title = t('guest.form.signIn.failedRequest.title');
-          message = t('guest.form.signIn.failedRequest.description');
-          break;
-        default:
-          break;
-      }
-
-      openErrorAlert({ title, description: message });
+      openErrorAlert(mapSignInError(err, t));
     },
   });
 
@@ -118,7 +96,7 @@ export default function SignInScreen() {
   );
 
   const handleForgotPassword = useCallback(() => {
-    router.push('./findpassword');
+    router.push('./resetpassword');
   }, [router]);
 
   const { login: loginWithKakao } = useKakaoLogin();
@@ -131,16 +109,16 @@ export default function SignInScreen() {
           provided_token: token.accessToken,
         });
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         setSubmitting(false);
-        console.error(error);
+        openErrorAlert(parseSocialSignInError(error, t).alert);
       });
-  }, [loginWithKakao, socialAuthLoginMutation]);
+  }, [loginWithKakao, openErrorAlert, socialAuthLoginMutation, t]);
 
   const handleGoogleLogin = useCallback(() => {}, []);
 
   const handleNavigateSignUp = useCallback(() => {
-    router.push('/signup');
+    router.push('./signup');
   }, [router]);
 
   const isBusy =

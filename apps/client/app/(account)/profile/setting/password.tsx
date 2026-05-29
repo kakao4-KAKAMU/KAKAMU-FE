@@ -4,7 +4,7 @@ import { useTranslation } from '@kakamu/i18n';
 import { useChangePasswordMutation } from '@kakamu/query';
 import type { ChangePasswordFormInput } from '@kakamu/schema';
 import { Stack, useRouter } from 'expo-router';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useErrorAlertDialog, Text } from '@kakamu/ui';
 import {
@@ -13,7 +13,7 @@ import {
   type PasswordChangeFormValues,
 } from '@/components/featured/profile';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { parseApiError } from '@/lib/auth/parse-api-error';
+import { mapPasswordChangeError } from '@/lib/error-message-map/account/password-change-error';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 
 const DEFAULT_VALUES: PasswordChangeFormValues = {
@@ -46,31 +46,15 @@ export default function PasswordSettingScreen() {
     onSuccess: () => {
       setSubmitting(false);
       reset(DEFAULT_VALUES);
-      Alert.alert('비밀번호 변경 완료', '새 비밀번호로 변경되었습니다.', [
-        { text: '확인', onPress: () => router.back() },
-      ]);
+      openErrorAlert({
+        title: t('account.password.success.title'),
+        description: t('account.password.success.description'),
+      });
+      router.back();
     },
     onError: (err) => {
       setSubmitting(false);
-      const fallback = '비밀번호 변경 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.';
-      let title = '비밀번호 변경 실패';
-      let { message, code: errorCode } = parseApiError(err, fallback);
-
-      switch (errorCode) {
-        case 'INVALID_CREDENTIALS':
-        case 'UNAUTHORIZED':
-        case 'WRONG_PASSWORD':
-          title = '현재 비밀번호를 확인해주세요';
-          message = '입력한 현재 비밀번호가 올바르지 않습니다.';
-          break;
-        case 'PASSWORD_CHANGE_FAILED':
-          message = fallback;
-          break;
-        default:
-          break;
-      }
-
-      openErrorAlert({ title, description: message });
+      openErrorAlert(mapPasswordChangeError(err, t));
     },
   });
 
@@ -99,11 +83,10 @@ export default function PasswordSettingScreen() {
           className="flex-1"
         >
           <View className="flex-col gap-4 px-5 pb-6">
-            <ProfileSubpageHeader title="비밀번호 변경" />
-
+            <ProfileSubpageHeader title={t('account.password.pageTitle')} />
             <View className="gap-2">
               <Text className="text-sm leading-5 text-muted-foreground">
-                계정 보호를 위해 현재 비밀번호를 확인한 뒤 새 비밀번호로 변경합니다.
+                {t('account.password.pageDescription')}
               </Text>
             </View>
 

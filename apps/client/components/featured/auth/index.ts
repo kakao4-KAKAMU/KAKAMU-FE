@@ -1,7 +1,10 @@
 export { AuthBrandLogo } from './AuthBrandLogo';
 export { AuthHeader } from './AuthHeader';
-export { FindPasswordForm, type FindPasswordFormValues } from './FindPasswordForm';
 export { ResetPasswordForm, type ResetPasswordFormValues } from './ResetPasswordForm';
+export {
+  ResetPasswordVerificationForm,
+  type ResetPasswordVerificationFormValues,
+} from './ResetPasswordVerificationForm';
 export { SignInForm, type SignInFormValues } from './SignInForm';
 export { SignUpForm, type SignUpFormValues } from './SignUpForm';
 export { SignUpSnsForm, type SignUpSnsFormValues } from './SignUpSnsForm';

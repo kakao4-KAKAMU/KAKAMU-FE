@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import type { LucideIcon } from 'lucide-react-native';
@@ -29,6 +30,7 @@ export function ProfileSettingsHeader({
   actionAccessibilityLabel,
 }: ProfileSettingsHeaderProps) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleActionPress = useCallback(() => {
     router.push('/profile/my');
@@ -67,14 +69,14 @@ export function ProfileSettingsHeader({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="bg-popover min-w-44">
               <DropdownMenuItem onPress={handleAccountSettings}>
-                <Text>계정 설정</Text>
+                <Text>{t('account.profile.menu.accountSettings')}</Text>
               </DropdownMenuItem>
               <DropdownMenuItem onPress={handlePersonaSettings}>
-                <Text>페르소나 설정</Text>
+                <Text>{t('account.profile.menu.personaSettings')}</Text>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive" onPress={handleLogout}>
-                <Text>로그아웃</Text>
+                <Text>{t('account.profile.menu.logout')}</Text>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>,

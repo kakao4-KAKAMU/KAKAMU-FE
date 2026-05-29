@@ -18,11 +18,11 @@ export default function IntroScreen() {
   const { t } = useTranslation();
 
   const onSkip = React.useCallback(() => {
-    router.replace('/signin');
+    router.replace('./signin');
   }, [router]);
 
   const onStart = React.useCallback(() => {
-    router.replace('/signin');
+    router.replace('./signin');
   }, [router]);
 
   const stats: StatItem[] = [

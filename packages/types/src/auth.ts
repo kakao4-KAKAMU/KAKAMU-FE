@@ -50,9 +50,17 @@ export interface SocialAuthLoginRequest {
   provided_token: string;
 }
 
-export type FindPassword = Email;
+export type ResetPasswordEmail = Email;
 
 export type ResetPassword = PasswordConfirm;
+
+export type PhoneVerificationRequest = ResetPasswordEmail & {
+  firebase_id_token: string;
+};
+
+export type ResetPasswordRequest = ResetPasswordEmail & Password & {
+  firebase_id_token: string;
+};
 
 export interface ChangePasswordRequest {
   oldPassword: string;

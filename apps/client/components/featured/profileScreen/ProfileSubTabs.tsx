@@ -1,16 +1,11 @@
 import { useCallback } from 'react';
+import { useTranslation } from '@kakamu/i18n';
 import { Pressable, View } from 'react-native';
 import { type Href, usePathname, useRouter } from 'expo-router';
 import { Text } from '@kakamu/ui';
 import { cn } from '@kakamu/ui';
 import { getProfileTabHref, resolveActiveProfileTab } from './profileScreen.routes';
 import type { ProfileTab } from './types';
-
-const TAB_ITEMS: { key: ProfileTab; label: string }[] = [
-  { key: 'feed', label: '피드' },
-  { key: 'like', label: '좋아요' },
-  { key: 'saved', label: '저장' },
-];
 
 type ProfileSubTabsProps = {
   isMy: boolean;
@@ -20,7 +15,13 @@ type ProfileSubTabsProps = {
 export function ProfileSubTabs({ isMy, userId }: ProfileSubTabsProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation();
   const activeTab = resolveActiveProfileTab(pathname);
+  const tabItems: { key: ProfileTab; label: string }[] = [
+    { key: 'feed', label: t('account.profile.tabs.feed') },
+    { key: 'like', label: t('account.profile.tabs.like') },
+    { key: 'saved', label: t('account.profile.tabs.saved') },
+  ];
 
   const onTabPress = useCallback(
     (tab: ProfileTab) => {
@@ -35,7 +36,7 @@ export function ProfileSubTabs({ isMy, userId }: ProfileSubTabsProps) {
   return (
     <View className="border-b border-border bg-background px-4 pb-0 pt-1">
       <View className="flex-row gap-1 rounded-md bg-secondary p-1">
-        {TAB_ITEMS.map(({ key, label }) => {
+        {tabItems.map(({ key, label }) => {
           const isActive = activeTab === key;
           return (
             <Pressable

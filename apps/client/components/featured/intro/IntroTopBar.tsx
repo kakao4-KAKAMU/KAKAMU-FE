@@ -1,4 +1,5 @@
 import { Pressable, View } from 'react-native';
+import { useTranslation } from '@kakamu/i18n';
 import { Clapperboard } from 'lucide-react-native';
 import { Icon, Text, TextClassContext } from '@kakamu/ui';
 
@@ -8,6 +9,8 @@ type IntroTopBarProps = {
 };
 
 export function IntroTopBar({ brandName = 'Kakamu', onSkip }: IntroTopBarProps) {
+  const { t } = useTranslation();
+
   return (
     <View className="flex-row items-center justify-between">
       <View className="flex-row items-center gap-2">
@@ -21,12 +24,12 @@ export function IntroTopBar({ brandName = 'Kakamu', onSkip }: IntroTopBarProps) 
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="건너뛰기"
+        accessibilityLabel={t('guest.intro.skip')}
         onPress={onSkip}
         hitSlop={10}
         className="active:opacity-70"
       >
-        <Text className="text-[13px] font-bold text-muted-foreground">Skip</Text>
+        <Text className="text-[13px] font-bold text-muted-foreground">{t('guest.intro.skip')}</Text>
       </Pressable>
     </View>
   );
