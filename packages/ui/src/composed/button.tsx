@@ -1,4 +1,4 @@
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Platform, Pressable } from 'react-native';
@@ -94,13 +94,13 @@ type ButtonProps = React.ComponentProps<typeof Pressable> & React.RefAttributes<
 
 function Button({ className, variant, size, ...props }: ButtonProps) {
   return (
-    <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
+    <TextClassProvider value={buttonTextVariants({ variant, size })}>
       <Pressable
         className={cn(props.disabled && 'opacity-50', buttonVariants({ variant, size }), className)}
         role="button"
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

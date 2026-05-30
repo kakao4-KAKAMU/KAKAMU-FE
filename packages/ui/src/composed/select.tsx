@@ -1,6 +1,6 @@
 import { Icon } from './icon';
 import { NativeOnlyAnimatedView } from './native-only-animated-view';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as SelectPrimitive from '@rn-primitives/select';
 import { Check, ChevronDown, ChevronDownIcon, ChevronUpIcon } from 'lucide-react-native';
@@ -81,7 +81,7 @@ function SelectContent({
     <SelectPrimitive.Portal hostName={portalHost}>
       <FullWindowOverlay>
         <SelectPrimitive.Overlay style={Platform.select({ native: StyleSheet.absoluteFill })}>
-          <TextClassContext.Provider value="text-popover-foreground">
+          <TextClassProvider value="text-popover-foreground">
             <NativeOnlyAnimatedView className="z-50" entering={FadeIn} exiting={FadeOut}>
               <SelectPrimitive.Content
                 className={cn(
@@ -122,7 +122,7 @@ function SelectContent({
                 <SelectScrollDownButton />
               </SelectPrimitive.Content>
             </NativeOnlyAnimatedView>
-          </TextClassContext.Provider>
+          </TextClassProvider>
         </SelectPrimitive.Overlay>
       </FullWindowOverlay>
     </SelectPrimitive.Portal>

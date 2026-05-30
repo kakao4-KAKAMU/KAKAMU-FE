@@ -1,10 +1,10 @@
-import { Text, TextClassContext } from './text';
+import { Text, TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import { View } from 'react-native';
 
 function Card({ className, ...props }: React.ComponentProps<typeof View> & React.RefAttributes<View>) {
   return (
-    <TextClassContext.Provider value="text-card-foreground">
+    <TextClassProvider value="text-card-foreground">
       <View
         className={cn(
           'bg-card border-border flex flex-col gap-6 rounded-xl border py-6 shadow-sm shadow-black/5',
@@ -12,7 +12,7 @@ function Card({ className, ...props }: React.ComponentProps<typeof View> & React
         )}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

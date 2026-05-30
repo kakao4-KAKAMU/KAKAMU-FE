@@ -1,7 +1,7 @@
 import { Pressable } from "react-native";
 import type { LucideIcon } from "lucide-react-native";
 import type { TabTriggerSlotProps } from "expo-router/ui";
-import { cn, Icon, Text, TextClassContext } from "@kakamu/ui";
+import { cn, Icon, Text, TextClassProvider } from "@kakamu/ui";
 
 type TabButtonProps = TabTriggerSlotProps & {
   icon: LucideIcon;
@@ -19,7 +19,7 @@ export function TabButton({
   ...pressableProps
 }: TabButtonProps) {
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={isFocused ? "text-background" : "text-muted-foreground"}
     >
       <Pressable
@@ -39,6 +39,6 @@ export function TabButton({
           {label}
         </Text>
       </Pressable>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }

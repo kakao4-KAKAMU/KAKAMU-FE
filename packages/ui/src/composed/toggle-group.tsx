@@ -1,5 +1,5 @@
 import { Icon } from './icon';
-import { TextClassContext } from './text';
+import { TextClassProvider, TextClassContext } from './text';
 import { toggleVariants } from './toggle';
 import { cn } from '../lib/cn';
 import * as ToggleGroupPrimitive from '@rn-primitives/toggle-group';
@@ -60,7 +60,7 @@ function ToggleGroupItem({
   const { value } = ToggleGroupPrimitive.useRootContext();
 
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-sm text-foreground font-medium',
         ToggleGroupPrimitive.utils.getIsSelected(value, props.value)
@@ -88,7 +88,7 @@ function ToggleGroupItem({
         {...props}>
         {children}
       </ToggleGroupPrimitive.Item>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

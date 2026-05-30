@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
   Icon,
   Text,
-  TextClassContext,
+  TextClassProvider,
 } from '@kakamu/ui';
 import { clearAuthSession } from '@/lib/auth/set-auth-tokens';
 import { ConditionalRender } from '@/components/utils';
@@ -62,9 +62,9 @@ export function ProfileSettingsHeader({
                 hitSlop={8}
                 className="h-8 w-8 items-center justify-center rounded-full bg-secondary active:opacity-70"
               >
-                <TextClassContext.Provider value="text-secondary-foreground">
+                <TextClassProvider value="text-secondary-foreground">
                   <Icon as={actionIcon} size={18} />
-                </TextClassContext.Provider>
+                </TextClassProvider>
               </Pressable>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="bg-popover min-w-44">
@@ -87,9 +87,9 @@ export function ProfileSettingsHeader({
             hitSlop={8}
             className="h-8 w-8 items-center justify-center rounded-full bg-secondary active:opacity-70"
           >
-            <TextClassContext.Provider value="text-secondary-foreground">
+            <TextClassProvider value="text-secondary-foreground">
               <Icon as={actionIcon} size={18} />
-            </TextClassContext.Provider>
+            </TextClassProvider>
           </Pressable>,
         }}
         condition={isDropdownMenu}

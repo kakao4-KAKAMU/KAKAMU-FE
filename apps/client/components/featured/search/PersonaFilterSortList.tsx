@@ -1,6 +1,6 @@
 import { Pressable, View } from 'react-native';
 import { Circle } from 'lucide-react-native';
-import { Icon, Text, TextClassContext } from '@kakamu/ui';
+import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 
 type PersonaFilterSortListProps = {
   options: { value: string; label: string }[];
@@ -29,9 +29,9 @@ export function PersonaFilterSortList({ options, value, onChange }: PersonaFilte
               {selected ? (
                 <View className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
               ) : (
-                <TextClassContext.Provider value="text-transparent">
+                <TextClassProvider value="text-transparent">
                   <Icon as={Circle} size={12} />
-                </TextClassContext.Provider>
+                </TextClassProvider>
               )}
             </View>
           </Pressable>

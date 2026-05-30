@@ -1,5 +1,5 @@
 import { NativeOnlyAnimatedView } from './native-only-animated-view';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as TooltipPrimitive from '@rn-primitives/tooltip';
 import * as React from 'react';
@@ -33,7 +33,7 @@ function TooltipContent({
                 : FadeInUp.withInitialValues({ transform: [{ translateY: -5 }] })
             }
             exiting={FadeOut}>
-            <TextClassContext.Provider value="text-xs text-primary-foreground">
+            <TextClassProvider value="text-xs text-primary-foreground">
               <TooltipPrimitive.Content
                 sideOffset={sideOffset}
                 className={cn(
@@ -52,7 +52,7 @@ function TooltipContent({
                 side={side}
                 {...props}
               />
-            </TextClassContext.Provider>
+            </TextClassProvider>
           </NativeOnlyAnimatedView>
         </TooltipPrimitive.Overlay>
       </FullWindowOverlay>

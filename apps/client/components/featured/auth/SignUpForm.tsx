@@ -11,7 +11,7 @@ import {
   Input,
   Label,
   Text,
-  TextClassContext,
+  TextClassProvider,
 } from '@kakamu/ui';
 
 export type SignUpFormValues = SignUpWithTermsFormInput;
@@ -151,9 +151,9 @@ export function SignUpForm({
                 hitSlop={8}
                 className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
               >
-                <TextClassContext.Provider value="text-muted-foreground">
+                <TextClassProvider value="text-muted-foreground">
                   <Icon as={showPassword ? EyeOff : Eye} size={18} />
-                </TextClassContext.Provider>
+                </TextClassProvider>
               </Pressable>
             </View>
             {error?.message ? (
@@ -196,9 +196,9 @@ export function SignUpForm({
                 hitSlop={8}
                 className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
               >
-                <TextClassContext.Provider value="text-muted-foreground">
+                <TextClassProvider value="text-muted-foreground">
                   <Icon as={showPasswordConfirm ? EyeOff : Eye} size={18} />
-                </TextClassContext.Provider>
+                </TextClassProvider>
               </Pressable>
             </View>
             {error?.message ? (

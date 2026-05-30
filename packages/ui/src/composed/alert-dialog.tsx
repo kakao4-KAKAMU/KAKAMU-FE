@@ -1,6 +1,6 @@
 import { buttonTextVariants, buttonVariants } from './button';
 import { NativeOnlyAnimatedView } from './native-only-animated-view';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as AlertDialogPrimitive from '@rn-primitives/alert-dialog';
 import * as React from 'react';
@@ -71,9 +71,9 @@ function AlertDialogContent({
 
 function AlertDialogHeader({ className, ...props }: ViewProps) {
   return (
-    <TextClassContext.Provider value="text-center sm:text-left">
+    <TextClassProvider value="text-center sm:text-left">
       <View className={cn('flex flex-col gap-2', className)} {...props} />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -115,9 +115,9 @@ function AlertDialogAction({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {
   return (
-    <TextClassContext.Provider value={buttonTextVariants({ className })}>
+    <TextClassProvider value={buttonTextVariants({ className })}>
       <AlertDialogPrimitive.Action className={cn(buttonVariants(), className)} {...props} />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -126,12 +126,12 @@ function AlertDialogCancel({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel>) {
   return (
-    <TextClassContext.Provider value={buttonTextVariants({ className, variant: 'outline' })}>
+    <TextClassProvider value={buttonTextVariants({ className, variant: 'outline' })}>
       <AlertDialogPrimitive.Cancel
         className={cn(buttonVariants({ variant: 'outline' }), className)}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

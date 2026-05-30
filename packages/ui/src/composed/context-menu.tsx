@@ -1,6 +1,6 @@
 import { Icon } from './icon';
 import { NativeOnlyAnimatedView } from './native-only-animated-view';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as ContextMenuPrimitive from '@rn-primitives/context-menu';
 import { Check, ChevronDown, ChevronRight, ChevronUp } from 'lucide-react-native';
@@ -36,7 +36,7 @@ function ContextMenuSubTrigger({
   const { open } = ContextMenuPrimitive.useSubContext();
   const icon = Platform.OS === 'web' ? ChevronRight : open ? ChevronUp : ChevronDown;
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-sm select-none group-active:text-accent-foreground',
         open && 'text-accent-foreground'
@@ -55,7 +55,7 @@ function ContextMenuSubTrigger({
         <>{children}</>
         <Icon as={icon} className={cn('text-foreground ml-auto size-4 shrink-0', iconClassName)} />
       </ContextMenuPrimitive.SubTrigger>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -107,7 +107,7 @@ function ContextMenuContent({
           })}
           className={overlayClassName}>
           <NativeOnlyAnimatedView entering={FadeIn}>
-            <TextClassContext.Provider value="text-popover-foreground">
+            <TextClassProvider value="text-popover-foreground">
               <ContextMenuPrimitive.Content
                 className={cn(
                   'bg-popover border-border min-w-32 overflow-hidden rounded-md border p-1 shadow-lg shadow-black/5',
@@ -122,7 +122,7 @@ function ContextMenuContent({
                 )}
                 {...props}
               />
-            </TextClassContext.Provider>
+            </TextClassProvider>
           </NativeOnlyAnimatedView>
         </ContextMenuPrimitive.Overlay>
       </FullWindowOverlay>
@@ -141,7 +141,7 @@ function ContextMenuItem({
     variant?: 'default' | 'destructive';
   }) {
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'select-none text-sm text-popover-foreground group-active:text-popover-foreground',
         variant === 'destructive' && 'text-destructive group-active:text-destructive'
@@ -162,7 +162,7 @@ function ContextMenuItem({
         )}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -174,7 +174,7 @@ function ContextMenuCheckboxItem({
     children?: React.ReactNode;
   }) {
   return (
-    <TextClassContext.Provider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
+    <TextClassProvider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
       <ContextMenuPrimitive.CheckboxItem
         className={cn(
           'active:bg-accent group relative flex flex-row items-center gap-2 rounded-sm py-2 pl-8 pr-2 sm:py-1.5',
@@ -198,7 +198,7 @@ function ContextMenuCheckboxItem({
         </View>
         <>{children}</>
       </ContextMenuPrimitive.CheckboxItem>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -210,7 +210,7 @@ function ContextMenuRadioItem({
     children?: React.ReactNode;
   }) {
   return (
-    <TextClassContext.Provider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
+    <TextClassProvider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
       <ContextMenuPrimitive.RadioItem
         className={cn(
           'active:bg-accent group relative flex flex-row items-center gap-2 rounded-sm py-2 pl-8 pr-2 sm:py-1.5',
@@ -228,7 +228,7 @@ function ContextMenuRadioItem({
         </View>
         <>{children}</>
       </ContextMenuPrimitive.RadioItem>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

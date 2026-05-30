@@ -3,7 +3,7 @@ import { User } from 'lucide-react-native';
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 import { Controller, type Control } from 'react-hook-form';
-import { Button, Icon, Input, Label, Text, TextClassContext } from '@kakamu/ui';
+import { Button, Icon, Input, Label, Text, TextClassProvider } from '@kakamu/ui';
 
 type PersonaCreateStep1FormProps = {
   control: Control<PersonaCreateFormInput>;
@@ -61,9 +61,9 @@ export function PersonaCreateStep1Form({
                       className="h-full w-full"
                     />
                   ) : (
-                    <TextClassContext.Provider value="text-muted-foreground">
+                    <TextClassProvider value="text-muted-foreground">
                       <Icon as={User} size={22} />
-                    </TextClassContext.Provider>
+                    </TextClassProvider>
                   )}
                 </View>
                 <View className="min-w-0 flex-1 gap-1.5">

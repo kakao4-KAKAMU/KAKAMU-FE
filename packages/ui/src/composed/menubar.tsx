@@ -1,6 +1,6 @@
 import { Icon } from './icon';
 import { NativeOnlyAnimatedView } from './native-only-animated-view';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as MenubarPrimitive from '@rn-primitives/menubar';
 import { Portal, PortalHost } from '@rn-primitives/portal';
@@ -73,7 +73,7 @@ function MenubarTrigger({
   const { value: itemValue } = MenubarPrimitive.useMenuContext();
 
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-sm font-medium select-none group-active:text-accent-foreground',
         value === itemValue && 'text-accent-foreground'
@@ -89,7 +89,7 @@ function MenubarTrigger({
         )}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -107,7 +107,7 @@ function MenubarSubTrigger({
   const { open } = MenubarPrimitive.useSubContext();
   const icon = Platform.OS === 'web' ? ChevronRight : open ? ChevronUp : ChevronDown;
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-sm select-none group-active:text-accent-foreground',
         open && 'text-accent-foreground'
@@ -126,7 +126,7 @@ function MenubarSubTrigger({
         <>{children}</>
         <Icon as={icon} className={cn('text-foreground ml-auto size-4 shrink-0', iconClassName)} />
       </MenubarPrimitive.SubTrigger>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -167,7 +167,7 @@ function MenubarContent({
           entering={FadeIn}
           style={StyleSheet.absoluteFill}
           pointerEvents="box-none">
-          <TextClassContext.Provider value="text-popover-foreground">
+          <TextClassProvider value="text-popover-foreground">
             <MenubarPrimitive.Content
               className={cn(
                 'bg-popover border-border min-w-48 overflow-hidden rounded-md border p-1 shadow-lg shadow-black/5',
@@ -185,7 +185,7 @@ function MenubarContent({
               sideOffset={sideOffset}
               {...props}
             />
-          </TextClassContext.Provider>
+          </TextClassProvider>
         </NativeOnlyAnimatedView>
       </FullWindowOverlay>
     </MenubarPrimitive.Portal>
@@ -203,7 +203,7 @@ function MenubarItem({
     variant?: 'default' | 'destructive';
   }) {
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'select-none text-sm text-popover-foreground group-active:text-popover-foreground',
         variant === 'destructive' && 'text-destructive group-active:text-destructive'
@@ -224,7 +224,7 @@ function MenubarItem({
         )}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -236,7 +236,7 @@ function MenubarCheckboxItem({
     children?: React.ReactNode;
   }) {
   return (
-    <TextClassContext.Provider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
+    <TextClassProvider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
       <MenubarPrimitive.CheckboxItem
         className={cn(
           'active:bg-accent group relative flex flex-row items-center gap-2 rounded-sm py-2 pl-8 pr-2 sm:py-1.5',
@@ -260,7 +260,7 @@ function MenubarCheckboxItem({
         </View>
         <>{children}</>
       </MenubarPrimitive.CheckboxItem>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -272,7 +272,7 @@ function MenubarRadioItem({
     children?: React.ReactNode;
   }) {
   return (
-    <TextClassContext.Provider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
+    <TextClassProvider value="text-sm text-popover-foreground select-none group-active:text-accent-foreground">
       <MenubarPrimitive.RadioItem
         className={cn(
           'active:bg-accent group relative flex flex-row items-center gap-2 rounded-sm py-2 pl-8 pr-2 sm:py-1.5',
@@ -290,7 +290,7 @@ function MenubarRadioItem({
         </View>
         <>{children}</>
       </MenubarPrimitive.RadioItem>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

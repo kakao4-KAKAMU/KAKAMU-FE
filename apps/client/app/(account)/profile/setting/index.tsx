@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { ChevronRight, ShieldAlert, User } from 'lucide-react-native';
-import { Button, Icon, Switch, Text, TextClassContext } from '@kakamu/ui';
+import { Button, Icon, Switch, Text, TextClassProvider } from '@kakamu/ui';
 import { ProfileSettingRow, ProfileSettingsHeader } from '@/components/featured/profile';
 import { useThemeScheme } from '@/components/themeScheme';
 
@@ -42,9 +42,9 @@ export default function ProfileSettingScreen() {
                 label="계정 및 SNS 로그인"
                 onPress={onAccountSetupPress}
                 trailing={
-                  <TextClassContext.Provider value="text-muted-foreground">
+                  <TextClassProvider value="text-muted-foreground">
                     <Icon as={ChevronRight} size={18} />
-                  </TextClassContext.Provider>
+                  </TextClassProvider>
                 }
               />
               
@@ -73,9 +73,9 @@ export default function ProfileSettingScreen() {
                 label="신고/차단 관리"
                 onPress={() => {}}
                 trailing={
-                  <TextClassContext.Provider value="text-muted-foreground">
+                  <TextClassProvider value="text-muted-foreground">
                     <Icon as={ShieldAlert} size={18} />
-                  </TextClassContext.Provider>
+                  </TextClassProvider>
                 }
               />
             </View>

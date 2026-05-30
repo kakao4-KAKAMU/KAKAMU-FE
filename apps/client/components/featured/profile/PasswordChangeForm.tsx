@@ -4,7 +4,7 @@ import type { ChangePasswordFormInput } from '@kakamu/schema';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { Pressable, type TextInputProps, View } from 'react-native';
 import { Controller, type Control, type FieldPath } from 'react-hook-form';
-import { Button, Icon, Input, Label, Text, TextClassContext } from '@kakamu/ui';
+import { Button, Icon, Input, Label, Text, TextClassProvider } from '@kakamu/ui';
 
 export type PasswordChangeFormValues = ChangePasswordFormInput;
 
@@ -63,9 +63,9 @@ function PasswordField({
               hitSlop={8}
               className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
             >
-              <TextClassContext.Provider value="text-muted-foreground">
+              <TextClassProvider value="text-muted-foreground">
                 <Icon as={visible ? EyeOff : Eye} size={18} />
-              </TextClassContext.Provider>
+              </TextClassProvider>
             </Pressable>
           </View>
           {error?.message ? (

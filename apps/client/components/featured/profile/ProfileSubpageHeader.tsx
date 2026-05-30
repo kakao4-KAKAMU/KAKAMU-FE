@@ -2,7 +2,7 @@ import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
 import { ChevronLeft } from 'lucide-react-native';
-import { Icon, Text, TextClassContext } from '@kakamu/ui';
+import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 
 type ProfileSubpageHeaderProps = {
   title: string;
@@ -24,9 +24,9 @@ export function ProfileSubpageHeader({ title, onBackPress }: ProfileSubpageHeade
         hitSlop={8}
         className="h-8 w-8 items-center justify-center rounded-full bg-secondary active:opacity-70"
       >
-        <TextClassContext.Provider value="text-secondary-foreground">
+        <TextClassProvider value="text-secondary-foreground">
           <Icon as={ChevronLeft} size={18} />
-        </TextClassContext.Provider>
+        </TextClassProvider>
       </Pressable>
 
       <Text className="text-[22px] font-bold leading-tight text-foreground">{title}</Text>

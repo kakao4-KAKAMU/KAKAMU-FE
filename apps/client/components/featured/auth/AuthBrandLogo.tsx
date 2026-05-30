@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { Clapperboard } from 'lucide-react-native';
-import { Icon, TextClassContext, cn } from '@kakamu/ui';
+import { Icon, TextClassProvider, cn } from '@kakamu/ui';
 
 type AuthBrandLogoProps = {
   size?: 'md' | 'lg';
@@ -24,9 +24,9 @@ export function AuthBrandLogo({ size = 'lg', className }: AuthBrandLogoProps) {
       accessibilityRole="image"
       accessibilityLabel="Kakamu"
     >
-      <TextClassContext.Provider value="text-background">
+      <TextClassProvider value="text-background">
         <Icon as={Clapperboard} size={sizeStyle.icon} />
-      </TextClassContext.Provider>
+      </TextClassProvider>
     </View>
   );
 }

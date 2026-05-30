@@ -1,4 +1,4 @@
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as TabsPrimitive from '@rn-primitives/tabs';
 import { Platform } from 'react-native';
@@ -32,7 +32,7 @@ function TabsTrigger({
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   const { value } = TabsPrimitive.useRootContext();
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-foreground dark:text-muted-foreground text-sm font-medium',
         value === props.value && 'dark:text-foreground'
@@ -49,7 +49,7 @@ function TabsTrigger({
         )}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

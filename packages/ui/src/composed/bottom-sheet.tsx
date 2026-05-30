@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { Modal, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
-import { Icon, Text, TextClassContext } from '@kakamu/ui';
+import { Text, TextClassProvider } from './text';
+import { Icon } from './icon';
 
 type BottomSheetProps = {
   visible: boolean;
@@ -42,9 +43,9 @@ export function BottomSheet({
               onPress={onClose}
               className="p-1"
             >
-              <TextClassContext.Provider value="text-muted-foreground">
+              <TextClassProvider value="text-muted-foreground">
                 <Icon as={X} size={20} />
-              </TextClassContext.Provider>
+              </TextClassProvider>
             </Pressable>
           </View>
           {children}

@@ -28,7 +28,7 @@ export { Separator } from "./composed/separator"
 export { Skeleton } from './composed/skeleton'
 export { Switch } from './composed/switch'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./composed/tabs"
-export { Text, TextClassContext } from './composed/text'
+export { Text, TextClassProvider } from './composed/text'
 export { ToggleGroup, ToggleGroupItem } from "./composed/toggle-group"
 export { Toggle } from './composed/toggle'
 export { Tooltip, TooltipTrigger, TooltipContent } from "./composed/tooltip"

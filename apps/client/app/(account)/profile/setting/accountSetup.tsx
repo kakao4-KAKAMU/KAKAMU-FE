@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { ChevronRight, Globe, MessageCircle } from 'lucide-react-native';
-import { Badge, Icon, Text, TextClassContext } from '@kakamu/ui';
+import { Badge, Icon, Text, TextClassProvider } from '@kakamu/ui';
 import {
   AccountSnsProviderRow,
   ProfileSettingRow,
@@ -44,9 +44,9 @@ export default function AccountSetupScreen() {
                   label="비밀번호"
                   onPress={onPasswordPress}
                   trailing={
-                    <TextClassContext.Provider value="text-muted-foreground">
+                    <TextClassProvider value="text-muted-foreground">
                       <Icon as={ChevronRight} size={18} />
-                    </TextClassContext.Provider>
+                    </TextClassProvider>
                   }
                 />
               </View>
@@ -76,9 +76,9 @@ export default function AccountSetupScreen() {
                   description="연결되지 않음"
                   icon={
                     <View className="h-8 w-8 items-center justify-center rounded-full bg-secondary">
-                      <TextClassContext.Provider value="text-muted-foreground">
+                      <TextClassProvider value="text-muted-foreground">
                         <Icon as={Globe} size={18} />
-                      </TextClassContext.Provider>
+                      </TextClassProvider>
                     </View>
                   }
                   trailing={<Text className="text-[13px] font-semibold text-foreground">연결하기</Text>}
