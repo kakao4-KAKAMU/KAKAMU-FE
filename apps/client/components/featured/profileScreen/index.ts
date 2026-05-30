@@ -7,7 +7,6 @@ export { getProfileTabHref, resolveActiveProfileTab } from './profileScreen.rout
 export type {
   ProfileTab,
   ProfileScreenUser,
-  ProfileCompactPost,
   ProfileSavedCategory,
   ProfileSavedMovie,
   ProfileLikeSegment,

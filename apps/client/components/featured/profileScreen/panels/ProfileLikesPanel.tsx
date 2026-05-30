@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
+import type { PostItem } from '@kakamu/types';
 import { Badge, Text } from '@kakamu/ui';
-import { ProfileCompactPost } from '../ProfileCompactPost';
-import type { ProfileCompactPost as ProfileCompactPostType, ProfileLikeSegment } from '../types';
+import { CompactPost } from '../../post/CompactPost';
+import type { ProfileLikeSegment } from '../types';
 
 const SEGMENTS: { key: ProfileLikeSegment; label: string }[] = [
   { key: 'all', label: '전체' },
@@ -11,7 +12,7 @@ const SEGMENTS: { key: ProfileLikeSegment; label: string }[] = [
 ];
 
 type ProfileLikesPanelProps = {
-  posts: ProfileCompactPostType[];
+  posts: PostItem[];
 };
 
 export function ProfileLikesPanel({ posts }: ProfileLikesPanelProps) {
@@ -33,7 +34,7 @@ export function ProfileLikesPanel({ posts }: ProfileLikesPanelProps) {
       </View>
 
       {posts.map((post) => (
-        <ProfileCompactPost key={post.id} post={post} />
+        <CompactPost key={post.id} post={post} />
       ))}
     </View>
   );
