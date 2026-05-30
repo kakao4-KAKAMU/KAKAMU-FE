@@ -54,6 +54,7 @@ export function ProfileSettingsHeader({
     <HeaderTemplate
       title={title}
       rightAction={<ConditionalRender.Boolean
+        condition={isDropdownMenu}
         render={{
           true: <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -93,7 +94,6 @@ export function ProfileSettingsHeader({
             </TextClassProvider>
           </Button>,
         }}
-        condition={isDropdownMenu}
       />}
     />
   );

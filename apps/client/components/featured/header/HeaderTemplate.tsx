@@ -17,7 +17,7 @@ export function HeaderTemplate({
     <View className="flex-row items-center justify-between pb-1 pt-1 px-4">
       <View>
         <ConditionalRender.Boolean
-          condition={Boolean(leftAction)}
+          condition={leftAction}
           render={{
             true: leftAction,
             false: <View className="size-10" />,
@@ -29,7 +29,7 @@ export function HeaderTemplate({
       </Text>
       <View>
         <ConditionalRender.Boolean
-          condition={Boolean(rightAction)}
+          condition={rightAction}
           render={{
             true: rightAction,
             false: <View className="size-10" />,

@@ -1,25 +1,24 @@
 import type { ReactNode } from 'react';
 
 type KeyType = string | number
-type ConditionRendererType = { [k: KeyType]: ReactNode }
 
-interface ConditionalRenderProps<P> {
-  render: P
-  condition: keyof P
+interface ConditionalRenderProps<P extends KeyType> {
+  render: Partial<Record<P, ReactNode>>
+  condition: P
 }
 
 interface ConditionalRenderBooleanProps {
   render: { false?: ReactNode, true?: ReactNode }
-  condition: boolean
+  condition: any
 }
 
-const ConditionalRender = <P extends ConditionRendererType = ConditionRendererType>({ render, condition }: ConditionalRenderProps<P>) => {
+const ConditionalRender = <C extends KeyType>({ render, condition }: ConditionalRenderProps<C>) => {
   if (render[condition]) return <>{render[condition]}</>
   return null
 }
 
 const ConditionalRenderBoolean = ({ render, condition }: ConditionalRenderBooleanProps) => {
-  return <>{condition ? render.true : render.false}</>
+  return <>{Boolean(condition) ? render.true : render.false}</>
 }
 
 ConditionalRender.Boolean = ConditionalRenderBoolean

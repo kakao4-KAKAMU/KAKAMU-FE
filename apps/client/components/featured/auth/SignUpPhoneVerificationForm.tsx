@@ -5,6 +5,7 @@ import { Platform, View } from 'react-native';
 import { Controller, type Control, type FieldValues, type Path } from 'react-hook-form';
 import { Button, Input, Label, Text } from '@kakamu/ui';
 import { SIGNUP_PHONE_RECAPTCHA_CONTAINER_ID } from '@/hooks/auth';
+import { ConditionalRender } from '@/components/utils';
 
 type SignUpPhoneVerificationFormProps<TFieldValues extends FieldValues & PhoneValidationFormInput> = {
   control: Control<TFieldValues>;
@@ -71,24 +72,30 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
               aria-labelledby="signup-phone-label"
               className="h-12 rounded-xl"
             />
-            {error?.message ? (
-              <Text className="text-sm text-destructive">{error.message}</Text>
-            ) : null}
-            {smsError ? <Text className="text-sm text-destructive">{smsError}</Text> : null}
+            <ConditionalRender.Boolean
+              condition={error?.message}
+              render={{
+                true: <Text className="text-sm text-destructive">{error?.message}</Text>
+              }}
+            />
+            <ConditionalRender.Boolean
+              condition={smsError}
+              render={{
+                true: <Text className="text-sm text-destructive">{smsError}</Text>
+              }}
+            />
 
-            {Platform.OS === 'web' ? (
-              <View className="gap-1">
-                <Text className="text-xs text-muted-foreground">{t('guest.form.signUp.webRecaptchaHint')}</Text>
-                <View
-                  {...(Platform.OS === 'web'
-                    ? { id: recaptchaContainerId }
-                    : { nativeID: recaptchaContainerId })}
-                  className="h-px w-full overflow-hidden opacity-0"
-                  accessibilityElementsHidden
-                  importantForAccessibility="no-hide-descendants"
-                />
-              </View>
-            ) : null}
+            <View className="gap-1">
+              <Text className="text-xs text-muted-foreground">{t('guest.form.signUp.webRecaptchaHint')}</Text>
+              <View
+                {...(Platform.OS === 'web'
+                  ? { id: recaptchaContainerId }
+                  : { nativeID: recaptchaContainerId })}
+                className="h-px w-full overflow-hidden opacity-0"
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+              />
+            </View>
 
             <View className="flex-row gap-2">
               <Button
@@ -104,40 +111,47 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
               </Button>
             </View>
 
-            {!phoneVerified ? (
-              <View className="gap-2">
-                <Label nativeID="signup-otp-label" className="text-sm text-muted-foreground">
-                  {t('guest.form.signUp.otpLabel')}
-                </Label>
-                <Input
-                  value={otp}
-                  onChangeText={setOtp}
-                  placeholder={t('guest.form.signUp.otpPlaceholder')}
-                  keyboardType="number-pad"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  textContentType="oneTimeCode"
-                  aria-labelledby="signup-otp-label"
-                  className="h-12 rounded-xl"
-                />
-                {otpError ? <Text className="text-sm text-destructive">{otpError}</Text> : null}
-                <Button
-                  variant="secondary"
-                  size="default"
-                  onPress={handleVerifyOtp}
-                  disabled={otpVerifying || otp.trim().length < 4 || continuing}
-                  className="self-start rounded-xl"
-                >
-                  <Text className="text-sm font-semibold">
-                    {otpVerifying ? t('guest.form.signUp.otpVerifying') : t('guest.form.signUp.verifyOtp')}
-                  </Text>
-                </Button>
-              </View>
-            ) : (
-              <Text className="text-sm text-emerald-600 dark:text-emerald-400">
-                {t('guest.form.signUp.phoneVerified')}
-              </Text>
-            )}
+            <ConditionalRender.Boolean
+              condition={phoneVerified}
+              render={{
+                true: <Text className="text-sm text-emerald-600 dark:text-emerald-400">
+                  {t('guest.form.signUp.phoneVerified')}
+                </Text>,
+                false: <View className="gap-2">
+                  <Label nativeID="signup-otp-label" className="text-sm text-muted-foreground">
+                    {t('guest.form.signUp.otpLabel')}
+                  </Label>
+                  <Input
+                    value={otp}
+                    onChangeText={setOtp}
+                    placeholder={t('guest.form.signUp.otpPlaceholder')}
+                    keyboardType="number-pad"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    textContentType="oneTimeCode"
+                    aria-labelledby="signup-otp-label"
+                    className="h-12 rounded-xl"
+                  />
+                  <ConditionalRender.Boolean
+                    condition={otpError}
+                    render={{
+                      true: <Text className="text-sm text-destructive">{otpError}</Text>
+                    }}
+                  />
+                  <Button
+                    variant="secondary"
+                    size="default"
+                    onPress={handleVerifyOtp}
+                    disabled={otpVerifying || otp.trim().length < 4 || continuing}
+                    className="self-start rounded-xl"
+                  >
+                    <Text className="text-sm font-semibold">
+                      {otpVerifying ? t('guest.form.signUp.otpVerifying') : t('guest.form.signUp.verifyOtp')}
+                    </Text>
+                  </Button>
+                </View>
+              }}
+            />
           </View>
         )}
       />

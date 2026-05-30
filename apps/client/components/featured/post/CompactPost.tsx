@@ -33,7 +33,7 @@ export function CompactPost({ post }: CompactPostProps) {
       <CompactPostAuthorRow post={post} />
       <View className="relative">
         <ConditionalRender.Boolean
-          condition={Boolean(post.title)}
+          condition={post.title}
           render={{
             true: (
               <Text className="text-[15px] font-bold leading-snug text-foreground">
@@ -48,7 +48,7 @@ export function CompactPost({ post }: CompactPostProps) {
           pointerEvents={isSpoilerHidden ? 'none' : 'auto'}
         >
           <ConditionalRender.Boolean
-            condition={Boolean(post.content)}
+            condition={post.content}
             render={{
               true: <Text className="text-sm leading-relaxed text-foreground">
                 {post.content}
@@ -73,7 +73,7 @@ export function CompactPost({ post }: CompactPostProps) {
         </BlurView>
       </View>
       <ConditionalRender.Boolean
-        condition={Boolean(primaryMovie)}
+        condition={primaryMovie}
         render={{
           true: <CompactPostMovieCard movie={primaryMovie} />,
         }}

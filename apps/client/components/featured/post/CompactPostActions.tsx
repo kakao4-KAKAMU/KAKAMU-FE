@@ -52,7 +52,7 @@ export function CompactPostActions({
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <ConditionalRender.Boolean
-              condition={Boolean(isOwner)}
+              condition={isOwner}
               render={{
                 true: (
                   <>

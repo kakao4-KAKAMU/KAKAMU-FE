@@ -32,6 +32,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
   return (
     <View className="flex-1 bg-background">
       <ConditionalRender.Boolean
+        condition={isMy}
         render={{
           true: <ProfileSettingsHeader
             title="프로필"
@@ -41,7 +42,6 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
           />,
           false: <ProfileSubpageHeader title="프로필" onBackPress={onBackPress} />,
         }}
-        condition={isMy}
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
