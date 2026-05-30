@@ -1,20 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SlidersHorizontal } from 'lucide-react-native';
 import { useTranslation } from '@kakamu/i18n';
 import type { Genre, MovieItem } from '@kakamu/types';
-import { Button, Icon, Input, Text, TextClassContext } from '@kakamu/ui';
+import { Button, Icon, Input, Text, BottomSheet } from '@kakamu/ui';
 
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 
-import { PersonaBottomSheet } from './PersonaBottomSheet';
-import { PersonaMovieFilterSheet } from './PersonaMovieFilterSheet';
-import { PersonaSelectedMovieRow } from './PersonaSelectedMovieRow';
-import type { PersonaMovieSearchControl, PersonaMovieSearchQuery } from './persona-search-sheet.types';
+import { MovieFilterSheet } from './MovieFilterSheet';
+import { SelectedMovieRow } from './SelectedMovieRow';
+import type { MovieSearchControl, MovieSearchQuery } from '../search-sheet.types';
 
 type SelectedMovie = PersonaCreateFormInput['selectedMovies'][number];
 
-type PersonaMovieSearchSheetProps = {
+type MovieSearchSheetProps = {
   visible: boolean;
   genres: Genre[];
   selected: SelectedMovie[];
@@ -22,11 +21,11 @@ type PersonaMovieSearchSheetProps = {
   onClose: () => void;
   filterOpen: boolean;
   onFilterOpenChange: (open: boolean) => void;
-  search: PersonaMovieSearchControl;
-  searchQuery: PersonaMovieSearchQuery;
+  search: MovieSearchControl;
+  searchQuery: MovieSearchQuery;
 };
 
-export function PersonaMovieSearchSheet({
+export function MovieSearchSheet({
   visible,
   genres,
   selected,
@@ -36,7 +35,7 @@ export function PersonaMovieSearchSheet({
   onFilterOpenChange,
   search,
   searchQuery,
-}: PersonaMovieSearchSheetProps) {
+}: MovieSearchSheetProps) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState<SelectedMovie[]>(selected);
 
@@ -67,12 +66,12 @@ export function PersonaMovieSearchSheet({
 
   return (
     <>
-      <PersonaBottomSheet
+      <BottomSheet
         visible={visible}
         title={t('account.persona.create.movieSearchTitle')}
         onClose={onClose}
         footer={
-          <Button onPress={handleConfirm} className="h-11 w-full rounded-md">
+          <Button onPress={handleConfirm} size="lg">
             <Text>{t('account.persona.create.confirmSelection')}</Text>
           </Button>
         }
@@ -84,17 +83,11 @@ export function PersonaMovieSearchSheet({
             placeholder={t('account.persona.create.searchPlaceholder')}
             autoCapitalize="none"
             autoCorrect={false}
-            className="h-11 flex-1 rounded-md"
+            className="h-11 flex-1"
           />
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => onFilterOpenChange(true)}
-            className="h-11 w-11 items-center justify-center rounded-md border border-border bg-card active:opacity-80"
-          >
-            <TextClassContext.Provider value="text-foreground">
-              <Icon as={SlidersHorizontal} size={18} />
-            </TextClassContext.Provider>
-          </Pressable>
+          <Button size="lgIcon" variant="outline" onPress={() => onFilterOpenChange(true)}>
+            <Icon as={SlidersHorizontal} size={18} />
+          </Button>
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} className="max-h-[360px]">
@@ -107,7 +100,7 @@ export function PersonaMovieSearchSheet({
               </Text>
             ) : (
               items.map((item) => (
-                <PersonaSelectedMovieRow
+                <SelectedMovieRow
                   key={item.id}
                   title={item.title}
                   release_date={item.release_date}
@@ -129,9 +122,9 @@ export function PersonaMovieSearchSheet({
             ) : null}
           </View>
         </ScrollView>
-      </PersonaBottomSheet>
+      </BottomSheet>
 
-      <PersonaMovieFilterSheet
+      <MovieFilterSheet
         visible={filterOpen}
         genres={genres}
         genreIds={search.filterGenreIds}

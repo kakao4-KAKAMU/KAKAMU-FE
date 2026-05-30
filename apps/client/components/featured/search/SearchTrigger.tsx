@@ -2,12 +2,12 @@ import { Pressable, View } from 'react-native';
 import { ChevronRight, Search } from 'lucide-react-native';
 import { Icon, Text, TextClassContext } from '@kakamu/ui';
 
-type PersonaSearchTriggerProps = {
+type SearchTriggerProps = {
   placeholder: string;
   onPress: () => void;
 };
 
-export function PersonaSearchTrigger({ placeholder, onPress }: PersonaSearchTriggerProps) {
+export function SearchTrigger({ placeholder, onPress }: SearchTriggerProps) {
   return (
     <Pressable
       accessibilityRole="button"

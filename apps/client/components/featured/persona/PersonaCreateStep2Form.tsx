@@ -44,7 +44,7 @@ export function PersonaCreateStep2Form({
   );
 
   return (
-    <View className="flex-1 gap-8">
+    <View className="flex-1 gap-8 justify-between">
       <Controller
         control={control}
         name="selectedGenreIds"
@@ -68,7 +68,7 @@ export function PersonaCreateStep2Form({
         )}
       />
 
-      <View className="mt-auto">
+      <View>
         <PersonaCreateStepActions
           backLabel={t('account.persona.create.back')}
           primaryLabel={t('account.persona.create.continue')}

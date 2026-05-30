@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import { Icon, Text, TextClassContext } from '@kakamu/ui';
 
-type PersonaBottomSheetProps = {
+type BottomSheetProps = {
   visible: boolean;
   title: string;
   onClose: () => void;
@@ -12,13 +12,13 @@ type PersonaBottomSheetProps = {
   footer?: ReactNode;
 };
 
-export function PersonaBottomSheet({
+export function BottomSheet({
   visible,
   title,
   onClose,
   children,
   footer,
-}: PersonaBottomSheetProps) {
+}: BottomSheetProps) {
   const insets = useSafeAreaInsets();
 
   return (

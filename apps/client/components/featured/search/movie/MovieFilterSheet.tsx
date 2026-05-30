@@ -3,17 +3,16 @@ import { ScrollView, View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
 import type { Genre } from '@kakamu/types';
 import type { MovieSort } from '@kakamu/types';
-import { Button, Input, Label, Text } from '@kakamu/ui';
+import { Button, Input, Label, Text, BottomSheet } from '@kakamu/ui';
 
 import {
   getFilterSortLabel,
   MOVIE_FILTER_SORT_OPTIONS,
-} from './persona-create.constants';
-import { PersonaBottomSheet } from './PersonaBottomSheet';
-import { PersonaFilterSortList } from './PersonaFilterSortList';
-import { GenreMultiSelect } from './GenreMultiSelect';
+} from '../../persona/persona-create.constants';
+import { PersonaFilterSortList } from '../PersonaFilterSortList';
+import { GenreMultiSelect } from '../../persona/GenreMultiSelect';
 
-type PersonaMovieFilterSheetProps = {
+type MovieFilterSheetProps = {
   visible: boolean;
   genres: Genre[];
   genreIds: number[];
@@ -23,7 +22,7 @@ type PersonaMovieFilterSheetProps = {
   onApply: (values: { genreIds: number[]; year: string; sort: MovieSort }) => void;
 };
 
-export function PersonaMovieFilterSheet({
+export function MovieFilterSheet({
   visible,
   genres,
   genreIds,
@@ -31,7 +30,7 @@ export function PersonaMovieFilterSheet({
   sort,
   onClose,
   onApply,
-}: PersonaMovieFilterSheetProps) {
+}: MovieFilterSheetProps) {
   const { t } = useTranslation();
   const [draftGenreIds, setDraftGenreIds] = useState(genreIds);
   const [draftYear, setDraftYear] = useState(year);
@@ -72,16 +71,16 @@ export function PersonaMovieFilterSheet({
   };
 
   return (
-    <PersonaBottomSheet
+    <BottomSheet
       visible={visible}
       title={t('account.persona.create.movieFilterTitle')}
       onClose={onClose}
       footer={
         <View className="flex-row gap-2.5">
-          <Button variant="outline" onPress={handleReset} className="h-11 flex-1 rounded-md">
+          <Button className="flex-1" variant="outline" size="lg" onPress={handleReset}>
             <Text>{t('account.persona.create.filterReset')}</Text>
           </Button>
-          <Button onPress={handleApply} className="h-11 flex-1 rounded-md">
+          <Button className="flex-1" size="lg" onPress={handleApply}>
             <Text>{t('account.persona.create.filterApply')}</Text>
           </Button>
         </View>
@@ -123,6 +122,6 @@ export function PersonaMovieFilterSheet({
           </View>
         </View>
       </ScrollView>
-    </PersonaBottomSheet>
+    </BottomSheet>
   );
 }

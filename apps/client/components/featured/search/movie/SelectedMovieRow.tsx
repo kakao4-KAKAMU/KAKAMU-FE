@@ -1,21 +1,21 @@
 import { Platform, Pressable, View } from 'react-native';
-import { Checkbox, Icon, Text } from '@kakamu/ui';
-import { Check, X } from 'lucide-react-native';
-import { ConditionalRender } from '../../utils';
+import { Icon, Text } from '@kakamu/ui';
+import { Check } from 'lucide-react-native';
+import { ConditionalRender } from '../../../utils';
 
-type PersonaSelectedMovieRowProps = {
+type SelectedMovieRowProps = {
   title: string;
   release_date?: string;
   checked: boolean;
   onToggle: () => void;
 };
 
-export function PersonaSelectedMovieRow({
+export function SelectedMovieRow({
   title,
   release_date,
   checked,
   onToggle,
-}: PersonaSelectedMovieRowProps) {
+}: SelectedMovieRowProps) {
   return (
     <Pressable
       accessibilityRole="button"
@@ -34,7 +34,7 @@ export function PersonaSelectedMovieRow({
               as={Check}
               size={16}
               strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
-              className="text-primary-foreground"
+              className="text-foreground"
             />,
         }}
       />

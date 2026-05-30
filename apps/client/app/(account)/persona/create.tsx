@@ -137,6 +137,7 @@ export default function PersonaCreateScreen() {
         className="flex-1 bg-background"
       >
         <ScrollView
+          contentContainerClassName='flex-1'
           contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}

@@ -2,9 +2,9 @@ import type { MovieItem, PersonSearchItem, SearchPageResponse } from '@kakamu/ty
 import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import type { MovieSort, PersonSort } from '@kakamu/types';
 
-import type { PersonSearchJob } from './persona-create.constants';
+import type { PersonSearchJob } from '../persona/persona-create.constants';
 
-export type PersonaMovieSearchControl = {
+export type MovieSearchControl = {
   keyword: string;
   setKeyword: (value: string) => void;
   year: string;
@@ -16,7 +16,7 @@ export type PersonaMovieSearchControl = {
   items: MovieItem[];
 };
 
-export type PersonaPersonSearchControl = {
+export type PersonSearchControl = {
   keyword: string;
   setKeyword: (value: string) => void;
   sort: PersonSort;
@@ -26,7 +26,7 @@ export type PersonaPersonSearchControl = {
   items: PersonSearchItem[];
 };
 
-export type PersonaMovieSearchQuery = UseInfiniteQueryResult<
+export type MovieSearchQuery = UseInfiniteQueryResult<
   InfiniteData<SearchPageResponse<MovieItem>>
 >;
 

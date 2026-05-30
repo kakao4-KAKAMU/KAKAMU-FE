@@ -3,19 +3,19 @@ import { Icon, Text } from '@kakamu/ui';
 import { ConditionalRender } from '@/components/utils';
 import { Check } from 'lucide-react-native';
 
-type PersonaSelectedPersonRowProps = {
+type SelectedPersonRowProps = {
   name: string;
   job?: string;
   checked: boolean;
   onToggle: () => void;
 };
 
-export function PersonaSelectedPersonRow({
+export function SelectedPersonRow({
   name,
   job,
   checked,
   onToggle,
-}: PersonaSelectedPersonRowProps) {
+}: SelectedPersonRowProps) {
   return (
     <Pressable
       accessibilityRole="button"
@@ -35,7 +35,7 @@ export function PersonaSelectedPersonRow({
               as={Check}
               size={16}
               strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
-              className="text-primary-foreground"
+              className="text-foreground"
             />,
         }}
       />

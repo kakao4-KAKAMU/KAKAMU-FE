@@ -2,18 +2,17 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonSort } from '@kakamu/types';
-import { Badge, Button, cn, Label, Text } from '@kakamu/ui';
+import { Badge, Button, cn, Label, Text, BottomSheet } from '@kakamu/ui';
 
 import {
   getFilterSortLabel,
   PERSON_FILTER_SORT_OPTIONS,
   PERSON_SEARCH_JOBS,
   type PersonSearchJob,
-} from './persona-create.constants';
-import { PersonaBottomSheet } from './PersonaBottomSheet';
-import { PersonaFilterSortList } from './PersonaFilterSortList';
+} from '../../persona/persona-create.constants';
+import { PersonaFilterSortList } from '../PersonaFilterSortList';
 
-type PersonaPersonFilterSheetProps = {
+type PersonFilterSheetProps = {
   visible: boolean;
   jobs: PersonSearchJob[];
   sort: PersonSort;
@@ -21,13 +20,13 @@ type PersonaPersonFilterSheetProps = {
   onApply: (values: { jobs: PersonSearchJob[]; sort: PersonSort }) => void;
 };
 
-export function PersonaPersonFilterSheet({
+export function PersonFilterSheet({
   visible,
   jobs,
   sort,
   onClose,
   onApply,
-}: PersonaPersonFilterSheetProps) {
+}: PersonFilterSheetProps) {
   const { t } = useTranslation();
   const [draftJobs, setDraftJobs] = useState(jobs);
   const [draftSort, setDraftSort] = useState(sort);
@@ -65,16 +64,16 @@ export function PersonaPersonFilterSheet({
   };
 
   return (
-    <PersonaBottomSheet
+    <BottomSheet
       visible={visible}
       title={t('account.persona.create.personFilterTitle')}
       onClose={onClose}
       footer={
         <View className="flex-row gap-2.5">
-          <Button variant="outline" onPress={handleReset} className="h-11 flex-1 rounded-md">
+          <Button className="flex-1" variant="outline" onPress={handleReset} size="lg">
             <Text>{t('account.persona.create.filterReset')}</Text>
           </Button>
-          <Button onPress={handleApply} className="h-11 flex-1 rounded-md">
+          <Button className="flex-1" onPress={handleApply} size="lg">
             <Text>{t('account.persona.create.filterApply')}</Text>
           </Button>
         </View>
@@ -121,6 +120,6 @@ export function PersonaPersonFilterSheet({
           </View>
         </View>
       </ScrollView>
-    </PersonaBottomSheet>
+    </BottomSheet>
   );
 }

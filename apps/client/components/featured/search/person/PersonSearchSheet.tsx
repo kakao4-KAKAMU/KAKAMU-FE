@@ -1,31 +1,30 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SlidersHorizontal } from 'lucide-react-native';
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonSearchItem } from '@kakamu/types';
-import { Button, Icon, Input, Text, TextClassContext } from '@kakamu/ui';
+import { Button, Icon, Input, Text, BottomSheet } from '@kakamu/ui';
 
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 
-import { PersonaBottomSheet } from './PersonaBottomSheet';
-import { PersonaPersonFilterSheet } from './PersonaPersonFilterSheet';
-import { PersonaSelectedPersonRow } from './PersonaSelectedPersonRow';
-import type { PersonaPersonSearchControl, PersonaPersonSearchQuery } from './persona-search-sheet.types';
+import { PersonFilterSheet } from './PersonFilterSheet';
+import { SelectedPersonRow } from './SelectedPersonRow';
+import type { PersonSearchControl, PersonaPersonSearchQuery } from '../search-sheet.types';
 
 type SelectedPerson = PersonaCreateFormInput['selectedPersons'][number];
 
-type PersonaPersonSearchSheetProps = {
+type PersonSearchSheetProps = {
   visible: boolean;
   selected: SelectedPerson[];
   onConfirm: (persons: SelectedPerson[]) => void;
   onClose: () => void;
   filterOpen: boolean;
   onFilterOpenChange: (open: boolean) => void;
-  search: PersonaPersonSearchControl;
+  search: PersonSearchControl;
   searchQuery: PersonaPersonSearchQuery;
 };
 
-export function PersonaPersonSearchSheet({
+export function PersonSearchSheet({
   visible,
   selected,
   onConfirm,
@@ -34,7 +33,7 @@ export function PersonaPersonSearchSheet({
   onFilterOpenChange,
   search,
   searchQuery,
-}: PersonaPersonSearchSheetProps) {
+}: PersonSearchSheetProps) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState<SelectedPerson[]>(selected);
 
@@ -65,12 +64,12 @@ export function PersonaPersonSearchSheet({
 
   return (
     <>
-      <PersonaBottomSheet
+      <BottomSheet
         visible={visible}
         title={t('account.persona.create.personSearchTitle')}
         onClose={onClose}
         footer={
-          <Button onPress={handleConfirm} className="h-11 w-full rounded-md">
+          <Button onPress={handleConfirm} size="lg">
             <Text>{t('account.persona.create.confirmSelection')}</Text>
           </Button>
         }
@@ -82,17 +81,11 @@ export function PersonaPersonSearchSheet({
             placeholder={t('account.persona.create.searchPlaceholder')}
             autoCapitalize="none"
             autoCorrect={false}
-            className="h-11 flex-1 rounded-md"
+            className="h-11 flex-1"
           />
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => onFilterOpenChange(true)}
-            className="h-11 w-11 items-center justify-center rounded-md border border-border bg-card active:opacity-80"
-          >
-            <TextClassContext.Provider value="text-foreground">
-              <Icon as={SlidersHorizontal} size={18} />
-            </TextClassContext.Provider>
-          </Pressable>
+          <Button size="lgIcon" variant="outline" onPress={() => onFilterOpenChange(true)}>
+            <Icon as={SlidersHorizontal} size={18} />
+          </Button>
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} className="max-h-[360px]">
@@ -105,7 +98,7 @@ export function PersonaPersonSearchSheet({
               </Text>
             ) : (
               items.map((item) => (
-                <PersonaSelectedPersonRow
+                <SelectedPersonRow
                   key={item.id}
                   name={item.name}
                   job={item.job}
@@ -127,9 +120,9 @@ export function PersonaPersonSearchSheet({
             ) : null}
           </View>
         </ScrollView>
-      </PersonaBottomSheet>
+      </BottomSheet>
 
-      <PersonaPersonFilterSheet
+      <PersonFilterSheet
         visible={filterOpen}
         jobs={search.filterJobs}
         sort={search.sort}
