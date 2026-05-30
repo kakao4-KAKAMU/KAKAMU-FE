@@ -9,14 +9,22 @@ import { CompactPostImageList } from './CompactPostImageList';
 import { CompactPostMovieCard } from './CompactPostMovieCard';
 import { CompactPostActions } from './CompactPostActions';
 import { ConditionalRender } from '@/components/utils';
+import { useCompactPostActions } from './hooks/useCompactPostActions';
 
 type CompactPostProps = {
   post: PostItem;
+  onToggleLike?: (id: number) => void;
+  onComment?: (id: number) => void;
+  onToggleBookmark?: (id: number) => void;
+  onDelete?: (id: number) => void;
+  onModify?: (id: number) => void
+  onReport?: (id: number) => void
 };
 
 export function CompactPost({ post }: CompactPostProps) {
   const blurTargetRef = useRef<View>(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
+  const actions = useCompactPostActions(post);
   const isSpoilerHidden = useMemo(() => post.is_spoiler && !spoilerRevealed, [post.is_spoiler, spoilerRevealed]);
   const primaryMovie = post.movies[0];
 
@@ -70,7 +78,10 @@ export function CompactPost({ post }: CompactPostProps) {
           true: <CompactPostMovieCard movie={primaryMovie} />,
         }}
       />
-      <CompactPostActions post={post} />
+      <CompactPostActions
+        post={post}
+        {...actions}
+      />
     </View>
   );
 }

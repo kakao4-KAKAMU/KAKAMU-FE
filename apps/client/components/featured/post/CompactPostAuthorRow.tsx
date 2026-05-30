@@ -11,7 +11,8 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
   const timeLabel = formatPostRelativeTime(post.created_at);
   const metaLabel = isAnonymous
     ? timeLabel
-    : [post.author_id ? `@${post.author_id}` : null, timeLabel].filter(Boolean).join(' · ');
+    : timeLabel;
+    // : [post.author_id ? `@${post.author_id}` : null, timeLabel].filter(Boolean).join(' · ');
 
   return (
     <View className="flex-row items-center gap-2.5">
