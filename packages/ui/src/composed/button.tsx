@@ -38,13 +38,14 @@ const buttonVariants = cva(
           Platform.select({ web: 'hover:bg-accent dark:hover:bg-accent/50' })
         ),
         link: '',
+        text: ''
       },
       size: {
         default: cn('h-10 px-4 py-2 sm:h-9', Platform.select({ web: 'has-[>svg]:px-3' })),
         sm: cn('h-9 gap-1.5 rounded-md px-3 sm:h-8', Platform.select({ web: 'has-[>svg]:px-2.5' })),
         lg: cn('h-11 rounded-md px-6 sm:h-10', Platform.select({ web: 'has-[>svg]:px-4' })),
-        icon: 'h-10 w-10 sm:h-9 sm:w-9',
-        lgIcon: 'h-11 w-11 sm:h-10 sm:w-10',
+        icon: 'h-10 w-10 sm:h-9 sm:w-9 rounded-full',
+        lgIcon: 'h-11 w-11 sm:h-10 sm:w-10 rounded-full',
         text: ''
       },
     },
@@ -75,6 +76,7 @@ const buttonTextVariants = cva(
           'text-primary group-active:underline',
           Platform.select({ web: 'underline-offset-4 hover:underline group-hover:underline' })
         ),
+        text: ''
       },
       size: {
         default: '',

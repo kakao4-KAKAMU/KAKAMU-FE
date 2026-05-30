@@ -1,10 +1,13 @@
-import {
-  ProfileLikesPanel,
-  useProfileScreenData,
-} from '@/components/featured/profileScreen';
+
+import { ProfileFeedPanel } from '@/components/featured/profileScreen';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useLikedPostsInfiniteQuery } from '@kakamu/query';
 
 export default function MyProfileLikesScreen() {
-  const { likedPosts } = useProfileScreenData({ isMy: true });
+  const client = useBackendApiClient()
+  const { data } = useLikedPostsInfiniteQuery(client, {
+    limit: 20,
+  })
 
-  return <ProfileLikesPanel posts={likedPosts} />;
+  return <ProfileFeedPanel posts={data?.pages.flatMap((page) => page.items) ?? []} />;
 }

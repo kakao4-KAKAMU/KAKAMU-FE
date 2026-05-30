@@ -1,9 +1,8 @@
 import { useTranslation } from '@kakamu/i18n';
 import { View } from 'react-native';
 import { useErrorAlertDialog } from '@kakamu/ui';
-
+import { SonarHeader } from '@/components/featured/header';
 import {
-  SonarHeader,
   SonarHint,
   SONAR_MOCK_TRAILERS,
   TrailerSwipeDeck,

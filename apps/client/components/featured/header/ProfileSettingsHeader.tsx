@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useTranslation } from '@kakamu/i18n';
-import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import type { LucideIcon } from 'lucide-react-native';
 import {
@@ -11,10 +10,12 @@ import {
   DropdownMenuTrigger,
   Icon,
   Text,
+  Button,
   TextClassProvider,
 } from '@kakamu/ui';
 import { clearAuthSession } from '@/lib/auth/set-auth-tokens';
 import { ConditionalRender } from '@/components/utils';
+import { HeaderTemplate } from './HeaderTemplate';
 
 type ProfileSettingsHeaderProps = {
   title: string;
@@ -50,22 +51,22 @@ export function ProfileSettingsHeader({
   }, [router]);
 
   return (
-    <View className="flex-row items-center justify-between px-4 py-1">
-      <Text className="text-[22px] font-bold leading-tight text-foreground">{title}</Text>
-      <ConditionalRender.Boolean
+    <HeaderTemplate
+      title={title}
+      rightAction={<ConditionalRender.Boolean
         render={{
           true: <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Pressable
+              <Button
+                variant="ghost"
+                size="icon"
                 accessibilityRole="button"
                 accessibilityLabel={actionAccessibilityLabel}
-                hitSlop={8}
-                className="h-8 w-8 items-center justify-center rounded-full bg-secondary active:opacity-70"
               >
                 <TextClassProvider value="text-secondary-foreground">
                   <Icon as={actionIcon} size={18} />
                 </TextClassProvider>
-              </Pressable>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="bg-popover min-w-44">
               <DropdownMenuItem onPress={handleAccountSettings}>
@@ -80,20 +81,20 @@ export function ProfileSettingsHeader({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>,
-          false: <Pressable
+          false: <Button
+            variant="outline"
+            size="icon"
+            onPress={handleActionPress}
             accessibilityRole="button"
             accessibilityLabel={actionAccessibilityLabel}
-            onPress={handleActionPress}
-            hitSlop={8}
-            className="h-8 w-8 items-center justify-center rounded-full bg-secondary active:opacity-70"
           >
             <TextClassProvider value="text-secondary-foreground">
               <Icon as={actionIcon} size={18} />
             </TextClassProvider>
-          </Pressable>,
+          </Button>,
         }}
         condition={isDropdownMenu}
-      />
-    </View>
+      />}
+    />
   );
 }

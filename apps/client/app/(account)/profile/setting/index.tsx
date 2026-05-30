@@ -3,7 +3,8 @@ import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { ChevronRight, ShieldAlert, User } from 'lucide-react-native';
 import { Button, Icon, Switch, Text, TextClassProvider } from '@kakamu/ui';
-import { ProfileSettingRow, ProfileSettingsHeader } from '@/components/featured/profile';
+import { ProfileSettingsHeader } from '@/components/featured/header';
+import { ProfileSettingRow } from '@/components/featured/profile';
 import { useThemeScheme } from '@/components/themeScheme';
 
 export default function ProfileSettingScreen() {
@@ -24,19 +25,20 @@ export default function ProfileSettingScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       <View className="flex-1 bg-background">
+        <ProfileSettingsHeader
+          title="설정"
+          actionIcon={User}
+          isDropdownMenu={false}
+          actionAccessibilityLabel="설정 메뉴"
+        />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
+          contentContainerClassName='gap-2.5'
           className="flex-1"
         >
-          <View className="flex-col gap-4 px-5 pb-6">
-            <ProfileSettingsHeader
-              title="설정"
-              actionIcon={User}
-              isDropdownMenu={false}
-              actionAccessibilityLabel="설정 메뉴"
-            />
-
+          
+          <View className="flex-col gap-4 px-4 pb-6">
             <View className="flex-col gap-2.5">
               <ProfileSettingRow
                 label="계정 및 SNS 로그인"

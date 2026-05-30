@@ -34,7 +34,7 @@ export function ProfileSubTabs({ isMy, userId }: ProfileSubTabsProps) {
   );
 
   return (
-    <View className="border-b border-border bg-background px-4 pb-0 pt-1">
+    <View className="border-b border-border bg-background pb-0 pt-1">
       <View className="flex-row gap-1 rounded-md bg-secondary p-1">
         {tabItems.map(({ key, label }) => {
           const isActive = activeTab === key;

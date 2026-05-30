@@ -1,13 +1,14 @@
 import { useTranslation } from '@kakamu/i18n';
 import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
-import { Text } from '@kakamu/ui';
+import { Button, Text } from '@kakamu/ui';
 import {
   AuthHeader,
   ResetPasswordForm,
   ResetPasswordVerificationForm,
 } from '@/components/featured/auth';
 import { useResetPasswordFlow } from '@/hooks/auth';
+import { useCallback } from 'react';
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
@@ -27,9 +28,11 @@ export default function ResetPasswordScreen() {
     onResetCompleted: () => router.replace('./signin'),
   });
 
-  const handleBackToSignIn = () => {
-    router.replace('./signin');
-  };
+  const handleBackToSignIn = useCallback(() => {
+      router.replace('./signin');
+    },
+    [router],
+  );
 
   return (
     <>
@@ -71,16 +74,16 @@ export default function ResetPasswordScreen() {
             )}
 
             <View className="items-center">
-              <Pressable
+              <Button
+                variant='text'
+                size='text'
                 accessibilityRole="link"
                 onPress={handleBackToSignIn}
-                hitSlop={8}
-                className="active:opacity-70"
               >
                 <Text className="text-sm font-normal text-muted-foreground text-center">
                   {t('guest.resetPassword.backToSignIn')}
                 </Text>
-              </Pressable>
+              </Button>
             </View>
           </View>
         </ScrollView>

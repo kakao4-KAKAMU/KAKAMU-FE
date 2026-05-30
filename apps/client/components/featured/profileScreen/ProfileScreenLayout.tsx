@@ -6,6 +6,10 @@ import { ProfileHero } from './ProfileHero';
 import { ProfileStats } from './ProfileStats';
 import { ProfileSubTabs } from './ProfileSubTabs';
 import { useProfileScreenData } from './useProfileScreenData';
+import { ConditionalRender } from '@/components/utils';
+import { ProfileSettingsHeader } from '../header';
+import { ProfileSubpageHeader } from '../header';
+import { Settings } from 'lucide-react-native';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -27,25 +31,36 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
 
   return (
     <View className="flex-1 bg-background">
+      <ConditionalRender.Boolean
+        render={{
+          true: <ProfileSettingsHeader
+            title="프로필"
+            isDropdownMenu={isSettings}
+            actionIcon={Settings}
+            actionAccessibilityLabel="프로필 설정"
+          />,
+          false: <ProfileSubpageHeader title="프로필" onBackPress={onBackPress} />,
+        }}
+        condition={isMy}
+      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[1]}
+        contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
-        <View className="gap-2.5 px-4 pb-2 pt-1">
-          <ProfileHero
-            user={user}
-            isMy={isMy}
-            isSettings={isSettings}
-            onBackPress={onBackPress}
-          />
-          <ProfileStats user={user} />
-        </View>
+        <ProfileHero
+          user={user}
+          isMy={isMy}
+          isSettings={isSettings}
+          onBackPress={onBackPress}
+        />
+        <ProfileStats user={user} />
 
         <ProfileSubTabs isMy={isMy} userId={userId} />
 
-        <View className="px-4 pb-6 pt-2">{children}</View>
+        <View className="pb-6 pt-2">{children}</View>
       </ScrollView>
     </View>
   );
