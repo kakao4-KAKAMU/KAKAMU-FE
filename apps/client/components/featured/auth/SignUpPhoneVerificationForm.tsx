@@ -58,20 +58,33 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
             <Label nativeID="signup-phone-label" className="text-sm text-muted-foreground">
               {t('guest.form.signUp.phone')}
             </Label>
-            <Input
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              placeholder={t('guest.form.signUp.phonePlaceholder')}
-              keyboardType="phone-pad"
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete="tel"
-              textContentType="telephoneNumber"
-              editable={!phoneVerified}
-              aria-labelledby="signup-phone-label"
-              className="h-12 rounded-xl"
-            />
+            <View className="flex-row gap-2">
+              <Input
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                placeholder={t('guest.form.signUp.phonePlaceholder')}
+                keyboardType="phone-pad"
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoComplete="tel"
+                textContentType="telephoneNumber"
+                editable={!phoneVerified}
+                aria-labelledby="signup-phone-label"
+                className="rounded-xl h-11"
+              />
+              <Button
+                variant="secondary"
+                size="lg"
+                onPress={handleSendSms}
+                disabled={smsSending || phoneVerified || continuing}
+                className="rounded-xl"
+              >
+                <Text className="text-sm font-semibold">
+                  {smsSending ? t('guest.form.signUp.smsSending') : t('guest.form.signUp.sendSms')}
+                </Text>
+              </Button>
+            </View>
             <ConditionalRender.Boolean
               condition={error?.message}
               render={{
@@ -97,20 +110,6 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
               />
             </View>
 
-            <View className="flex-row gap-2">
-              <Button
-                variant="secondary"
-                size="default"
-                onPress={handleSendSms}
-                disabled={smsSending || phoneVerified || continuing}
-                className="shrink rounded-xl"
-              >
-                <Text className="text-sm font-semibold">
-                  {smsSending ? t('guest.form.signUp.smsSending') : t('guest.form.signUp.sendSms')}
-                </Text>
-              </Button>
-            </View>
-
             <ConditionalRender.Boolean
               condition={phoneVerified}
               render={{
@@ -121,34 +120,36 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
                   <Label nativeID="signup-otp-label" className="text-sm text-muted-foreground">
                     {t('guest.form.signUp.otpLabel')}
                   </Label>
-                  <Input
-                    value={otp}
-                    onChangeText={setOtp}
-                    placeholder={t('guest.form.signUp.otpPlaceholder')}
-                    keyboardType="number-pad"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    textContentType="oneTimeCode"
-                    aria-labelledby="signup-otp-label"
-                    className="h-12 rounded-xl"
-                  />
+                  <View className="flex-row gap-2">
+                    <Input
+                      value={otp}
+                      onChangeText={setOtp}
+                      placeholder={t('guest.form.signUp.otpPlaceholder')}
+                      keyboardType="number-pad"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      textContentType="oneTimeCode"
+                      aria-labelledby="signup-otp-label"
+                      className="h-11 rounded-xl"
+                    />
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      onPress={handleVerifyOtp}
+                      disabled={otpVerifying || otp.trim().length < 4 || continuing}
+                      className="self-start rounded-xl"
+                    >
+                      <Text className="text-sm font-semibold">
+                        {otpVerifying ? t('guest.form.signUp.otpVerifying') : t('guest.form.signUp.verifyOtp')}
+                      </Text>
+                    </Button>
+                  </View>
                   <ConditionalRender.Boolean
                     condition={otpError}
                     render={{
                       true: <Text className="text-sm text-destructive">{otpError}</Text>
                     }}
                   />
-                  <Button
-                    variant="secondary"
-                    size="default"
-                    onPress={handleVerifyOtp}
-                    disabled={otpVerifying || otp.trim().length < 4 || continuing}
-                    className="self-start rounded-xl"
-                  >
-                    <Text className="text-sm font-semibold">
-                      {otpVerifying ? t('guest.form.signUp.otpVerifying') : t('guest.form.signUp.verifyOtp')}
-                    </Text>
-                  </Button>
                 </View>
               }}
             />
