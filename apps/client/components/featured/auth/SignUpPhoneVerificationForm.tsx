@@ -71,14 +71,11 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
                 textContentType="telephoneNumber"
                 editable={!phoneVerified}
                 aria-labelledby="signup-phone-label"
-                className="rounded-xl h-11"
               />
               <Button
                 variant="secondary"
-                size="lg"
                 onPress={handleSendSms}
                 disabled={smsSending || phoneVerified || continuing}
-                className="rounded-xl"
               >
                 <Text className="text-sm font-semibold">
                   {smsSending ? t('guest.form.signUp.smsSending') : t('guest.form.signUp.sendSms')}
@@ -130,14 +127,12 @@ export function SignUpPhoneVerificationForm<TFieldValues extends FieldValues & P
                       autoCorrect={false}
                       textContentType="oneTimeCode"
                       aria-labelledby="signup-otp-label"
-                      className="h-11 rounded-xl"
                     />
                     <Button
                       variant="secondary"
-                      size="lg"
                       onPress={handleVerifyOtp}
                       disabled={otpVerifying || otp.trim().length < 4 || continuing}
-                      className="self-start rounded-xl"
+                      className="self-start"
                     >
                       <Text className="text-sm font-semibold">
                         {otpVerifying ? t('guest.form.signUp.otpVerifying') : t('guest.form.signUp.verifyOtp')}

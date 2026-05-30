@@ -10,6 +10,7 @@ import {
   Icon,
   Input,
   Label,
+  PasswordInput,
   Text,
   TextClassProvider,
 } from '@kakamu/ui';
@@ -34,8 +35,6 @@ export function SignUpForm({
   canSubmit = true,
 }: SignUpFormProps) {
   const { t } = useTranslation();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   return (
     <View className="gap-4">
@@ -128,34 +127,16 @@ export function SignUpForm({
             <Label nativeID="signup-password-label" className="text-sm text-muted-foreground">
               {t('guest.form.signUp.password')}
             </Label>
-            <View className="relative">
-              <Input
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder={t('guest.form.signUp.passwordPlaceholder')}
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoComplete="new-password"
-                textContentType="newPassword"
-                aria-labelledby="signup-password-label"
-                className="h-12 rounded-xl pr-12"
-              />
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={
-                  showPassword ? t('guest.form.signUp.a11yHidePassword') : t('guest.form.signUp.a11yShowPassword')
-                }
-                onPress={() => setShowPassword((prev) => !prev)}
-                hitSlop={8}
-                className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
-              >
-                <TextClassProvider value="text-muted-foreground">
-                  <Icon as={showPassword ? EyeOff : Eye} size={18} />
-                </TextClassProvider>
-              </Pressable>
-            </View>
+            <PasswordInput
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={t('guest.form.signUp.passwordPlaceholder')}
+              autoComplete="new-password"
+              aria-labelledby="signup-password-label"
+              passwordAccessibilityLabelHidden={t('guest.form.signUp.a11yHidePassword')}
+              passwordAccessibilityLabelShown={t('guest.form.signUp.a11yShowPassword')}
+            />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
             ) : null}
@@ -171,36 +152,16 @@ export function SignUpForm({
             <Label nativeID="signup-password-confirm-label" className="text-sm text-muted-foreground">
               {t('guest.form.signUp.passwordConfirm')}
             </Label>
-            <View className="relative">
-              <Input
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder={t('guest.form.signUp.passwordConfirmPlaceholder')}
-                secureTextEntry={!showPasswordConfirm}
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoComplete="new-password"
-                textContentType="newPassword"
-                aria-labelledby="signup-password-confirm-label"
-                className="h-12 rounded-xl pr-12"
-              />
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={
-                  showPasswordConfirm
-                    ? t('guest.form.signUp.a11yHidePasswordConfirm')
-                    : t('guest.form.signUp.a11yShowPasswordConfirm')
-                }
-                onPress={() => setShowPasswordConfirm((prev) => !prev)}
-                hitSlop={8}
-                className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
-              >
-                <TextClassProvider value="text-muted-foreground">
-                  <Icon as={showPasswordConfirm ? EyeOff : Eye} size={18} />
-                </TextClassProvider>
-              </Pressable>
-            </View>
+            <PasswordInput
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={t('guest.form.signUp.passwordConfirmPlaceholder')}
+              autoComplete="new-password"
+              aria-labelledby="signup-password-confirm-label"
+              passwordAccessibilityLabelHidden={t('guest.form.signUp.a11yHidePasswordConfirm')}
+              passwordAccessibilityLabelShown={t('guest.form.signUp.a11yShowPasswordConfirm')}
+            />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
             ) : null}

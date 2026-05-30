@@ -1,1 +1,1 @@
-export { ErrorAlertDialog, useErrorAlertDialog, ErrorAlertDialogProvider } from './ErrorAlertDialog';
+export { ErrorAlertDialog, useErrorAlertDialog, ErrorAlertDialogProvider } from './error-alert-dialog';

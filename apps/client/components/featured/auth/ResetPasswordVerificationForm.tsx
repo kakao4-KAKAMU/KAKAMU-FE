@@ -57,7 +57,6 @@ export function ResetPasswordVerificationForm({
               autoComplete="email"
               textContentType="emailAddress"
               aria-labelledby="resetpassword-email-label"
-              className="h-12 rounded-md"
             />
             {error?.message ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
           </View>

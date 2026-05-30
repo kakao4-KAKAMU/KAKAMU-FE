@@ -2,16 +2,14 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import type { SignInWithRememberFormInput } from '@kakamu/schema';
 import { Pressable, View } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
 import { Controller, type Control } from 'react-hook-form';
 import {
   Button,
   Checkbox,
-  Icon,
   Input,
   Label,
+  PasswordInput,
   Text,
-  TextClassProvider,
 } from '@kakamu/ui';
 
 export type SignInFormValues = SignInWithRememberFormInput;
@@ -32,11 +30,6 @@ export function SignInForm({
   canSubmit = true,
 }: SignInFormProps) {
   const { t } = useTranslation();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const togglePasswordVisibility = useCallback(() => {
-    setShowPassword((prev) => !prev);
-  }, []);
 
   return (
     <View className="gap-4">
@@ -59,7 +52,6 @@ export function SignInForm({
               autoComplete="email"
               textContentType="emailAddress"
               aria-labelledby="signin-email-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
@@ -76,34 +68,15 @@ export function SignInForm({
             <Label nativeID="signin-password-label" className="text-sm text-muted-foreground">
               {t('guest.form.signIn.password')}
             </Label>
-            <View className="relative">
-              <Input
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder={t('guest.form.signIn.passwordPlaceholder')}
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoComplete="current-password"
-                textContentType="password"
-                aria-labelledby="signin-password-label"
-                className="h-12 rounded-xl pr-12"
-              />
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={
-                  showPassword ? t('guest.form.signIn.a11yHidePassword') : t('guest.form.signIn.a11yShowPassword')
-                }
-                onPress={togglePasswordVisibility}
-                hitSlop={8}
-                className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
-              >
-                <TextClassProvider value="text-muted-foreground">
-                  <Icon as={showPassword ? EyeOff : Eye} size={18} />
-                </TextClassProvider>
-              </Pressable>
-            </View>
+            <PasswordInput
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={t('guest.form.signIn.passwordPlaceholder')}
+              aria-labelledby="signin-password-label"
+              passwordAccessibilityLabelHidden={t('guest.form.signIn.a11yHidePassword')}
+              passwordAccessibilityLabelShown={t('guest.form.signIn.a11yShowPassword')}
+            />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
             ) : null}
