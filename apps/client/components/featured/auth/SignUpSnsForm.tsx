@@ -43,7 +43,6 @@ export function SignUpSnsForm({
               autoComplete="username"
               textContentType="username"
               aria-labelledby="signup-sns-username-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
@@ -69,7 +68,6 @@ export function SignUpSnsForm({
               autoCorrect={false}
               textContentType="nickname"
               aria-labelledby="signup-sns-nickname-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
@@ -97,7 +95,6 @@ export function SignUpSnsForm({
               autoComplete="email"
               textContentType="emailAddress"
               aria-labelledby="signup-sns-email-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>

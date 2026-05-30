@@ -107,7 +107,6 @@ export function MovieFilterSheet({
               onChangeText={setDraftYear}
               placeholder={t('account.persona.create.yearPlaceholder')}
               keyboardType="number-pad"
-              className="h-11 rounded-md"
             />
           </View>
           <View className="gap-2.5">

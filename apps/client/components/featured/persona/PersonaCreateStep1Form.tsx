@@ -37,7 +37,6 @@ export function PersonaCreateStep1Form({
                 autoCapitalize="none"
                 autoCorrect={false}
                 aria-labelledby="persona-name-label"
-                className="h-11 rounded-md"
               />
               {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
             </View>
@@ -79,7 +78,6 @@ export function PersonaCreateStep1Form({
                     autoCorrect={false}
                     keyboardType="url"
                     aria-labelledby="persona-thumbnail-label"
-                    className="h-11 rounded-md"
                   />
                 </View>
               </View>

@@ -81,7 +81,7 @@ export function PersonSearchSheet({
             placeholder={t('account.persona.create.searchPlaceholder')}
             autoCapitalize="none"
             autoCorrect={false}
-            className="h-11 flex-1"
+            className="flex-1"
           />
           <Button size="lgIcon" variant="outline" onPress={() => onFilterOpenChange(true)}>
             <Icon as={SlidersHorizontal} size={18} />

@@ -56,7 +56,6 @@ export function SignUpForm({
               autoComplete="username"
               textContentType="username"
               aria-labelledby="signup-username-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
@@ -82,7 +81,6 @@ export function SignUpForm({
               autoCorrect={false}
               textContentType="nickname"
               aria-labelledby="signup-nickname-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
@@ -110,7 +108,6 @@ export function SignUpForm({
               autoComplete="email"
               textContentType="emailAddress"
               aria-labelledby="signup-email-label"
-              className="h-12 rounded-xl"
             />
             {error?.message ? (
               <Text className="text-sm text-destructive">{error.message}</Text>
