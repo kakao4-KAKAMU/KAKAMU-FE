@@ -35,6 +35,11 @@ export type {
 } from './movie';
 
 export type {
+  CommentCursorListResponse,
+  CommentItem,
+} from './comment';
+
+export type {
   LikeRequestBody,
   LikeResponse,
   LikeTargetType,

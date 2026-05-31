@@ -1,6 +1,7 @@
 export { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export { userKeys } from './shared/keys/user.keys';
+export { commentKeys } from './shared/keys/comment.keys';
 export { personaKeys } from './shared/keys/persona.keys';
 export { postKeys } from './shared/keys/post.keys';
 export { searchKeys } from './shared/keys/search.keys';
