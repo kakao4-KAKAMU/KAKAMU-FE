@@ -2,6 +2,7 @@ import type { Persona } from '@kakamu/types';
 import { Image, Pressable, View } from 'react-native';
 import { User, X } from 'lucide-react-native';
 import { cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 type PersonaCardProps = {
   persona: Persona;
@@ -44,7 +45,7 @@ export function PersonaCard({
       <View className="h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-full border border-border bg-muted">
         {persona.profile_image_url ? (
           <Image
-            source={{ uri: persona.profile_image_url }}
+            source={{ uri: convertImagePath(persona.profile_image_url) }}
             accessibilityIgnoresInvertColors
             className="h-full w-full"
           />
