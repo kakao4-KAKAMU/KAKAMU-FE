@@ -35,6 +35,13 @@ export type {
 } from './movie';
 
 export type {
+  LikeRequestBody,
+  LikeResponse,
+  LikeTargetType,
+} from './like';
+export { LIKE_TARGET_TYPES } from './like';
+
+export type {
   PostCreateRequest,
   PostCreateResponse,
   PostCursorListResponse,

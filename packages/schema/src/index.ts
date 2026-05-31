@@ -70,6 +70,10 @@ export {
   type PostWriteFormInput,
 } from './forms/post';
 
+export { LIKE_TARGET_TYPES, type LikeTargetTypeId } from './forms/like-constants';
+
+export { likeRequestSchema, type LikeRequestInput } from './forms/like';
+
 export const paginationSchema = z.object({
   cursor: z.string().optional(),
   limit: z.coerce.number().min(1).max(50).default(20),

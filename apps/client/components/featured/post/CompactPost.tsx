@@ -20,7 +20,6 @@ export function CompactPost({ post }: CompactPostProps) {
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
   const actions = useCompactPostActions(post);
   const isSpoilerHidden = useMemo(() => post.is_spoiler && !spoilerRevealed, [post.is_spoiler, spoilerRevealed]);
-  const primaryMovie = post.movies;
 
   return (
     <View className="gap-2.5 border-b border-border py-3" ref={blurTargetRef}>

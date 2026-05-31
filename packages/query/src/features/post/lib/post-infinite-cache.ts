@@ -28,6 +28,7 @@ export function createOptimisticPost(body: PostUpdateRequest): PostItem {
     movies: [],
     hashtags: [],
     like_count: 0,
+    is_liked: false,
     comment_count: 0,
     created_at: new Date().toISOString(),
   };
@@ -130,6 +131,65 @@ export function prependPostToMyLists(queryClient: QueryClient, item: PostItem): 
     { queryKey: postKeys.myLists() },
     (old) => (old ? prependToFirstPage(old, item) : old),
   );
+}
+
+export function prependPostToLikedLists(queryClient: QueryClient, item: PostItem): void {
+  setPostDetailCache(queryClient, item);
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.likedLists() },
+    (old) => (old ? prependToFirstPage(old, item) : old),
+  );
+}
+
+export function removePostFromLikedLists(queryClient: QueryClient, postId: number): void {
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.likedLists() },
+    (old) =>
+      old ? mapInfinitePages(old, (item) => (item.id === postId ? null : item)) : old,
+  );
+}
+
+export function togglePostLikeInCaches(queryClient: QueryClient, postId: number): void {
+  const detail = queryClient.getQueryData<PostItem>(postKeys.detail(postId));
+  if (!detail) {
+    return;
+  }
+
+  const nextIsLiked = !detail.is_liked;
+  const patched: PostItem = {
+    ...detail,
+    is_liked: nextIsLiked,
+    like_count: detail.like_count + (detail.is_liked ? -1 : 1),
+  };
+
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.myLists() },
+    (old) =>
+      old
+        ? mapInfinitePages(old, (item) => (item.id === postId ? patched : item))
+        : old,
+  );
+  queryClient.setQueryData<PostItem>(postKeys.detail(postId), patched);
+
+  if (nextIsLiked) {
+    queryClient.setQueriesData<PostInfiniteData>(
+      { queryKey: postKeys.likedLists() },
+      (old) => {
+        if (!old) {
+          return old;
+        }
+        const existsInLiked = old.pages.some((page) =>
+          page.items.some((item) => item.id === postId),
+        );
+        if (existsInLiked) {
+          return mapInfinitePages(old, (item) => (item.id === postId ? patched : item));
+        }
+        return prependToFirstPage(old, patched);
+      },
+    );
+  } else {
+    removePostFromLikedLists(queryClient, postId);
+  }
 }
 
 export function patchPostInCaches(

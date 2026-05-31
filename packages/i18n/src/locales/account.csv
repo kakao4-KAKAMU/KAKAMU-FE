@@ -166,6 +166,10 @@ account.post.delete.error.notFound.title,게시물을 찾을 수 없어요,Post 
 account.post.delete.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
 account.post.delete.error.forbidden.title,삭제 권한이 없어요,No permission to delete
 account.post.delete.error.forbidden.description,본인이 작성한 게시물만 삭제할 수 있어요.,You can only delete posts you created.
+account.post.like.failedRequest.title,좋아요 처리에 실패했어요,Could not update like
+account.post.like.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.like.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.like.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
 account.post.detail.failedRequest.title,게시물을 불러오지 못했어요,Could not load post
 account.post.detail.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
 account.post.detail.error.notFound.title,게시물을 찾을 수 없어요,Post not found

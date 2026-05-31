@@ -15,6 +15,7 @@ export { postUserLoginRefresh } from './users/refresh';
 export { postUserRegister } from './users/register';
 export { postUserRegisterSocial } from './users/register-social';
 export { getGenreList } from './genre/list';
+export { postLike } from './like/like';
 export { postSearchMovies } from './search/movie';
 export { postSearchPersons } from './search/person';
 export { createPersona } from './persona/create';

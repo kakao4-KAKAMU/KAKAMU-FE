@@ -37,7 +37,7 @@ export function CompactPostActions({
         </Button>
         <Button size="text" variant={'ghost'} onPress={onToggleLike}>
           <View className="flex-row items-center gap-1">
-            <Icon as={Heart} size={16} />
+            <Icon as={Heart} size={16} fill={post.is_liked ? 'currentColor' : 'none'} />
             <Text className="text-xs">{post.like_count}</Text>
           </View>
         </Button>

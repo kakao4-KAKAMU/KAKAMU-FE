@@ -11,6 +11,7 @@ export { usePersonasQuery } from './features/persona/model/use-personas-query';
 export { useCreatePersonaMutation } from './features/persona-create/model/use-create-persona-mutation';
 export { useUpdatePersonaMutation } from './features/persona/model/use-update-persona-mutation';
 export { useDeletePersonaMutation } from './features/persona/model/use-delete-persona-mutation';
+export { useLikeMutation } from './features/like/model/use-like-mutation';
 export { useCreatePostMutation } from './features/post/model/use-create-post-mutation';
 export { useDeletePostMutation } from './features/post/model/use-delete-post-mutation';
 export { useLikedPostsInfiniteQuery } from './features/post/model/use-liked-posts-infinite-query';
