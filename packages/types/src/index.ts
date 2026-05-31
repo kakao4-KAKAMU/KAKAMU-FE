@@ -41,6 +41,9 @@ export type {
 } from './like';
 export { LIKE_TARGET_TYPES } from './like';
 
+export type { ImageUploadResponse, ImageUploadType } from './upload';
+export { IMAGE_UPLOAD_TYPES } from './upload';
+
 export type {
   PostCreateRequest,
   PostCreateResponse,

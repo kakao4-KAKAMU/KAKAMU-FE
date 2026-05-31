@@ -3,3 +3,8 @@ export function getBackendApiPrefixUrl(): string {
   const raw = process.env.EXPO_PUBLIC_BACKEND_API_URL;
   return raw?.replace(/\/$/, '') ?? '';
 }
+
+export function getUploadApiPrefixUrl(): string {
+  const raw = process.env.EXPO_PUBLIC_UPLOAD_API_URL;
+  return raw?.replace(/\/$/, '') ?? '';
+}

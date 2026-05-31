@@ -29,6 +29,7 @@ type PostWriteFormProps = {
   search: MovieSearchControl;
   searchQuery: MovieSearchQuery;
   onPickImages: (remaining: number) => void;
+  onRemoveImage?: (url: string) => void;
 };
 
 export function PostWriteForm({
@@ -46,6 +47,7 @@ export function PostWriteForm({
   search,
   searchQuery,
   onPickImages,
+  onRemoveImage,
 }: PostWriteFormProps) {
   const { t } = useTranslation();
 
@@ -200,7 +202,10 @@ export function PostWriteForm({
                 urls={urls}
                 maxCount={POST_IMAGE_MAX_COUNT}
                 onAddPress={() => onPickImages(POST_IMAGE_MAX_COUNT - urls.length)}
-                onRemovePress={(url) => onChange(urls.filter((item) => item !== url))}
+                onRemovePress={(url) => {
+                  onRemoveImage?.(url);
+                  onChange(urls.filter((item) => item !== url));
+                }}
                 addAccessibilityLabel={t('account.post.write.imagesAddA11y')}
                 removeAccessibilityLabel={t('account.post.write.imagesRemoveA11y')}
               />
