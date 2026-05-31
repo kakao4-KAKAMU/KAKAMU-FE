@@ -7,9 +7,9 @@ import { Stack, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useErrorAlertDialog, Text } from '@kakamu/ui';
+import { ProfileSubpageHeader } from '@/components/featured/header';
 import {
   PasswordChangeForm,
-  ProfileSubpageHeader,
   type PasswordChangeFormValues,
 } from '@/components/featured/profile';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
@@ -76,6 +76,7 @@ export default function PasswordSettingScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1 bg-background"
       >
+        <ProfileSubpageHeader title={t('account.password.pageTitle')} />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
@@ -83,7 +84,6 @@ export default function PasswordSettingScreen() {
           className="flex-1"
         >
           <View className="flex-col gap-4 px-5 pb-6">
-            <ProfileSubpageHeader title={t('account.password.pageTitle')} />
             <View className="gap-2">
               <Text className="text-sm leading-5 text-muted-foreground">
                 {t('account.password.pageDescription')}

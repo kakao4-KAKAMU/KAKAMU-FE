@@ -102,6 +102,7 @@ account.sonar.previewLikeA11y,좋아요,Like
 account.sonar.emptyQueue,모든 예고편을 살펴봤어요.,You have seen all trailers for now.
 account.sonar.swipeGuideDislike,싫어요,Dislike
 account.sonar.swipeGuideLike,좋아요,Like
+account.layout.profile,프로필,Profile
 account.layout.profileSettings,프로필 설정,Profile settings
 account.layout.passwordChange,비밀번호 변경,Change password
 account.layout.savedFeedCategory,저장한 피드 카테고리,Saved feed category
@@ -145,6 +146,56 @@ account.searchHistory.title,검색,Search
 account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
 account.personaChat.title,페르소나 챗,Persona chat
 account.personaChat.description,선택된 페르소나 기준으로 LLM과 대화하는 페이지,Chat with an LLM based on the selected persona
+account.post.create.failedRequest.title,게시물 작성에 실패했어요,Could not create post
+account.post.create.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.create.error.hashtagLimitExceeded.title,해시태그 개수를 초과했어요,Too many hashtags
+account.post.create.error.hashtagLimitExceeded.description,해시태그는 최대 10개까지만 등록할 수 있어요.,You can add up to 10 hashtags.
+account.post.create.error.invalidReferenceData.title,참조 데이터를 확인해 주세요,Check reference data
+account.post.create.error.invalidReferenceData.description,잘못된 참조 데이터가 포함되어 있습니다.,Invalid reference data was included.
+account.post.update.failedRequest.title,게시물 수정에 실패했어요,Could not update post
+account.post.update.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.update.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.update.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
+account.post.update.error.forbidden.title,수정 권한이 없어요,No permission to update
+account.post.update.error.forbidden.description,본인이 작성한 게시물만 수정할 수 있어요.,You can only edit posts you created.
+account.post.update.error.hashtagLimitExceeded.title,해시태그 개수를 초과했어요,Too many hashtags
+account.post.update.error.hashtagLimitExceeded.description,해시태그는 최대 10개까지만 등록할 수 있어요.,You can add up to 10 hashtags.
+account.post.delete.failedRequest.title,게시물 삭제에 실패했어요,Could not delete post
+account.post.delete.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.delete.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.delete.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
+account.post.delete.error.forbidden.title,삭제 권한이 없어요,No permission to delete
+account.post.delete.error.forbidden.description,본인이 작성한 게시물만 삭제할 수 있어요.,You can only delete posts you created.
+account.post.like.failedRequest.title,좋아요 처리에 실패했어요,Could not update like
+account.post.like.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.like.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.like.error.notFound.description,이미 삭제되었거나 존재하지 않는 게시물이에요.,This post no longer exists.
+account.post.detail.failedRequest.title,게시물을 불러오지 못했어요,Could not load post
+account.post.detail.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.post.detail.error.notFound.title,게시물을 찾을 수 없어요,Post not found
+account.post.detail.error.notFound.description,해당 게시물을 조회할 수 없어요.,This post could not be found.
+account.post.write.titleLabel,제목,Title
+account.post.write.titlePlaceholder,제목을 입력해주세요,Enter a title
+account.post.write.contentLabel,내용,Content
+account.post.write.contentPlaceholder,감상을 작성해주세요. 해시태그(#영화명)는 본문에 포함됩니다.,Write your review. Include hashtags (#MovieTitle) in the body.
+account.post.write.moviesLabel,연결 영화,Linked movies
+account.post.write.moviesAdd,추가,Add
+account.post.write.moviesEmptyHint,영화를 검색하여 추가해주세요,Search and add movies
+account.post.write.imagesLabel,이미지,Images
+account.post.write.imagesMaxHint,최대 4장,Up to 4 images
+account.post.write.imagesAddA11y,이미지 추가,Add image
+account.post.write.imagesRemoveA11y,이미지 제거,Remove image
+account.post.write.spoilerLabel,스포일러,Spoiler
+account.post.write.spoilerHint,스포일러 포함 시 제목·내용·이미지가 blur 처리됩니다,"When marked as spoiler, title, content, and images are blurred"
+account.post.write.cancel,취소,Cancel
+account.post.write.submitCreate,게시,Post
+account.post.write.submitEdit,수정,Save
+account.post.write.validation.title.required,제목을 입력해주세요,Please enter a title
+account.post.write.validation.title.max,제목은 최대 {{max}}자까지 입력할 수 있어요,Title can be up to {{max}} characters
+account.post.write.validation.content.required,내용을 입력해주세요,Please enter content
+account.post.write.validation.content.max,내용은 최대 {{max}}자까지 입력할 수 있어요,Content can be up to {{max}} characters
+account.post.write.validation.images.max,이미지는 최대 {{max}}장까지 등록할 수 있어요,You can add up to {{max}} images
+account.post.write.loading,불러오는 중…,Loading…
 shared.feedDetail.title,피드 상세,Feed detail
 shared.feedDetail.description,피드 {id}의 상세 페이지,Detail page for feed {id}
 common.navigation.back,뒤로 가기,Go back

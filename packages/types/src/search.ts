@@ -1,4 +1,3 @@
-export type MovieSort = 'year_asc' | 'year_desc' | 'name_asc' | 'name_desc';
 
 export type PersonSort = 'name_asc' | 'name_desc';
 
@@ -8,13 +7,6 @@ export type FeedPeriod = 'today' | 'week' | 'month';
 
 export type FeedSort = 'latest' | 'popular' | 'relevance';
 
-export type MovieSearchItem = {
-  id: number;
-  title: string;
-  release_date?: string;
-  genres?: string[];
-  poster_url?: string;
-};
 
 export type PersonSearchItem = {
   id: number;
@@ -23,30 +15,12 @@ export type PersonSearchItem = {
   profile_image_url?: string;
 };
 
-export type MovieSearchRequestBody = {
-  name: string;
-  genre: string[];
-  year?: number;
-  sort: MovieSort;
-  skip: number;
-  limit: number;
-};
-
 export type PersonSearchRequestBody = {
   name: string;
   job: string[];
   sort: PersonSort;
   page: number;
   limit: number;
-};
-
-export type MovieSearchParams = {
-  name?: string;
-  genre?: number[];
-  year?: number;
-  sort?: MovieSort;
-  skip?: number;
-  limit?: number;
 };
 
 export type PersonSearchParams = {

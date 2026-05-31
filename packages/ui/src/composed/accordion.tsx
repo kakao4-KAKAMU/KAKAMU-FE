@@ -1,5 +1,5 @@
 import { Icon } from './icon';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as AccordionPrimitive from '@rn-primitives/accordion';
 import { ChevronDown } from 'lucide-react-native';
@@ -76,7 +76,7 @@ function AccordionTrigger({
   );
 
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-left text-sm font-medium',
         Platform.select({ web: 'group-hover:underline' })
@@ -107,7 +107,7 @@ function AccordionTrigger({
           </Trigger>
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Header>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 
@@ -118,7 +118,7 @@ function AccordionContent({
 }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   const { isExpanded } = AccordionPrimitive.useItemContext();
   return (
-    <TextClassContext.Provider value="text-sm">
+    <TextClassProvider value="text-sm">
       <AccordionPrimitive.Content
         className={cn(
           'overflow-hidden',
@@ -133,7 +133,7 @@ function AccordionContent({
           {children}
         </Animated.View>
       </AccordionPrimitive.Content>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

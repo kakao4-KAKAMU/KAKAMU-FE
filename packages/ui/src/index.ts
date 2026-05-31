@@ -6,6 +6,7 @@ export { Alert, AlertTitle, AlertDescription } from "./composed/alert"
 export { AspectRatio } from "./composed/aspect-ratio"
 export { Avatar, AvatarImage, AvatarFallback } from "./composed/avatar"
 export { Badge, badgeVariants } from "./composed/badge"
+export { BottomSheet } from "./composed/bottom-sheet"
 export { Button, buttonVariants } from "./composed/button"
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./composed/card"
 export { Checkbox } from "./composed/checkbox"
@@ -27,11 +28,12 @@ export { Separator } from "./composed/separator"
 export { Skeleton } from './composed/skeleton'
 export { Switch } from './composed/switch'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./composed/tabs"
-export { Text, TextClassContext } from './composed/text'
+export { Text, TextClassProvider } from './composed/text'
 export { ToggleGroup, ToggleGroupItem } from "./composed/toggle-group"
 export { Toggle } from './composed/toggle'
 export { Tooltip, TooltipTrigger, TooltipContent } from "./composed/tooltip"
 
 export { AppErrorBoundary, DefaultErrorFallback, type UiErrorBoundaryProps } from "./error-boundary/AppErrorBoundary"
 
-export { ErrorAlertDialog, useErrorAlertDialog, ErrorAlertDialogProvider } from "./mixed-component/ErrorAlertDialog"
+export { ErrorAlertDialog, useErrorAlertDialog, ErrorAlertDialogProvider } from "./mixed-component/error-alert-dialog"
+export { PasswordInput } from "./mixed-component/password-input"

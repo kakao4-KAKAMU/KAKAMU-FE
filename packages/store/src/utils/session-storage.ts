@@ -13,21 +13,36 @@ const noopStorage: StateStorage = {
 
 const webSessionStateStorage: StateStorage = {
   getItem: (name) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore window is not defined in the browser
     if (Platform.OS !== 'web' || typeof window === 'undefined') {
       return null;
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore window is not defined in the browser
     return window.sessionStorage.getItem(name);
   },
   setItem: (name, value) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore window is not defined in the browser
     if (Platform.OS !== 'web' || typeof window === 'undefined') {
       return;
     }
+    
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore window is not defined in the browser
     window.sessionStorage.setItem(name, value);
   },
   removeItem: (name) => {
+  
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore window is not defined in the browser
     if (Platform.OS !== 'web' || typeof window === 'undefined') {
       return;
     }
+    
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore window is not defined in the browser
     window.sessionStorage.removeItem(name);
   },
 };

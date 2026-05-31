@@ -6,10 +6,10 @@ import { Controller, type Control } from 'react-hook-form';
 import { Label, Text } from '@kakamu/ui';
 
 import { PersonaCreateStepActions } from './PersonaCreateStepActions';
-import { PersonaPersonSearchSheet } from './PersonaPersonSearchSheet';
-import { PersonaSearchTrigger } from './PersonaSearchTrigger';
-import { PersonaSelectedPersonRow } from './PersonaSelectedPersonRow';
-import type { PersonaPersonSearchControl, PersonaPersonSearchQuery } from './persona-search-sheet.types';
+import { PersonSearchSheet } from '../search/person/PersonSearchSheet';
+import { SearchTrigger } from '../search/SearchTrigger';
+import { SelectedPersonRow } from '../search/person/SelectedPersonRow';
+import type { PersonSearchControl, PersonaPersonSearchQuery } from '../search/search-sheet.types';
 
 type PersonaCreateStep4FormProps = {
   control: Control<PersonaCreateFormInput>;
@@ -21,7 +21,7 @@ type PersonaCreateStep4FormProps = {
   onSheetOpenChange: (open: boolean) => void;
   filterOpen: boolean;
   onFilterOpenChange: (open: boolean) => void;
-  search: PersonaPersonSearchControl;
+  search: PersonSearchControl;
   searchQuery: PersonaPersonSearchQuery;
 };
 
@@ -57,7 +57,7 @@ export function PersonaCreateStep4Form({
   );
 
   return (
-    <View className="flex-1 gap-8">
+    <View className="flex-1 gap-8 justify-between">
       <Controller
         control={control}
         name="selectedPersons"
@@ -70,14 +70,14 @@ export function PersonaCreateStep4Form({
                 <Label className="text-base font-semibold text-foreground">
                   {t('account.persona.create.personsLabel')}
                 </Label>
-                <PersonaSearchTrigger
+                <SearchTrigger
                   placeholder={t('account.persona.create.personSearchTrigger')}
                   onPress={() => onSheetOpenChange(true)}
                 />
                 {selected.length > 0 ? (
                   <View className="gap-3">
                     {selected.map((person) => (
-                      <PersonaSelectedPersonRow
+                      <SelectedPersonRow
                         key={person.id}
                         name={person.name}
                         job={person.job}
@@ -90,7 +90,7 @@ export function PersonaCreateStep4Form({
                 {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
               </View>
 
-              <PersonaPersonSearchSheet
+              <PersonSearchSheet
                 visible={sheetOpen}
                 selected={selected}
                 onConfirm={onChange}
@@ -105,7 +105,7 @@ export function PersonaCreateStep4Form({
         }}
       />
 
-      <View className="mt-auto">
+      <View>
         <PersonaCreateStepActions
           backLabel={t('account.persona.create.back')}
           primaryLabel={t('account.persona.create.complete')}

@@ -1,5 +1,5 @@
 import { NativeOnlyAnimatedView } from './native-only-animated-view';
-import { TextClassContext } from './text';
+import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as PopoverPrimitive from '@rn-primitives/popover';
 import * as React from 'react';
@@ -27,7 +27,7 @@ function PopoverContent({
       <FullWindowOverlay>
         <PopoverPrimitive.Overlay style={Platform.select({ native: StyleSheet.absoluteFill })}>
           <NativeOnlyAnimatedView entering={FadeIn.duration(200)} exiting={FadeOut}>
-            <TextClassContext.Provider value="text-popover-foreground">
+            <TextClassProvider value="text-popover-foreground">
               <PopoverPrimitive.Content
                 align={align}
                 sideOffset={sideOffset}
@@ -44,7 +44,7 @@ function PopoverContent({
                 )}
                 {...props}
               />
-            </TextClassContext.Provider>
+            </TextClassProvider>
           </NativeOnlyAnimatedView>
         </PopoverPrimitive.Overlay>
       </FullWindowOverlay>

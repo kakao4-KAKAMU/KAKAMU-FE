@@ -1,5 +1,5 @@
 import { Icon } from './icon';
-import { TextClassContext } from './text';
+import { TextClassContext, TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as TogglePrimitive from '@rn-primitives/toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -44,7 +44,7 @@ function Toggle({
   ...props
 }: React.ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>) {
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-sm text-foreground font-medium',
         props.pressed
@@ -61,7 +61,7 @@ function Toggle({
         )}
         {...props}
       />
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

@@ -4,7 +4,7 @@ import { useThemeScheme } from '../themeScheme';
 import { ColorSchemeName, Platform, View } from 'react-native';
 import { parse, formatRgb } from 'culori'
 import { ColorContext } from './ColorContext';
-import { TextClassContext } from '@kakamu/ui'
+import { TextClassProvider } from '@kakamu/ui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useMemo } from 'react';
 
@@ -131,7 +131,7 @@ export function ThemeColorProvider({ children, colors }: ThemeColorProviderProps
     <ColorContext.Provider value={theme}>
       <VariableContextProvider value={theme}>
         <ThemeProvider value={navigationTheme}>
-          <TextClassContext.Provider value="text-foreground">
+          <TextClassProvider value="text-foreground">
             <View
               className="bg-background h-full w-full"
               style={{
@@ -142,7 +142,7 @@ export function ThemeColorProvider({ children, colors }: ThemeColorProviderProps
               }}>
               {children}
             </View>
-          </TextClassContext.Provider>
+          </TextClassProvider>
         </ThemeProvider>
       </VariableContextProvider>
     </ColorContext.Provider>

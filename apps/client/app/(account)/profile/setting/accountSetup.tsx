@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { ChevronRight, Globe, MessageCircle } from 'lucide-react-native';
-import { Badge, Icon, Text, TextClassContext } from '@kakamu/ui';
+import { Badge, Icon, Text, TextClassProvider } from '@kakamu/ui';
+import { ProfileSubpageHeader } from '@/components/featured/header';
 import {
   AccountSnsProviderRow,
   ProfileSettingRow,
-  ProfileSubpageHeader,
 } from '@/components/featured/profile';
 
 export default function AccountSetupScreen() {
@@ -21,13 +21,13 @@ export default function AccountSetupScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       <View className="flex-1 bg-background">
+        <ProfileSubpageHeader title="계정 및 SNS 로그인" />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           className="flex-1"
         >
           <View className="flex-col gap-4 px-5 pb-6">
-            <ProfileSubpageHeader title="계정 및 SNS 로그인" />
 
             <View className="flex-col gap-2">
               <Text className="text-[13px] font-semibold text-muted-foreground">로그인 계정</Text>
@@ -44,9 +44,9 @@ export default function AccountSetupScreen() {
                   label="비밀번호"
                   onPress={onPasswordPress}
                   trailing={
-                    <TextClassContext.Provider value="text-muted-foreground">
+                    <TextClassProvider value="text-muted-foreground">
                       <Icon as={ChevronRight} size={18} />
-                    </TextClassContext.Provider>
+                    </TextClassProvider>
                   }
                 />
               </View>
@@ -76,9 +76,9 @@ export default function AccountSetupScreen() {
                   description="연결되지 않음"
                   icon={
                     <View className="h-8 w-8 items-center justify-center rounded-full bg-secondary">
-                      <TextClassContext.Provider value="text-muted-foreground">
+                      <TextClassProvider value="text-muted-foreground">
                         <Icon as={Globe} size={18} />
-                      </TextClassContext.Provider>
+                      </TextClassProvider>
                     </View>
                   }
                   trailing={<Text className="text-[13px] font-semibold text-foreground">연결하기</Text>}

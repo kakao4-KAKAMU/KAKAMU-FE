@@ -64,6 +64,8 @@ const ARIA_LEVEL: Partial<Record<TextVariant, string>> = {
 
 const TextClassContext = React.createContext<string | undefined>(undefined);
 
+const TextClassProvider = TextClassContext.Provider;
+
 function Text({
   className,
   asChild = false,
@@ -86,4 +88,4 @@ function Text({
   );
 }
 
-export { Text, TextClassContext };
+export { Text, TextClassProvider, TextClassContext };

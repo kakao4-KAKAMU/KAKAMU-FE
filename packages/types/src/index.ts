@@ -19,10 +19,6 @@ export type {
   FeedSearchItem,
   FeedSearchParams,
   FeedSort,
-  MovieSearchItem,
-  MovieSearchParams,
-  MovieSearchRequestBody,
-  MovieSort,
   PaginatedResponse,
   PersonSearchItem,
   PersonSearchParams,
@@ -30,6 +26,31 @@ export type {
   PersonSort,
   SearchPageResponse,
 } from './search';
+
+export type {
+  MovieSort,
+  MovieItem,
+  MovieSearchParams,
+  MovieSearchRequestBody,
+} from './movie';
+
+export type {
+  LikeRequestBody,
+  LikeResponse,
+  LikeTargetType,
+} from './like';
+export { LIKE_TARGET_TYPES } from './like';
+
+export type {
+  PostCreateRequest,
+  PostCreateResponse,
+  PostCursorListResponse,
+  PostDeleteResponse,
+  PostItem,
+  PostListParams,
+  PostUpdateRequest,
+  PostUpdateResponse,
+} from './post';
 
 export type {
   AuthSnsSignUpProvider,

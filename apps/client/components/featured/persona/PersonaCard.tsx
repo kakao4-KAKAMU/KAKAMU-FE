@@ -1,7 +1,7 @@
 import type { Persona } from '@kakamu/types';
 import { Image, Pressable, View } from 'react-native';
 import { User, X } from 'lucide-react-native';
-import { cn, Icon, Text, TextClassContext } from '@kakamu/ui';
+import { cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
 
 type PersonaCardProps = {
   persona: Persona;
@@ -35,9 +35,9 @@ export function PersonaCard({
           hitSlop={8}
           className="absolute right-2 top-2 z-10 h-7 w-7 items-center justify-center rounded-full bg-destructive active:opacity-70"
         >
-          <TextClassContext.Provider value="text-destructive-foreground">
+          <TextClassProvider value="text-destructive-foreground">
             <Icon as={X} size={14} />
-          </TextClassContext.Provider>
+          </TextClassProvider>
         </Pressable>
       ) : null}
 
@@ -49,9 +49,9 @@ export function PersonaCard({
             className="h-full w-full"
           />
         ) : (
-          <TextClassContext.Provider value="text-muted-foreground">
+          <TextClassProvider value="text-muted-foreground">
             <Icon as={User} size={22} />
-          </TextClassContext.Provider>
+          </TextClassProvider>
         )}
       </View>
 

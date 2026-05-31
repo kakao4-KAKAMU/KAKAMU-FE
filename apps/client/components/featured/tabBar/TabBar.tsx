@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { TextClassContext } from "@kakamu/ui";
+import { TextClassProvider } from "@kakamu/ui";
 import { StyledLinearGradient } from "../intro/StyledLinearGradient";
 import { useColors } from "@/components/themeColor";
 import { formatRgb, parse } from "culori";
@@ -21,7 +21,7 @@ export function TabBar({ children }: TabBarProps) {
   }
 
   return (
-    <TextClassContext.Provider value="text-card-foreground">
+    <TextClassProvider value="text-card-foreground">
       <View
         className="fixed left-0 right-0 bottom-0"
         accessibilityRole="tablist"
@@ -38,6 +38,6 @@ export function TabBar({ children }: TabBarProps) {
         {children}
         </View>
       </View>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }

@@ -9,18 +9,6 @@ export type ProfileScreenUser = {
   stats: Record<ProfileStatKey, number>;
 };
 
-export type ProfileCompactPost = {
-  id: string;
-  authorName: string;
-  authorHandle: string;
-  timeLabel: string;
-  body: string;
-  movieTitle: string;
-  movieDurationMin: number;
-  likeCount: number;
-  commentCount: number;
-};
-
 export type ProfileSavedCategory = {
   id: string;
   title: string;

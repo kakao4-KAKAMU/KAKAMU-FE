@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { Clapperboard } from 'lucide-react-native';
-import { Icon, Text, TextClassContext } from '@kakamu/ui';
+import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 
 export type StatItem = {
   value: string;
@@ -43,9 +43,9 @@ export function IntroPersonaPreviewCard({
     <View className="rounded-3xl border border-border bg-card/95 p-3.5 shadow-lg shadow-black/20 dark:bg-card/90">
       <View className="mb-2.5 flex-row items-center gap-2.5">
         <View className="h-[34px] w-[34px] items-center justify-center rounded-full bg-primary/20">
-          <TextClassContext.Provider value="text-primary">
+          <TextClassProvider value="text-primary">
             <Icon as={Clapperboard} size={18} />
-          </TextClassContext.Provider>
+          </TextClassProvider>
         </View>
 
         <View className="flex-1 flex-col gap-[2px]">

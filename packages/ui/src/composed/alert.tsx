@@ -1,5 +1,5 @@
 import { Icon } from './icon';
-import { Text, TextClassContext } from './text';
+import { Text, TextClassProvider, TextClassContext } from './text';
 import { cn } from '../lib/cn';
 import type { LucideIcon } from 'lucide-react-native';
 import * as React from 'react';
@@ -18,7 +18,7 @@ function Alert({
   iconClassName?: string;
 }) {
   return (
-    <TextClassContext.Provider
+    <TextClassProvider
       value={cn(
         'text-sm text-foreground',
         variant === 'destructive' && 'text-destructive',
@@ -39,7 +39,7 @@ function Alert({
         </View>
         {children}
       </View>
-    </TextClassContext.Provider>
+    </TextClassProvider>
   );
 }
 

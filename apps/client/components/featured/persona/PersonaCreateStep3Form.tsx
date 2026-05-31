@@ -7,10 +7,10 @@ import { Controller, type Control } from 'react-hook-form';
 import { Label, Text } from '@kakamu/ui';
 
 import { PersonaCreateStepActions } from './PersonaCreateStepActions';
-import { PersonaMovieSearchSheet } from './PersonaMovieSearchSheet';
-import { PersonaSearchTrigger } from './PersonaSearchTrigger';
-import { PersonaSelectedMovieRow } from './PersonaSelectedMovieRow';
-import type { PersonaMovieSearchControl, PersonaMovieSearchQuery } from './persona-search-sheet.types';
+import { MovieSearchSheet } from '../search/movie/MovieSearchSheet';
+import { SearchTrigger } from '../search/SearchTrigger';
+import { SelectedMovieRow } from '../search/movie/SelectedMovieRow';
+import type { MovieSearchControl, MovieSearchQuery } from '../search/search-sheet.types';
 
 type PersonaCreateStep3FormProps = {
   control: Control<PersonaCreateFormInput>;
@@ -22,8 +22,8 @@ type PersonaCreateStep3FormProps = {
   onSheetOpenChange: (open: boolean) => void;
   filterOpen: boolean;
   onFilterOpenChange: (open: boolean) => void;
-  search: PersonaMovieSearchControl;
-  searchQuery: PersonaMovieSearchQuery;
+  search: MovieSearchControl;
+  searchQuery: MovieSearchQuery;
 };
 
 export function PersonaCreateStep3Form({
@@ -58,7 +58,7 @@ export function PersonaCreateStep3Form({
   );
 
   return (
-    <View className="flex-1 gap-8">
+    <View className="flex-1 gap-8 justify-between">
       <Controller
         control={control}
         name="selectedMovies"
@@ -71,14 +71,14 @@ export function PersonaCreateStep3Form({
                 <Label className="text-base font-semibold text-foreground">
                   {t('account.persona.create.moviesLabel')}
                 </Label>
-                <PersonaSearchTrigger
+                <SearchTrigger
                   placeholder={t('account.persona.create.movieSearchTrigger')}
                   onPress={() => onSheetOpenChange(true)}
                 />
                 {selected.length > 0 ? (
                   <View className="gap-3">
                     {selected.map((movie) => (
-                      <PersonaSelectedMovieRow
+                      <SelectedMovieRow
                         key={movie.id}
                         title={movie.name}
                         release_date={movie.release_date}
@@ -91,7 +91,7 @@ export function PersonaCreateStep3Form({
                 {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
               </View>
 
-              <PersonaMovieSearchSheet
+              <MovieSearchSheet
                 visible={sheetOpen}
                 genres={genres}
                 selected={selected}
@@ -107,7 +107,7 @@ export function PersonaCreateStep3Form({
         }}
       />
 
-      <View className="mt-auto">
+      <View>
         <PersonaCreateStepActions
           backLabel={t('account.persona.create.back')}
           primaryLabel={t('account.persona.create.continue')}

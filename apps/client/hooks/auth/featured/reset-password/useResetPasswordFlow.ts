@@ -13,7 +13,8 @@ import { useForm } from 'react-hook-form';
 import { mapPhoneVerificationError, mapResetPasswordError } from '@/lib/error-message-map/auth/reset-password-error';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { firebaseSignOut, usePhoneValidation } from '@/hooks/auth';
+import { firebaseSignOut } from '@/hooks/auth/featured/firebase';
+import { usePhoneValidation } from '@/hooks/auth/featured/phone-validation';
 
 type Step1Values = ResetPasswordEmailFormInput & PhoneValidationFormInput;
 type ResetPasswordStep = 1 | 2;

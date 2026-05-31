@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import type { ChangePasswordFormInput } from '@kakamu/schema';
-import { Eye, EyeOff } from 'lucide-react-native';
-import { Pressable, type TextInputProps, View } from 'react-native';
+import { type TextInputProps, View } from 'react-native';
 import { Controller, type Control, type FieldPath } from 'react-hook-form';
-import { Button, Icon, Input, Label, Text, TextClassContext } from '@kakamu/ui';
+import { Button, Label, PasswordInput, Text } from '@kakamu/ui';
 
 export type PasswordChangeFormValues = ChangePasswordFormInput;
 
@@ -42,32 +41,17 @@ function PasswordField({
           <Label nativeID={nativeID} className="text-sm font-medium text-foreground">
             {label}
           </Label>
-          <View className="relative">
-            <Input
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              placeholder={placeholder}
-              secureTextEntry={!visible}
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete={autoComplete}
-              textContentType={textContentType}
-              aria-labelledby={nativeID}
-              className="h-12 rounded-md pr-12"
-            />
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={visible ? hideAccessibilityLabel : showAccessibilityLabel}
-              onPress={() => setVisible((prev) => !prev)}
-              hitSlop={8}
-              className="absolute right-3 top-0 bottom-0 items-center justify-center active:opacity-70"
-            >
-              <TextClassContext.Provider value="text-muted-foreground">
-                <Icon as={visible ? EyeOff : Eye} size={18} />
-              </TextClassContext.Provider>
-            </Pressable>
-          </View>
+          <PasswordInput
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            placeholder={placeholder}
+            autoComplete={autoComplete}
+            textContentType={textContentType}
+            aria-labelledby={nativeID}
+            passwordAccessibilityLabelHidden={hideAccessibilityLabel}
+            passwordAccessibilityLabelShown={showAccessibilityLabel}
+          />
           {error?.message ? (
             <Text selectable className="text-sm text-destructive">
               {error.message}

@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
-import { Button, Icon, Text, TextClassContext, cn } from '@kakamu/ui';
+import { Button, Icon, Text, TextClassProvider, cn } from '@kakamu/ui';
 
 type SocialAuthButtonProps = {
   label: string;
@@ -31,9 +31,9 @@ export function SocialAuthButton({
     >
       {icon ? (
         <View className="absolute left-4 top-0 bottom-0 items-center justify-center">
-          <TextClassContext.Provider value={iconClassName ?? 'text-foreground'}>
+          <TextClassProvider value={iconClassName ?? 'text-foreground'}>
             <Icon as={icon} size={18} />
-          </TextClassContext.Provider>
+          </TextClassProvider>
         </View>
       ) : null}
       <Text className="text-sm font-semibold">{label}</Text>
