@@ -5,14 +5,33 @@ ENV PATH="$PNPM_HOME:$PATH"
 
 RUN corepack enable
 
+FROM base AS deps
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/client/package.json apps/client/
+COPY apps/client-server/package.json apps/client-server/
+COPY apps/admin/package.json apps/admin/
+COPY packages/api/package.json packages/api/
+COPY packages/i18n/package.json packages/i18n/
+COPY packages/query/package.json packages/query/
+COPY packages/schema/package.json packages/schema/
+COPY packages/store/package.json packages/store/
+COPY packages/types/package.json packages/types/
+COPY packages/ui/package.json packages/ui/
+COPY tooling/eslint/package.json tooling/eslint/
+COPY tooling/typescript/package.json tooling/typescript/
+
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    --mount=type=cache,id=node-modules,target=/app/node_modules \
+    pnpm install --frozen-lockfile
+
 FROM base AS builder
 WORKDIR /app
 
-# 빌드: docker build --build-arg env=<이름> (기본값 production → NODE_ENV·.env.production)
 ARG env=production
 ENV NODE_ENV=${env}
 
-# .env가 컨텍스트에 없을 때도 동일 경로로 빌드되도록 EXPO_PUBLIC_* 를 명시 전달합니다.
 ARG EXPO_PUBLIC_HOST_PATH=/
 ENV EXPO_PUBLIC_HOST_PATH=${EXPO_PUBLIC_HOST_PATH}
 
@@ -21,10 +40,15 @@ ENV EXPO_PUBLIC_KAKAO_APP_KEY=${EXPO_PUBLIC_KAKAO_APP_KEY}
 ARG EXPO_PUBLIC_KAKAO_JS_KEY=
 ENV EXPO_PUBLIC_KAKAO_JS_KEY=${EXPO_PUBLIC_KAKAO_JS_KEY}
 
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
+COPY --from=deps /app/apps ./apps
+COPY --from=deps /app/packages ./packages
+COPY --from=deps /app/tooling ./tooling
+
 COPY . .
 
 ENV CI=true
-RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @kakamu/i18n build
 RUN pnpm --filter @kakamu/client build-web-${env}
 
@@ -39,8 +63,11 @@ WORKDIR /app/apps/client-server
 
 ENV PORT=3000
 
-COPY --from=builder /app/apps/client-server .
-RUN npm install
+COPY apps/client-server/package.json ./
+RUN --mount=type=cache,id=client-server-npm,target=/root/.npm \
+    npm install --omit=dev
+
+COPY --from=builder /app/apps/client-server/server ./server
 RUN mkdir -p dist
 COPY --from=builder /app/apps/client/dist ./dist
 
