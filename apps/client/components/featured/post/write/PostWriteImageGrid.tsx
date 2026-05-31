@@ -1,6 +1,7 @@
 import { Image, Pressable, View } from 'react-native';
 import { Plus, X } from 'lucide-react-native';
 import { Icon, Text } from '@kakamu/ui';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 type PostWriteImageGridProps = {
   urls: string[];
@@ -26,7 +27,7 @@ export function PostWriteImageGrid({
       {urls.map((url) => (
         <View key={url} className="relative size-[88px]">
           <Image
-            source={{ uri: url }}
+            source={{ uri: convertImagePath(url) }}
             className="size-[88px] rounded-md"
             resizeMode="cover"
             accessibilityIgnoresInvertColors

@@ -1,5 +1,6 @@
 import { Image, Pressable, View } from 'react-native';
 import { Text } from '@kakamu/ui';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 type PostWriteSelectedMovieCardProps = {
   title: string;
@@ -22,7 +23,7 @@ export function PostWriteSelectedMovieCard({
     >
       {posterUrl ? (
         <Image
-          source={{ uri: posterUrl }}
+          source={{ uri: convertImagePath(posterUrl) }}
           className="h-[45px] w-[60px] rounded-md"
           resizeMode="cover"
           accessibilityIgnoresInvertColors

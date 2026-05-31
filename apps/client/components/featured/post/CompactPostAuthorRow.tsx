@@ -3,7 +3,7 @@ import type { PostItem } from '@kakamu/types';
 import { Avatar, AvatarFallback, AvatarImage, cn, Icon, Text } from '@kakamu/ui';
 import { formatPostRelativeTime } from './utils/formatPostRelativeTime';
 import { User } from 'lucide-react-native';
-
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 export function CompactPostAuthorRow({ post }: { post: PostItem }) {
   const ANONYMOUS_AUTHOR_LABEL = '알 수 없음';
@@ -21,7 +21,7 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
         alt={post.author ?? ANONYMOUS_AUTHOR_LABEL}
       >
         {post.author_image ? (
-          <AvatarImage source={{ uri: post.author_image }} />
+          <AvatarImage source={{ uri: convertImagePath(post.author_image) }} />
         ) : null}
         <AvatarFallback className="bg-muted">
           <Icon as={User} size={16} className="text-muted-foreground" />

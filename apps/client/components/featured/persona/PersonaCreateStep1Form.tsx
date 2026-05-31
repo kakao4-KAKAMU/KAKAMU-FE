@@ -4,6 +4,7 @@ import { useTranslation } from '@kakamu/i18n';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 import { Controller, type Control } from 'react-hook-form';
 import { Button, Icon, Input, Label, Text, TextClassProvider } from '@kakamu/ui';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 type PersonaCreateStep1FormProps = {
   control: Control<PersonaCreateFormInput>;
@@ -67,7 +68,7 @@ export function PersonaCreateStep1Form({
                   >
                     {previewUri ? (
                       <Image
-                        source={{ uri: previewUri }}
+                        source={{ uri: convertImagePath(previewUri) }}
                         accessibilityIgnoresInvertColors
                         className="h-full w-full"
                       />
