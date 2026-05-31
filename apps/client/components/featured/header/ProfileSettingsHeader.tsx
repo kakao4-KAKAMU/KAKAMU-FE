@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import { useRouter } from 'expo-router';
 import type { LucideIcon } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +23,7 @@ type ProfileSettingsHeaderProps = {
   isDropdownMenu: boolean;
   actionIcon: LucideIcon;
   actionAccessibilityLabel: string;
+  addFeedAccessibilityLabel: string;
 };
 
 export function ProfileSettingsHeader({
@@ -29,6 +31,7 @@ export function ProfileSettingsHeader({
   isDropdownMenu,
   actionIcon,
   actionAccessibilityLabel,
+  addFeedAccessibilityLabel,
 }: ProfileSettingsHeaderProps) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -50,9 +53,30 @@ export function ProfileSettingsHeader({
     router.replace('/(guest)');
   }, [router]);
 
+  const handleAddFeed = useCallback(() => {
+    router.push('/feed/write');
+  }, [router]);
+
   return (
     <HeaderTemplate
       title={title}
+      leftAction={<ConditionalRender.Boolean
+        condition={isDropdownMenu}
+        render={{
+          true: <Button
+            variant="ghost"
+            size="icon"
+            onPress={handleAddFeed}
+            accessibilityRole="button"
+            accessibilityLabel={actionAccessibilityLabel}
+          >
+            <TextClassProvider value="text-secondary-foreground">
+              <Icon as={Plus} size={18} />
+            </TextClassProvider>
+          </Button>
+        }}
+      />
+      }
       rightAction={<ConditionalRender.Boolean
         condition={isDropdownMenu}
         render={{

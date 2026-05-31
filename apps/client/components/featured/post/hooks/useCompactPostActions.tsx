@@ -6,6 +6,7 @@ import { useCallback, useMemo } from 'react';
 
 export function useCompactPostActions(post: PostItem) {
   const client = useBackendApiClient();
+  const router = useRouter();
   const { data: personas } = usePersonasQuery(client);
   const deletePostMutation = useDeletePostMutation(client, {
 
@@ -31,8 +32,8 @@ export function useCompactPostActions(post: PostItem) {
     deletePostMutation.mutate({ postId: post.id });
   }, [deletePostMutation, post.id]);
   const onModify = useCallback(() => {
-    console.log('onModify', post.id);
-  }, [post.id]);
+    router.push(`/feed/write/${post.id}`);
+  }, [post.id, router]);
   const onReport = useCallback(() => {
     console.log('onReport', post.id);
   }, [post.id]);

@@ -13,12 +13,6 @@ import { useCompactPostActions } from './hooks/useCompactPostActions';
 
 type CompactPostProps = {
   post: PostItem;
-  onToggleLike?: (id: number) => void;
-  onComment?: (id: number) => void;
-  onToggleBookmark?: (id: number) => void;
-  onDelete?: (id: number) => void;
-  onModify?: (id: number) => void
-  onReport?: (id: number) => void
 };
 
 export function CompactPost({ post }: CompactPostProps) {
