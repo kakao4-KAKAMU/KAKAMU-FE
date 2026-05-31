@@ -170,6 +170,28 @@ account.post.detail.failedRequest.title,게시물을 불러오지 못했어요,C
 account.post.detail.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
 account.post.detail.error.notFound.title,게시물을 찾을 수 없어요,Post not found
 account.post.detail.error.notFound.description,해당 게시물을 조회할 수 없어요.,This post could not be found.
+account.post.write.titleLabel,제목,Title
+account.post.write.titlePlaceholder,제목을 입력해주세요,Enter a title
+account.post.write.contentLabel,내용,Content
+account.post.write.contentPlaceholder,감상을 작성해주세요. 해시태그(#영화명)는 본문에 포함됩니다.,Write your review. Include hashtags (#MovieTitle) in the body.
+account.post.write.moviesLabel,연결 영화,Linked movies
+account.post.write.moviesAdd,추가,Add
+account.post.write.moviesEmptyHint,영화를 검색하여 추가해주세요,Search and add movies
+account.post.write.imagesLabel,이미지,Images
+account.post.write.imagesMaxHint,최대 4장,Up to 4 images
+account.post.write.imagesAddA11y,이미지 추가,Add image
+account.post.write.imagesRemoveA11y,이미지 제거,Remove image
+account.post.write.spoilerLabel,스포일러,Spoiler
+account.post.write.spoilerHint,스포일러 포함 시 제목·내용·이미지가 blur 처리됩니다,"When marked as spoiler, title, content, and images are blurred"
+account.post.write.cancel,취소,Cancel
+account.post.write.submitCreate,게시,Post
+account.post.write.submitEdit,수정,Save
+account.post.write.validation.title.required,제목을 입력해주세요,Please enter a title
+account.post.write.validation.title.max,제목은 최대 {{max}}자까지 입력할 수 있어요,Title can be up to {{max}} characters
+account.post.write.validation.content.required,내용을 입력해주세요,Please enter content
+account.post.write.validation.content.max,내용은 최대 {{max}}자까지 입력할 수 있어요,Content can be up to {{max}} characters
+account.post.write.validation.images.max,이미지는 최대 {{max}}장까지 등록할 수 있어요,You can add up to {{max}} images
+account.post.write.loading,불러오는 중…,Loading…
 shared.feedDetail.title,피드 상세,Feed detail
 shared.feedDetail.description,피드 {id}의 상세 페이지,Detail page for feed {id}
 common.navigation.back,뒤로 가기,Go back
