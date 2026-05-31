@@ -23,7 +23,7 @@ type ProfileSettingsHeaderProps = {
   isDropdownMenu: boolean;
   actionIcon: LucideIcon;
   actionAccessibilityLabel: string;
-  addFeedAccessibilityLabel: string;
+  addFeedAccessibilityLabel?: string;
 };
 
 export function ProfileSettingsHeader({
