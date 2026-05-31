@@ -24,7 +24,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
   const pathname = usePathname();
   const { user } = useProfileScreenData({ isMy, userId });
 
-  const isSettings = useMemo(() => pathname === '/profile/my', [pathname]);
+  const isSettings = useMemo(() => pathname.startsWith('/profile/setting'), [pathname]);
 
 
   const onBackPress = useCallback(() => {
@@ -38,7 +38,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
         render={{
           true: <ProfileSettingsHeader
             title={t('account.layout.profile')}
-            isDropdownMenu={isSettings}
+            isDropdownMenu={!isSettings}
             actionIcon={Settings}
             actionAccessibilityLabel={t('account.layout.profileSettings')}
             addFeedAccessibilityLabel={t('account.layout.feedWrite')}
@@ -58,12 +58,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
-        <ProfileHero
-          user={user}
-          isMy={isMy}
-          isSettings={isSettings}
-          onBackPress={onBackPress}
-        />
+        <ProfileHero user={user} />
         <ProfileStats user={user} />
 
         <ProfileSubTabs isMy={isMy} userId={userId} />

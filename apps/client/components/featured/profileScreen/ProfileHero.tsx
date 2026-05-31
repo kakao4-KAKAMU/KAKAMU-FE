@@ -5,12 +5,9 @@ import type { ProfileScreenUser } from './types';
 
 type ProfileHeroProps = {
   user: ProfileScreenUser;
-  isMy: boolean;
-  isSettings: boolean;
-  onBackPress?: () => void;
 };
 
-export function ProfileHero({ user, onBackPress }: ProfileHeroProps) {
+export function ProfileHero({ user }: ProfileHeroProps) {
   return (
     <View className="items-center gap-2.5 rounded-[14px] border border-border bg-card p-4">
       <View className="h-16 w-16 items-center justify-center rounded-full border border-border bg-muted">

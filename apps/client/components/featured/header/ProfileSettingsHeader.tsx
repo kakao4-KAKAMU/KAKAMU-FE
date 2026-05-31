@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import { useRouter } from 'expo-router';
 import type { LucideIcon } from 'lucide-react-native';
+import { View } from 'react-native';
 import { Plus } from 'lucide-react-native';
 import {
   DropdownMenu,
@@ -73,7 +74,8 @@ export function ProfileSettingsHeader({
             <TextClassProvider value="text-secondary-foreground">
               <Icon as={Plus} size={18} />
             </TextClassProvider>
-          </Button>
+          </Button>,
+          false: <View className="size-10" />
         }}
       />
       }
