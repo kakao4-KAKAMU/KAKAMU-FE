@@ -20,7 +20,7 @@ export function CompactPost({ post }: CompactPostProps) {
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
   const actions = useCompactPostActions(post);
   const isSpoilerHidden = useMemo(() => post.is_spoiler && !spoilerRevealed, [post.is_spoiler, spoilerRevealed]);
-  const primaryMovie = post.movies[0];
+  const primaryMovie = post.movies;
 
   return (
     <View className="gap-2.5 border-b border-border py-3" ref={blurTargetRef}>
@@ -67,9 +67,11 @@ export function CompactPost({ post }: CompactPostProps) {
         </BlurView>
       </View>
       <ConditionalRender.Boolean
-        condition={primaryMovie}
+        condition={post.movies.length}
         render={{
-          true: <CompactPostMovieCard movie={primaryMovie} />,
+          true: post.movies.map((movie) => (
+            <CompactPostMovieCard key={movie.id} movie={movie} />
+          )),
         }}
       />
       <CompactPostActions
