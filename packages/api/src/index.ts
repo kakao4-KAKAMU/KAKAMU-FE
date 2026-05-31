@@ -22,6 +22,7 @@ export { createPersona } from './persona/create';
 export { getPersonas } from './persona/get';
 export { updatePersona } from './persona/update';
 export { deletePersona } from './persona/delete';
+export { uploadImage } from './upload/upload';
 export { createPost } from './posts/create';
 export { deletePostById } from './posts/delete';
 export { getPostById } from './posts/get-by-id';
