@@ -57,6 +57,19 @@ export {
   type PersonaFormSchemas,
 } from './forms/persona';
 
+export {
+  POST_CONTENT_MAX_LENGTH,
+  POST_IMAGE_MAX_COUNT,
+  POST_TITLE_MAX_LENGTH,
+} from './forms/post-constants';
+
+export type { PostFormValidationMessages } from './forms/post-messages';
+
+export {
+  createPostFormSchema,
+  type PostWriteFormInput,
+} from './forms/post';
+
 export const paginationSchema = z.object({
   cursor: z.string().optional(),
   limit: z.coerce.number().min(1).max(50).default(20),
