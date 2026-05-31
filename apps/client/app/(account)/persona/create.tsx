@@ -15,12 +15,17 @@ import {
   PersonaCreateStep3Form,
   PersonaCreateStep4Form,
 } from '@/components/featured/persona';
+import { usePendingLocalImages } from '@/hooks/upload/usePendingLocalImages';
 import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
 import { usePersonaCreateStep3Search } from '@/hooks/persona/usePersonaCreateStep3Search';
 import { usePersonaCreateStep4Search } from '@/hooks/persona/usePersonaCreateStep4Search';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapPersonaCreateError } from '@/lib/error-message-map/persona/persona-create-error';
+import { mapImageUploadError } from '@/lib/error-message-map/upload/image-upload-error';
 import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
+import { pickProfileImage } from '@/lib/upload/pick-profile-image';
+import { useResolveFormImageUrls } from '@/hooks/upload/useResolveFormImageUrls';
+import { useUploadApiClient } from '@/hooks/api/useUploadApiClient';
 import { ConditionalRender } from '@/components/utils';
 
 const DEFAULT_VALUES: PersonaCreateFormInput = {
@@ -40,7 +45,7 @@ export default function PersonaCreateScreen() {
   const personaForms = usePersonaFormValidationKit(t);
   const resolver = useMemo(() => zodResolver(personaForms.full), [personaForms.full]);
 
-  const { control, handleSubmit, trigger, clearErrors } = useForm<PersonaCreateFormInput>({
+  const { control, handleSubmit, trigger, clearErrors, setValue, getValues } = useForm<PersonaCreateFormInput>({
     resolver,
     defaultValues: DEFAULT_VALUES,
     mode: 'onSubmit',
@@ -84,7 +89,32 @@ export default function PersonaCreateScreen() {
   }, []);
 
   const apiClient = useBackendApiClient();
+  const uploadClient = useUploadApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
+  const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
+  const { resolveFormImageUrl, isUploading: uploadingImages } = useResolveFormImageUrls(uploadClient);
+
+  const handlePickProfileImage = useCallback(async () => {
+    const picked = await pickProfileImage();
+    if (!picked) {
+      return;
+    }
+
+    const previousPreview = getValues('profile_image_url').trim();
+    if (previousPreview) {
+      releaseLocalImage(previousPreview);
+    }
+
+    registerLocalImage(picked.previewUri, picked.pick);
+    setValue('profile_image_url', picked.previewUri, { shouldValidate: true });
+  }, [getValues, registerLocalImage, releaseLocalImage, setValue]);
+
+  const handleClearProfileImage = useCallback(
+    (previewUri: string) => {
+      releaseLocalImage(previewUri);
+    },
+    [releaseLocalImage],
+  );
 
   const createMutation = useCreatePersonaMutation(apiClient, {
     onSuccess: (response) => {
@@ -99,21 +129,35 @@ export default function PersonaCreateScreen() {
   });
 
   const onValid = useCallback(
-    (data: PersonaCreateFormInput) => {
+    async (data: PersonaCreateFormInput) => {
       clearErrors('root');
-      const thumbnail = data.profile_image_url.trim();
-      const body: PersonaCreateRequest = {
-        nickname: data.name.trim(),
-        profile_image_url: thumbnail,
-        profile_msg: data.description.trim(),
-        fav_movie_ids: data.selectedMovies.map((movie) => movie.id),
-        fav_genre_ids: data.selectedGenreIds,
-        fav_people_ids: data.selectedPersons.map((person) => person.id),
-      };
       setSubmitting(true);
-      createMutation.mutate(body);
+
+      try {
+        const profileImagePreview = data.profile_image_url.trim();
+        const profile_image_url = profileImagePreview
+          ? await resolveFormImageUrl(
+              profileImagePreview,
+              'profile',
+              getPendingLocalImages(),
+            )
+          : '';
+
+        const body: PersonaCreateRequest = {
+          nickname: data.name.trim(),
+          profile_image_url,
+          profile_msg: data.description.trim(),
+          fav_movie_ids: data.selectedMovies.map((movie) => movie.id),
+          fav_genre_ids: data.selectedGenreIds,
+          fav_people_ids: data.selectedPersons.map((person) => person.id),
+        };
+        createMutation.mutate(body);
+      } catch (error) {
+        setSubmitting(false);
+        openErrorAlert(mapImageUploadError(error, t));
+      }
     },
-    [clearErrors, createMutation],
+    [clearErrors, createMutation, getPendingLocalImages, openErrorAlert, resolveFormImageUrl, t],
   );
 
   const onInvalid = useCallback(async () => {
@@ -126,7 +170,7 @@ export default function PersonaCreateScreen() {
     void handleSubmit(onValid, onInvalid)();
   }, [handleSubmit, onInvalid, onValid]);
 
-  const isBusy = submitting || createMutation.isPending;
+  const isBusy = submitting || createMutation.isPending || uploadingImages;
   const genres = genreQuery.data?.genres ?? [];
 
   return (
@@ -149,6 +193,8 @@ export default function PersonaCreateScreen() {
                 1: <PersonaCreateStep1Form
                   control={control}
                   onContinue={handleContinueFromStep1}
+                  onPickProfileImage={handlePickProfileImage}
+                  onClearProfileImage={handleClearProfileImage}
                   continuing={isBusy}
                 />,
                 2: <PersonaCreateStep2Form
