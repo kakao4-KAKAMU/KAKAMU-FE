@@ -102,6 +102,7 @@ account.sonar.previewLikeA11y,좋아요,Like
 account.sonar.emptyQueue,모든 예고편을 살펴봤어요.,You have seen all trailers for now.
 account.sonar.swipeGuideDislike,싫어요,Dislike
 account.sonar.swipeGuideLike,좋아요,Like
+account.layout.profile,프로필,Profile
 account.layout.profileSettings,프로필 설정,Profile settings
 account.layout.passwordChange,비밀번호 변경,Change password
 account.layout.savedFeedCategory,저장한 피드 카테고리,Saved feed category
