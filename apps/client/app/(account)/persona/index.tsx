@@ -41,10 +41,14 @@ export default function PersonaScreen() {
 
   const onSelect = useCallback(
     (id: string) => {
+      if (isManaging) {
+        router.push(`/persona/${id}` as any);
+        return;
+      }
       selectPersona(id);
       router.replace('/');
     },
-    [router, selectPersona],
+    [isManaging, router, selectPersona],
   );
 
   const onDelete = useCallback(
