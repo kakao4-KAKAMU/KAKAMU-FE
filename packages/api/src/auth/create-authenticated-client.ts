@@ -34,7 +34,10 @@ export function createAuthenticatedApiClient(
   return createApiClient(prefixUrl, {
     retry: defaultRetry,
     ...options,
-    fetch: fetch,
+    fetch: async (input, init) => {
+      const response = await fetch(input, init);
+      return response;
+    },
     hooks: {
       ...options?.hooks,
       beforeRequest: [
