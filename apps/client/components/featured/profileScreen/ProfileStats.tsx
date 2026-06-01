@@ -1,19 +1,20 @@
 import { View } from 'react-native';
 import { Text } from '@kakamu/ui';
-import type { ProfileScreenUser, ProfileStatKey } from './types';
+import type { ProfileStatKey } from './types';
 
 const STAT_LABELS: Record<ProfileStatKey, string> = {
   feed: 'FEED',
-  save: 'SAVE',
+  save: 'FOLLOWER',
+  following: 'FOLLOWING',
   persona: 'PERSONA',
 };
 
 type ProfileStatsProps = {
-  user: ProfileScreenUser;
+  user: Record<ProfileStatKey, number>;
 };
 
 export function ProfileStats({ user }: ProfileStatsProps) {
-  const entries: ProfileStatKey[] = ['feed', 'save', 'persona'];
+  const entries: ProfileStatKey[] = ['feed', 'save', 'following', 'persona'];
 
   return (
     <View className="flex-row gap-2">
@@ -23,7 +24,7 @@ export function ProfileStats({ user }: ProfileStatsProps) {
           className="flex-1 items-center gap-1 rounded-[10px] bg-secondary px-2.5 py-2.5"
         >
           <Text className="text-xl font-extrabold text-secondary-foreground">
-            {user.stats[key]}
+            {user[key]}
           </Text>
           <Text className="text-[10px] font-bold tracking-wide text-muted-foreground">
             {STAT_LABELS[key]}

@@ -1,13 +1,6 @@
 export type ProfileTab = 'feed' | 'like' | 'saved';
 
-export type ProfileStatKey = 'feed' | 'save' | 'persona';
-
-export type ProfileScreenUser = {
-  id: string;
-  displayName: string;
-  bio: string;
-  stats: Record<ProfileStatKey, number>;
-};
+export type ProfileStatKey = 'feed' | 'save' | 'following' | 'persona';
 
 export type ProfileSavedCategory = {
   id: string;
