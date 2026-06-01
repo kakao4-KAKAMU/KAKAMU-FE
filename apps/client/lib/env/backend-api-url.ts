@@ -8,3 +8,8 @@ export function getUploadApiPrefixUrl(): string {
   const raw = process.env.EXPO_PUBLIC_UPLOAD_API_URL;
   return raw?.replace(/\/$/, '') ?? '';
 }
+
+export function getChatApiPrefixUrl(): string {
+  const raw = process.env.EXPO_PUBLIC_CHAT_API_URL;
+  return raw?.replace(/\/$/, '') ?? '';
+}
