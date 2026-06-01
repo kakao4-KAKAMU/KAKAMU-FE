@@ -4,12 +4,13 @@ import {
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { usePostsInfiniteQuery } from '@kakamu/query';
 import { usePersonaStore } from '@kakamu/store';
+import { View } from 'react-native';
 
 export default function ProfileFeedScreen() {
   const client = useBackendApiClient()
   const targetPersonaId = usePersonaStore((state) => state.selectedPersonaId);
   if (!targetPersonaId) {
-    return null;
+    return <View></View>;
   }
   const { data } = usePostsInfiniteQuery(client, {
     target_persona_id: targetPersonaId,
