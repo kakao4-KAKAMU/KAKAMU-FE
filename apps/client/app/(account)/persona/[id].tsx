@@ -176,9 +176,9 @@ export default function PersonaEditScreen() {
         }
 
         const body: PersonaUpdateRequest = {
-          nickname: data.name.trim(),
-          profile_image_url,
-          profile_msg: data.description.trim(),
+          nickname: data.name.trim() === persona?.nickname ? undefined : data.name.trim(),
+          profile_image_url: profile_image_url === persona?.profile_image_url ? undefined : profile_image_url,
+          profile_msg: data.description.trim() === persona?.profile_msg ? undefined : data.description.trim(),
           ...(data.selectedMovies.length > 0
             ? { fav_movie_ids: data.selectedMovies.map((movie) => movie.id) }
             : {}),
@@ -187,6 +187,7 @@ export default function PersonaEditScreen() {
             ? { fav_people_ids: data.selectedPersons.map((person) => person.id) }
             : {}),
         };
+
         updateMutation.mutate({ personaId: id, body });
       } catch (error) {
         setSubmitting(false);
