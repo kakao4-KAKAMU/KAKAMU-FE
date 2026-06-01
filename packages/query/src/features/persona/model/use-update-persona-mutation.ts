@@ -40,7 +40,7 @@ export function useUpdatePersonaMutation(
                 ...persona,
                 nickname: body.nickname ?? persona.nickname,
                 profile_image_url: body.profile_image_url ?? persona.profile_image_url,
-                persona_msg: body.profile_msg ?? persona.persona_msg,
+                profile_msg: body.profile_msg ?? persona.profile_msg,
               }
             : persona,
         ),
