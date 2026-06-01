@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 
-import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
+import { Redirect, Stack, usePathname, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
@@ -16,6 +16,7 @@ import { useAuthStore, usePersonaStore } from '@kakamu/store';
 import { ApiClientProvider } from '@/providers/ApiClientProvider';
 import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
 import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
+import { ConditionalRender } from '@/components/utils';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -64,6 +65,11 @@ const queryClient = new QueryClient({
   },
 });
 
+type AccountFilterStatus = 'gotoPersona' |
+'gotoGuest' |
+'gotoAccountTabs' |
+'none';
+
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -73,7 +79,7 @@ export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
-
+  
   useEffect(() => {
     let isMounted = true;
 
@@ -109,9 +115,9 @@ export default function RootLayout() {
     SplashScreen.hideAsync();
   }, [authReady]);
 
-  useEffect(() => {
+  const accountStatus: AccountFilterStatus = useMemo(() => {
     if (!authReady) {
-      return;
+      return 'none';
     }
 
     const rootSegment = segments[0];
@@ -123,20 +129,18 @@ export default function RootLayout() {
       !hasSelectedPersona
     ) {
       if (!isPersonaPath(pathname)) {
-        router.replace('/(account)/persona');
+        return 'gotoPersona';
       }
-      return;
     }
 
     if (!isAuthenticated && isAccountRoute) {
-      router.replace('/(guest)');
-      return;
+      return 'gotoGuest';
     }
 
     if (isAuthenticated && isGuestRoute) {
-      router.replace('/(account)/(tabs)');
-      return;
+      return 'gotoAccountTabs';
     }
+    return 'none';
   }, [authReady, hasSelectedPersona, isAuthenticated, pathname, router, segments]);
 
   if (!authReady) {
@@ -152,15 +156,24 @@ export default function RootLayout() {
               <ThemeColorProvider>
                 <AppErrorBoundary>
                   <ErrorAlertDialogProvider>
-                    <Stack
-                      screenOptions={{
-                        headerShown: false,
+                    <ConditionalRender
+                      condition={accountStatus}
+                      render={{
+                        'gotoPersona': <Redirect href="/(account)/persona" />,
+                        'gotoGuest': <Redirect href="/(guest)" />,
+                        'gotoAccountTabs': <Redirect href="/(account)/(tabs)" />,
+                        'none': <Stack
+                          screenOptions={{
+                            headerShown: false,
+                          }}
+                        >
+                          <Stack.Screen name="(guest)" />
+                          <Stack.Screen name="(account)" />
+                          <Stack.Screen name="(shared)" />
+                        </Stack>
                       }}
-                    >
-                      <Stack.Screen name="(guest)" />
-                      <Stack.Screen name="(account)" />
-                      <Stack.Screen name="(shared)" />
-                    </Stack>
+                    />
+                    
                     <PortalHost />
                   </ErrorAlertDialogProvider>
                 </AppErrorBoundary>
