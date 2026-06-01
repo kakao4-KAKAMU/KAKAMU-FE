@@ -7,3 +7,19 @@ export type Persona = {
   profile_msg: string;
   profile_image_url?: string;
 };
+
+export type PersonaCreateRequest = {
+  nickname: string;
+  profile_image_url: string;
+  profile_msg: string;
+  fav_movie_ids: number[];
+  fav_genre_ids: number[];
+  fav_people_ids: number[];
+};
+
+export type PersonaCreateResponse = Persona;
+
+export type PersonaUpdateRequest = Partial<PersonaCreateRequest>;
+export type PersonaUpdateResponse = Persona;
+export type PersonaListResponse = Persona[];
+export type PersonaDetailResponse = Persona;

@@ -35,7 +35,7 @@ export function useLikeMutation(
     onMutate: async (body) => {
       const postId = body.target_id;
       await cancelPostQueries(queryClient, postId);
-      const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.myLists());
+      const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
       const previousLikedLists = snapshotPostInfiniteLists(
         queryClient,
         postKeys.likedLists(),
@@ -54,7 +54,7 @@ export function useLikeMutation(
     },
     onSettled: (_data, _error, body) => {
       queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
-      queryClient.invalidateQueries({ queryKey: postKeys.myLists() });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
       queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
     },
     ...NO_MUTATION_CACHE,
