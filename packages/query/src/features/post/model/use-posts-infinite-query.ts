@@ -4,7 +4,7 @@ import {
   type UseInfiniteQueryOptions,
 } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
-import { getMyPostList } from '@kakamu/api';
+import { getPostList } from '@kakamu/api';
 import type { PostCursorListResponse, PostListParams } from '@kakamu/types';
 
 import { postKeys } from '../../../shared/keys/post.keys';
@@ -13,7 +13,7 @@ import {
   type PostInfiniteData,
 } from '../lib/post-infinite-cache';
 
-export function useMyPostsInfiniteQuery(
+export function usePostsInfiniteQuery(
   client: ApiClient,
   params: Omit<PostListParams, 'cursor'>,
   options?: Omit<
@@ -21,7 +21,7 @@ export function useMyPostsInfiniteQuery(
       PostCursorListResponse,
       unknown,
       PostInfiniteData,
-      ReturnType<typeof postKeys.myList>,
+      ReturnType<typeof postKeys.list>,
       number | undefined
     >,
     'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
@@ -30,9 +30,9 @@ export function useMyPostsInfiniteQuery(
   const queryClient = useQueryClient();
 
   return useInfiniteQuery({
-    queryKey: postKeys.myList(params),
+    queryKey: postKeys.list(params),
     queryFn: async ({ pageParam }) => {
-      const response = await getMyPostList(client, {
+      const response = await getPostList(client, {
         ...params,
         cursor: pageParam,
       });

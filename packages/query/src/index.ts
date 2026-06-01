@@ -8,7 +8,8 @@ export { useGenreListQuery } from './features/genre-list/model/use-genre-list-qu
 export { useSearchMoviesInfiniteQuery } from './features/search-movies/model/use-search-movies-infinite-query';
 export { useSearchPersonsInfiniteQuery } from './features/search-persons/model/use-search-persons-infinite-query';
 export { usePersonasQuery } from './features/persona/model/use-personas-query';
-export { useCreatePersonaMutation } from './features/persona-create/model/use-create-persona-mutation';
+export { usePersonaQuery } from './features/persona/model/use-persona-query';
+export { useCreatePersonaMutation } from './features/persona/model/use-create-persona-mutation';
 export { useUpdatePersonaMutation } from './features/persona/model/use-update-persona-mutation';
 export { useDeletePersonaMutation } from './features/persona/model/use-delete-persona-mutation';
 export { useLikeMutation } from './features/like/model/use-like-mutation';
@@ -16,7 +17,7 @@ export { useUploadImageMutation } from './features/upload/model/use-upload-image
 export { useCreatePostMutation } from './features/post/model/use-create-post-mutation';
 export { useDeletePostMutation } from './features/post/model/use-delete-post-mutation';
 export { useLikedPostsInfiniteQuery } from './features/post/model/use-liked-posts-infinite-query';
-export { useMyPostsInfiniteQuery } from './features/post/model/use-my-posts-infinite-query';
+export { usePostsInfiniteQuery } from './features/post/model/use-posts-infinite-query';
 export { usePostByIdQuery } from './features/post/model/use-post-by-id-query';
 export { useUpdatePostMutation } from './features/post/model/use-update-post-mutation';
 export { useLoginUserMutation } from './features/user-login/model/use-login-user-mutation';
