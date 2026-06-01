@@ -1,20 +1,37 @@
 import { View } from 'react-native';
-import { Settings, User } from 'lucide-react-native';
-import { Icon, Text } from '@kakamu/ui';
-import type { ProfileScreenUser } from './types';
+import { User } from 'lucide-react-native';
+import { Avatar, AvatarFallback, AvatarImage, cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
+import type { Persona } from '@kakamu/types';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 type ProfileHeroProps = {
-  user: ProfileScreenUser;
+  user?: Persona;
 };
 
 export function ProfileHero({ user }: ProfileHeroProps) {
   return (
     <View className="items-center gap-2.5 rounded-[14px] border border-border bg-card p-4">
       <View className="h-16 w-16 items-center justify-center rounded-full border border-border bg-muted">
-        <Icon as={User} size={22} className="text-muted-foreground" />
+        <Avatar
+          className="size-16 border border-border bg-muted"
+          alt={user?.nickname ?? ''}
+        >
+          {user?.profile_image_url ? (
+            <AvatarImage source={{ uri: convertImagePath(user?.profile_image_url) }} />
+          ) : null}
+          <AvatarFallback className="bg-muted">
+            <TextClassProvider value="text-muted-foreground">
+              <Icon as={User} size={64} />
+            </TextClassProvider>
+          </AvatarFallback>
+        </Avatar>
       </View>
-      <Text className="text-xl font-extrabold text-foreground">{user.displayName}</Text>
-      <Text className="text-center text-xs text-muted-foreground">{user.bio}</Text>
+      <TextClassProvider value="text-foreground">
+        <Text className="text-xl font-extrabold">{user?.nickname}</Text>
+      </TextClassProvider>
+      <TextClassProvider value="text-muted-foreground">
+        <Text className="text-center text-xs">{user?.persona_msg}</Text>
+      </TextClassProvider>
     </View>
   );
 }

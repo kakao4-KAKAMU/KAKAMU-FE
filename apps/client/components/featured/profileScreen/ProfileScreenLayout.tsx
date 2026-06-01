@@ -11,6 +11,9 @@ import { ConditionalRender } from '@/components/utils';
 import { ProfileSettingsHeader } from '../header';
 import { ProfileSubpageHeader } from '../header';
 import { Settings } from 'lucide-react-native';
+import { usePersonaStore } from '@kakamu/store';
+import { usePersonasQuery } from '@kakamu/query';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -22,7 +25,20 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useProfileScreenData({ isMy, userId });
+  const apiClient = useBackendApiClient();
+  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
+  const personasQuery = usePersonasQuery(apiClient);
+  const personas = personasQuery.data ?? [];
+  const persona = personas.find((persona) => persona.id === selectedPersonaId);
+
+  const userStatus = useMemo(() => {
+    return {
+      feed: 0,
+      save: 0,
+      following: 0,
+      persona: personas.length,
+    }
+  }, [])
 
   const isSettings = useMemo(() => pathname.startsWith('/profile/setting'), [pathname]);
 
@@ -58,8 +74,8 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
-        <ProfileHero user={user} />
-        <ProfileStats user={user} />
+        <ProfileHero user={persona} />
+        <ProfileStats user={userStatus} />
 
         <ProfileSubTabs isMy={isMy} userId={userId} />
 
