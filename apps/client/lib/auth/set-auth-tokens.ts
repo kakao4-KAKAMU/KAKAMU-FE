@@ -1,4 +1,4 @@
-import { useAuthStore } from '@kakamu/store';
+import { useAuthStore, usePersonaStore } from '@kakamu/store';
 import * as Sentry from '@sentry/react-native';
 
 import { clearRefreshToken, saveRefreshToken } from './refresh-token-storage';
@@ -25,5 +25,6 @@ export async function clearAuthSession(): Promise<void> {
     level: 'warning',
   });
   useAuthStore.getState().setAccessToken(null);
+  usePersonaStore.getState().clearPersonas();
   await clearRefreshToken();
 }
