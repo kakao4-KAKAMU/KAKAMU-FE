@@ -22,15 +22,15 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
 
   return (
     <View className="flex-row items-center gap-2.5">
-      <Button size="text" variant="ghost" onPress={onAuthorPress}>
+      <Button size="smIcon" variant="ghost" onPress={onAuthorPress}>
         <Avatar
-          className={cn('size-9 border border-border bg-muted', isAnonymous && 'opacity-60')}
+          className={cn('size-full border border-border bg-muted', isAnonymous && 'opacity-60')}
           alt={post.author ?? ANONYMOUS_AUTHOR_LABEL}
         >
           {post.author_image ? (
             <AvatarImage source={{ uri: convertImagePath(post.author_image) }} />
           ) : null}
-          <AvatarFallback className="bg-muted">
+          <AvatarFallback className="size-full bg-muted">
             <Icon as={User} size={16} className="text-muted-foreground" />
           </AvatarFallback>
         </Avatar>
