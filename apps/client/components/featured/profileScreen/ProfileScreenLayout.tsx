@@ -54,7 +54,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[1]}
+        stickyHeaderIndices={[2]}
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
