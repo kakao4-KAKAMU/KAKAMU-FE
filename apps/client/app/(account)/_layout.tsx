@@ -11,7 +11,6 @@ export default function AccountLayout() {
       <Stack.Screen name="persona/create" options={{ headerShown: false, title: t('account.layout.personaCreate') }} />
       <Stack.Screen name="profile/setting/index" options={{ headerShown: false, title: t('account.layout.profileSettings') }} />
       <Stack.Screen name="profile/setting/password" options={{ headerShown: false, title: t('account.layout.passwordChange') }} />
-      <Stack.Screen name="profile/my/saved/[category]" options={{ headerShown: false, title: t('account.layout.savedFeedCategory') }} />
       <Stack.Screen name="feed/write/index" options={{ headerShown: false, title: t('account.layout.feedWrite') }} />
       <Stack.Screen name="feed/write/[id]" options={{ headerShown: false, title: t('account.layout.feedEdit') }} />
       <Stack.Screen name="chat/[id]" options={{ headerShown: false, title: t('account.layout.personaChat') }} />

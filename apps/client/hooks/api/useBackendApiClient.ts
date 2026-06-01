@@ -7,9 +7,9 @@ import { ApiClientContext } from '@/providers/ApiClientProvider';
 export function useBackendApiClient(): ApiClient {
   const client = useContext(ApiClientContext);
 
-  if (!client) {
+  if (!client.backend) {
     throw new Error('useBackendApiClient must be used within ApiClientProvider');
   }
 
-  return client;
+  return client.backend;
 }

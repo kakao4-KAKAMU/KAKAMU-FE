@@ -2,11 +2,18 @@ import {
   ProfileFeedPanel,
 } from '@/components/featured/profileScreen';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useMyPostsInfiniteQuery } from '@kakamu/query';
+import { usePostsInfiniteQuery } from '@kakamu/query';
+import { usePersonaStore } from '@kakamu/store';
+import { View } from 'react-native';
 
-export default function MyProfileFeedScreen() {
+export default function ProfileFeedScreen() {
   const client = useBackendApiClient()
-  const { data } = useMyPostsInfiniteQuery(client, {
+  const targetPersonaId = usePersonaStore((state) => state.selectedPersonaId);
+  if (!targetPersonaId) {
+    return <View></View>;
+  }
+  const { data } = usePostsInfiniteQuery(client, {
+    target_persona_id: targetPersonaId,
     limit: 20,
   })
 

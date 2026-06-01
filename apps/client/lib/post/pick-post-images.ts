@@ -1,6 +1,14 @@
 import * as ImagePicker from 'expo-image-picker';
 
-export async function pickPostImages(remaining: number): Promise<string[] | null> {
+import { createImagePreviewUri } from '../upload/build-image-upload-form-data';
+import { toLocalImagePick, type LocalImagePick } from '../upload/local-image';
+
+export type PickedImage = {
+  previewUri: string;
+  pick: LocalImagePick;
+};
+
+export async function pickPostImages(remaining: number): Promise<PickedImage[] | null> {
   if (remaining <= 0) {
     return null;
   }
@@ -21,5 +29,11 @@ export async function pickPostImages(remaining: number): Promise<string[] | null
     return null;
   }
 
-  return result.assets.map((asset) => asset.uri);
+  return Promise.all(
+    result.assets.map(async (asset) => {
+      const pick = toLocalImagePick(asset);
+      const previewUri = await createImagePreviewUri(pick);
+      return { previewUri, pick };
+    }),
+  );
 }

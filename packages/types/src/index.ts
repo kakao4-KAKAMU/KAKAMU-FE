@@ -4,14 +4,15 @@ export type Brand<T, B extends string> = T & { readonly __brand: B };
 export type { ApiErrorBody, ApiErrorCode } from './api-error';
 export { API_ERROR_CODES } from './api-error';
 
-export type { Persona } from './persona';
 export type {
+  Persona,
   PersonaCreateRequest,
   PersonaCreateResponse,
   PersonaUpdateRequest,
   PersonaUpdateResponse,
   PersonaListResponse,
-} from './persona-create';
+  PersonaDetailResponse,
+ } from './persona';
 export type { Genre, GenreListResponse } from './genre';
 export type {
   FeedContentType,
@@ -46,6 +47,9 @@ export type {
 } from './like';
 export { LIKE_TARGET_TYPES } from './like';
 
+export type { ImageUploadResponse, ImageUploadType } from './upload';
+export { IMAGE_UPLOAD_TYPES } from './upload';
+
 export type {
   PostCreateRequest,
   PostCreateResponse,
@@ -53,6 +57,7 @@ export type {
   PostDeleteResponse,
   PostItem,
   PostListParams,
+  LikedPostListParams,
   PostUpdateRequest,
   PostUpdateResponse,
 } from './post';

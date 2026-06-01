@@ -17,11 +17,13 @@ export function ProfileSubTabs({ isMy, userId }: ProfileSubTabsProps) {
   const pathname = usePathname();
   const { t } = useTranslation();
   const activeTab = resolveActiveProfileTab(pathname);
-  const tabItems: { key: ProfileTab; label: string }[] = [
+  const tabItems: { key: ProfileTab; label: string }[] = isMy ? [
     { key: 'feed', label: t('account.profile.tabs.feed') },
     { key: 'like', label: t('account.profile.tabs.like') },
     { key: 'saved', label: t('account.profile.tabs.saved') },
-  ];
+  ] : [
+    { key: 'feed', label: t('account.profile.tabs.feed') }
+  ]
 
   const onTabPress = useCallback(
     (tab: ProfileTab) => {

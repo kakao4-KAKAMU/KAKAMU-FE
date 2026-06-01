@@ -6,7 +6,6 @@ export { useProfileScreenData } from './useProfileScreenData';
 export { getProfileTabHref, resolveActiveProfileTab } from './profileScreen.routes';
 export type {
   ProfileTab,
-  ProfileScreenUser,
   ProfileSavedCategory,
   ProfileSavedMovie,
   ProfileLikeSegment,

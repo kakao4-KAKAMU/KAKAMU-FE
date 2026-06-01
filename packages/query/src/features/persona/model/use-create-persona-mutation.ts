@@ -29,7 +29,7 @@ export function useCreatePersonaMutation(
         user_id: '',
         nickname: body.nickname,
         tag: '',
-        persona_msg: body.profile_msg,
+        profile_msg: body.profile_msg,
         profile_image_url: body.profile_image_url,
       };
       queryClient.setQueryData<Persona[]>(personaKeys.list(), [

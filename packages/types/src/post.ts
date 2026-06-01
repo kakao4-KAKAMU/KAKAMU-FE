@@ -44,6 +44,12 @@ export type PostDeleteResponse = {
 };
 
 export type PostListParams = {
+  target_persona_id: string;
+  cursor?: number;
+  limit: number;
+};
+
+export type LikedPostListParams = {
   cursor?: number;
   limit: number;
 };

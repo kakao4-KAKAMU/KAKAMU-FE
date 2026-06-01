@@ -57,7 +57,7 @@ export function useLikeMutation(
       if (body.target_type === 'POST') {
         const postId = body.target_id;
         await cancelPostQueries(queryClient, postId);
-        const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.myLists());
+        const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
         const previousLikedLists = snapshotPostInfiniteLists(
           queryClient,
           postKeys.likedLists(),
@@ -107,22 +107,9 @@ export function useLikeMutation(
       restoreCommentDetails(queryClient, context.previousCommentDetails);
     },
     onSettled: (_data, _error, body) => {
-      if (body.target_type === 'POST') {
-        queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
-        queryClient.invalidateQueries({ queryKey: postKeys.myLists() });
-        queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
-        return;
-      }
-
-      queryClient.invalidateQueries({ queryKey: commentKeys.detail(body.target_id) });
-      const comment = queryClient.getQueryData<{ post_id: number }>(
-        commentKeys.detail(body.target_id),
-      );
-      if (comment?.post_id != null) {
-        queryClient.invalidateQueries({
-          queryKey: commentKeys.byPostList(comment.post_id),
-        });
-      }
+      queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
     },
     ...NO_MUTATION_CACHE,
     ...options,

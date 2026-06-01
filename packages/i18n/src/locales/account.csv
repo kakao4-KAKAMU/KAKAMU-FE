@@ -1,6 +1,7 @@
 code,ko,en
 account.layout.persona,페르소나,Personas
 account.layout.personaCreate,페르소나 생성,Create persona
+account.layout.personaEdit,페르소나 수정,Edit persona
 account.persona.title,누구로 감상할까요?,Who are you watching as?
 account.persona.description,독립된 취향 데이터와 추천 알고리즘을 선택합니다.,Pick separate taste data and recommendation settings.
 account.persona.addNew,새 페르소나,New persona
@@ -63,6 +64,8 @@ account.persona.create.emptyResults,검색 결과가 없습니다.,No results fo
 account.persona.create.loadMore,더 보기,Load more
 account.persona.create.failedRequest.title,생성에 실패했습니다,Could not create persona
 account.persona.create.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.upload.failedRequest.title,이미지 업로드에 실패했어요,Image upload failed
+account.upload.failedRequest.description,이미지를 업로드하지 못했습니다. 잠시 후 다시 시도해 주세요.,We could not upload the image. Please try again later.
 account.persona.create.error.limitExceeded.title,페르소나는 최대 5개까지 만들 수 있어요,You can create up to 5 personas
 account.persona.create.error.limitExceeded.description,기존 페르소나를 삭제한 뒤 다시 시도해 주세요.,Delete an existing persona and try again.
 account.persona.list.failedRequest.title,페르소나 목록을 불러오지 못했어요,Could not load personas

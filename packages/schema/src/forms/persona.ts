@@ -39,11 +39,18 @@ function descriptionField(messages: PersonaFormValidationMessages['description']
     .max(PERSONA_DESCRIPTION_MAX_LENGTH, messages.max);
 }
 
+function isValidProfileImageReference(value: string): boolean {
+  if (z.string().url().safeParse(value).success) {
+    return true;
+  }
+  return /^(file|content|blob|ph|assets-library):/.test(value);
+}
+
 function profileImageUrlField(messages: PersonaFormValidationMessages['profileImageUrl']) {
   return z
     .string()
     .trim()
-    .refine((value) => value.length === 0 || z.string().url().safeParse(value).success, {
+    .refine((value) => value.length === 0 || isValidProfileImageReference(value), {
       message: messages.invalid,
     });
 }

@@ -39,7 +39,7 @@ export function useCreatePostMutation(
     mutationFn: (body: PostCreateRequest) => createPost(client, body),
     onMutate: async (body) => {
       await cancelPostQueries(queryClient, OPTIMISTIC_POST_ID);
-      const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.myLists());
+      const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
       const previousDetails = snapshotPostDetail(queryClient, OPTIMISTIC_POST_ID);
       prependPostToMyLists(queryClient, createOptimisticPost(body));
       return { previousMyLists, previousDetails };
@@ -53,7 +53,7 @@ export function useCreatePostMutation(
     },
     onSettled: () => {
       queryClient.removeQueries({ queryKey: postKeys.detail(OPTIMISTIC_POST_ID) });
-      queryClient.invalidateQueries({ queryKey: postKeys.myLists() });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
     },
     ...NO_MUTATION_CACHE,
     ...options,

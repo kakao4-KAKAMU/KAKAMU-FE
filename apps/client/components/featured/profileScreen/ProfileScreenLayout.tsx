@@ -6,11 +6,13 @@ import { usePathname, useRouter } from 'expo-router';
 import { ProfileHero } from './ProfileHero';
 import { ProfileStats } from './ProfileStats';
 import { ProfileSubTabs } from './ProfileSubTabs';
-import { useProfileScreenData } from './useProfileScreenData';
 import { ConditionalRender } from '@/components/utils';
 import { ProfileSettingsHeader } from '../header';
 import { ProfileSubpageHeader } from '../header';
 import { Settings } from 'lucide-react-native';
+import { usePersonaStore } from '@kakamu/store';
+import { usePersonaQuery } from '@kakamu/query';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -22,7 +24,20 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useProfileScreenData({ isMy, userId });
+  const apiClient = useBackendApiClient();
+  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
+  const personaId = (isMy ? selectedPersonaId : userId) ?? '';
+  const personaQuery = usePersonaQuery(apiClient, personaId);
+  const persona = personaQuery.data
+
+  const userStatus = useMemo(() => {
+    return {
+      feed: 0,
+      save: 0,
+      following: 0,
+      persona: 0,
+    }
+  }, [])
 
   const isSettings = useMemo(() => pathname.startsWith('/profile/setting'), [pathname]);
 
@@ -54,14 +69,14 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[1]}
+        stickyHeaderIndices={[2]}
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
-        <ProfileHero user={user} />
-        <ProfileStats user={user} />
+        <ProfileHero user={persona} />
+        <ProfileStats user={userStatus} />
 
-        <ProfileSubTabs isMy={isMy} userId={userId} />
+        <ProfileSubTabs isMy={isMy} userId={personaId} />
 
         <View className="pb-6 pt-2">{children}</View>
       </ScrollView>

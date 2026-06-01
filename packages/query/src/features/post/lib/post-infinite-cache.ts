@@ -128,7 +128,7 @@ export function restorePostDetails(
 export function prependPostToMyLists(queryClient: QueryClient, item: PostItem): void {
   setPostDetailCache(queryClient, item);
   queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.myLists() },
+    { queryKey: postKeys.lists() },
     (old) => (old ? prependToFirstPage(old, item) : old),
   );
 }
@@ -163,7 +163,7 @@ export function togglePostLikeInCaches(queryClient: QueryClient, postId: number)
   };
 
   queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.myLists() },
+    { queryKey: postKeys.lists() },
     (old) =>
       old
         ? mapInfinitePages(old, (item) => (item.id === postId ? patched : item))
@@ -198,7 +198,7 @@ export function patchPostInCaches(
   patch: (post: PostItem) => PostItem,
 ): void {
   queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.myLists() },
+    { queryKey: postKeys.lists() },
     (old) =>
       old
         ? mapInfinitePages(old, (item) => (item.id === postId ? patch(item) : item))
@@ -218,7 +218,7 @@ export function patchPostInCaches(
 
 export function removePostFromCaches(queryClient: QueryClient, postId: number): void {
   queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.myLists() },
+    { queryKey: postKeys.lists() },
     (old) =>
       old ? mapInfinitePages(old, (item) => (item.id === postId ? null : item)) : old,
   );
@@ -232,7 +232,7 @@ export function removePostFromCaches(queryClient: QueryClient, postId: number): 
 
 export async function cancelPostQueries(queryClient: QueryClient, postId?: number): Promise<void> {
   await Promise.all([
-    queryClient.cancelQueries({ queryKey: postKeys.myLists() }),
+    queryClient.cancelQueries({ queryKey: postKeys.lists() }),
     queryClient.cancelQueries({ queryKey: postKeys.likedLists() }),
     postId != null
       ? queryClient.cancelQueries({ queryKey: postKeys.detail(postId) })

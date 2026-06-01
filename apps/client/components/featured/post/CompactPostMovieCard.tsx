@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { Image } from 'react-native';
 import { Text } from '@kakamu/ui';
 import type { MovieItem } from '@kakamu/types';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 export function CompactPostMovieCard({ movie }: { movie: MovieItem }) {
   return (
@@ -9,7 +10,7 @@ export function CompactPostMovieCard({ movie }: { movie: MovieItem }) {
       <View className="flex-row items-center gap-3">
         {movie.poster_url ? (
           <Image
-            source={{ uri: movie.poster_url }}
+            source={{ uri: convertImagePath(movie.poster_url) }}
             className="h-[45px] w-[60px] rounded-md"
             resizeMode="cover"
             accessibilityIgnoresInvertColors

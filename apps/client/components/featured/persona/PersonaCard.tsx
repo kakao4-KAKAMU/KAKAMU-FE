@@ -2,6 +2,7 @@ import type { Persona } from '@kakamu/types';
 import { Image, Pressable, View } from 'react-native';
 import { User, X } from 'lucide-react-native';
 import { cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 type PersonaCardProps = {
   persona: Persona;
@@ -40,44 +41,42 @@ export function PersonaCard({
           </TextClassProvider>
         </Pressable>
       ) : null}
+      
+      <Pressable
+        className="flex-col items-center justify-center gap-2.5 absolute inset-0 active:opacity-70"
+        accessibilityRole="button"
+        accessibilityLabel={selectAccessibilityLabel}
+        onPress={onSelect}
+      >
+        <View className="h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-full border border-border bg-muted">
+          {persona.profile_image_url ? (
+            <Image
+              source={{ uri: convertImagePath(persona.profile_image_url) }}
+              accessibilityIgnoresInvertColors
+              className="h-full w-full"
+            />
+          ) : (
+            <TextClassProvider value="text-muted-foreground">
+              <Icon as={User} size={22} />
+            </TextClassProvider>
+          )}
+        </View>
 
-      <View className="h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-full border border-border bg-muted">
-        {persona.profile_image_url ? (
-          <Image
-            source={{ uri: persona.profile_image_url }}
-            accessibilityIgnoresInvertColors
-            className="h-full w-full"
-          />
-        ) : (
-          <TextClassProvider value="text-muted-foreground">
-            <Icon as={User} size={22} />
-          </TextClassProvider>
-        )}
-      </View>
-
-      <View className="w-full flex-col items-center gap-0.5">
-        <Text className="text-center text-[15px] font-bold leading-tight text-foreground">
-          {persona.nickname}
-        </Text>
-        <Text className="text-center text-[11px] font-normal leading-tight text-muted-foreground">
-          {persona.tag}
-        </Text>
-      </View>
+        <View className="w-full flex-col items-center gap-0.5">
+          <Text className="text-center text-[15px] font-bold leading-tight text-foreground">
+            {persona.nickname}
+          </Text>
+          <Text className="text-center text-[11px] font-normal leading-tight text-muted-foreground">
+            {persona.tag}
+          </Text>
+        </View>
+      </Pressable>
     </>
   );
 
-  if (isManaging) {
-    return <View className={cardClassName}>{content}</View>;
-  }
-
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={selectAccessibilityLabel}
-      onPress={onSelect}
-      className={cardClassName}
-    >
+    <View className={cardClassName}>
       {content}
-    </Pressable>
+    </View>
   );
 }

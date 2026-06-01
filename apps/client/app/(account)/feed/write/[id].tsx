@@ -11,10 +11,12 @@ import { Text, useErrorAlertDialog } from '@kakamu/ui';
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
 import { PostWriteForm } from '@/components/featured/post/write';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { usePendingLocalImages } from '@/hooks/upload/usePendingLocalImages';
 import { usePostWriteMovieSearch } from '@/hooks/post/usePostWriteMovieSearch';
 import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
 import { mapPostDetailError } from '@/lib/error-message-map/post/post-detail-error';
 import { mapPostUpdateError } from '@/lib/error-message-map/post/post-update-error';
+import { mapImageUploadError } from '@/lib/error-message-map/upload/image-upload-error';
 import { usePostFormValidationKit } from '@/lib/post-form-validators';
 import {
   mapPostItemToWriteFormInput,
@@ -22,6 +24,8 @@ import {
   POST_WRITE_DEFAULT_VALUES,
 } from '@/lib/post/post-form-mappers';
 import { pickPostImages } from '@/lib/post/pick-post-images';
+import { useResolveFormImageUrls } from '@/hooks/upload/useResolveFormImageUrls';
+import { useUploadApiClient } from '@/hooks/api/useUploadApiClient';
 
 export default function FeedEditScreen() {
   const router = useRouter();
@@ -40,7 +44,10 @@ export default function FeedEditScreen() {
 
   const { control, handleSubmit, reset, setValue, getValues } = form;
   const apiClient = useBackendApiClient();
+  const uploadClient = useUploadApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
+  const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
+  const { resolveFormImageUrls, isUploading: uploadingImages } = useResolveFormImageUrls(uploadClient);
   const genreQuery = usePersonaCreateGenreList();
   const movieSearch = usePostWriteMovieSearch(postId > 0);
 
@@ -63,11 +70,20 @@ export default function FeedEditScreen() {
     },
   });
 
-  const onSubmit = handleSubmit((values) => {
-    updateMutation.mutate({
-      postId,
-      body: mapWriteFormInputToRequestBody(values),
-    });
+  const onSubmit = handleSubmit(async (values) => {
+    try {
+      const image_urls = await resolveFormImageUrls(
+        values.image_urls,
+        'feed',
+        getPendingLocalImages(),
+      );
+      updateMutation.mutate({
+        postId,
+        body: mapWriteFormInputToRequestBody({ ...values, image_urls }),
+      });
+    } catch (error) {
+      openErrorAlert(mapImageUploadError(error, t));
+    }
   });
 
   const handleCancel = useCallback(() => {
@@ -80,12 +96,27 @@ export default function FeedEditScreen() {
       if (!picked?.length) {
         return;
       }
-      setValue('image_urls', [...getValues('image_urls'), ...picked], { shouldValidate: true });
+
+      for (const image of picked) {
+        registerLocalImage(image.previewUri, image.pick);
+      }
+      setValue(
+        'image_urls',
+        [...getValues('image_urls'), ...picked.map((image) => image.previewUri)],
+        { shouldValidate: true },
+      );
     },
-    [getValues, setValue],
+    [getValues, registerLocalImage, setValue],
   );
 
-  const submitting = updateMutation.isPending;
+  const handleRemoveImage = useCallback(
+    (url: string) => {
+      releaseLocalImage(url);
+    },
+    [releaseLocalImage],
+  );
+
+  const submitting = uploadingImages || updateMutation.isPending;
   const canSubmit = !submitting && !postQuery.isLoading;
   const isReady = postId > 0 && (postQuery.isSuccess || postQuery.isLoading);
 
@@ -128,6 +159,7 @@ export default function FeedEditScreen() {
                 search={movieSearch.search}
                 searchQuery={movieSearch.searchQuery}
                 onPickImages={handlePickImages}
+                onRemoveImage={handleRemoveImage}
               />
             ) : null}
           </ScrollView>

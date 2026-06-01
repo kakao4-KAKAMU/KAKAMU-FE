@@ -11,15 +11,19 @@ import { useErrorAlertDialog } from '@kakamu/ui';
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
 import { PostWriteForm } from '@/components/featured/post/write';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { usePendingLocalImages } from '@/hooks/upload/usePendingLocalImages';
 import { usePostWriteMovieSearch } from '@/hooks/post/usePostWriteMovieSearch';
 import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
 import { mapPostCreateError } from '@/lib/error-message-map/post/post-create-error';
+import { mapImageUploadError } from '@/lib/error-message-map/upload/image-upload-error';
 import { usePostFormValidationKit } from '@/lib/post-form-validators';
 import {
   mapWriteFormInputToRequestBody,
   POST_WRITE_DEFAULT_VALUES,
 } from '@/lib/post/post-form-mappers';
 import { pickPostImages } from '@/lib/post/pick-post-images';
+import { useResolveFormImageUrls } from '@/hooks/upload/useResolveFormImageUrls';
+import { useUploadApiClient } from '@/hooks/api/useUploadApiClient';
 
 export default function FeedWriteScreen() {
   const router = useRouter();
@@ -36,7 +40,10 @@ export default function FeedWriteScreen() {
 
   const { control, handleSubmit, setValue, getValues } = form;
   const apiClient = useBackendApiClient();
+  const uploadClient = useUploadApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
+  const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
+  const { resolveFormImageUrls, isUploading: uploadingImages } = useResolveFormImageUrls(uploadClient);
   const genreQuery = usePersonaCreateGenreList();
   const movieSearch = usePostWriteMovieSearch(true);
 
@@ -49,8 +56,17 @@ export default function FeedWriteScreen() {
     },
   });
 
-  const onSubmit = handleSubmit((values) => {
-    createMutation.mutate(mapWriteFormInputToRequestBody(values));
+  const onSubmit = handleSubmit(async (values) => {
+    try {
+      const image_urls = await resolveFormImageUrls(
+        values.image_urls,
+        'feed',
+        getPendingLocalImages(),
+      );
+      createMutation.mutate(mapWriteFormInputToRequestBody({ ...values, image_urls }));
+    } catch (error) {
+      openErrorAlert(mapImageUploadError(error, t));
+    }
   });
 
   const handleCancel = useCallback(() => {
@@ -63,12 +79,27 @@ export default function FeedWriteScreen() {
       if (!picked?.length) {
         return;
       }
-      setValue('image_urls', [...getValues('image_urls'), ...picked], { shouldValidate: true });
+
+      for (const image of picked) {
+        registerLocalImage(image.previewUri, image.pick);
+      }
+      setValue(
+        'image_urls',
+        [...getValues('image_urls'), ...picked.map((image) => image.previewUri)],
+        { shouldValidate: true },
+      );
     },
-    [getValues, setValue],
+    [getValues, registerLocalImage, setValue],
   );
 
-  const submitting = createMutation.isPending;
+  const handleRemoveImage = useCallback(
+    (url: string) => {
+      releaseLocalImage(url);
+    },
+    [releaseLocalImage],
+  );
+
+  const submitting = uploadingImages || createMutation.isPending;
   const canSubmit = !submitting;
 
   return (
@@ -101,6 +132,7 @@ export default function FeedWriteScreen() {
               search={movieSearch.search}
               searchQuery={movieSearch.searchQuery}
               onPickImages={handlePickImages}
+              onRemoveImage={handleRemoveImage}
             />
           </ScrollView>
         </KeyboardAvoidingView>

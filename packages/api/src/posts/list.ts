@@ -4,11 +4,13 @@ import type { ApiClient } from '../client';
 import { toPostListSearchParams } from './build-post-list-params';
 
 /** `GET .../posts/` */
-export async function getMyPostList(
+export async function getPostList(
   client: ApiClient,
   params: PostListParams,
 ): Promise<PostCursorListResponse> {
   return client
-    .get('posts/', { searchParams: toPostListSearchParams(params) })
+    .get(`posts/persona/${params.target_persona_id}`, {
+      searchParams: toPostListSearchParams(params)
+    })
     .json<PostCursorListResponse>();
 }
