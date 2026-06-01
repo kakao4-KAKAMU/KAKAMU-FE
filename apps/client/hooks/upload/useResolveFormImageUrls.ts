@@ -4,7 +4,8 @@ import { useUploadImageMutation } from '@kakamu/query';
 import type { ImageUploadType } from '@kakamu/types';
 
 import { buildImageUploadFormData } from '@/lib/upload/build-image-upload-form-data';
-import { isLocalImageUri, type LocalImagePick } from '@/lib/upload/local-image';
+import { isRemoteImageUrl, type LocalImagePick } from '@/lib/upload/local-image';
+import { convertImagePath } from '@/lib/upload/convert-image-path';
 
 export function useResolveFormImageUrls(apiClient: ApiClient) {
   const uploadMutation = useUploadImageMutation(apiClient);
@@ -15,7 +16,7 @@ export function useResolveFormImageUrls(apiClient: ApiClient) {
       imageType: ImageUploadType,
       pendingLocalImages: ReadonlyMap<string, LocalImagePick>,
     ): Promise<string> => {
-      if (!isLocalImageUri(url)) {
+      if (isRemoteImageUrl(url)) {
         return url.trim();
       }
 
@@ -26,7 +27,7 @@ export function useResolveFormImageUrls(apiClient: ApiClient) {
 
       const formData = await buildImageUploadFormData(pick, imageType);
       const response = await uploadMutation.mutateAsync(formData);
-      return response.image_url;
+      return convertImagePath(response.image_url);
     },
     [uploadMutation],
   );
