@@ -63,6 +63,17 @@ export type {
 } from './post';
 
 export type {
+  ChatHistoryMessage,
+  ChatHistoryParams,
+  ChatHistoryResponse,
+  ChatListResponse,
+  ChatSession,
+  ChatSessionMetadata,
+  ChatSseEvent,
+  ChatStreamRequestBody,
+} from './chat';
+
+export type {
   AuthSnsSignUpProvider,
   ChangePasswordRequest,
   Email,
