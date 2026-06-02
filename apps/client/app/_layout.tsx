@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
-import { QueryClient, QueryClientProvider } from '@kakamu/query';
+import { QueryClient, QueryClientProvider, QueryCache } from '@kakamu/query';
 import { AppErrorBoundary, ErrorAlertDialogProvider, PortalHost } from '@kakamu/ui';
 import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
@@ -59,6 +59,7 @@ const isPersonaPath = (pathname: string) =>
 
 
 const queryClient = new QueryClient({
+  queryCache: new QueryCache(),
   defaultOptions: {
     queries: { retry: 1 },
     mutations: { retry: 0 },

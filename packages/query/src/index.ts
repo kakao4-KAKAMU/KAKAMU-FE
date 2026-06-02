@@ -1,4 +1,4 @@
-export { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+export { QueryClient, QueryClientProvider, QueryCache, useQueryClient } from '@tanstack/react-query';
 
 export { userKeys } from './shared/keys/user.keys';
 export { commentKeys } from './shared/keys/comment.keys';
