@@ -1,20 +1,9 @@
-import { Stack } from 'expo-router';
-import { useTranslation } from '@kakamu/i18n';
-import { ScrollView } from 'react-native';
-import { Text } from '@kakamu/ui';
+import { useLocalSearchParams } from 'expo-router';
 
-export default function PersonaChatScreen() {
-  const { t } = useTranslation();
+import { ChatConversationScreenContent } from '@/components/featured/chat';
 
-  return (
-    <>
-      <Stack.Screen options={{ title: t('account.personaChat.title') }} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ padding: 16, gap: 12 }}
-      >
-        <Text selectable>{t('account.personaChat.description')}</Text>
-      </ScrollView>
-    </>
-  );
+export default function ChatConversationScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  return <ChatConversationScreenContent sessionId={id ?? 'new'} />;
 }
