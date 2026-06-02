@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next, useTranslation } from 'react-i18next';
 
@@ -53,5 +54,12 @@ export function getI18n() {
 export function createI18n() {
   return getI18n();
 }
-
-export { enTranslation, I18nextProvider, initReactI18next, koTranslation, useTranslation };
+export {
+  enTranslation,
+  I18nextProvider,
+  initReactI18next,
+  koTranslation,
+  useTranslation,
+  i18next as i18n,
+  TFunction
+};

@@ -3,16 +3,17 @@ import { Text } from '@kakamu/ui';
 import { useMemo } from 'react';
 import type { ChatUiMessage } from '@/lib/chat/types';
 import { formatChatMessageTime } from '@/lib/chat/format-session-label';
-import { useTranslation } from '@kakamu/i18n';
+import { TFunction, i18n } from '@kakamu/i18n';
 import { cn } from '@kakamu/ui';
 import { ConditionalRender } from '@/components/utils';
 
 type ChatMessageBubbleProps = {
   message: ChatUiMessage;
+  t: TFunction;
+  i18n: typeof i18n;
 };
 
-export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
-  const { i18n, t } = useTranslation();
+export function ChatMessageBubble({ message, t, i18n }: ChatMessageBubbleProps) {
   const isUser = message.role === 'user';
 
   if (!message.content.trim()) {

@@ -20,7 +20,7 @@ export function ChatConversationScreenContent({
   sessionId,
 }: ChatConversationScreenContentProps) {
   const insets = useSafeAreaInsets();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const {
     headerTitle,
     messages,
@@ -41,7 +41,7 @@ export function ChatConversationScreenContent({
 
   const renderItem = useCallback(
     ({ item }: { item: (typeof messages)[number] }) => (
-      <ChatMessageBubble message={item} />
+      <ChatMessageBubble message={item} t={t} i18n={i18n} />
     ),
     [],
   );
