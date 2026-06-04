@@ -1,14 +1,15 @@
 import { View } from 'react-native';
 import { Text } from '@kakamu/ui';
 import { useMemo } from 'react';
-import type { ChatUiMessage } from '@/lib/chat/types';
+import type { ChatHistoryMessage } from '@kakamu/types';
 import { formatChatMessageTime } from '@/lib/chat/format-session-label';
+import { isChatMessagePending } from '@/lib/chat/is-chat-message-pending';
 import { TFunction, i18n } from '@kakamu/i18n';
 import { cn } from '@kakamu/ui';
 import { ConditionalRender } from '@/components/utils';
 
 type ChatMessageBubbleProps = {
-  message: ChatUiMessage;
+  message: ChatHistoryMessage;
   t: TFunction;
   i18n: typeof i18n;
 };
@@ -19,11 +20,13 @@ export function ChatMessageBubble({ message, t, i18n }: ChatMessageBubbleProps) 
   if (!message.content.trim()) {
     return null;
   }
+
   const renderingState = useMemo(() => {
-    if (message.pending) return 'pending';
-    if (message.createdAt) return 'created';
+    if (isChatMessagePending(message)) return 'pending';
+    if (message.created_at) return 'created';
     return 'unknown';
-  }, [message.pending, message.createdAt]);
+  }, [message]);
+
   return (
     <View className={cn('w-full', isUser ? 'items-end' : 'items-start')}>
       <View
@@ -60,7 +63,7 @@ export function ChatMessageBubble({ message, t, i18n }: ChatMessageBubbleProps) 
                   isUser ? 'text-background/70' : 'text-muted-foreground',
                 )}
               >
-                {formatChatMessageTime(message.createdAt!, i18n.language)}
+                {formatChatMessageTime(message.created_at, i18n.language)}
               </Text>
             }}
           />

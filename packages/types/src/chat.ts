@@ -17,6 +17,12 @@ export type ChatHistoryMessage = {
   role: 'user' | 'assistant' | string;
   content: string;
   created_at: string;
+  reply_metadata?: {
+    type: 'movie',
+    id: string
+  };
+  status?: 'pending' | 'processing' | 'done';
+  processing?: boolean;
 };
 
 export type ChatHistoryResponse = {

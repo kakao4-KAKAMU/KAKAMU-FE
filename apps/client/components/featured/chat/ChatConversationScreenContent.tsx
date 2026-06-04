@@ -57,7 +57,7 @@ export function ChatConversationScreenContent({
       >
         <FlatList
           data={messages}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           contentContainerStyle={{
             paddingHorizontal: 20,
             paddingTop: 8,

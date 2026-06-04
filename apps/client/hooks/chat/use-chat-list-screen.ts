@@ -11,7 +11,7 @@ import {
   formatChatSessionTime,
   formatChatSessionTitle,
 } from '@/lib/chat/format-session-label';
-import { NEW_CHAT_SESSION_ID } from '@/lib/chat/types';
+import { NEW_CHAT_SESSION_ID } from '@/lib/chat/constants';
 import { mapChatListError } from '@/lib/error-message-map/chat/chat-list-error';
 
 export type ChatThreadRowViewModel = {

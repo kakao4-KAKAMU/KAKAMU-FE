@@ -39,13 +39,16 @@ export function normalizeChatStreamEvent(sseEvent: ChatSseEvent): NormalizedChat
 }
 
 /** `open` / `done` payload에서 `session_id`를 추출한다. */
-export function extractSessionIdFromStreamData(data: unknown): string | null {
+export function extractIdsFromStreamData(data: unknown): { sessionId: string ; messageId: string } | null {
   const root = asRecord(data);
   if (!root) {
     return null;
   }
 
-  return readString(root.session_id);
+  return {
+    sessionId: root.session_id as string,
+    messageId: root.message_id as string,
+  };
 }
 
 /**

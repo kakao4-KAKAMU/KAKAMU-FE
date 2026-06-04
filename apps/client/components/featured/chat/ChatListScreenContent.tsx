@@ -8,6 +8,7 @@ import { useChatListScreen } from '@/hooks/chat/use-chat-list-screen';
 
 import { ChatThreadRow } from './ChatThreadRow';
 import { ConditionalRender } from '@/components/utils';
+import { ChatListHeader } from '../header/ChatListHeader';
 
 export function ChatListScreenContent() {
   const { t } = useTranslation();
@@ -17,21 +18,7 @@ export function ChatListScreenContent() {
 
   return (
     <View className="flex-1 bg-background">
-      <View className="px-4 pb-2 pt-2">
-        <View className="flex-row items-center justify-between">
-          <Text variant="h3" className="font-bold">
-            {t('account.chat.list.title')}
-          </Text>
-          <View className="size-8 items-center justify-center rounded-full bg-muted">
-            <TextClassProvider value="text-foreground">
-              <Icon as={Sparkles} size={18} />
-            </TextClassProvider>
-          </View>
-        </View>
-        <Text className="mt-2 text-sm text-muted-foreground">
-          {t('account.chat.list.subtitle')}
-        </Text>
-      </View>
+      <ChatListHeader title={t('account.chat.list.title')} />
       
       <ConditionalRender.Boolean
         condition={isLoading}
