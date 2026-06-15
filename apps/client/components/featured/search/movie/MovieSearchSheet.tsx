@@ -45,7 +45,7 @@ export function MovieSearchSheet({
     }
   }, [visible, selected]);
 
-  const isSelected = useCallback((id: number) => draft.some((item) => item.id === id), [draft]);
+  const isSelected = useCallback((id: string) => draft.some((item) => item.id === id), [draft]);
 
   const toggleItem = useCallback((item: MovieItem) => {
     setDraft((current) => {
@@ -53,7 +53,7 @@ export function MovieSearchSheet({
       if (exists) {
         return current.filter((movie) => movie.id !== item.id);
       }
-      return [...current, { id: item.id, name: item.title, release_date: item.release_date }];
+      return [...current, { id: item.id, name: item.title, release_date: item.release_date, poster_url: item.poster_url }];
     });
   }, []);
 

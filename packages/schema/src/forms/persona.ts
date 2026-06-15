@@ -10,13 +10,14 @@ import {
 import type { PersonaFormValidationMessages } from './persona-messages';
 
 const selectedMovieSchema = z.object({
-  id: z.number().min(1),
+  id: z.string().min(1),
   name: z.string().min(1),
+  poster_url: z.string().optional(),
   release_date: z.string().optional(),
 });
 
 const selectedPersonSchema = z.object({
-  id: z.number().min(1),
+  id: z.string().min(1),
   name: z.string().min(1),
   job: z.string().optional(),
 });
@@ -60,7 +61,7 @@ export function createPersonaFormSchemas(messages: PersonaFormValidationMessages
     name: nameField(messages.name),
     description: descriptionField(messages.description),
     profile_image_url: profileImageUrlField(messages.profileImageUrl),
-    selectedGenreIds: z.array(z.number()),
+    selectedGenreIds: z.array(z.string()),
     selectedMovies: z.array(selectedMovieSchema),
     selectedPersons: z.array(selectedPersonSchema),
   });
