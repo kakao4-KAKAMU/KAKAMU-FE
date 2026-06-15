@@ -17,7 +17,7 @@ function toPersonSearchParams(params: PersonSearchParams): URLSearchParams {
     searchParams.append('job[]', job);
   }
   searchParams.set('sort', params.sort ?? DEFAULT_SORT);
-  searchParams.set('page', String(params.page ?? 1));
+  searchParams.set('skip', String(params.skip ?? 0));
   searchParams.set('limit', String(params.limit ?? DEFAULT_LIMIT));
   return searchParams;
 }

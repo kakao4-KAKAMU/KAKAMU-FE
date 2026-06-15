@@ -2,7 +2,7 @@
 export type MovieSort = 'year_asc' | 'year_desc' | 'name_asc' | 'name_desc';
 
 export type MovieItem = {
-  id: number;
+  id: string;
   title: string;
   release_date?: string;
   genres?: string[];
@@ -20,7 +20,7 @@ export type MovieSearchRequestBody = {
 
 export type MovieSearchParams = {
   name?: string;
-  genre?: number[];
+  genre?: string[];
   year?: number;
   sort?: MovieSort;
   skip?: number;

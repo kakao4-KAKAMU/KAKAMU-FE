@@ -1,9 +1,11 @@
 export { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export { userKeys } from './shared/keys/user.keys';
+export { commentKeys } from './shared/keys/comment.keys';
 export { personaKeys } from './shared/keys/persona.keys';
 export { postKeys } from './shared/keys/post.keys';
 export { searchKeys } from './shared/keys/search.keys';
+export { relationKeys } from './shared/keys/relation.keys';
 export { useGenreListQuery } from './features/genre-list/model/use-genre-list-query';
 export { useSearchMoviesInfiniteQuery } from './features/search-movies/model/use-search-movies-infinite-query';
 export { useSearchPersonsInfiniteQuery } from './features/search-persons/model/use-search-persons-infinite-query';
@@ -27,3 +29,21 @@ export { useUserResetPasswordMutation } from './features/user-reset-password/mod
 export { useRegisterUserMutation } from './features/user-register/model/use-register-user-mutation';
 export { useRegisterSocialUserMutation } from './features/user-register-social/model/use-register-social-user-mutation';
 export { useSocialAuthLoginMutation } from './features/social-auth-login/model/use-social-auth-login-mutation';
+export { useUserQuery } from './features/user/model/use-user-query';
+export {
+  adjustUserPostCountInCache,
+  cancelUserQueries,
+  patchUserInCache,
+  patchUserProfileInCache,
+  restoreUserDetails,
+  snapshotUserDetail,
+  setUserFollowInCache,
+  toggleUserFollowInCache,
+} from './features/user/lib/user-cache';
+export type { UserDetailQuerySnapshot, UserProfilePatch } from './features/user/lib/user-cache';
+export { useFollowUserMutation } from './features/relation/model/use-follow-user-mutation';
+export { useUnfollowUserMutation } from './features/relation/model/use-unfollow-user-mutation';
+export { useBlockUserMutation } from './features/relation/model/use-block-user-mutation';
+export { useUnblockUserMutation } from './features/relation/model/use-unblock-user-mutation';
+export { useFollowersInfiniteQuery } from './features/relation/model/use-followers-infinite-query';
+export { useFollowingsInfiniteQuery } from './features/relation/model/use-followings-infinite-query';

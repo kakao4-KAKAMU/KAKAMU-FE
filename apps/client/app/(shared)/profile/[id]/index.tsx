@@ -9,7 +9,7 @@ export default function MemberProfileFeedScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const client = useBackendApiClient();
   const { data } = usePostsInfiniteQuery(client, {
-    target_persona_id: id,
+    target_user_id: id,
     limit: 20,
   });
 

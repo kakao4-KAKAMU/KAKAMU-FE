@@ -1,12 +1,12 @@
 import { View } from 'react-native';
 import { User } from 'lucide-react-native';
 import { Avatar, AvatarFallback, AvatarImage, cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
-import type { Persona } from '@kakamu/types';
+import type { UserInfo } from '@kakamu/types';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
 import { useMemo } from 'react';
 
 type ProfileHeroProps = {
-  user?: Persona;
+  user?: UserInfo;
 };
 
 export function ProfileHero({ user }: ProfileHeroProps) {

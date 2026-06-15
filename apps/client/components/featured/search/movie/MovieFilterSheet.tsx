@@ -15,11 +15,11 @@ import { GenreMultiSelect } from '../../persona/GenreMultiSelect';
 type MovieFilterSheetProps = {
   visible: boolean;
   genres: Genre[];
-  genreIds: number[];
+  genreIds: string[];
   year: string;
   sort: MovieSort;
   onClose: () => void;
-  onApply: (values: { genreIds: number[]; year: string; sort: MovieSort }) => void;
+  onApply: (values: { genreIds: string[]; year: string; sort: MovieSort }) => void;
 };
 
 export function MovieFilterSheet({
@@ -53,7 +53,7 @@ export function MovieFilterSheet({
     [t],
   );
 
-  const toggleGenre = (id: number) => {
+  const toggleGenre = (id: string) => {
     setDraftGenreIds((current) =>
       current.includes(id) ? current.filter((genreId) => genreId !== id) : [...current, id],
     );

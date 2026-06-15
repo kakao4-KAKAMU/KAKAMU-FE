@@ -36,6 +36,11 @@ export type {
 } from './movie';
 
 export type {
+  CommentCursorListResponse,
+  CommentItem,
+} from './comment';
+
+export type {
   LikeRequestBody,
   LikeResponse,
   LikeTargetType,
@@ -74,4 +79,15 @@ export type {
   SignUpSNS,
   SocialAuthLoginRequest,
   User,
+  UserInfo,
 } from './auth';
+
+export type {
+  BlockLevel,
+  BlockRequest,
+  FollowListParams,
+  FollowListResponse,
+  RelationResponse,
+  UserSimpleInfo,
+} from './relation';
+export { BLOCK_LEVELS } from './relation';

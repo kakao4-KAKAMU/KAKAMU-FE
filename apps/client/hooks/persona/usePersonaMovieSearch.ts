@@ -10,7 +10,7 @@ export function usePersonaMovieSearch(enabled: boolean) {
   const [keyword, setKeyword] = useState('');
   const [year, setYear] = useState('');
   const [sort, setSort] = useState<MovieSort>('year_desc');
-  const [filterGenreIds, setFilterGenreIds] = useState<number[]>([]);
+  const [filterGenreIds, setFilterGenreIds] = useState<string[]>([]);
 
   const debouncedKeyword = useDebouncedValue(keyword);
 

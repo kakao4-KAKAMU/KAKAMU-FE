@@ -1,5 +1,6 @@
 import { mapPostLikeError } from '@/lib/error-message-map/post/post-like-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { useTranslation } from '@kakamu/i18n';
 import { useDeletePostMutation, useLikeMutation, usePersonasQuery } from '@kakamu/query';
 import { PostItem } from '@kakamu/types';
@@ -9,6 +10,7 @@ import { useCallback, useMemo } from 'react';
 
 export function useCompactPostActions(post: PostItem) {
   const client = useBackendApiClient();
+  const currentUserId = useCurrentUserId();
   const router = useRouter();
   const { t } = useTranslation();
   const { open: openErrorAlert } = useErrorAlertDialog();
@@ -40,8 +42,11 @@ export function useCompactPostActions(post: PostItem) {
     console.log('onToggleBookmark', post.id);
   }, [post.id]);
   const onDelete = useCallback(() => {
-    deletePostMutation.mutate({ postId: post.id });
-  }, [deletePostMutation, post.id]);
+    deletePostMutation.mutate({
+      postId: post.id,
+      userId: currentUserId ?? undefined,
+    });
+  }, [currentUserId, deletePostMutation, post.id]);
   const onModify = useCallback(() => {
     router.push(`/feed/write/${post.id}`);
   }, [post.id, router]);

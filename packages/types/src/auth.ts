@@ -67,3 +67,16 @@ export interface ChangePasswordRequest {
   newPassword: string;
   newPasswordConfirm: string;
 }
+
+/** `GET /users/{user_id}` 응답 */
+export type UserInfo = {
+  id: string;
+  nickname: string;
+  tag: string;
+  profile_msg: string;
+  profile_image_url: string;
+  is_following: boolean;
+  follower_count: number;
+  following_count: number;
+  post_count: number;
+};

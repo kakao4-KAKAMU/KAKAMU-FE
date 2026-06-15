@@ -9,7 +9,7 @@ export async function getPostList(
   params: PostListParams,
 ): Promise<PostCursorListResponse> {
   return client
-    .get(`posts/persona/${params.target_persona_id}`, {
+    .get(`posts/user/${params.target_user_id}`, {
       searchParams: toPostListSearchParams(params)
     })
     .json<PostCursorListResponse>();

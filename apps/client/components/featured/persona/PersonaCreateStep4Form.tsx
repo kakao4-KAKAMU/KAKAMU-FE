@@ -81,6 +81,7 @@ export function PersonaCreateStep4Form({
                         key={person.id}
                         name={person.name}
                         job={person.job}
+                        profile_image={person.profile_image}
                         checked
                         onToggle={() => togglePerson(person, selected, onChange)}
                       />

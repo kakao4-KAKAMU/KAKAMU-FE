@@ -156,6 +156,7 @@ export function PostWriteForm({
                   id: movie.id,
                   name: movie.name,
                   release_date: movie.release_date,
+                  poster_url: movie.poster_url,
                 }))}
                 onConfirm={(movies) =>
                   onChange(

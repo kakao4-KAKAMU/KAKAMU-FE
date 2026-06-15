@@ -81,6 +81,7 @@ export function PersonaCreateStep3Form({
                       <SelectedMovieRow
                         key={movie.id}
                         title={movie.name}
+                        poster_url={movie.poster_url}
                         release_date={movie.release_date}
                         checked
                         onToggle={() => toggleMovie(movie, selected, onChange)}

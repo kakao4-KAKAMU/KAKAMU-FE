@@ -1,6 +1,6 @@
 export type ProfileTab = 'feed' | 'like' | 'saved';
 
-export type ProfileStatKey = 'feed' | 'save' | 'following' | 'persona';
+export type ProfileStatKey = 'feed' | 'save' | 'following';
 
 export type ProfileSavedCategory = {
   id: string;
