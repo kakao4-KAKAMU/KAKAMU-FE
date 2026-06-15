@@ -4,6 +4,13 @@ import { deleteUnfollowUser } from '@kakamu/api';
 import type { RelationResponse } from '@kakamu/types';
 
 import { relationKeys } from '../../../shared/keys/relation.keys';
+import { postKeys } from '../../../shared/keys/post.keys';
+import {
+  restorePostInfiniteLists,
+  setPostFollowByAuthorInCaches,
+  snapshotPostInfiniteLists,
+  type PostListQuerySnapshot,
+} from '../../post/lib/post-infinite-cache';
 import { userKeys } from '../../../shared/keys/user.keys';
 import {
   cancelUserQueries,
@@ -21,6 +28,8 @@ type UnfollowUserVariables = {
 
 type UnfollowUserContext = {
   previousUserDetails: UserDetailQuerySnapshot;
+  previousPostLists: PostListQuerySnapshot;
+  previousLikedPostLists: PostListQuerySnapshot;
 };
 
 export function useUnfollowUserMutation(
@@ -38,13 +47,23 @@ export function useUnfollowUserMutation(
     mutationFn: ({ userId }) => deleteUnfollowUser(client, userId),
     onMutate: async ({ userId }) => {
       await cancelUserQueries(queryClient, userId);
+      await queryClient.cancelQueries({ queryKey: postKeys.lists() });
+      await queryClient.cancelQueries({ queryKey: postKeys.likedLists() });
       const previousUserDetails = snapshotUserDetail(queryClient, userId);
+      const previousPostLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
+      const previousLikedPostLists = snapshotPostInfiniteLists(
+        queryClient,
+        postKeys.likedLists(),
+      );
       setUserFollowInCache(queryClient, userId, false);
-      return { previousUserDetails };
+      setPostFollowByAuthorInCaches(queryClient, userId, false);
+      return { previousUserDetails, previousPostLists, previousLikedPostLists };
     },
     onError: (_error, _variables, context) => {
       if (context) {
         restoreUserDetails(queryClient, context.previousUserDetails);
+        restorePostInfiniteLists(queryClient, context.previousPostLists);
+        restorePostInfiniteLists(queryClient, context.previousLikedPostLists);
       }
     },
     onSettled: (_data, _error, { userId }) => {

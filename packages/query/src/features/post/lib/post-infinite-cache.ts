@@ -217,6 +217,28 @@ export function patchPostInCaches(
   );
 }
 
+export function setPostFollowByAuthorInCaches(
+  queryClient: QueryClient,
+  authorId: string,
+  isFollowing: boolean,
+): void {
+  const patchAuthorPosts = (post: PostItem): PostItem =>
+    post.author_id === authorId ? { ...post, is_following: isFollowing } : post;
+
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.lists() },
+    (old) => (old ? mapInfinitePages(old, patchAuthorPosts) : old),
+  );
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.likedLists() },
+    (old) => (old ? mapInfinitePages(old, patchAuthorPosts) : old),
+  );
+  queryClient.setQueriesData<PostItem>(
+    { queryKey: postKeys.details() },
+    (old) => (old ? patchAuthorPosts(old) : old),
+  );
+}
+
 export function removePostFromCaches(queryClient: QueryClient, postId: number): void {
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.lists() },
