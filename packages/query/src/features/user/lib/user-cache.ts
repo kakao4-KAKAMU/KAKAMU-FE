@@ -65,6 +65,24 @@ export function toggleUserFollowInCache(
   }));
 }
 
+export function setUserFollowInCache(
+  queryClient: QueryClient,
+  userId: string,
+  isFollowing: boolean,
+): void {
+  patchUserInCache(queryClient, userId, (user) => {
+    if (user.is_following === isFollowing) {
+      return user;
+    }
+    const delta = isFollowing ? 1 : -1;
+    return {
+      ...user,
+      is_following: isFollowing,
+      follower_count: Math.max(0, user.follower_count + delta),
+    };
+  });
+}
+
 export type UserProfilePatch = Pick<
   UserInfo,
   'nickname' | 'profile_image_url' | 'profile_msg' | 'tag'
