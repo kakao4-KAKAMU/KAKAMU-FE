@@ -43,7 +43,7 @@ export function PersonSearchSheet({
     }
   }, [visible, selected]);
 
-  const isSelected = useCallback((id: number) => draft.some((item) => item.id === id), [draft]);
+  const isSelected = useCallback((id: string) => draft.some((item) => item.id === id), [draft]);
 
   const toggleItem = useCallback((item: PersonSearchItem) => {
     setDraft((current) => {
@@ -51,7 +51,7 @@ export function PersonSearchSheet({
       if (exists) {
         return current.filter((person) => person.id !== item.id);
       }
-      return [...current, { id: item.id, name: item.name, job: item.job }];
+      return [...current, { id: item.id, name: item.name, job: item.job, profile_image: item.profile_image }];
     });
   }, []);
 
@@ -102,6 +102,7 @@ export function PersonSearchSheet({
                   key={item.id}
                   name={item.name}
                   job={item.job}
+                  profile_image={item.profile_image}
                   checked={isSelected(item.id)}
                   onToggle={() => toggleItem(item)}
                 />

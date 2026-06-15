@@ -9,10 +9,10 @@ export type FeedSort = 'latest' | 'popular' | 'relevance';
 
 
 export type PersonSearchItem = {
-  id: number;
+  id: string;
   name: string;
   job?: string;
-  profile_image_url?: string;
+  profile_image?: string;
 };
 
 export type PersonSearchRequestBody = {

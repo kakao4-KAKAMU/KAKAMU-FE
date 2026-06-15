@@ -20,6 +20,7 @@ const selectedPersonSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   job: z.string().optional(),
+  profile_image: z.string().optional(),
 });
 
 function nameField(messages: PersonaFormValidationMessages['name']) {
