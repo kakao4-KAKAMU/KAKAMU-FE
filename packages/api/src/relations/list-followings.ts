@@ -9,7 +9,7 @@ export async function getFollowings(
 ): Promise<FollowListResponse> {
   const { target_user_id, ...query } = params;
   return client
-    .get(`relations/${target_user_id}/followings`, {
+    .get(`relations/users/${target_user_id}/followings`, {
       searchParams: toFollowListSearchParams(query),
     })
     .json<FollowListResponse>();

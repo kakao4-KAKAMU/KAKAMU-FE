@@ -8,6 +8,6 @@ export async function updatePersona(
   body: PersonaUpdateRequest,
 ): Promise<PersonaUpdateResponse> {
   return client
-    .patch(`personas/persona/${personaId}`, { json: body })
+    .patch(`personas/${personaId}`, { json: body })
     .json<PersonaUpdateResponse>();
 }

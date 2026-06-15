@@ -3,5 +3,5 @@ import type { ApiClient } from '../client';
 
 /** `GET .../personas/persona/{persona_id}` */
 export async function getPersonaById(client: ApiClient, personaId: string): Promise<PersonaDetailResponse> {
-  return client.get(`personas/personas/${personaId}`).json<PersonaDetailResponse>();
+  return client.get(`personas/${personaId}`).json<PersonaDetailResponse>();
 }
