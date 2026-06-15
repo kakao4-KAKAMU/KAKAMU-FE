@@ -20,7 +20,7 @@ export type MovieSearchRequestBody = {
 
 export type MovieSearchParams = {
   name?: string;
-  genre?: number[];
+  genre?: string[];
   year?: number;
   sort?: MovieSort;
   skip?: number;

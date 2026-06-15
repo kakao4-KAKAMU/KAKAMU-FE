@@ -21,7 +21,7 @@ export type PostItem = {
 export type PostWriteRequestBody = {
   title: string;
   content: string;
-  movie_ids: number[];
+  movie_ids: string[];
   image_urls: string[];
   is_spoiler: boolean;
 };
@@ -45,7 +45,7 @@ export type PostDeleteResponse = {
 };
 
 export type PostListParams = {
-  target_persona_id: string;
+  target_user_id: string;
   cursor?: number;
   limit: number;
 };

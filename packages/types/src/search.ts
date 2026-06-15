@@ -19,7 +19,7 @@ export type PersonSearchRequestBody = {
   name: string;
   job: string[];
   sort: PersonSort;
-  page: number;
+  skip: number;
   limit: number;
 };
 
@@ -27,7 +27,7 @@ export type PersonSearchParams = {
   name?: string;
   job?: string[];
   sort?: PersonSort;
-  page?: number;
+  skip?: number;
   limit?: number;
 };
 
@@ -54,9 +54,9 @@ export type FeedSearchParams = {
 
 export type SearchPageResponse<T> = {
   items: T[];
-  page: number;
+  skip: number;
   limit: number;
-  total?: number;
+  total_count: number;
 };
 
 export type PaginatedResponse<T> = {
