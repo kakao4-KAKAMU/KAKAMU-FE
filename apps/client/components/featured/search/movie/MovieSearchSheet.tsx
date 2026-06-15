@@ -103,6 +103,7 @@ export function MovieSearchSheet({
                 <SelectedMovieRow
                   key={item.id}
                   title={item.title}
+                  poster_url={item.poster_url}
                   release_date={item.release_date}
                   checked={isSelected(item.id)}
                   onToggle={() => toggleItem(item)}

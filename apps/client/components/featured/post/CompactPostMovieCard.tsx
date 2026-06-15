@@ -11,13 +11,12 @@ export function CompactPostMovieCard({ movie }: { movie: MovieItem }) {
         {movie.poster_url ? (
           <Image
             source={{ uri: convertImagePath(movie.poster_url) }}
-            className="h-[45px] w-[60px] rounded-md"
+            className="h-[60px] w-[45px] rounded-md"
             resizeMode="cover"
             accessibilityIgnoresInvertColors
           />
         ) : (
-          <View className="h-[45px] w-[60px] items-center justify-center rounded-md bg-muted">
-            <Text className="text-xs text-muted-foreground">16:9</Text>
+          <View className="h-[60px] w-[45px] items-center justify-center rounded-md bg-muted">
           </View>
         )}
         <View className="flex-1 gap-0.5">
