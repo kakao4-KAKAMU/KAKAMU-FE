@@ -25,7 +25,6 @@ export function parseJwtPayload<T extends Record<string, unknown> = JwtPayload>(
 
   try {
     const decoded = decodeBase64Url(parts[1] ?? '');
-    console.log('decoded', decoded);
     return JSON.parse(decoded) as T;
   } catch {
     return null;
