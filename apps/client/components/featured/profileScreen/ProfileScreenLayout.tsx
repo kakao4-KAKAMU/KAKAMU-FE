@@ -10,9 +10,8 @@ import { ConditionalRender } from '@/components/utils';
 import { ProfileSettingsHeader } from '../header';
 import { ProfileSubpageHeader } from '../header';
 import { Settings } from 'lucide-react-native';
-import { usePersonaStore } from '@kakamu/store';
-import { usePersonaQuery } from '@kakamu/query';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useProfileUserQuery } from '@/hooks/profile/useProfileUserQuery';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -25,22 +24,13 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
   const router = useRouter();
   const pathname = usePathname();
   const apiClient = useBackendApiClient();
-  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
-  const personaId = (isMy ? selectedPersonaId : userId) ?? '';
-  const personaQuery = usePersonaQuery(apiClient, personaId);
-  const persona = personaQuery.data
-
-  const userStatus = useMemo(() => {
-    return {
-      feed: 0,
-      save: 0,
-      following: 0,
-      persona: 0,
-    }
-  }, [])
+  const { user, userId: targetUserId, stats } = useProfileUserQuery({
+    client: apiClient,
+    isMy,
+    userId,
+  });
 
   const isSettings = useMemo(() => pathname.startsWith('/profile/setting'), [pathname]);
-
 
   const onBackPress = useCallback(() => {
     router.back();
@@ -73,10 +63,10 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
-        <ProfileHero user={persona} />
-        <ProfileStats user={userStatus} />
+        <ProfileHero user={user} />
+        <ProfileStats user={stats} />
 
-        <ProfileSubTabs isMy={isMy} userId={personaId} />
+        <ProfileSubTabs isMy={isMy} userId={targetUserId} />
 
         <View className="pb-6 pt-2">{children}</View>
       </ScrollView>
