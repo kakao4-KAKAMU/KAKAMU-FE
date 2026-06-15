@@ -79,4 +79,5 @@ export type {
   SignUpSNS,
   SocialAuthLoginRequest,
   User,
+  UserInfo,
 } from './auth';
