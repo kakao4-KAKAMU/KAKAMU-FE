@@ -72,9 +72,7 @@ type AccountFilterStatus = 'gotoGuest' |
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
-  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
   const isAuthenticated = !!accessToken;
-  const hasSelectedPersona = !!selectedPersonaId;
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
@@ -131,7 +129,7 @@ export default function RootLayout() {
       return 'gotoAccountTabs';
     }
     return 'none';
-  }, [authReady, hasSelectedPersona, isAuthenticated, pathname, router, segments]);
+  }, [authReady, isAuthenticated, pathname, router, segments]);
 
   if (!authReady) {
     return null;
