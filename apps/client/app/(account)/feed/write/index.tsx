@@ -11,6 +11,7 @@ import { useErrorAlertDialog } from '@kakamu/ui';
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
 import { PostWriteForm } from '@/components/featured/post/write';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { usePendingLocalImages } from '@/hooks/upload/usePendingLocalImages';
 import { usePostWriteMovieSearch } from '@/hooks/post/usePostWriteMovieSearch';
 import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
@@ -40,6 +41,7 @@ export default function FeedWriteScreen() {
 
   const { control, handleSubmit, setValue, getValues } = form;
   const apiClient = useBackendApiClient();
+  const currentUserId = useCurrentUserId();
   const uploadClient = useUploadApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
   const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
@@ -63,7 +65,10 @@ export default function FeedWriteScreen() {
         'feed',
         getPendingLocalImages(),
       );
-      createMutation.mutate(mapWriteFormInputToRequestBody({ ...values, image_urls }));
+      createMutation.mutate({
+        ...mapWriteFormInputToRequestBody({ ...values, image_urls }),
+        userId: currentUserId ?? undefined,
+      });
     } catch (error) {
       openErrorAlert(mapImageUploadError(error, t));
     }

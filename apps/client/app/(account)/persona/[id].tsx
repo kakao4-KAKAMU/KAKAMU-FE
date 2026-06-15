@@ -19,6 +19,7 @@ import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenre
 import { usePersonaCreateStep3Search } from '@/hooks/persona/usePersonaCreateStep3Search';
 import { usePersonaCreateStep4Search } from '@/hooks/persona/usePersonaCreateStep4Search';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { mapPersonaUpdateError } from '@/lib/error-message-map/persona/persona-update-error';
 import { mapPersonaListError } from '@/lib/error-message-map/persona/persona-list-error';
 import { mapImageUploadError } from '@/lib/error-message-map/upload/image-upload-error';
@@ -90,6 +91,7 @@ export default function PersonaEditScreen() {
   }, []);
 
   const apiClient = useBackendApiClient();
+  const currentUserId = useCurrentUserId();
   const uploadClient = useUploadApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
   const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
@@ -188,13 +190,17 @@ export default function PersonaEditScreen() {
             : {}),
         };
 
-        updateMutation.mutate({ personaId: id, body });
+        updateMutation.mutate({
+          personaId: id,
+          body,
+          userId: currentUserId ?? undefined,
+        });
       } catch (error) {
         setSubmitting(false);
         openErrorAlert(mapImageUploadError(error, t));
       }
     },
-    [clearErrors, getPendingLocalImages, id, openErrorAlert, resolveFormImageUrl, router, t, updateMutation],
+    [clearErrors, currentUserId, getPendingLocalImages, id, openErrorAlert, persona?.nickname, persona?.profile_image_url, persona?.profile_msg, resolveFormImageUrl, router, t, updateMutation],
   );
 
   const onInvalid = useCallback(async () => {
