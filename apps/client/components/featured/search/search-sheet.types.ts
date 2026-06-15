@@ -11,8 +11,8 @@ export type MovieSearchControl = {
   setYear: (value: string) => void;
   sort: MovieSort;
   setSort: (value: MovieSort) => void;
-  filterGenreIds: number[];
-  setFilterGenreIds: (value: number[]) => void;
+  filterGenreIds: string[];
+  setFilterGenreIds: (value: string[]) => void;
   items: MovieItem[];
 };
 

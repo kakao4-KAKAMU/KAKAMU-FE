@@ -1,11 +1,11 @@
 import type { Genre } from '@kakamu/types';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import { Badge, cn, Text } from '@kakamu/ui';
 
 type GenreMultiSelectProps = {
   genres: Genre[];
-  selectedIds: number[];
-  onToggle: (genreId: number) => void;
+  selectedIds: string[];
+  onToggle: (genreId: string) => void;
   isLoading?: boolean;
   maxCount?: number;
 };
