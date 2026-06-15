@@ -65,8 +65,7 @@ const queryClient = new QueryClient({
   },
 });
 
-type AccountFilterStatus = 'gotoPersona' |
-'gotoGuest' |
+type AccountFilterStatus = 'gotoGuest' |
 'gotoAccountTabs' |
 'none';
 
@@ -124,15 +123,6 @@ export default function RootLayout() {
     const isAccountRoute = rootSegment === '(account)';
     const isGuestRoute = rootSegment === '(guest)';
 
-    if (
-      isAuthenticated &&
-      !hasSelectedPersona
-    ) {
-      if (!isPersonaPath(pathname)) {
-        return 'gotoPersona';
-      }
-    }
-
     if (!isAuthenticated && isAccountRoute) {
       return 'gotoGuest';
     }
@@ -159,7 +149,6 @@ export default function RootLayout() {
                     <ConditionalRender
                       condition={accountStatus}
                       render={{
-                        'gotoPersona': <Redirect href="/(account)/persona" />,
                         'gotoGuest': <Redirect href="/(guest)" />,
                         'gotoAccountTabs': <Redirect href="/(account)/(tabs)" />,
                         'none': <Stack

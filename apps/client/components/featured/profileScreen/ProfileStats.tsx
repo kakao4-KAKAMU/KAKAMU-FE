@@ -6,7 +6,6 @@ const STAT_LABELS: Record<ProfileStatKey, string> = {
   feed: 'FEED',
   save: 'FOLLOWER',
   following: 'FOLLOWING',
-  persona: 'PERSONA',
 };
 
 type ProfileStatsProps = {
@@ -14,7 +13,7 @@ type ProfileStatsProps = {
 };
 
 export function ProfileStats({ user }: ProfileStatsProps) {
-  const entries: ProfileStatKey[] = ['feed', 'save', 'following', 'persona'];
+  const entries: ProfileStatKey[] = ['feed', 'save', 'following'];
 
   return (
     <View className="flex-row gap-2">
