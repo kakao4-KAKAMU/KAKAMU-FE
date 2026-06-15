@@ -31,7 +31,7 @@ export function usePostsInfiniteQuery(
 
   return useInfiniteQuery({
     queryKey: postKeys.list(params),
-    enabled: !!params.target_persona_id,
+    enabled: !!params.target_user_id,
     queryFn: async ({ pageParam }) => {
       const response = await getPostList(client, {
         ...params,

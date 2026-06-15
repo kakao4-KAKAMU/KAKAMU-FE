@@ -24,13 +24,12 @@ export function PostWriteSelectedMovieCard({
       {posterUrl ? (
         <Image
           source={{ uri: convertImagePath(posterUrl) }}
-          className="h-[45px] w-[60px] rounded-md"
+          className="h-[60px] w-[45px] rounded-md"
           resizeMode="cover"
           accessibilityIgnoresInvertColors
         />
       ) : (
-        <View className="h-[45px] w-[60px] items-center justify-center rounded-md bg-muted">
-          <Text className="text-xs text-muted-foreground">16:9</Text>
+        <View className="h-[60px] w-[45px] items-center justify-center rounded-md bg-muted">
         </View>
       )}
       <View className="min-w-0 flex-1 gap-0.5">

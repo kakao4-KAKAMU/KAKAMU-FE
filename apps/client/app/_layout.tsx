@@ -66,17 +66,14 @@ const queryClient = new QueryClient({
   },
 });
 
-type AccountFilterStatus = 'gotoPersona' |
-'gotoGuest' |
+type AccountFilterStatus = 'gotoGuest' |
 'gotoAccountTabs' |
 'none';
 
 export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
-  const selectedPersonaId = usePersonaStore((state) => state.selectedPersonaId);
   const isAuthenticated = !!accessToken;
-  const hasSelectedPersona = !!selectedPersonaId;
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
@@ -125,15 +122,6 @@ export default function RootLayout() {
     const isAccountRoute = rootSegment === '(account)';
     const isGuestRoute = rootSegment === '(guest)';
 
-    if (
-      isAuthenticated &&
-      !hasSelectedPersona
-    ) {
-      if (!isPersonaPath(pathname)) {
-        return 'gotoPersona';
-      }
-    }
-
     if (!isAuthenticated && isAccountRoute) {
       return 'gotoGuest';
     }
@@ -142,7 +130,7 @@ export default function RootLayout() {
       return 'gotoAccountTabs';
     }
     return 'none';
-  }, [authReady, hasSelectedPersona, isAuthenticated, pathname, router, segments]);
+  }, [authReady, isAuthenticated, pathname, router, segments]);
 
   if (!authReady) {
     return null;
@@ -160,7 +148,6 @@ export default function RootLayout() {
                     <ConditionalRender
                       condition={accountStatus}
                       render={{
-                        'gotoPersona': <Redirect href="/(account)/persona" />,
                         'gotoGuest': <Redirect href="/(guest)" />,
                         'gotoAccountTabs': <Redirect href="/(account)/(tabs)" />,
                         'none': <Stack

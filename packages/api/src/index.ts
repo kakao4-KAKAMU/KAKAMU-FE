@@ -14,6 +14,7 @@ export { postUserPhoneVerification, postUserResetPassword } from './users/reset-
 export { postUserLoginRefresh } from './users/refresh';
 export { postUserRegister } from './users/register';
 export { postUserRegisterSocial } from './users/register-social';
+export { getUserById } from './users/get-by-id';
 export { getGenreList } from './genre/list';
 export { postLike } from './like/like';
 export { postSearchMovies } from './search/movie';
@@ -34,3 +35,9 @@ export { getPostById } from './posts/get-by-id';
 export { getLikedPostList } from './posts/list-liked';
 export { getPostList } from './posts/list';
 export { updatePostById } from './posts/update';
+export { postFollowUser } from './relations/follow-user';
+export { deleteUnfollowUser } from './relations/unfollow-user';
+export { postBlockUser } from './relations/block-user';
+export { deleteUnblockUser } from './relations/unblock-user';
+export { getFollowers } from './relations/list-followers';
+export { getFollowings } from './relations/list-followings';

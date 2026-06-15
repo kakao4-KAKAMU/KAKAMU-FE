@@ -30,7 +30,7 @@ export function PersonaCreateStep2Form({
   const { t } = useTranslation();
 
   const toggleGenre = useCallback(
-    (genreId: number, current: number[], onChange: (ids: number[]) => void) => {
+    (genreId: string, current: string[], onChange: (ids: string[]) => void) => {
       if (current.includes(genreId)) {
         onChange(current.filter((id) => id !== genreId));
         return;

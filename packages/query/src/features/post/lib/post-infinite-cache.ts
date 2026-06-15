@@ -29,6 +29,7 @@ export function createOptimisticPost(body: PostUpdateRequest): PostItem {
     hashtags: [],
     like_count: 0,
     is_liked: false,
+    is_following: false,
     comment_count: 0,
     created_at: new Date().toISOString(),
   };
@@ -213,6 +214,28 @@ export function patchPostInCaches(
   );
   queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
     old ? patch(old) : old,
+  );
+}
+
+export function setPostFollowByAuthorInCaches(
+  queryClient: QueryClient,
+  authorId: string,
+  isFollowing: boolean,
+): void {
+  const patchAuthorPosts = (post: PostItem): PostItem =>
+    post.author_id === authorId ? { ...post, is_following: isFollowing } : post;
+
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.lists() },
+    (old) => (old ? mapInfinitePages(old, patchAuthorPosts) : old),
+  );
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.likedLists() },
+    (old) => (old ? mapInfinitePages(old, patchAuthorPosts) : old),
+  );
+  queryClient.setQueriesData<PostItem>(
+    { queryKey: postKeys.details() },
+    (old) => (old ? patchAuthorPosts(old) : old),
   );
 }
 

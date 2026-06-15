@@ -9,17 +9,17 @@ export type FeedSort = 'latest' | 'popular' | 'relevance';
 
 
 export type PersonSearchItem = {
-  id: number;
+  id: string;
   name: string;
   job?: string;
-  profile_image_url?: string;
+  profile_image?: string;
 };
 
 export type PersonSearchRequestBody = {
   name: string;
   job: string[];
   sort: PersonSort;
-  page: number;
+  skip: number;
   limit: number;
 };
 
@@ -27,7 +27,7 @@ export type PersonSearchParams = {
   name?: string;
   job?: string[];
   sort?: PersonSort;
-  page?: number;
+  skip?: number;
   limit?: number;
 };
 
@@ -54,9 +54,9 @@ export type FeedSearchParams = {
 
 export type SearchPageResponse<T> = {
   items: T[];
-  page: number;
+  skip: number;
   limit: number;
-  total?: number;
+  total_count: number;
 };
 
 export type PaginatedResponse<T> = {

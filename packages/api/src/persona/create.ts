@@ -7,5 +7,5 @@ export async function createPersona(
   client: ApiClient,
   body: PersonaCreateRequest,
 ): Promise<PersonaCreateResponse> {
-  return client.post('personas/persona', { json: body }).json<PersonaCreateResponse>();
+  return client.post('personas', { json: body }).json<PersonaCreateResponse>();
 }

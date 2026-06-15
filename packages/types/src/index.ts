@@ -90,4 +90,15 @@ export type {
   SignUpSNS,
   SocialAuthLoginRequest,
   User,
+  UserInfo,
 } from './auth';
+
+export type {
+  BlockLevel,
+  BlockRequest,
+  FollowListParams,
+  FollowListResponse,
+  RelationResponse,
+  UserSimpleInfo,
+} from './relation';
+export { BLOCK_LEVELS } from './relation';

@@ -8,7 +8,7 @@ import {
 import type { PostFormValidationMessages } from './post-messages';
 
 const selectedMovieSchema = z.object({
-  id: z.number().min(1),
+  id: z.string().min(1),
   name: z.string().min(1),
   release_date: z.string().optional(),
   poster_url: z.string().optional(),

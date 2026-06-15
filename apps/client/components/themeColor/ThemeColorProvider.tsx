@@ -87,7 +87,6 @@ const THEME = {
 type ThemeColorProviderProps = {
   children: React.ReactNode
   colors?: Record<ColorSchemeName, ThemeVariables>,
-  values?: ThemeVariables
 }
 
 export function ThemeColorProvider({ children, colors }: ThemeColorProviderProps) {

@@ -143,6 +143,15 @@ account.profile.menu.logout,로그아웃,Log out
 account.profile.tabs.feed,피드,Feed
 account.profile.tabs.like,좋아요,Likes
 account.profile.tabs.saved,저장,Saved
+account.profile.actions.follow,팔로우,Follow
+account.profile.actions.unfollow,언팔로우,Unfollow
+account.profile.actions.followError.title,팔로우 변경에 실패했어요,Could not update follow status
+account.profile.actions.followError.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.profile.relations.followersTitle,팔로워,Followers
+account.profile.relations.followingsTitle,팔로잉,Following
+account.profile.relations.empty,목록이 비어 있어요,No users to show
+account.profile.relations.loadMore,더 보기,Load more
+account.profile.relations.loadingMore,불러오는 중…,Loading…
 account.mainFeed.title,메인,Main
 account.mainFeed.description,피드 목록을 조회할 수 있는 메인 페이지,Main page where you can browse feed items
 account.searchHistory.title,검색,Search

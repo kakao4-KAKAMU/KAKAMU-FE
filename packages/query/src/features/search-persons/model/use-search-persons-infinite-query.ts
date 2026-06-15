@@ -9,7 +9,7 @@ const DEFAULT_LIMIT = 20;
 
 export function useSearchPersonsInfiniteQuery(
   client: ApiClient,
-  params: Omit<PersonSearchParams, 'page' | 'limit'>,
+  params: Omit<PersonSearchParams, 'skip' | 'limit'>,
   enabled = true,
 ) {
   return useInfiniteQuery({
@@ -17,18 +17,18 @@ export function useSearchPersonsInfiniteQuery(
     queryFn: ({ pageParam }) =>
       postSearchPersons(client, {
         ...params,
-        page: pageParam,
+        skip: pageParam,
         limit: DEFAULT_LIMIT,
       }),
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage.items.length < lastPage.limit) {
         return undefined;
       }
-      if (lastPage.total != null && lastPage.page * lastPage.limit >= lastPage.total) {
+      if (lastPage.total_count != null && lastPage.skip * lastPage.limit >= lastPage.total_count) {
         return undefined;
       }
-      return lastPage.page + 1;
+      return lastPage.skip + lastPage.limit;
     },
     enabled,
   });

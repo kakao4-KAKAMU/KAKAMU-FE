@@ -20,15 +20,15 @@ export function useSearchMoviesInfiniteQuery(
         skip: pageParam,
         limit: DEFAULT_LIMIT,
       }),
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage.items.length < lastPage.limit) {
         return undefined;
       }
-      if (lastPage.total != null && lastPage.page * lastPage.limit >= lastPage.total) {
+      if (lastPage.total_count != null && lastPage.skip * lastPage.limit >= lastPage.total_count) {
         return undefined;
       }
-      return lastPage.page + 1;
+      return lastPage.skip + lastPage.limit;
     },
     enabled,
   });
