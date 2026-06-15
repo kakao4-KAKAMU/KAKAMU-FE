@@ -28,3 +28,14 @@ export { useUserResetPasswordMutation } from './features/user-reset-password/mod
 export { useRegisterUserMutation } from './features/user-register/model/use-register-user-mutation';
 export { useRegisterSocialUserMutation } from './features/user-register-social/model/use-register-social-user-mutation';
 export { useSocialAuthLoginMutation } from './features/social-auth-login/model/use-social-auth-login-mutation';
+export { useUserQuery } from './features/user/model/use-user-query';
+export {
+  adjustUserPostCountInCache,
+  cancelUserQueries,
+  patchUserInCache,
+  patchUserProfileInCache,
+  restoreUserDetails,
+  snapshotUserDetail,
+  toggleUserFollowInCache,
+} from './features/user/lib/user-cache';
+export type { UserDetailQuerySnapshot, UserProfilePatch } from './features/user/lib/user-cache';
