@@ -13,6 +13,7 @@ export type PostItem = {
   hashtags: string[];
   like_count: number;
   is_liked: boolean;
+  is_following: boolean;
   comment_count: number;
   created_at: string;
 };
