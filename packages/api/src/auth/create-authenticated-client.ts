@@ -6,6 +6,7 @@ import { ApiHttpError, getApiErrorCode } from '../errors/api-http-error';
 import { refreshTokensSingleFlight } from './refresh-single-flight';
 import type { PersonaBridge } from './persona-bridge';
 import type { TokenBridge } from './token-bridge';
+import { fetch } from 'expo/fetch'
 
 const REFRESH_PATH = 'users/login/refresh';
 
@@ -33,6 +34,10 @@ export function createAuthenticatedApiClient(
   return createApiClient(prefixUrl, {
     retry: defaultRetry,
     ...options,
+    fetch: async (input, init) => {
+      const response = await fetch(input, init);
+      return response;
+    },
     hooks: {
       ...options?.hooks,
       beforeRequest: [

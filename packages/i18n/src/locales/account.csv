@@ -158,6 +158,31 @@ account.searchHistory.title,검색,Search
 account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
 account.personaChat.title,페르소나 챗,Persona chat
 account.personaChat.description,선택된 페르소나 기준으로 LLM과 대화하는 페이지,Chat with an LLM based on the selected persona
+account.chat.list.title,쳇팅,Chat
+account.chat.list.subtitle,페르소나 기반 LLM과 영화·감정 대화를 이어가세요.,Continue movie and mood conversations with your persona LLM.
+account.chat.list.empty,아직 대화가 없어요. 새 대화를 시작해 보세요.,No conversations yet. Start a new chat.
+account.chat.list.newChatA11y,새 LLM 대화 시작,Start a new LLM chat
+account.chat.list.failedRequest.title,대화 목록을 불러오지 못했어요,Could not load chats
+account.chat.list.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.chat.thread.untitled,대화,Chat
+account.chat.thread.newPreview,새 메시지를 보내 대화를 시작하세요.,Send a message to start the conversation.
+account.chat.conversation.intro,현재 페르소나 데이터를 기반으로 영화 추천 이유까지 설명합니다.,Recommendations and reasons are based on your current persona data.
+account.chat.conversation.inputPlaceholder,메시지를 입력하세요,Type a message
+account.chat.conversation.sendA11y,메시지 보내기,Send message
+account.chat.conversation.loadOlder,이전 대화 불러오기,Load older messages
+account.chat.conversation.failedRequest.title,메시지를 보내지 못했어요,Could not send message
+account.chat.conversation.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
+account.chat.conversation.backA11y,대화 목록으로,Back to chat list
+account.chat.message.pending,전송중,Sending
+account.chat.streamStatus.open,대화를 연결하고 있어요…,Connecting chat…
+account.chat.streamStatus.processing,처리 중…,Processing…
+account.chat.streamStatus.sending,메시지를 보내는 중…,Sending message…
+account.chat.streamStatus.node.embed_query,질문을 분석하고 있어요…,Analyzing your question…
+account.chat.streamStatus.node.plan_intent,의도를 파악하고 있어요…,Understanding your intent…
+account.chat.streamStatus.node.select_weights,추천 기준을 조정하고 있어요…,Adjusting recommendation weights…
+account.chat.streamStatus.node.retrieve_movies,영화를 찾고 있어요…,Finding movies…
+account.chat.streamStatus.node.generate_reply,답변을 작성하고 있어요…,Generating a reply…
+account.chat.streamStatus.node.persist_history,대화를 저장하고 있어요…,Saving conversation history…
 account.post.create.failedRequest.title,게시물 작성에 실패했어요,Could not create post
 account.post.create.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
 account.post.create.error.hashtagLimitExceeded.title,해시태그 개수를 초과했어요,Too many hashtags

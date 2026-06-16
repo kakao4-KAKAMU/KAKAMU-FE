@@ -3471,9 +3471,9 @@
     {
       "type": "frame",
       "id": "RnVyS",
-      "x": 460,
-      "y": 4382,
-      "name": "Page/쳇팅",
+      "x": 890,
+      "y": 4426,
+      "name": "Page/쳇팅/[id]",
       "clip": true,
       "width": 390,
       "height": 844,
@@ -3520,7 +3520,7 @@
                   "id": "tf6LJ",
                   "name": "Page Title",
                   "fill": "#0a0a0a",
-                  "content": "쳇팅",
+                  "content": "영화 추천 대화",
                   "lineHeight": 1.2,
                   "fontFamily": "Inter",
                   "fontSize": 22,
@@ -3591,7 +3591,7 @@
             {
               "type": "frame",
               "id": "OZFs9",
-              "name": "Chat List",
+              "name": "Message Thread",
               "width": "fill_container",
               "height": "fill_container",
               "layout": "vertical",
@@ -3714,6 +3714,17 @@
                   "ref": "nOdO5",
                   "x": 0,
                   "y": 234
+                },
+                {
+                  "type": "note",
+                  "id": "lsNiN",
+                  "layoutPosition": "absolute",
+                  "x": 200,
+                  "y": 760,
+                  "name": "routeNote",
+                  "width": 180,
+                  "height": 56,
+                  "content": "route: /chat/[id]\n← 목록 /chat"
                 }
               ]
             },
@@ -17935,6 +17946,375 @@
           "width": 220,
           "height": 60,
           "content": "route: /posts/:id/edit\nPUT /posts/:id"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "C3S8W",
+      "x": -999,
+      "y": -1482,
+      "name": "Chat/Thread Item",
+      "reusable": true,
+      "width": 320,
+      "fill": "#fafafa",
+      "cornerRadius": 10,
+      "stroke": "#e5e5e5",
+      "strokeWidth": 1,
+      "strokeAlignment": "inner",
+      "gap": 12,
+      "padding": 14,
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "msArt",
+          "name": "chatThreadIconWrap",
+          "width": 40,
+          "height": 40,
+          "fill": "#f5f5f5",
+          "cornerRadius": 20,
+          "layout": "vertical",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "nQFpt",
+              "name": "chatThreadIcon",
+              "width": 18,
+              "height": 18,
+              "icon": "bot",
+              "library": "lucide",
+              "fill": "#171717"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "lmYkP",
+          "name": "chatThreadBody",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 4,
+          "children": [
+            {
+              "type": "frame",
+              "id": "MLJQs",
+              "name": "chatThreadTop",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "a6Ka4s",
+                  "name": "chatThreadTitle",
+                  "fill": "#0a0a0a",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "영화 추천 대화",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "K7kIUC",
+                  "name": "chatThreadTime",
+                  "fill": "#a3a3a3",
+                  "content": "오늘",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "AgLvx",
+              "name": "chatThreadPreview",
+              "fill": "#737373",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Past Lives를 추천합니다. 잔잔한 감정선이…",
+              "lineHeight": 1.35,
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Q2vGCe",
+      "x": 460,
+      "y": 4426,
+      "name": "Page/쳇팅 목록",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#fafafa",
+      "layout": "vertical",
+      "children": [
+        {
+          "id": "AcZoC",
+          "type": "ref",
+          "ref": "t4yuWy",
+          "name": "chatListStatus",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "khhHe",
+          "name": "chatListContent",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            0,
+            16,
+            16,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "B1ked",
+              "name": "chatListHeader",
+              "width": "fill_container",
+              "padding": [
+                4,
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Jltip",
+                  "name": "Page Title",
+                  "fill": "#0a0a0a",
+                  "content": "쳇팅",
+                  "lineHeight": 1.2,
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "otgTl",
+                  "name": "Header Action",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#f5f5f5",
+                  "cornerRadius": 18,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "aGqqe",
+                      "name": "pageActionIcon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "sparkles",
+                      "library": "lucide",
+                      "fill": "#171717"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "outrJ",
+              "name": "chatListSubtitle",
+              "fill": "#737373",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "페르소나 기반 LLM과 영화·감정 대화를 이어가세요.",
+              "lineHeight": 1.4,
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "z7lyT",
+              "name": "chatThreadList",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "id": "vlgmX",
+                  "type": "ref",
+                  "ref": "C3S8W",
+                  "name": "chatThread1",
+                  "width": "fill_container",
+                  "descendants": {
+                    "nQFpt": {
+                      "icon": "bot"
+                    },
+                    "a6Ka4s": {
+                      "content": "영화 추천 대화"
+                    },
+                    "K7kIUC": {
+                      "content": "오늘"
+                    },
+                    "AgLvx": {
+                      "content": "Past Lives를 추천합니다. 잔잔한 감정선이…"
+                    }
+                  }
+                },
+                {
+                  "id": "cYpQb",
+                  "type": "ref",
+                  "ref": "C3S8W",
+                  "name": "chatThread2",
+                  "width": "fill_container",
+                  "descendants": {
+                    "nQFpt": {
+                      "icon": "sparkles"
+                    },
+                    "a6Ka4s": {
+                      "content": "주말 무드 플레이리스트"
+                    },
+                    "K7kIUC": {
+                      "content": "어제"
+                    },
+                    "AgLvx": {
+                      "content": "Before Sunrise와 Little Forest를 함께 추천할게요."
+                    }
+                  }
+                },
+                {
+                  "id": "Ji17W",
+                  "type": "ref",
+                  "ref": "C3S8W",
+                  "name": "chatThread3",
+                  "width": "fill_container",
+                  "descendants": {
+                    "nQFpt": {
+                      "icon": "bot"
+                    },
+                    "a6Ka4s": {
+                      "content": "감정 회복 영화"
+                    },
+                    "K7kIUC": {
+                      "content": "3일 전"
+                    },
+                    "AgLvx": {
+                      "content": "Little Forest는 계절감과 여운이 긴 작품입니다."
+                    }
+                  }
+                },
+                {
+                  "id": "kXiMA",
+                  "type": "ref",
+                  "ref": "C3S8W",
+                  "name": "chatThread4",
+                  "width": "fill_container",
+                  "descendants": {
+                    "nQFpt": {
+                      "icon": "message-circle"
+                    },
+                    "a6Ka4s": {
+                      "content": "새 대화"
+                    },
+                    "K7kIUC": {
+                      "content": "1주"
+                    },
+                    "AgLvx": {
+                      "content": "무엇이든 물어보세요. 페르소나가 맞춤 답변을 드립니다."
+                    }
+                  }
+                },
+                {
+                  "type": "note",
+                  "id": "gIGrE",
+                  "layoutPosition": "absolute",
+                  "x": 200,
+                  "y": 760,
+                  "name": "routeNote",
+                  "width": 180,
+                  "height": 56,
+                  "content": "route: /chat\nFAB → 새 LLM 세션 → /chat/[id]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "RBo5l",
+          "type": "ref",
+          "ref": "R1Pqqy",
+          "name": "chatListTab",
+          "width": "fill_container",
+          "descendants": {
+            "NjyM3": {
+              "fill": "#00000000"
+            },
+            "pqmja": {
+              "fill": "#737373"
+            },
+            "S2ymM": {
+              "fill": "#737373"
+            },
+            "wyp3j": {
+              "fill": "#171717"
+            },
+            "MPVks": {
+              "fill": "#fafafa"
+            },
+            "rfXGQ": {
+              "fill": "#fafafa"
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "ksJkI",
+          "layoutPosition": "absolute",
+          "x": 314,
+          "y": 668,
+          "name": "FAB/New Chat",
+          "width": 56,
+          "height": 56,
+          "fill": "#171717",
+          "cornerRadius": 28,
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#00000033",
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "blur": 16
+          },
+          "layout": "vertical",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "egfc4",
+              "name": "fabIcon",
+              "width": 24,
+              "height": 24,
+              "icon": "plus",
+              "library": "lucide",
+              "fill": "#fafafa"
+            }
+          ]
         }
       ]
     }

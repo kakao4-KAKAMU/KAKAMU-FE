@@ -1,10 +1,13 @@
-export { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+export { QueryClient, QueryClientProvider, QueryCache, useQueryClient } from '@tanstack/react-query';
 
 export { userKeys } from './shared/keys/user.keys';
 export { commentKeys } from './shared/keys/comment.keys';
 export { personaKeys } from './shared/keys/persona.keys';
 export { postKeys } from './shared/keys/post.keys';
 export { searchKeys } from './shared/keys/search.keys';
+export { chatKeys } from './shared/keys/chat.keys';
+export { useChatListQuery } from './features/chat/model/use-chat-list-query';
+export { useChatHistoryInfiniteQuery } from './features/chat/model/use-chat-history-infinite-query';
 export { relationKeys } from './shared/keys/relation.keys';
 export { useGenreListQuery } from './features/genre-list/model/use-genre-list-query';
 export { useSearchMoviesInfiniteQuery } from './features/search-movies/model/use-search-movies-infinite-query';
