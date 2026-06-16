@@ -8,3 +8,11 @@ export function useCurrentUserId(): string | null {
 
   return useMemo(() => getUserIdFromAccessToken(accessToken), [accessToken]);
 }
+
+export function useCurrentUserIdOrThrow(): string {
+  const currentUserId = useCurrentUserId();
+  if (!currentUserId) {
+    throw new Error('Current user ID not found');
+  }
+  return currentUserId;
+}

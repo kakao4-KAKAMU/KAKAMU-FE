@@ -12,7 +12,7 @@ import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
 import { ThemeColorProvider } from '@/components/themeColor/ThemeColorProvider';
-import { useAuthStore, usePersonaStore } from '@kakamu/store';
+import { useAuthStore } from '@kakamu/store';
 import { ApiClientProvider } from '@/providers/ApiClientProvider';
 import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
 import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
@@ -143,18 +143,17 @@ export default function RootLayout() {
                       render={{
                         'gotoGuest': <Redirect href="/(guest)" />,
                         'gotoAccountTabs': <Redirect href="/(account)/(tabs)" />,
-                        'none': <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
-                        >
-                          <Stack.Screen name="(guest)" />
-                          <Stack.Screen name="(account)" />
-                          <Stack.Screen name="(shared)" />
-                        </Stack>
                       }}
                     />
-                    
+                    <Stack
+                      screenOptions={{
+                        headerShown: false,
+                      }}
+                    >
+                      <Stack.Screen name="(account)" />
+                      <Stack.Screen name="(shared)" />
+                      <Stack.Screen name="(guest)" />
+                    </Stack>
                     <PortalHost />
                   </ErrorAlertDialogProvider>
                 </AppErrorBoundary>
