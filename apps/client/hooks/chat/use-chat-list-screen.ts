@@ -6,6 +6,7 @@ import type { ChatSession } from '@kakamu/types';
 import { useErrorAlertDialog } from '@kakamu/ui';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
+import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import {
   formatChatSessionPreview,
   formatChatSessionTime,
@@ -25,8 +26,16 @@ export function useChatListScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const client = useChatApiClient();
+  const currentUserId = useCurrentUserId();
   const { open: openErrorAlert } = useErrorAlertDialog();
-  const listQuery = useChatListQuery(client);
+  const listQuery = useChatListQuery(
+    client,
+    currentUserId
+      ? {
+          user_id: currentUserId,
+        }
+      : null,
+  );
 
   useEffect(() => {
     if (!listQuery.error) {

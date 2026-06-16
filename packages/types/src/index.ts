@@ -66,6 +66,7 @@ export type {
   ChatHistoryMessage,
   ChatHistoryParams,
   ChatHistoryResponse,
+  ChatListParams,
   ChatListResponse,
   ChatSession,
   ChatSessionMetadata,

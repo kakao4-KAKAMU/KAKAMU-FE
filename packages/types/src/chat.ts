@@ -9,6 +9,11 @@ export type ChatSession = {
 };
 
 export type ChatListResponse = ChatSession[];
+export type ChatListParams = {
+  user_id: string;
+  cursor?: number | null;
+  limit?: number;
+};
 
 export type ChatHistoryMessage = {
   id: number;

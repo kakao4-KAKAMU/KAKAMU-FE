@@ -6,6 +6,7 @@ import { usePersonaStore } from '@kakamu/store';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
+import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { useChatMessages } from '@/hooks/chat/use-chat-messages';
 import { useChatSend } from '@/hooks/chat/use-chat-send';
 import { useChatSession } from '@/hooks/chat/use-chat-session';
@@ -20,7 +21,15 @@ export function useChatConversation(routeSessionId: string | undefined) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const client = useChatApiClient();
-  const listQuery = useChatListQuery(client);
+  const currentUserId = useCurrentUserId();
+  const listQuery = useChatListQuery(
+    client,
+    currentUserId
+      ? {
+          user_id: currentUserId,
+        }
+      : null,
+  );
   const personaId = usePersonaStore((state) => state.selectedPersonaId);
 
   const assistantDraftIdRef = useRef<number | null>(null);
