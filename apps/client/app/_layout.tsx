@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
-import { QueryClient, QueryClientProvider, QueryCache } from '@kakamu/query';
+import { QueryClientProvider } from '@kakamu/query';
 import { AppErrorBoundary, ErrorAlertDialogProvider, PortalHost } from '@kakamu/ui';
 import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
@@ -17,6 +17,7 @@ import { ApiClientProvider } from '@/providers/ApiClientProvider';
 import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
 import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
 import { ConditionalRender } from '@/components/utils';
+import { appQueryClient } from '@/lib/query/query-client';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -57,14 +58,6 @@ SplashScreen.preventAutoHideAsync();
 const isPersonaPath = (pathname: string) =>
   pathname === '/persona' || pathname.startsWith('/persona/');
 
-
-const queryClient = new QueryClient({
-  queryCache: new QueryCache(),
-  defaultOptions: {
-    queries: { retry: 1 },
-    mutations: { retry: 0 },
-  },
-});
 
 type AccountFilterStatus = 'gotoGuest' |
 'gotoAccountTabs' |
@@ -138,7 +131,7 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={appQueryClient}>
         <ApiClientProvider>
           <I18nextProvider i18n={getI18n()}>
             <ThemeSchemeProvider>
