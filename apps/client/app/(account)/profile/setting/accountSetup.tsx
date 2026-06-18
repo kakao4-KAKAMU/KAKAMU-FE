@@ -29,8 +29,7 @@ export default function AccountSetupScreen() {
     router.push('/profile/setting/password');
   }, [router]);
 
-  const emailLabel =
-    authStatus?.local_auth.is_linked && authStatus.local_auth.email
+  const emailLabel =  authStatus?.local_auth.is_linked && authStatus?.local_auth.email
       ? authStatus.local_auth.email
       : labels.emailEmpty;
 
@@ -67,7 +66,6 @@ export default function AccountSetupScreen() {
                     {loadErrorView?.description}
                   </Text>
                 ),
-                false: null,
               }}
             />
 
@@ -90,7 +88,7 @@ export default function AccountSetupScreen() {
                         />
 
                         <ConditionalRender.Boolean
-                          condition={authStatus!.local_auth.is_linked}
+                          condition={authStatus?.local_auth.is_linked}
                           render={{
                             true: (
                               <ProfileSettingRow
@@ -115,7 +113,7 @@ export default function AccountSetupScreen() {
                       </Text>
 
                       <View className="flex-col gap-2.5">
-                        {authStatus!.social_auths.map((social) => (
+                        {authStatus?.social_auths.map((social) => (
                           <AccountSnsProviderRow
                             key={social.provider}
                             name={labels.getProviderLabel(social.provider)}
