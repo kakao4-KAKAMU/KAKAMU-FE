@@ -16,6 +16,7 @@ import {
 } from '@kakamu/ui';
 import { Ellipsis, Heart, MessageCircle, User } from 'lucide-react-native';
 
+import { TaggedContentText } from '@/components/featured/content/TaggedContentText';
 import { ConditionalRender } from '@/components/utils/ConditionalRender';
 import { CompactPostSpoilerBadge } from '@/components/featured/post/CompactPostSpoilerBadge';
 import { formatRelativeTime } from '@/lib/time';
@@ -100,7 +101,11 @@ export function CommentCard({
             className="rounded-lg bg-muted px-3 py-2.5"
             pointerEvents={isSpoilerHidden ? 'none' : 'auto'}
           >
-            <Text className="text-sm leading-relaxed text-foreground">{comment.content}</Text>
+            <TaggedContentText
+              content={comment.content}
+              mentions={comment.mentions}
+              className="text-sm leading-relaxed text-foreground"
+            />
           </View>
           <ConditionalRender.Boolean
             condition={comment.is_spoiler}
