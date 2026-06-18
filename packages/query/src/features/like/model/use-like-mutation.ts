@@ -107,9 +107,21 @@ export function useLikeMutation(
       restoreCommentDetails(queryClient, context.previousCommentDetails);
     },
     onSettled: (_data, _error, body) => {
-      queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
-      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
+      if (body.target_type === 'POST') {
+        queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
+        queryClient.invalidateQueries({ queryKey: postKeys.lists() });
+        queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
+        return;
+      }
+
+      const commentId = body.target_id;
+      const commentPostId = queryClient.getQueryData<{ post_id: number }>(
+        commentKeys.detail(commentId),
+      )?.post_id;
+      queryClient.invalidateQueries({ queryKey: commentKeys.detail(commentId) });
+      if (commentPostId != null) {
+        queryClient.invalidateQueries({ queryKey: commentKeys.byPostLists() });
+      }
     },
     ...NO_MUTATION_CACHE,
     ...options,

@@ -50,3 +50,7 @@ export { useBlockUserMutation } from './features/relation/model/use-block-user-m
 export { useUnblockUserMutation } from './features/relation/model/use-unblock-user-mutation';
 export { useFollowersInfiniteQuery } from './features/relation/model/use-followers-infinite-query';
 export { useFollowingsInfiniteQuery } from './features/relation/model/use-followings-infinite-query';
+export { useCommentsByPostInfiniteQuery } from './features/comment/model/use-comments-by-post-infinite-query';
+export { useCreateCommentMutation } from './features/comment/model/use-create-comment-mutation';
+export { useDeleteCommentMutation } from './features/comment/model/use-delete-comment-mutation';
+export { useRevealCommentSpoilerMutation } from './features/comment/model/use-reveal-comment-spoiler-mutation';

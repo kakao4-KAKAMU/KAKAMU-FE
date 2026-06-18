@@ -1,16 +1,26 @@
 import type { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query';
-import type { CommentCursorListResponse, CommentItem } from '@kakamu/types';
+import type { CommentCreateRequest, CommentItem, CommentListResponse, PostItem } from '@kakamu/types';
 
 import { commentKeys } from '../../../shared/keys/comment.keys';
+import { postKeys } from '../../../shared/keys/post.keys';
 
-export type CommentInfiniteData = InfiniteData<
-  CommentCursorListResponse,
-  number | undefined
->;
+export const OPTIMISTIC_COMMENT_ID = -1;
+export const DEFAULT_COMMENT_PAGE_SIZE = 20;
+
+export type CommentInfiniteData = InfiniteData<CommentListResponse, number>;
 
 export type CommentListQuerySnapshot = [QueryKey, CommentInfiniteData | undefined][];
 
 export type CommentDetailQuerySnapshot = [QueryKey, CommentItem | undefined][];
+
+function enrichCommentItem(item: Omit<CommentItem, 'post_id' | 'like_count' | 'is_liked'>, postId: number): CommentItem {
+  return {
+    ...item,
+    post_id: postId,
+    like_count: 0,
+    is_liked: false,
+  };
+}
 
 function mapInfinitePages(
   data: CommentInfiniteData,
@@ -27,12 +37,80 @@ function mapInfinitePages(
   };
 }
 
+function prependToFirstPage(data: CommentInfiniteData, item: CommentItem): CommentInfiniteData {
+  if (data.pages.length === 0) {
+    return {
+      ...data,
+      pages: [
+        {
+          items: [item],
+          meta: {
+            total_count: 1,
+            current_page: 1,
+            page_size: DEFAULT_COMMENT_PAGE_SIZE,
+            total_pages: 1,
+          },
+        },
+      ],
+    };
+  }
+
+  const [firstPage, ...restPages] = data.pages;
+  return {
+    ...data,
+    pages: [
+      {
+        ...firstPage,
+        items: [item, ...firstPage.items],
+        meta: {
+          ...firstPage.meta,
+          total_count: firstPage.meta.total_count + 1,
+        },
+      },
+      ...restPages,
+    ],
+  };
+}
+
+export function createOptimisticComment(
+  postId: number,
+  body: CommentCreateRequest,
+  author?: { id?: string; name?: string },
+): CommentItem {
+  return {
+    id: OPTIMISTIC_COMMENT_ID,
+    post_id: postId,
+    parent_id: body.parent_id ?? null,
+    author_id: author?.id ?? null,
+    author: author?.name ?? '',
+    content: body.content,
+    is_spoiler: body.is_spoiler === 1,
+    like_count: 0,
+    is_liked: false,
+    created_at: new Date().toISOString(),
+  };
+}
+
+export function seedCommentDetailCacheFromList(
+  queryClient: QueryClient,
+  _postId: number,
+  items: CommentItem[],
+): void {
+  for (const item of items) {
+    queryClient.setQueryData(commentKeys.detail(item.id), item);
+  }
+}
+
 export function snapshotCommentByPostLists(
   queryClient: QueryClient,
   postId: number,
 ): CommentListQuerySnapshot {
   return queryClient.getQueriesData<CommentInfiniteData>({
-    queryKey: commentKeys.byPostList(postId),
+    queryKey: commentKeys.byPostLists(),
+    predicate: (query) => {
+      const key = query.queryKey;
+      return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
+    },
   });
 }
 
@@ -63,6 +141,77 @@ export function restoreCommentDetails(
   }
 }
 
+export function prependCommentToPostLists(
+  queryClient: QueryClient,
+  postId: number,
+  comment: CommentItem,
+): void {
+  queryClient.setQueriesData<CommentInfiniteData>(
+    {
+      queryKey: commentKeys.byPostLists(),
+      predicate: (query) => {
+        const key = query.queryKey;
+        return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
+      },
+    },
+    (old) => (old ? prependToFirstPage(old, comment) : old),
+  );
+  queryClient.setQueryData(commentKeys.detail(comment.id), comment);
+}
+
+export function removeCommentFromCaches(
+  queryClient: QueryClient,
+  commentId: number,
+  postId: number,
+): void {
+  queryClient.setQueriesData<CommentInfiniteData>(
+    {
+      queryKey: commentKeys.byPostLists(),
+      predicate: (query) => {
+        const key = query.queryKey;
+        return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
+      },
+    },
+    (old) =>
+      old
+        ? mapInfinitePages(old, (item) => {
+            if (item.id === commentId || item.parent_id === commentId) {
+              return null;
+            }
+            return item;
+          })
+        : old,
+  );
+  queryClient.removeQueries({ queryKey: commentKeys.detail(commentId) });
+}
+
+export function replaceOptimisticCommentInCaches(
+  queryClient: QueryClient,
+  postId: number,
+  commentId: number,
+): void {
+  queryClient.setQueriesData<CommentInfiniteData>(
+    {
+      queryKey: commentKeys.byPostLists(),
+      predicate: (query) => {
+        const key = query.queryKey;
+        return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
+      },
+    },
+    (old) =>
+      old
+        ? mapInfinitePages(old, (item) =>
+            item.id === OPTIMISTIC_COMMENT_ID ? { ...item, id: commentId } : item,
+          )
+        : old,
+  );
+  const optimistic = queryClient.getQueryData<CommentItem>(commentKeys.detail(OPTIMISTIC_COMMENT_ID));
+  if (optimistic) {
+    queryClient.removeQueries({ queryKey: commentKeys.detail(OPTIMISTIC_COMMENT_ID) });
+    queryClient.setQueryData(commentKeys.detail(commentId), { ...optimistic, id: commentId });
+  }
+}
+
 export function patchCommentInCaches(
   queryClient: QueryClient,
   commentId: number,
@@ -70,7 +219,13 @@ export function patchCommentInCaches(
   patch: (comment: CommentItem) => CommentItem,
 ): void {
   queryClient.setQueriesData<CommentInfiniteData>(
-    { queryKey: commentKeys.byPostList(postId) },
+    {
+      queryKey: commentKeys.byPostLists(),
+      predicate: (query) => {
+        const key = query.queryKey;
+        return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
+      },
+    },
     (old) =>
       old
         ? mapInfinitePages(old, (item) => (item.id === commentId ? patch(item) : item))
@@ -101,6 +256,16 @@ export function toggleCommentLikeInCaches(
   return detail.post_id;
 }
 
+export function adjustPostCommentCountInCache(
+  queryClient: QueryClient,
+  postId: number,
+  delta: number,
+): void {
+  queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
+    old ? { ...old, comment_count: Math.max(0, old.comment_count + delta) } : old,
+  );
+}
+
 export async function cancelCommentQueries(
   queryClient: QueryClient,
   commentId: number,
@@ -108,8 +273,24 @@ export async function cancelCommentQueries(
 ): Promise<void> {
   await Promise.all([
     postId != null
-      ? queryClient.cancelQueries({ queryKey: commentKeys.byPostList(postId) })
+      ? queryClient.cancelQueries({
+          queryKey: commentKeys.byPostLists(),
+          predicate: (query) => {
+            const key = query.queryKey;
+            return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
+          },
+        })
       : Promise.resolve(),
     queryClient.cancelQueries({ queryKey: commentKeys.detail(commentId) }),
   ]);
+}
+
+export function mapCommentListResponse(
+  postId: number,
+  response: CommentListResponse,
+): CommentListResponse {
+  return {
+    ...response,
+    items: response.items.map((item) => enrichCommentItem(item, postId)),
+  };
 }
