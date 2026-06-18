@@ -36,8 +36,14 @@ export type {
 } from './movie';
 
 export type {
-  CommentCursorListResponse,
+  CommentCreateRequest,
+  CommentDeleteResponse,
+  CommentIdResponse,
   CommentItem,
+  CommentListParams,
+  CommentListResponse,
+  CommentSpoilerDetailResponse,
+  PaginationMeta,
 } from './comment';
 
 export type {
