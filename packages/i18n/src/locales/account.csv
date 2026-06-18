@@ -137,6 +137,36 @@ account.password.form.newPasswordConfirm.showA11y,새 비밀번호 확인 보이
 account.password.form.newPasswordConfirm.hideA11y,새 비밀번호 확인 숨기기,Hide confirm password
 account.password.form.submit,비밀번호 변경,Change password
 account.password.form.submitA11y,비밀번호 변경,Change password
+account.setup.pageTitle,계정 및 SNS 로그인,Account & SNS login
+account.setup.loginAccountSection,로그인 계정,Login account
+account.setup.snsSection,SNS 연동,SNS connections
+account.setup.email,이메일,Email
+account.setup.password,비밀번호,Password
+account.setup.linked,연결됨,Connected
+account.setup.notLinked,연결되지 않음,Not connected
+account.setup.linkedDescription,연결됨 · {{label}},Connected · {{label}}
+account.setup.connect,연결하기,Connect
+account.setup.unlink,연결 해제,Disconnect
+account.setup.unlinkConfirm.title,연동을 해제할까요?,Disconnect this account?
+account.setup.unlinkConfirm.message,해제 후에는 해당 SNS로 로그인할 수 없습니다.,You will not be able to sign in with this SNS after disconnecting.
+account.setup.unlinkConfirm.cancel,취소,Cancel
+account.setup.unlinkConfirm.confirm,해제하기,Disconnect
+account.setup.footer,SNS 계정을 연결하면 해당 서비스로도 로그인할 수 있습니다. 연결 해제는 이 화면에서 진행할 수 있습니다.,Link an SNS account to sign in with that service. You can disconnect it on this screen.
+account.setup.provider.kakao,카카오,Kakao
+account.setup.provider.google,Google,Google
+account.setup.loading,불러오는 중…,Loading…
+account.setup.emailEmpty,-,-
+account.setup.error.load.title,계정 정보를 불러오지 못했어요,Could not load account settings
+account.setup.error.load.description,잠시 후 다시 시도해주세요,Please try again later
+account.setup.error.link.title,SNS 연동에 실패했어요,Could not link SNS account
+account.setup.error.link.description,잠시 후 다시 시도해주세요,Please try again later
+account.setup.error.unlink.title,SNS 연동 해제에 실패했어요,Could not disconnect SNS account
+account.setup.error.unlink.description,유일한 로그인 수단이거나 권한이 없을 수 있어요,It may be your only sign-in method or you may not have permission
+account.setup.success.link.title,연동 완료,Account linked
+account.setup.success.link.description,SNS 계정이 연결되었습니다.,Your SNS account has been linked.
+account.setup.success.unlink.title,연동 해제 완료,Account disconnected
+account.setup.success.unlink.description,SNS 계정 연결이 해제되었습니다.,Your SNS account has been disconnected.
+account.setup.googleNotReady,Google 연동은 준비 중이에요,Google linking is coming soon
 account.profile.menu.accountSettings,계정 설정,Account settings
 account.profile.menu.personaSettings,페르소나 설정,Persona settings
 account.profile.menu.logout,로그아웃,Log out
