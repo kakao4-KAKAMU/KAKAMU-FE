@@ -57,6 +57,7 @@ export type { ImageUploadResponse, ImageUploadType } from './upload';
 export { IMAGE_UPLOAD_TYPES } from './upload';
 
 export type {
+  MentionUserItem,
   PostCreateRequest,
   PostCreateResponse,
   PostCursorListResponse,

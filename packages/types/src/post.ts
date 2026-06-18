@@ -1,5 +1,11 @@
 import type { MovieItem } from './movie';
 
+export type MentionUserItem = {
+  id: string;
+  nickname: string;
+  tag: string;
+}
+
 export type PostItem = {
   id: number;
   author_id: string | null;
@@ -11,6 +17,7 @@ export type PostItem = {
   is_spoiler: boolean;
   movies: MovieItem[];
   hashtags: string[];
+  mentions: MentionUserItem[];
   like_count: number;
   is_liked: boolean;
   is_following: boolean;

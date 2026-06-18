@@ -1,3 +1,5 @@
+import { MentionUserItem } from "./post";
+
 export type PaginationMeta = {
   total_count: number;
   current_page: number;
@@ -16,6 +18,8 @@ export type CommentItem = {
   is_spoiler: boolean;
   like_count: number;
   is_liked: boolean;
+  hashtags: string[];
+  mentions: MentionUserItem[];
   created_at: string;
 };
 
