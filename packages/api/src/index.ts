@@ -41,3 +41,7 @@ export { postBlockUser } from './relations/block-user';
 export { deleteUnblockUser } from './relations/unblock-user';
 export { getFollowers } from './relations/list-followers';
 export { getFollowings } from './relations/list-followings';
+export { createComment } from './comments/create';
+export { deleteComment } from './comments/delete';
+export { getCommentSpoilerDetail } from './comments/get-spoiler-detail';
+export { getCommentsByPost } from './comments/list-by-post';
