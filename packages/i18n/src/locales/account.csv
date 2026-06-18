@@ -235,4 +235,30 @@ account.post.write.validation.images.max,이미지는 최대 {{max}}장까지 �
 account.post.write.loading,불러오는 중…,Loading…
 shared.feedDetail.title,피드 상세,Feed detail
 shared.feedDetail.description,피드 {id}의 상세 페이지,Detail page for feed {id}
+shared.feedDetail.commentsTitle,댓글 {{count}},Comments {{count}}
+shared.feedDetail.commentPlaceholder,댓글을 입력하세요,Write a comment
+shared.feedDetail.sendComment,댓글 등록,Post comment
+shared.feedDetail.loading,불러오는 중…,Loading…
+shared.feedDetail.loadMoreComments,이전 댓글 더 보기,Load more comments
+shared.feedDetail.emptyComments,아직 댓글이 없어요,No comments yet
+shared.feedDetail.anonymousAuthor,알 수 없음,Unknown
+shared.feedDetail.spoilerReveal,스포일러 보기,Reveal spoiler
+shared.feedDetail.spoilerHide,스포일러 숨기기,Hide spoiler
+shared.feedDetail.reply,답글,Reply
+shared.feedDetail.deleteComment,삭제,Delete
+shared.feedDetail.reportComment,신고,Report
+shared.feedDetail.validation.content.required,댓글을 입력해주세요,Please enter a comment
+shared.feedDetail.validation.content.max,댓글은 최대 {{max}}자까지 입력할 수 있어요,Comments can be up to {{max}} characters
+shared.feedDetail.error.loadPost.title,게시물을 불러오지 못했어요,Could not load post
+shared.feedDetail.error.loadPost.description,잠시 후 다시 시도해주세요,Please try again later
+shared.feedDetail.error.loadComments.title,댓글을 불러오지 못했어요,Could not load comments
+shared.feedDetail.error.loadComments.description,잠시 후 다시 시도해주세요,Please try again later
+shared.feedDetail.error.createComment.title,댓글 등록에 실패했어요,Could not post comment
+shared.feedDetail.error.createComment.description,잠시 후 다시 시도해주세요,Please try again later
+shared.feedDetail.error.deleteComment.title,댓글 삭제에 실패했어요,Could not delete comment
+shared.feedDetail.error.deleteComment.description,권한이 없거나 이미 삭제된 댓글이에요,You may not have permission or the comment was already deleted
+shared.feedDetail.error.commentLike.title,좋아요에 실패했어요,Could not like comment
+shared.feedDetail.error.commentLike.description,잠시 후 다시 시도해주세요,Please try again later
+shared.feedDetail.error.spoiler.title,스포일러 내용을 불러오지 못했어요,Could not load spoiler content
+shared.feedDetail.error.spoiler.description,잠시 후 다시 시도해주세요,Please try again later
 common.navigation.back,뒤로 가기,Go back
