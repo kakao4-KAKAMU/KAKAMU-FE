@@ -87,6 +87,8 @@ export function createOptimisticComment(
     is_spoiler: body.is_spoiler === 1,
     like_count: 0,
     is_liked: false,
+    hashtags: [],
+    mentions: [],
     created_at: new Date().toISOString(),
   };
 }

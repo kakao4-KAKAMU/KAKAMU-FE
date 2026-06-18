@@ -27,6 +27,7 @@ export function createOptimisticPost(body: PostUpdateRequest): PostItem {
     is_spoiler: body.is_spoiler,
     movies: [],
     hashtags: [],
+    mentions: [],
     like_count: 0,
     is_liked: false,
     is_following: false,
