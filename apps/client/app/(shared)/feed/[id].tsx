@@ -1,21 +1,18 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { useTranslation } from '@kakamu/i18n';
-import { ScrollView } from 'react-native';
-import { Text } from '@kakamu/ui';
+import { View } from 'react-native';
+
+import { FeedDetailScreenContent } from '@/components/featured/feed/FeedDetailScreenContent';
 
 export default function FeedDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { t } = useTranslation();
+  const postId = Number(id);
 
   return (
     <>
-      <Stack.Screen options={{ title: t('shared.feedDetail.title') }} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ padding: 16, gap: 12 }}
-      >
-        <Text selectable>{t('shared.feedDetail.description', { id: id ?? '-' })}</Text>
-      </ScrollView>
+      <Stack.Screen options={{ headerShown: false }} />
+      <View className="flex-1 bg-background">
+        {postId > 0 ? <FeedDetailScreenContent postId={postId} /> : null}
+      </View>
     </>
   );
 }
