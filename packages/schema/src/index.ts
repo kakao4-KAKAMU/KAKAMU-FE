@@ -70,6 +70,17 @@ export {
   type PostWriteFormInput,
 } from './forms/post';
 
+export {
+  COMMENT_CONTENT_MAX_LENGTH,
+} from './forms/comment-constants';
+
+export type { CommentFormValidationMessages } from './forms/comment-messages';
+
+export {
+  createCommentFormSchema,
+  type CommentFormInput,
+} from './forms/comment';
+
 export { LIKE_TARGET_TYPES, type LikeTargetTypeId } from './forms/like-constants';
 
 export { likeRequestSchema, type LikeRequestInput } from './forms/like';
