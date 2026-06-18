@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import type { PostItem } from '@kakamu/types';
 import { Avatar, AvatarFallback, AvatarImage, cn, Icon, Text, Button } from '@kakamu/ui';
-import { formatPostRelativeTime } from './utils/formatPostRelativeTime';
+import { formatRelativeTime } from '@/lib/time';
 import { User } from 'lucide-react-native';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
 import { useCallback, useMemo } from 'react';
@@ -16,7 +16,7 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
   const { t } = useTranslation();
   const currentUserId = useCurrentUserId();
   const isAnonymous = post.author == null || post.author_id == null;
-  const timeLabel = formatPostRelativeTime(post.created_at);
+  const timeLabel = formatRelativeTime(post.created_at);
   const metaLabel = isAnonymous ? timeLabel : timeLabel;
 
   const isOwnPost = useMemo(

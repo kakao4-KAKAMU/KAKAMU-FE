@@ -1,4 +1,5 @@
 import type { ChatHistoryMessage } from '@kakamu/types';
+import { compareUtcTimestamps } from '@/lib/time';
 
 /** 서버 히스토리와 스트리밍 중 로컬 메시지를 단일 `ChatHistoryMessage` 목록으로 합친다. */
 export function mergeChatMessages(
@@ -22,7 +23,6 @@ export function mergeChatMessages(
   }
 
   return Array.from(merged.values()).sort(
-    (left, right) =>
-      new Date(left.created_at).getTime() - new Date(right.created_at).getTime(),
+    (left, right) => compareUtcTimestamps(left.created_at, right.created_at),
   );
 }
