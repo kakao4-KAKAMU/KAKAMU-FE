@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
 import { QueryClientProvider } from '@kakamu/query';
-import { AppErrorBoundary, ErrorAlertDialogProvider, PortalHost } from '@kakamu/ui';
+import { AppErrorBoundary, ActionAlertDialogProvider, ErrorAlertDialogProvider, PortalHost } from '@kakamu/ui';
 import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
@@ -138,6 +138,7 @@ export default function RootLayout() {
               <ThemeColorProvider>
                 <AppErrorBoundary>
                   <ErrorAlertDialogProvider>
+                    <ActionAlertDialogProvider>
                     <ConditionalRender
                       condition={accountStatus}
                       render={{
@@ -155,6 +156,7 @@ export default function RootLayout() {
                       <Stack.Screen name="(guest)" />
                     </Stack>
                     <PortalHost />
+                    </ActionAlertDialogProvider>
                   </ErrorAlertDialogProvider>
                 </AppErrorBoundary>
               </ThemeColorProvider>

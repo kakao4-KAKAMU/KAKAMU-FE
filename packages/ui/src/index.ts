@@ -36,4 +36,10 @@ export { Tooltip, TooltipTrigger, TooltipContent } from "./composed/tooltip"
 export { AppErrorBoundary, DefaultErrorFallback, type UiErrorBoundaryProps } from "./error-boundary/AppErrorBoundary"
 
 export { ErrorAlertDialog, useErrorAlertDialog, ErrorAlertDialogProvider } from "./mixed-component/error-alert-dialog"
+export {
+  ActionAlertDialog,
+  ActionAlertDialogProvider,
+  useActionAlertDialog,
+  type ActionAlertDialogProps,
+} from "./mixed-component/action-alert-dialog"
 export { PasswordInput } from "./mixed-component/password-input"

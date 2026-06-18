@@ -83,45 +83,48 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[2]}
+        stickyHeaderIndices={[3]}
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
         <ProfileHero user={user} />
-        {!isMy && user ? (
-          <ProfileFollowButton
-            isFollowing={user.is_following}
-            isPending={isFollowPending}
-            followLabel={t('account.profile.actions.follow')}
-            unfollowLabel={t('account.profile.actions.unfollow')}
-            onPress={onToggleFollow}
-          />
-        ) : null}
+        <ConditionalRender.Boolean
+          condition={!isMy && user}
+          render={{
+            true: <ProfileFollowButton
+              isFollowing={user?.is_following ?? false}
+              isPending={isFollowPending}
+              followLabel={t('account.profile.actions.follow')}
+              unfollowLabel={t('account.profile.actions.unfollow')}
+              onPress={onToggleFollow}
+            />
+          }}
+        />
         <ProfileStats
           user={stats}
           onFollowersPress={targetUserId ? relationList.openFollowers : undefined}
           onFollowingsPress={targetUserId ? relationList.openFollowings : undefined}
         />
 
-        <ProfileRelationListDialog
-          open={relationList.open}
-          onOpenChange={relationList.onOpenChange}
-          title={relationDialogTitle}
-          emptyLabel={t('account.profile.relations.empty')}
-          loadMoreLabel={t('account.profile.relations.loadMore')}
-          loadingMoreLabel={t('account.profile.relations.loadingMore')}
-          users={relationList.users}
-          isLoading={relationList.isLoading}
-          hasNextPage={relationList.hasNextPage}
-          isFetchingNextPage={relationList.isFetchingNextPage}
-          onLoadMore={relationList.onLoadMore}
-          onUserPress={onRelationUserPress}
-        />
-
         <ProfileSubTabs isMy={isMy} userId={targetUserId} />
 
         <View className="pb-6 pt-2">{children}</View>
       </ScrollView>
+
+      <ProfileRelationListDialog
+        open={relationList.open}
+        onOpenChange={relationList.onOpenChange}
+        title={relationDialogTitle}
+        emptyLabel={t('account.profile.relations.empty')}
+        loadMoreLabel={t('account.profile.relations.loadMore')}
+        loadingMoreLabel={t('account.profile.relations.loadingMore')}
+        users={relationList.users}
+        isLoading={relationList.isLoading}
+        hasNextPage={relationList.hasNextPage}
+        isFetchingNextPage={relationList.isFetchingNextPage}
+        onLoadMore={relationList.onLoadMore}
+        onUserPress={onRelationUserPress}
+      />
     </View>
   );
 }

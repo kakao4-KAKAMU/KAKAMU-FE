@@ -1,6 +1,7 @@
 export { QueryClient, QueryClientProvider, QueryCache, useQueryClient } from '@tanstack/react-query';
 
 export { userKeys } from './shared/keys/user.keys';
+export { accountKeys } from './shared/keys/account.keys';
 export { commentKeys } from './shared/keys/comment.keys';
 export { personaKeys } from './shared/keys/persona.keys';
 export { postKeys } from './shared/keys/post.keys';
@@ -50,3 +51,10 @@ export { useBlockUserMutation } from './features/relation/model/use-block-user-m
 export { useUnblockUserMutation } from './features/relation/model/use-unblock-user-mutation';
 export { useFollowersInfiniteQuery } from './features/relation/model/use-followers-infinite-query';
 export { useFollowingsInfiniteQuery } from './features/relation/model/use-followings-infinite-query';
+export { useAuthStatusQuery } from './features/account/model/use-auth-status-query';
+export { useLinkSocialAuthMutation } from './features/account/model/use-link-social-auth-mutation';
+export { useUnlinkSocialAuthMutation } from './features/account/model/use-unlink-social-auth-mutation';
+export { useCommentsByPostInfiniteQuery } from './features/comment/model/use-comments-by-post-infinite-query';
+export { useCreateCommentMutation } from './features/comment/model/use-create-comment-mutation';
+export { useDeleteCommentMutation } from './features/comment/model/use-delete-comment-mutation';
+export { useRevealCommentSpoilerMutation } from './features/comment/model/use-reveal-comment-spoiler-mutation';

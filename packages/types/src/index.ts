@@ -36,8 +36,14 @@ export type {
 } from './movie';
 
 export type {
-  CommentCursorListResponse,
+  CommentCreateRequest,
+  CommentDeleteResponse,
+  CommentIdResponse,
   CommentItem,
+  CommentListParams,
+  CommentListResponse,
+  CommentSpoilerDetailResponse,
+  PaginationMeta,
 } from './comment';
 
 export type {
@@ -103,3 +109,11 @@ export type {
   UserSimpleInfo,
 } from './relation';
 export { BLOCK_LEVELS } from './relation';
+
+export type {
+  AccountSettingsResponse,
+  ApiSuccessResponse,
+  LocalAuthStatus,
+  SocialAuthStatus,
+  SocialLinkRequest,
+} from './account';
