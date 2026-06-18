@@ -19,9 +19,13 @@ import { useFeedDetail } from '@/hooks/feed/useFeedDetail';
 
 type FeedDetailScreenContentProps = {
   postId: number;
+  showCommentComposer?: boolean;
 };
 
-export function FeedDetailScreenContent({ postId }: FeedDetailScreenContentProps) {
+export function FeedDetailScreenContent({
+  postId,
+  showCommentComposer = false,
+}: FeedDetailScreenContentProps) {
   const insets = useSafeAreaInsets();
   const {
     post,
@@ -114,6 +118,23 @@ export function FeedDetailScreenContent({ postId }: FeedDetailScreenContentProps
         {labels.commentsTitle}
       </Text>
       <ConditionalRender.Boolean
+        condition={showCommentComposer}
+        render={{
+          true: (
+            <CommentComposer
+              value={draft}
+              onChangeText={setDraft}
+              onSend={onSubmit}
+              canSend={canSubmit}
+              isSubmitting={isSubmitting}
+              placeholder={labels.placeholder}
+              sendA11y={labels.sendA11y}
+            />
+          ),
+          false: null,
+        }}
+      />
+      <ConditionalRender.Boolean
         condition={commentsErrorView}
         render={{
           true: (
@@ -199,15 +220,6 @@ export function FeedDetailScreenContent({ postId }: FeedDetailScreenContentProps
           keyboardShouldPersistTaps="handled"
         />
 
-        <CommentComposer
-          value={draft}
-          onChangeText={setDraft}
-          onSend={onSubmit}
-          canSend={canSubmit}
-          isSubmitting={isSubmitting}
-          placeholder={labels.placeholder}
-          sendA11y={labels.sendA11y}
-        />
       </KeyboardAvoidingView>
     </View>
   );

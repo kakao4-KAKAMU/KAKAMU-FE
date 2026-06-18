@@ -3451,20 +3451,32 @@
               "type": "ref",
               "ref": "uFA3K",
               "name": "Comment"
-            },
-            {
-              "id": "YFski",
-              "type": "ref",
-              "ref": "NdaBU",
-              "name": "commentInput",
-              "width": "fill_container",
+            }
+          ]
+        },
+        {
+          "id": "YFski",
+          "type": "ref",
+          "ref": "kCmP4",
+          "name": "feedCommentComposer",
+          "width": "fill_container",
+          "descendants": {
+            "cmpInput": {
               "descendants": {
                 "Oj8vs": {
                   "content": "댓글을 입력하세요"
                 }
               }
             }
-          ]
+          }
+        },
+        {
+          "type": "note",
+          "id": "cmpLoginNote",
+          "name": "composeVisibilityNote",
+          "width": 200,
+          "height": 40,
+          "content": "CommentComposer: 로그인 회원에게만 표시"
         }
       ]
     },
@@ -11596,7 +11608,7 @@
                       "fill": "$muted-foreground",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "댓글 카드: card + avatar + muted field + button/ghost + icon.",
+                      "content": "댓글 카드·작성: card + avatar + muted field + CommentComposer(input + send).",
                       "fontFamily": "Inter",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -11822,6 +11834,62 @@
                               "enabled": false,
                               "width": 1,
                               "height": 1
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kCmP4",
+                          "name": "CommentComposer",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "fill": "$background",
+                          "stroke": "$border",
+                          "strokeWidth": {
+                            "top": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "gap": 8,
+                          "padding": [
+                            12,
+                            16
+                          ],
+                          "alignItems": "end",
+                          "children": [
+                            {
+                              "id": "cmpInput",
+                              "type": "ref",
+                              "ref": "NdaBU",
+                              "name": "Input",
+                              "width": "fill_container",
+                              "descendants": {
+                                "Oj8vs": {
+                                  "content": "댓글을 입력하세요"
+                                }
+                              }
+                            },
+                            {
+                              "type": "frame",
+                              "id": "cmpSend",
+                              "name": "Send",
+                              "width": 40,
+                              "height": 40,
+                              "fill": "#171717",
+                              "cornerRadius": 9999,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "cmpSendIcon",
+                                  "name": "Icon",
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "send-horizontal",
+                                  "library": "lucide",
+                                  "fill": "#fafafa"
+                                }
+                              ]
                             }
                           ]
                         }

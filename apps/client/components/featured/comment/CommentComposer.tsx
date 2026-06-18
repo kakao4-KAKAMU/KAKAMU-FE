@@ -22,7 +22,7 @@ export function CommentComposer({
   sendA11y,
 }: CommentComposerProps) {
   return (
-    <View className="flex-row items-end gap-2 border-t border-border bg-background px-4 py-3">
+    <View className="flex-row items-end gap-2 border-t border-border bg-background py-3">
       <Input
         className="min-h-10 flex-1 rounded-md px-3 py-2.5"
         value={value}
