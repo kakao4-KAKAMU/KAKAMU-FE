@@ -35,8 +35,8 @@ export function useCompactPostActions(post: PostItem) {
     likeMutation.mutate({ target_type: 'POST', target_id: post.id });
   }, [likeMutation, post.id]);
   const onComment = useCallback(() => {
-    console.log('onComment', post.id);
-  }, [post.id]);
+    router.push(`/feed/${post.id}`);
+  }, [post.id, router]);
   const onToggleBookmark = useCallback(() => {
     console.log('onToggleBookmark', post.id);
   }, [post.id]);
