@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { Alert } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
 import {
   useAuthStatusQuery,
@@ -7,7 +6,7 @@ import {
   useUnlinkSocialAuthMutation,
 } from '@kakamu/query';
 import type { SocialAuthStatus } from '@kakamu/types';
-import { useErrorAlertDialog } from '@kakamu/ui';
+import { useActionAlertDialog, useErrorAlertDialog } from '@kakamu/ui';
 
 import {
   mapAuthStatusLoadError,
@@ -25,6 +24,7 @@ export function useAccountSetupScreen() {
   const client = useBackendApiClient();
   const { t } = useTranslation();
   const { open: openErrorAlert } = useErrorAlertDialog();
+  const { open: openActionAlert } = useActionAlertDialog();
   const { login: loginWithKakao, isPending: isKakaoLoginPending } = useKakaoLogin();
 
   const authStatusQuery = useAuthStatusQuery(client);
@@ -71,22 +71,16 @@ export function useAccountSetupScreen() {
 
   const unlinkProvider = useCallback(
     (provider: string) => {
-      const providerLabel = getSocialProviderLabel(provider, t);
-      Alert.alert(
-        t('account.setup.unlinkConfirm.title'),
-        t('account.setup.unlinkConfirm.message'),
-        [
-          { text: t('account.setup.unlinkConfirm.cancel'), style: 'cancel' },
-          {
-            text: t('account.setup.unlinkConfirm.confirm'),
-            style: 'destructive',
-            onPress: () => unlinkMutation.mutate(provider),
-          },
-        ],
-        { cancelable: true },
-      );
+      openActionAlert({
+        title: t('account.setup.unlinkConfirm.title'),
+        description: t('account.setup.unlinkConfirm.message'),
+        cancelLabel: t('account.setup.unlinkConfirm.cancel'),
+        confirmLabel: t('account.setup.unlinkConfirm.confirm'),
+        destructive: true,
+        onConfirm: () => unlinkMutation.mutate(provider),
+      });
     },
-    [t, unlinkMutation],
+    [openActionAlert, t, unlinkMutation],
   );
 
   const onSocialProviderPress = useCallback(
