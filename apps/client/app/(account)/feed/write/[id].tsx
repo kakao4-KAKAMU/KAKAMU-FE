@@ -1,122 +1,16 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
-import type { PostWriteFormInput } from '@kakamu/schema';
-import { usePostByIdQuery, useUpdatePostMutation } from '@kakamu/query';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import { useForm } from 'react-hook-form';
-import { Text, useErrorAlertDialog } from '@kakamu/ui';
 
+import { AppSuspenseBoundary } from '@/components/error-boundary';
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
-import { PostWriteForm } from '@/components/featured/post/write';
-import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { usePendingLocalImages } from '@/hooks/upload/usePendingLocalImages';
-import { usePostWriteMovieSearch } from '@/hooks/post/usePostWriteMovieSearch';
-import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
-import { mapPostDetailError } from '@/lib/error-message-map/post/post-detail-error';
-import { mapPostUpdateError } from '@/lib/error-message-map/post/post-update-error';
-import { mapImageUploadError } from '@/lib/error-message-map/upload/image-upload-error';
-import { usePostFormValidationKit } from '@/lib/post-form-validators';
-import {
-  mapPostItemToWriteFormInput,
-  mapWriteFormInputToRequestBody,
-  POST_WRITE_DEFAULT_VALUES,
-} from '@/lib/post/post-form-mappers';
-import { pickPostImages } from '@/lib/post/pick-post-images';
-import { useResolveFormImageUrls } from '@/hooks/upload/useResolveFormImageUrls';
-import { useUploadApiClient } from '@/hooks/api/useUploadApiClient';
+import { FeedEditForm } from '@/components/featured/post/write/FeedEditForm';
+import { PostWriteFormSkeleton } from '@/components/featured/post/write/PostWriteForm.skeleton';
 
 export default function FeedEditScreen() {
-  const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const postId = Number.parseInt(id ?? '', 10);
   const { t } = useTranslation();
-  const postSchema = usePostFormValidationKit(t);
-  const resolver = useMemo(() => zodResolver(postSchema), [postSchema]);
-
-  const form = useForm<PostWriteFormInput>({
-    resolver,
-    defaultValues: POST_WRITE_DEFAULT_VALUES,
-    mode: 'onSubmit',
-    reValidateMode: 'onSubmit',
-  });
-
-  const { control, handleSubmit, reset, setValue, getValues } = form;
-  const apiClient = useBackendApiClient();
-  const uploadClient = useUploadApiClient();
-  const { open: openErrorAlert } = useErrorAlertDialog();
-  const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
-  const { resolveFormImageUrls, isUploading: uploadingImages } = useResolveFormImageUrls(uploadClient);
-  const genreQuery = usePersonaCreateGenreList();
-  const movieSearch = usePostWriteMovieSearch(postId > 0);
-
-  const postQuery = usePostByIdQuery(apiClient, postId);
-
-  useEffect(() => {
-    if (postQuery.data) {
-      reset(mapPostItemToWriteFormInput(postQuery.data));
-    }
-  }, [postQuery.data, reset]);
-
-  const updateMutation = useUpdatePostMutation(apiClient, {
-    onSuccess: () => {
-      router.back();
-    },
-    onError: (error) => {
-      openErrorAlert(mapPostUpdateError(error, t));
-    },
-  });
-
-  const onSubmit = handleSubmit(async (values) => {
-    try {
-      const image_urls = await resolveFormImageUrls(
-        values.image_urls,
-        'feed',
-        getPendingLocalImages(),
-      );
-      updateMutation.mutate({
-        postId,
-        body: mapWriteFormInputToRequestBody({ ...values, image_urls }),
-      });
-    } catch (error) {
-      openErrorAlert(mapImageUploadError(error, t));
-    }
-  });
-
-  const handleCancel = useCallback(() => {
-    router.back();
-  }, [router]);
-
-  const handlePickImages = useCallback(
-    async (remaining: number) => {
-      const picked = await pickPostImages(remaining);
-      if (!picked?.length) {
-        return;
-      }
-
-      for (const image of picked) {
-        registerLocalImage(image.previewUri, image.pick);
-      }
-      setValue(
-        'image_urls',
-        [...getValues('image_urls'), ...picked.map((image) => image.previewUri)],
-        { shouldValidate: true },
-      );
-    },
-    [getValues, registerLocalImage, setValue],
-  );
-
-  const handleRemoveImage = useCallback(
-    (url: string) => {
-      releaseLocalImage(url);
-    },
-    [releaseLocalImage],
-  );
-
-  const submitting = uploadingImages || updateMutation.isPending;
-  const canSubmit = !submitting && !postQuery.isLoading;
-  const isReady = postId > 0 && (postQuery.isSuccess || postQuery.isLoading);
 
   return (
     <>
@@ -133,32 +27,10 @@ export default function FeedEditScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerClassName="gap-4 px-4 pb-8 pt-2"
           >
-            {postQuery.isLoading ? (
-              <Text className="py-8 text-center text-sm text-muted-foreground">
-                {t('account.post.write.loading')}
-              </Text>
-            ) : postQuery.isError ? (
-              <Text className="py-8 text-center text-sm text-destructive">
-                {mapPostDetailError(postQuery.error, t).description}
-              </Text>
-            ) : isReady ? (
-              <PostWriteForm
-                control={control}
-                submitLabel={t('account.post.write.submitEdit')}
-                onCancel={handleCancel}
-                onSubmit={onSubmit}
-                submitting={submitting}
-                canSubmit={canSubmit}
-                genres={genreQuery.data?.genres ?? []}
-                sheetOpen={movieSearch.sheetOpen}
-                onSheetOpenChange={movieSearch.setSheetOpen}
-                filterOpen={movieSearch.filterOpen}
-                onFilterOpenChange={movieSearch.setFilterOpen}
-                search={movieSearch.search}
-                searchQuery={movieSearch.searchQuery}
-                onPickImages={handlePickImages}
-                onRemoveImage={handleRemoveImage}
-              />
+            {postId > 0 ? (
+              <AppSuspenseBoundary fallback={<PostWriteFormSkeleton />}>
+                <FeedEditForm postId={postId} />
+              </AppSuspenseBoundary>
             ) : null}
           </ScrollView>
         </KeyboardAvoidingView>
