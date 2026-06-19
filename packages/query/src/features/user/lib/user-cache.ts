@@ -1,8 +1,8 @@
 import type { QueryClient } from '@tanstack/react-query';
-import type { UserInfo } from '@kakamu/types';
+import type { UserPublic } from '@kakamu/types';
 import { userKeys } from '../../../shared/keys/user.keys';
 
-export type UserDetailQuerySnapshot = Array<[readonly unknown[], UserInfo | undefined]>;
+export type UserDetailQuerySnapshot = Array<[readonly unknown[], UserPublic | undefined]>;
 
 export async function cancelUserQueries(
   queryClient: QueryClient,
@@ -15,7 +15,7 @@ export function snapshotUserDetail(
   queryClient: QueryClient,
   userId: string,
 ): UserDetailQuerySnapshot {
-  const entries = queryClient.getQueriesData<UserInfo>({
+  const entries = queryClient.getQueriesData<UserPublic>({
     queryKey: userKeys.detail(userId),
   });
   return entries.map(([queryKey, data]) => [queryKey, data]);
@@ -33,9 +33,9 @@ export function restoreUserDetails(
 export function patchUserInCache(
   queryClient: QueryClient,
   userId: string,
-  patch: Partial<UserInfo> | ((user: UserInfo) => UserInfo),
+  patch: Partial<UserPublic> | ((user: UserPublic) => UserPublic),
 ): void {
-  queryClient.setQueryData<UserInfo>(userKeys.detail(userId), (old) => {
+  queryClient.setQueryData<UserPublic>(userKeys.detail(userId), (old) => {
     if (!old) {
       return old;
     }
@@ -84,8 +84,8 @@ export function setUserFollowInCache(
 }
 
 export type UserProfilePatch = Pick<
-  UserInfo,
-  'nickname' | 'profile_image_url' | 'profile_msg' | 'tag'
+  UserPublic,
+  'nickname' | 'profile_image' | 'profile_msg' | 'tag'
 >;
 
 export function patchUserProfileInCache(

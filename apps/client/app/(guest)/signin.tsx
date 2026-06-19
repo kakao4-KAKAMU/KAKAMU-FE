@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
 import { useLoginUserMutation, useSocialAuthLoginMutation } from '@kakamu/query';
+import type { AuthSnsSignUpProvider } from '@kakamu/types';
 import type { SignInWithRememberFormInput } from '@kakamu/schema';
 import { useAuthStore } from '@kakamu/store';
 import { Stack, useRouter } from 'expo-router';
@@ -37,7 +38,7 @@ export default function SignInScreen() {
   const socialAuthLoginMutation = useSocialAuthLoginMutation(apiClient, {
     onSuccess: (res, variables) => {
       if(res.is_new_user) {
-        setPendingSnsSignUp(variables.provider, variables.provided_token);
+        setPendingSnsSignUp(variables.provider as AuthSnsSignUpProvider, variables.provided_token);
         router.push('./signup-sns');
         return;
       }
@@ -49,7 +50,7 @@ export default function SignInScreen() {
       const socialError = parseSocialSignInError(err, t);
 
       if (socialError.code === 'SOCIAL_ACCOUNT_NOT_REGISTERED') {
-        setPendingSnsSignUp(variables.provider, variables.provided_token);
+        setPendingSnsSignUp(variables.provider as AuthSnsSignUpProvider, variables.provided_token);
         router.push('./signup-sns');
         return;
       }

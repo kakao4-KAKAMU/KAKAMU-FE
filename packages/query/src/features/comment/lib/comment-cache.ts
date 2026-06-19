@@ -1,5 +1,5 @@
 import type { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query';
-import type { CommentCreateRequest, CommentItem, CommentListResponse, PostItem } from '@kakamu/types';
+import type { CommentCreateRequest, CommentItem, CommentListResponse, PostItem, UserSimple } from '@kakamu/types';
 
 import { commentKeys } from '../../../shared/keys/comment.keys';
 import { postKeys } from '../../../shared/keys/post.keys';
@@ -75,18 +75,27 @@ function prependToFirstPage(data: CommentInfiniteData, item: CommentItem): Comme
 export function createOptimisticComment(
   postId: number,
   body: CommentCreateRequest,
-  author?: { id?: string; name?: string },
+  author?: { id?: string | null; nickname?: string; tag?: string },
 ): CommentItem {
+  const user: UserSimple = {
+    id: author?.id ?? null,
+    nickname: author?.nickname ?? '',
+    tag: author?.tag ?? '',
+    profile_image: null,
+    created_at: new Date().toISOString(),
+  };
+
   return {
     id: OPTIMISTIC_COMMENT_ID,
     post_id: postId,
     parent_id: body.parent_id ?? null,
-    author_id: author?.id ?? null,
-    author: author?.name ?? '',
+    user,
     content: body.content,
     is_spoiler: body.is_spoiler === 1,
     like_count: 0,
     is_liked: false,
+    hashtags: [],
+    mentions: [],
     created_at: new Date().toISOString(),
   };
 }
@@ -245,15 +254,20 @@ export function toggleCommentLikeInCaches(
     return null;
   }
 
+  if (detail.post_id == null) {
+    return null;
+  }
+
+  const postId = detail.post_id;
   const nextIsLiked = !detail.is_liked;
   const nextLikeCount = detail.like_count + (detail.is_liked ? -1 : 1);
-  patchCommentInCaches(queryClient, commentId, detail.post_id, () => ({
+  patchCommentInCaches(queryClient, commentId, postId, () => ({
     ...detail,
     is_liked: nextIsLiked,
     like_count: nextLikeCount,
   }));
 
-  return detail.post_id;
+  return postId;
 }
 
 export function adjustPostCommentCountInCache(

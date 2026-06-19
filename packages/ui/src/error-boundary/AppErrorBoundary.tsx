@@ -25,10 +25,12 @@ export function DefaultErrorFallback({
   className,
   title = "문제가 발생했습니다",
   description = "잠시 후 다시 시도해주세요.",
+  retryLabel = "다시 시도",
 }: FallbackProps & {
   className?: string;
   title?: string;
   description?: string;
+  retryLabel?: string;
 }) {
   if(error instanceof Error) {
     Sentry.captureException(error)
@@ -43,9 +45,7 @@ export function DefaultErrorFallback({
         <Text className="mt-2 text-xs text-destructive/80">{errorMessage}</Text>
       ) : null}
       <Button className="mt-4 self-start" variant="destructive" onPress={resetErrorBoundary}>
-        <Text>
-          다시 시도
-        </Text>
+        <Text>{retryLabel}</Text>
       </Button>
     </View>
   );

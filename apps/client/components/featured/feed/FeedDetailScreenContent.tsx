@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from '@kakamu/i18n';
 import { Text } from '@kakamu/ui';
 
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
@@ -16,6 +17,8 @@ import { CommentCard } from '@/components/featured/comment/CommentCard';
 import { CommentComposer } from '@/components/featured/comment/CommentComposer';
 import { ConditionalRender } from '@/components/utils/ConditionalRender';
 import { useFeedDetail } from '@/hooks/feed/useFeedDetail';
+import { AppSuspenseBoundary } from '@/components/error-boundary';
+import { FeedDetailScreenContentSkeleton } from './FeedDetailScreenContent.skeleton';
 
 type FeedDetailScreenContentProps = {
   postId: number;
@@ -26,11 +29,28 @@ export function FeedDetailScreenContent({
   postId,
   showCommentComposer = false,
 }: FeedDetailScreenContentProps) {
+  const { t } = useTranslation();
+
+  return (
+    <View className="flex-1 bg-background">
+      <ProfileSubpageHeader title={t('shared.feedDetail.title')} />
+      <AppSuspenseBoundary fallback={<FeedDetailScreenContentSkeleton />}>
+        <FeedDetailScreenContentInner
+          postId={postId}
+          showCommentComposer={showCommentComposer}
+        />
+      </AppSuspenseBoundary>
+    </View>
+  );
+}
+
+function FeedDetailScreenContentInner({
+  postId,
+  showCommentComposer = false,
+}: FeedDetailScreenContentProps) {
   const insets = useSafeAreaInsets();
   const {
     post,
-    isPostLoading,
-    postErrorView,
     topLevelComments,
     replyCountById,
     isCommentsLoading,
@@ -58,7 +78,7 @@ export function FeedDetailScreenContent({
       <CommentCard
         comment={item}
         replyCount={replyCountById.get(item.id) ?? 0}
-        isOwner={item.author_id != null && item.author_id === currentUserId}
+        isOwner={item.user.id != null && item.user.id === currentUserId}
         anonymousLabel={labels.anonymousAuthor}
         deleteLabel={labels.deleteComment}
         reportLabel={labels.reportComment}
@@ -85,35 +105,7 @@ export function FeedDetailScreenContent({
 
   const listHeader = (
     <View className="gap-2.5 pb-2">
-      <ConditionalRender.Boolean
-        condition={isPostLoading}
-        render={{
-          true: (
-            <Text className="py-8 text-center text-sm text-muted-foreground">
-              {labels.loading}
-            </Text>
-          ),
-          false: null,
-        }}
-      />
-      <ConditionalRender.Boolean
-        condition={postErrorView}
-        render={{
-          true: (
-            <Text className="py-8 text-center text-sm text-destructive">
-              {postErrorView?.description}
-            </Text>
-          ),
-          false: null,
-        }}
-      />
-      <ConditionalRender.Boolean
-        condition={post}
-        render={{
-          true: <CompactPost post={post!} />,
-          false: null,
-        }}
-      />
+      <CompactPost post={post} />
       <Text className="text-base font-bold text-foreground">
         {labels.commentsTitle}
       </Text>
@@ -197,14 +189,11 @@ export function FeedDetailScreenContent({
   );
 
   return (
-    <View className="flex-1 bg-background">
-      <ProfileSubpageHeader title={labels.title} />
-
-      <KeyboardAvoidingView
-        className="flex-1"
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={insets.top}
-      >
+    <KeyboardAvoidingView
+      className="flex-1"
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={insets.top}
+    >
         <FlatList
           data={topLevelComments}
           keyExtractor={(item) => String(item.id)}
@@ -220,7 +209,6 @@ export function FeedDetailScreenContent({
           keyboardShouldPersistTaps="handled"
         />
 
-      </KeyboardAvoidingView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

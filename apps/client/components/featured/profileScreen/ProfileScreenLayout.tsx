@@ -16,6 +16,8 @@ import { useProfileUserQuery } from '@/hooks/profile/useProfileUserQuery';
 import { useProfileFollowActions } from '@/hooks/profile/useProfileFollowActions';
 import { useProfileRelationListDialog } from '@/hooks/profile/useProfileRelationListDialog';
 import { ProfileRelationListDialog } from './ProfileRelationListDialog';
+import { AppSuspenseBoundary } from '@/components/error-boundary';
+import { ProfileScreenLayoutSkeleton } from './ProfileScreenLayout.skeleton';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -24,6 +26,20 @@ type ProfileScreenLayoutProps = {
 };
 
 export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLayoutProps) {
+  return (
+    <AppSuspenseBoundary fallback={<ProfileScreenLayoutSkeleton />}>
+      <ProfileScreenLayoutContent isMy={isMy} userId={userId}>
+        {children}
+      </ProfileScreenLayoutContent>
+    </AppSuspenseBoundary>
+  );
+}
+
+function ProfileScreenLayoutContent({
+  isMy,
+  userId,
+  children,
+}: ProfileScreenLayoutProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
@@ -36,7 +52,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
 
   const { isPending: isFollowPending, onToggleFollow } = useProfileFollowActions({
     userId: targetUserId,
-    isFollowing: user?.is_following ?? false,
+    isFollowing: user.is_following,
   });
 
   const relationList = useProfileRelationListDialog(targetUserId);
@@ -89,10 +105,10 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
       >
         <ProfileHero user={user} />
         <ConditionalRender.Boolean
-          condition={!isMy && user}
+          condition={!isMy}
           render={{
             true: <ProfileFollowButton
-              isFollowing={user?.is_following ?? false}
+              isFollowing={user.is_following}
               isPending={isFollowPending}
               followLabel={t('account.profile.actions.follow')}
               unfollowLabel={t('account.profile.actions.unfollow')}

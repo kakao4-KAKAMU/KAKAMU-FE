@@ -7,6 +7,12 @@ export type LikeRequestBody = {
   target_id: number;
 };
 
-export type LikeResponse = {
-  status: 'success';
+export type LikeToggleRequest = LikeRequestBody;
+
+export type LikeToggleResponse = {
+  status?: string;
+  is_liked: boolean;
+  like_count: number;
 };
+
+export type LikeResponse = LikeToggleResponse;

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import type { PostItem } from '@kakamu/types';
 import { Text } from '@kakamu/ui';
+import { TaggedContentText } from '@/components/featured/content/TaggedContentText';
 import { CompactPostAuthorRow } from './CompactPostAuthorRow';
 import { CompactPostSpoilerBadge } from './CompactPostSpoilerBadge';
 import { CompactPostImageList } from './CompactPostImageList';
@@ -43,9 +44,13 @@ export function CompactPost({ post }: CompactPostProps) {
           <ConditionalRender.Boolean
             condition={post.content}
             render={{
-              true: <Text className="text-sm leading-relaxed text-foreground">
-                {post.content}
-              </Text>
+              true: (
+                <TaggedContentText
+                  content={post.content}
+                  mentions={post.mentions}
+                  className="text-sm leading-relaxed text-foreground"
+                />
+              )
             }}
           />
           <CompactPostImageList urls={post.image_urls} />

@@ -144,7 +144,7 @@ export function useResetPasswordFlow({ t, onResetCompleted }: UseResetPasswordFl
       resetPasswordMutation.mutate({
         email: verifiedEmail.trim(),
         firebase_id_token: verifiedFirebaseIdToken,
-        password: values.password,
+        new_password: values.password,
       });
     },
     [resetPasswordMutation, verifiedEmail, verifiedFirebaseIdToken],

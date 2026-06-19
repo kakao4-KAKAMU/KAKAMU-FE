@@ -25,7 +25,6 @@ import {
   mapCommentListError,
   mapCommentSpoilerError,
 } from '@/lib/error-message-map/comment/comment-error';
-import { mapPostDetailError } from '@/lib/error-message-map/post/post-detail-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 
@@ -55,9 +54,7 @@ export function useFeedDetail(postId: number) {
 
   const postQuery = usePostByIdQuery(client, postId);
   const commentsQuery = useCommentsByPostInfiniteQuery(client, postId);
-  const userQuery = useUserQuery(client, currentUserId ?? '', {
-    enabled: !!currentUserId,
-  });
+  const userQuery = useUserQuery(client, currentUserId ?? '');
 
   const createCommentMutation = useCreateCommentMutation(client, {
     onSuccess: () => {
@@ -171,13 +168,10 @@ export function useFeedDetail(postId: number) {
     }
   }, [commentsQuery]);
 
-  const postErrorView = postQuery.isError ? mapPostDetailError(postQuery.error, t) : null;
   const commentsErrorView = commentsQuery.isError ? mapCommentListError(commentsQuery.error, t) : null;
 
   return {
     post: postQuery.data,
-    isPostLoading: postQuery.isLoading,
-    postErrorView,
     topLevelComments,
     replyCountById,
     commentCount,

@@ -3,6 +3,7 @@ import type {
   PostCursorListResponse,
   PostItem,
   PostUpdateRequest,
+  UserSimple,
 } from '@kakamu/types';
 
 import { postKeys } from '../../../shared/keys/post.keys';
@@ -15,23 +16,38 @@ export type PostListQuerySnapshot = [QueryKey, PostInfiniteData | undefined][];
 
 export type PostDetailQuerySnapshot = [QueryKey, PostItem | undefined][];
 
+const EMPTY_USER: UserSimple = {
+  id: null,
+  nickname: '',
+  tag: '',
+  profile_image: null,
+  created_at: new Date().toISOString(),
+};
+
+function toPostSpoiler(value: number | boolean | undefined): boolean {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  return value === 1;
+}
+
 export function createOptimisticPost(body: PostUpdateRequest): PostItem {
   return {
     id: OPTIMISTIC_POST_ID,
-    author_id: null,
-    author: null,
-    author_image: null,
+    user: EMPTY_USER,
     title: body.title,
     content: body.content,
-    image_urls: body.image_urls,
-    is_spoiler: body.is_spoiler,
+    image_urls: body.image_urls ?? [],
+    is_spoiler: toPostSpoiler(body.is_spoiler),
     movies: [],
     hashtags: [],
+    mentions: [],
     like_count: 0,
     is_liked: false,
     is_following: false,
     comment_count: 0,
     created_at: new Date().toISOString(),
+    updated_at: null,
   };
 }
 
@@ -53,8 +69,8 @@ export function applyPostWriteBody(post: PostItem, body: PostUpdateRequest): Pos
     ...post,
     title: body.title,
     content: body.content,
-    image_urls: body.image_urls,
-    is_spoiler: body.is_spoiler,
+    image_urls: body.image_urls ?? [],
+    is_spoiler: toPostSpoiler(body.is_spoiler),
   };
 }
 
@@ -223,7 +239,7 @@ export function setPostFollowByAuthorInCaches(
   isFollowing: boolean,
 ): void {
   const patchAuthorPosts = (post: PostItem): PostItem =>
-    post.author_id === authorId ? { ...post, is_following: isFollowing } : post;
+    post.user.id === authorId ? { ...post, is_following: isFollowing } : post;
 
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.lists() },

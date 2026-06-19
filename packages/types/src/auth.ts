@@ -20,63 +20,72 @@ export interface PasswordConfirm extends Password {
   passwordConfirm: string;
 }
 
-/** `User`에서 `profile` 제외 + 비밀번호/확인 */
-/** `POST /users/register` 요청 본문 — API 필드명과 동일 */
-export type RegisterUserRequest = Omit<User, 'profile'> & Password & {
-  /** 본인인증 CI 등 — 미연동 시 빈 문자열은 백엔드 정책에 따름 */
+/** `POST /users/register/local` 요청 본문 */
+export type RegisterUserRequest = {
+  username: string;
+  nickname: string;
   firebase_id_token: string;
-  email: string
+  email: string;
+  password: string;
 };
 
-export type SignUpSNS = User &
-  SocialAuthLoginRequest & {
-    firebase_id_token: string;
-  };
+/** `POST /users/register/social` 요청 본문 */
+export type SignUpSNS = {
+  provider: AuthSnsSignUpProvider | string;
+  provided_token: string;
+  username: string;
+  nickname: string;
+  firebase_id_token: string;
+  email?: string | null;
+};
 
 export type SignIn = { email: string } & Password;
 
 export type SignInSocial = SocialAuthLoginRequest;
 
-/** `POST /users/login/local` 응답 — 백엔드에서 내려주는 액세스 토큰 */
+/** `POST /users/login/local` · `POST /social-auth/login` 응답 */
 export interface LoginResponse {
-  is_new_user: boolean;
   access_token: string;
   refresh_token: string;
+  is_new_user?: boolean;
 }
+
+export type TokenResponse = LoginResponse;
 
 /** `POST /social-auth/login` 요청 본문 */
 export interface SocialAuthLoginRequest {
-  provider: AuthSnsSignUpProvider;
+  provider: AuthSnsSignUpProvider | string;
   provided_token: string;
 }
+
+export type LocalLoginRequest = SignIn;
 
 export type ResetPasswordEmail = Email;
 
 export type ResetPassword = PasswordConfirm;
 
-export type PhoneVerificationRequest = ResetPasswordEmail & {
+export type PhoneVerificationRequest = {
+  email: string;
   firebase_id_token: string;
 };
 
-export type ResetPasswordRequest = ResetPasswordEmail & Password & {
+export type ResetPasswordRequest = {
+  email: string;
   firebase_id_token: string;
+  new_password: string;
 };
 
+/** `PATCH /users/password` 요청 본문 */
 export interface ChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
-  newPasswordConfirm: string;
+  current_password: string;
+  new_password: string;
 }
 
-/** `GET /users/{user_id}` 응답 */
-export type UserInfo = {
-  id: string;
-  nickname: string;
-  tag: string;
-  profile_msg: string;
-  profile_image_url: string;
-  is_following: boolean;
-  follower_count: number;
-  following_count: number;
-  post_count: number;
+export type LocalLinkRequest = {
+  email?: string | null;
+  password: string;
+};
+
+export type RefreshRequest = {
+  refresh_token: string;
 };

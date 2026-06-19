@@ -16,8 +16,8 @@ export function mapPostItemToWriteFormInput(post: PostItem): PostWriteFormInput 
     selectedMovies: post.movies.map((movie) => ({
       id: movie.id,
       name: movie.title,
-      release_date: movie.release_date,
-      poster_url: movie.poster_url,
+      release_date: movie.release_date ?? undefined,
+      poster_url: movie.poster_url ?? undefined,
     })),
     image_urls: post.image_urls,
     is_spoiler: post.is_spoiler,
@@ -30,6 +30,6 @@ export function mapWriteFormInputToRequestBody(values: PostWriteFormInput): Post
     content: values.content.trim(),
     movie_ids: values.selectedMovies.map((movie) => movie.id),
     image_urls: values.image_urls,
-    is_spoiler: values.is_spoiler,
+    is_spoiler: values.is_spoiler ? 1 : 0,
   };
 }

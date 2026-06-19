@@ -28,9 +28,7 @@ export function useCreatePersonaMutation(
         id: `optimistic-persona-${Date.now()}`,
         user_id: '',
         nickname: body.nickname,
-        tag: '',
-        profile_msg: body.profile_msg,
-        profile_image_url: body.profile_image_url,
+        profile_image_url: body.profile_image_url ?? null,
       };
       queryClient.setQueryData<Persona[]>(personaKeys.list(), [
         ...previousPersonas,

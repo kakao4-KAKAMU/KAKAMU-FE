@@ -34,6 +34,11 @@ export { Toggle } from './composed/toggle'
 export { Tooltip, TooltipTrigger, TooltipContent } from "./composed/tooltip"
 
 export { AppErrorBoundary, DefaultErrorFallback, type UiErrorBoundaryProps } from "./error-boundary/AppErrorBoundary"
+export {
+  SuspenseErrorBoundary,
+  DefaultSuspenseFallback,
+  type SuspenseErrorBoundaryProps,
+} from "./error-boundary/SuspenseErrorBoundary"
 
 export { ErrorAlertDialog, useErrorAlertDialog, ErrorAlertDialogProvider } from "./mixed-component/error-alert-dialog"
 export {

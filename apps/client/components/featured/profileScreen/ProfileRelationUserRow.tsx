@@ -1,10 +1,10 @@
 import { Pressable, View } from 'react-native';
 import { User } from 'lucide-react-native';
-import type { UserSimpleInfo } from '@kakamu/types';
+import type { UserSimpleWithFollow } from '@kakamu/types';
 import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 
 type ProfileRelationUserRowProps = {
-  user: UserSimpleInfo;
+  user: UserSimpleWithFollow;
   onPress: () => void;
 };
 
@@ -25,7 +25,7 @@ export function ProfileRelationUserRow({ user, onPress }: ProfileRelationUserRow
           {user.nickname}
         </Text>
         <Text className="text-xs text-muted-foreground" numberOfLines={1}>
-          @{user.username}
+          @{user.nickname}#{user.tag}
         </Text>
       </View>
     </Pressable>

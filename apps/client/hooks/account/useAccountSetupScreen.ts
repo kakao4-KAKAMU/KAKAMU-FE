@@ -9,7 +9,6 @@ import type { SocialAuthStatus } from '@kakamu/types';
 import { useActionAlertDialog, useErrorAlertDialog } from '@kakamu/ui';
 
 import {
-  mapAuthStatusLoadError,
   mapSocialLinkError,
   mapSocialUnlinkError,
 } from '@/lib/error-message-map/account/account-setup-error';
@@ -28,10 +27,6 @@ export function useAccountSetupScreen() {
   const { login: loginWithKakao, isPending: isKakaoLoginPending } = useKakaoLogin();
 
   const authStatusQuery = useAuthStatusQuery(client);
-
-  const loadErrorView = authStatusQuery.isError
-    ? mapAuthStatusLoadError(authStatusQuery.error, t)
-    : null;
 
   const linkMutation = useLinkSocialAuthMutation(client, {
     onSuccess: () => {
@@ -118,15 +113,12 @@ export function useAccountSetupScreen() {
   );
 
   const isBusy =
-    authStatusQuery.isLoading ||
     isKakaoLoginPending ||
     linkMutation.isPending ||
     unlinkMutation.isPending;
 
   return {
     authStatus: authStatusQuery.data,
-    isLoading: authStatusQuery.isLoading,
-    loadErrorView,
     isBusy,
     onSocialProviderPress,
     getSocialDescription,

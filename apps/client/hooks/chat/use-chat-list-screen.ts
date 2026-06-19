@@ -1,9 +1,8 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
 import { useChatListQuery } from '@kakamu/query';
 import type { ChatSession } from '@kakamu/types';
-import { useErrorAlertDialog } from '@kakamu/ui';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
 import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
@@ -13,7 +12,6 @@ import {
   formatChatSessionTitle,
 } from '@/lib/chat/format-session-label';
 import { NEW_CHAT_SESSION_ID } from '@/lib/chat/constants';
-import { mapChatListError } from '@/lib/error-message-map/chat/chat-list-error';
 
 export type ChatThreadRowViewModel = {
   sessionId: string;
@@ -27,7 +25,6 @@ export function useChatListScreen() {
   const { t, i18n } = useTranslation();
   const client = useChatApiClient();
   const currentUserId = useCurrentUserId();
-  const { open: openErrorAlert } = useErrorAlertDialog();
   const listQuery = useChatListQuery(
     client,
     currentUserId
@@ -36,13 +33,6 @@ export function useChatListScreen() {
         }
       : null,
   );
-
-  useEffect(() => {
-    if (!listQuery.error) {
-      return;
-    }
-    openErrorAlert(mapChatListError(listQuery.error, t));
-  }, [listQuery.error, openErrorAlert, t]);
 
   const mapSession = useCallback(
     (session: ChatSession): ChatThreadRowViewModel => ({
@@ -69,7 +59,6 @@ export function useChatListScreen() {
 
   return {
     threads,
-    isLoading: listQuery.isLoading,
     isRefetching: listQuery.isRefetching,
     refetch: listQuery.refetch,
     onOpenThread,

@@ -53,7 +53,7 @@ export function MovieSearchSheet({
       if (exists) {
         return current.filter((movie) => movie.id !== item.id);
       }
-      return [...current, { id: item.id, name: item.title, release_date: item.release_date, poster_url: item.poster_url }];
+      return [...current, { id: item.id, name: item.title, release_date: item.release_date ?? undefined, poster_url: item.poster_url ?? undefined }];
     });
   }, []);
 
@@ -103,8 +103,8 @@ export function MovieSearchSheet({
                 <SelectedMovieRow
                   key={item.id}
                   title={item.title}
-                  poster_url={item.poster_url}
-                  release_date={item.release_date}
+                  poster_url={item.poster_url ?? undefined}
+                  release_date={item.release_date ?? undefined}
                   checked={isSelected(item.id)}
                   onToggle={() => toggleItem(item)}
                 />

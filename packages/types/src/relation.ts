@@ -1,3 +1,5 @@
+import type { UserSimpleWithFollow } from './user';
+
 export type RelationResponse = {
   status: string;
   message: string;
@@ -14,12 +16,6 @@ export type BlockRequest = {
   level?: BlockLevel;
 };
 
-export type UserSimpleInfo = {
-  id: string;
-  nickname: string;
-  username: string;
-};
-
 export type FollowListParams = {
   target_user_id: string;
   cursor?: string;
@@ -27,7 +23,7 @@ export type FollowListParams = {
 };
 
 export type FollowListResponse = {
-  items: UserSimpleInfo[];
+  items: UserSimpleWithFollow[];
   next_cursor: string | null;
   has_next: boolean;
 };

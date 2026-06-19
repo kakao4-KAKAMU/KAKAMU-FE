@@ -1,22 +1,21 @@
-export type PaginationMeta = {
-  total_count: number;
-  current_page: number;
-  page_size: number;
-  total_pages: number;
-};
+import type { Mention, UserSimple } from './user';
+import type { PagePaginationMeta } from './pagination';
+
+export type { PagePaginationMeta as PaginationMeta } from './pagination';
 
 export type CommentItem = {
   id: number;
   /** 목록 조회 시 클라이언트가 post 컨텍스트로 보강 */
-  post_id: number;
+  post_id?: number;
   parent_id: number | null;
-  author_id: string | null;
-  author: string;
+  user: UserSimple;
   content: string;
   is_spoiler: boolean;
+  created_at: string;
   like_count: number;
   is_liked: boolean;
-  created_at: string;
+  hashtags: string[];
+  mentions: Mention[];
 };
 
 export type CommentCreateRequest = {
@@ -34,7 +33,7 @@ export type CommentIdResponse = {
 export type CommentListResponse = {
   status?: string;
   items: CommentItem[];
-  meta: PaginationMeta;
+  meta: PagePaginationMeta;
 };
 
 export type CommentSpoilerDetailResponse = {
@@ -42,9 +41,12 @@ export type CommentSpoilerDetailResponse = {
   content: string;
 };
 
-export type CommentDeleteResponse = {
-  status: 'success';
+export type SuccessResponse = {
+  status?: string;
+  message?: string | null;
 };
+
+export type CommentDeleteResponse = SuccessResponse;
 
 export type CommentListParams = {
   page?: number;

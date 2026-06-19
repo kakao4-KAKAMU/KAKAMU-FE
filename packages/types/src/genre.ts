@@ -3,4 +3,7 @@ export type Genre = {
   name: string;
 };
 
-export type GenreListResponse = { genres: Genre[] };
+export type GenreListResponse = {
+  status?: string;
+  genres: Genre[];
+};

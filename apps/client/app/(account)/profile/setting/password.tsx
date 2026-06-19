@@ -61,7 +61,10 @@ export default function PasswordSettingScreen() {
   const onValid = useCallback(
     (data: ChangePasswordFormInput) => {
       setSubmitting(true);
-      changePasswordMutation.mutate(data);
+      changePasswordMutation.mutate({
+        current_password: data.oldPassword,
+        new_password: data.newPassword,
+      });
     },
     [changePasswordMutation]
   );
