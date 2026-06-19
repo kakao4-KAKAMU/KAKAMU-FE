@@ -20,9 +20,6 @@ export default function AccountLayout() {
           <Stack.Screen name="feed/write/index" options={{ headerShown: false, title: t('account.layout.feedWrite') }} />
           <Stack.Screen name="feed/write/[id]" options={{ headerShown: false, title: t('account.layout.feedEdit') }} />
           <Stack.Screen name="chat/[id]" options={{ headerShown: false, title: t('account.layout.personaChat') }} />
-          <Stack.Screen name="search/feed" options={{ headerShown: false, title: t('account.layout.feedSearchResult') }} />
-          <Stack.Screen name="search/person" options={{ headerShown: false, title: t('account.layout.personSearchResult') }} />
-          <Stack.Screen name="search/movie" options={{ headerShown: false, title: t('account.layout.movieSearchResult') }} />
         </Stack>
       }}
     />
