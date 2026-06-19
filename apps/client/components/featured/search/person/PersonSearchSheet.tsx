@@ -51,7 +51,7 @@ export function PersonSearchSheet({
       if (exists) {
         return current.filter((person) => person.id !== item.id);
       }
-      return [...current, { id: item.id, name: item.name, job: item.job, profile_image: item.profile_image }];
+      return [...current, { id: item.id, name: item.name }];
     });
   }, []);
 
@@ -101,8 +101,6 @@ export function PersonSearchSheet({
                 <SelectedPersonRow
                   key={item.id}
                   name={item.name}
-                  job={item.job}
-                  profile_image={item.profile_image}
                   checked={isSelected(item.id)}
                   onToggle={() => toggleItem(item)}
                 />

@@ -146,7 +146,6 @@ export default function PersonaCreateScreen() {
         const body: PersonaCreateRequest = {
           nickname: data.name.trim(),
           profile_image_url,
-          profile_msg: data.description.trim(),
           fav_movie_ids: data.selectedMovies.map((movie) => movie.id),
           fav_genre_ids: data.selectedGenreIds,
           fav_people_ids: data.selectedPersons.map((person) => person.id),

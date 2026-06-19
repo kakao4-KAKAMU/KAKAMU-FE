@@ -15,27 +15,30 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
   const router = useRouter();
   const { t } = useTranslation();
   const currentUserId = useCurrentUserId();
-  const isAnonymous = post.author == null || post.author_id == null;
+  const authorId = post.user.id;
+  const authorName = post.user.nickname;
+  const authorImage = post.user.profile_image;
+  const isAnonymous = authorId == null;
   const timeLabel = formatRelativeTime(post.created_at);
   const metaLabel = isAnonymous ? timeLabel : timeLabel;
 
   const isOwnPost = useMemo(
-    () => post.author_id != null && post.author_id === currentUserId,
-    [currentUserId, post.author_id],
+    () => authorId != null && authorId === currentUserId,
+    [authorId, currentUserId],
   );
 
   const showFollowButton = !isAnonymous && !isOwnPost;
 
   const { isPending: isFollowPending, onToggleFollow } = useProfileFollowActions({
-    userId: post.author_id ?? '',
+    userId: authorId ?? '',
     isFollowing: post.is_following,
   });
 
   const onAuthorPress = useCallback(() => {
-    if (post.author_id) {
-      router.push(`/profile/${post.author_id}`);
+    if (authorId) {
+      router.push(`/profile/${authorId}`);
     }
-  }, [post.author_id, router]);
+  }, [authorId, router]);
 
   const onFollowPress = useCallback(() => {
     onToggleFollow();
@@ -46,10 +49,10 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
       <Button size="smIcon" variant="ghost" onPress={onAuthorPress} disabled={isAnonymous}>
         <Avatar
           className={cn('size-full border border-border bg-muted', isAnonymous && 'opacity-60')}
-          alt={post.author ?? ANONYMOUS_AUTHOR_LABEL}
+          alt={authorName || ANONYMOUS_AUTHOR_LABEL}
         >
-          {post.author_image ? (
-            <AvatarImage source={{ uri: convertImagePath(post.author_image) }} />
+          {authorImage ? (
+            <AvatarImage source={{ uri: convertImagePath(authorImage) }} />
           ) : null}
           <AvatarFallback className="size-full bg-muted">
             <Icon as={User} size={16} className="text-muted-foreground" />
@@ -63,7 +66,7 @@ export function CompactPostAuthorRow({ post }: { post: PostItem }) {
             isAnonymous ? 'font-normal text-muted-foreground' : 'font-bold',
           )}
         >
-          {isAnonymous ? ANONYMOUS_AUTHOR_LABEL : post.author}
+          {isAnonymous ? ANONYMOUS_AUTHOR_LABEL : authorName}
         </Text>
         {metaLabel ? (
           <Text className="text-xs text-muted-foreground">{metaLabel}</Text>

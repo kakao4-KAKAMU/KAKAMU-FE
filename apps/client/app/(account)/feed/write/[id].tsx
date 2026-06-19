@@ -51,9 +51,7 @@ export default function FeedEditScreen() {
   const genreQuery = usePersonaCreateGenreList();
   const movieSearch = usePostWriteMovieSearch(postId > 0);
 
-  const postQuery = usePostByIdQuery(apiClient, postId, {
-    enabled: postId > 0,
-  });
+  const postQuery = usePostByIdQuery(apiClient, postId);
 
   useEffect(() => {
     if (postQuery.data) {

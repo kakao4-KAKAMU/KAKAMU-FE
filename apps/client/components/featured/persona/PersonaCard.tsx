@@ -66,9 +66,6 @@ export function PersonaCard({
           <Text className="text-center text-[15px] font-bold leading-tight text-foreground">
             {persona.nickname}
           </Text>
-          <Text className="text-center text-[11px] font-normal leading-tight text-muted-foreground">
-            {persona.tag}
-          </Text>
         </View>
       </Pressable>
     </>

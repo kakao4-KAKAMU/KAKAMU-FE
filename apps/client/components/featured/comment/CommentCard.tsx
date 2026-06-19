@@ -60,7 +60,8 @@ export function CommentCard({
 }: CommentCardProps) {
   const blurTargetRef = useRef<View>(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
-  const isAnonymous = !comment.author;
+  const authorName = comment.user.nickname;
+  const isAnonymous = comment.user.id == null;
   const timeLabel = formatRelativeTime(comment.created_at);
   const isSpoilerHidden = comment.is_spoiler && !spoilerRevealed;
 
@@ -75,20 +76,20 @@ export function CommentCard({
     <View className="gap-4 rounded-xl border border-border bg-card p-4 shadow-sm">
       <View className="gap-2.5">
         <View className="flex-row items-center gap-3">
-          <Avatar className="size-10 border border-border bg-muted" alt={comment.author || anonymousLabel}>
+          <Avatar className="size-10 border border-border bg-muted" alt={authorName || anonymousLabel}>
             <AvatarFallback className="bg-muted">
               {isAnonymous ? (
                 <Icon as={User} size={16} className="text-muted-foreground" />
               ) : (
                 <Text className="text-xs font-semibold text-muted-foreground">
-                  {getAuthorInitials(comment.author)}
+                  {getAuthorInitials(authorName)}
                 </Text>
               )}
             </AvatarFallback>
           </Avatar>
           <View className="min-w-0 flex-1 gap-0.5">
             <Text className="text-sm font-semibold text-foreground">
-              {isAnonymous ? anonymousLabel : comment.author}
+              {isAnonymous ? anonymousLabel : authorName}
             </Text>
             {timeLabel ? (
               <Text className="text-xs text-muted-foreground">{timeLabel}</Text>

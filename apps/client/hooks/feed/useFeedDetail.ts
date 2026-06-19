@@ -55,9 +55,7 @@ export function useFeedDetail(postId: number) {
 
   const postQuery = usePostByIdQuery(client, postId);
   const commentsQuery = useCommentsByPostInfiniteQuery(client, postId);
-  const userQuery = useUserQuery(client, currentUserId ?? '', {
-    enabled: !!currentUserId,
-  });
+  const userQuery = useUserQuery(client, currentUserId ?? '');
 
   const createCommentMutation = useCreateCommentMutation(client, {
     onSuccess: () => {

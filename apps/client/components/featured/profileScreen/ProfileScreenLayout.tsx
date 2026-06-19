@@ -36,7 +36,7 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
 
   const { isPending: isFollowPending, onToggleFollow } = useProfileFollowActions({
     userId: targetUserId,
-    isFollowing: user?.is_following ?? false,
+    isFollowing: user.is_following,
   });
 
   const relationList = useProfileRelationListDialog(targetUserId);
@@ -89,10 +89,10 @@ export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLay
       >
         <ProfileHero user={user} />
         <ConditionalRender.Boolean
-          condition={!isMy && user}
+          condition={!isMy}
           render={{
             true: <ProfileFollowButton
-              isFollowing={user?.is_following ?? false}
+              isFollowing={user.is_following}
               isPending={isFollowPending}
               followLabel={t('account.profile.actions.follow')}
               unfollowLabel={t('account.profile.actions.unfollow')}

@@ -58,7 +58,7 @@ export function FeedDetailScreenContent({
       <CommentCard
         comment={item}
         replyCount={replyCountById.get(item.id) ?? 0}
-        isOwner={item.author_id != null && item.author_id === currentUserId}
+        isOwner={item.user.id != null && item.user.id === currentUserId}
         anonymousLabel={labels.anonymousAuthor}
         deleteLabel={labels.deleteComment}
         reportLabel={labels.reportComment}

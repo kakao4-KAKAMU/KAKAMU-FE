@@ -22,11 +22,12 @@ export function useCompactPostActions(post: PostItem) {
   });
 
   const isOwner = useMemo(() => {
-    if (post.author_id == null) {
+    const authorId = post.user.id;
+    if (authorId == null) {
       return false;
     }
-    return post.author_id === currentUserId;
-  }, [post.author_id, currentUserId]);
+    return authorId === currentUserId;
+  }, [post.user.id, currentUserId]);
 
   const onToggleLike = useCallback(() => {
     if (likeMutation.isPending) {

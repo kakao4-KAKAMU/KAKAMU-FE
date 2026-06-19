@@ -3,14 +3,13 @@ import { User } from 'lucide-react-native';
 import { Avatar, AvatarFallback, AvatarImage, cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
 import type { UserPublic } from '@kakamu/types';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
-import { useMemo } from 'react';
 
 type ProfileHeroProps = {
   user: UserPublic;
 };
 
 export function ProfileHero({ user }: ProfileHeroProps) {
-  const personaTag = `@${user.nickname}#${user.tag}`
+  const personaTag = `@${user.nickname}#${user.tag}`;
   return (
     <View className="items-center gap-2.5 rounded-[14px] border border-border bg-card p-4">
       <View className="h-16 w-16 items-center justify-center rounded-full border border-border bg-muted">
