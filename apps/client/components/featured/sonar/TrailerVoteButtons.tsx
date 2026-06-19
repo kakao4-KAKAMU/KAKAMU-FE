@@ -1,7 +1,8 @@
 import { useTranslation } from '@kakamu/i18n';
-import { Heart, ThumbsDown, ThumbsUp, X } from 'lucide-react-native';
-import { Pressable, View } from 'react-native';
-import { Icon, Button } from '@kakamu/ui';
+import { ThumbsDown, ThumbsUp } from 'lucide-react-native';
+import { View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
+import { Icon } from '@kakamu/ui';
 
 type TrailerVoteButtonsProps = {
   onDislike: () => void;

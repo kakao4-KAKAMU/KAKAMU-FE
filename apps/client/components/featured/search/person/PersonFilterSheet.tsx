@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonSort } from '@kakamu/types';
 import { Badge, Button, cn, Label, Text, BottomSheet } from '@kakamu/ui';

@@ -83,8 +83,25 @@ export type TrendSearchResponse = {
   items: TrendItem[];
 };
 
+export type ContentSearchSort =
+  | 'accuracy'
+  | 'popularity'
+  | 'latest'
+  | 'name_asc'
+  | 'name_desc';
+
+export type TabSearchParams = {
+  q: string;
+  cursor?: string | number | null;
+  limit?: number;
+};
+
+export type ContentSearchParams = TabSearchParams & {
+  sort?: ContentSearchSort;
+};
+
 export type UserSearchResponse = {
   status?: string;
-  items: import('./user').UserSimple[];
+  items: import('./user').UserSimpleWithFollow[];
   meta: import('./pagination').CursorPaginationMeta;
 };

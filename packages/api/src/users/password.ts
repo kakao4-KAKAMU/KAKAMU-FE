@@ -7,5 +7,5 @@ export async function patchUserPassword(
   client: ApiClient,
   body: ChangePasswordRequest
 ): Promise<void> {
-  await client.patch('users/password', { json: body });
+  await client.post('users/local/change-password', { json: body });
 }

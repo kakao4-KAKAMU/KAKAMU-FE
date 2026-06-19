@@ -29,6 +29,9 @@ export function useCompactPostActions(post: PostItem) {
     return authorId === currentUserId;
   }, [post.user.id, currentUserId]);
 
+  const onGotoDetail = useCallback(() => {
+    router.push(`/feed/${post.id}`);
+  }, [post.id, router]);
   const onToggleLike = useCallback(() => {
     if (likeMutation.isPending) {
       return;
@@ -55,6 +58,7 @@ export function useCompactPostActions(post: PostItem) {
   }, [post.id]);
   return {
     isOwner,
+    onGotoDetail,
     onToggleLike,
     onComment,
     onToggleBookmark,

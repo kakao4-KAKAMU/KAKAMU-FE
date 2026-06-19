@@ -1,4 +1,4 @@
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { ChevronRight, Search } from 'lucide-react-native';
 import { Button, Icon, Text, TextClassProvider } from '@kakamu/ui';
 

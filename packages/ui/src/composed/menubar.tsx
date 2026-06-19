@@ -8,11 +8,11 @@ import { Check, ChevronDown, ChevronRight, ChevronUp } from 'lucide-react-native
 import * as React from 'react';
 import {
   Platform,
-  Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import { FadeIn } from 'react-native-reanimated';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
 

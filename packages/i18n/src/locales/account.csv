@@ -186,6 +186,20 @@ account.mainFeed.title,메인,Main
 account.mainFeed.description,피드 목록을 조회할 수 있는 메인 페이지,Main page where you can browse feed items
 account.searchHistory.title,검색,Search
 account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
+account.search.placeholder,"영화, feed, 사람 검색","Search movies, feed, or people"
+account.search.tabs.movie,영화,Movies
+account.search.tabs.feed,Feed,Feed
+account.search.tabs.person,사람,People
+account.search.tabs.recommend,추천,For you
+account.search.trend.title,인기 검색어,Trending
+account.search.recent.title,최근 검색,Recent searches
+account.search.recent.clear,전체 삭제,Clear all
+account.search.recent.empty,최근 검색 기록이 없어요,No recent searches
+account.search.emptyQuery,검색어를 입력해 주세요,Enter a search term
+account.search.emptyResult,검색 결과가 없어요,No results found
+account.search.recommend.loginRequired,로그인 후 맞춤 추천 검색을 이용할 수 있어요,Sign in to use personalized search
+account.search.loadMore,더 보기,Load more
+account.search.loading,불러오는 중…,Loading…
 account.personaChat.title,페르소나 챗,Persona chat
 account.personaChat.description,선택된 페르소나 기준으로 LLM과 대화하는 페이지,Chat with an LLM based on the selected persona
 account.chat.list.title,쳇팅,Chat

@@ -1,7 +1,8 @@
 import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Platform, Pressable } from 'react-native';
+import { Platform } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 
 const buttonVariants = cva(
   cn(

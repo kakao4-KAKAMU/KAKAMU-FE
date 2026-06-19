@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState, useMemo, useCallback } from 'react';
 import { View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import type { PostItem } from '@kakamu/types';
@@ -11,17 +11,22 @@ import { CompactPostMovieCard } from './CompactPostMovieCard';
 import { CompactPostActions } from './CompactPostActions';
 import { ConditionalRender } from '@/components/utils';
 import { useCompactPostActions } from './hooks/useCompactPostActions';
+import { Pressable } from 'react-native-gesture-handler';
 
 type CompactPostProps = {
   post: PostItem;
+  onContentPress?: () => void;
 };
 
-export function CompactPost({ post }: CompactPostProps) {
+export function CompactPost({ post, onContentPress }: CompactPostProps) {
   const blurTargetRef = useRef<View>(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
   const actions = useCompactPostActions(post);
   const isSpoilerHidden = useMemo(() => post.is_spoiler && !spoilerRevealed, [post.is_spoiler, spoilerRevealed]);
-
+  const handleContentPress = useCallback(() => {
+    onContentPress?.();
+    actions.onGotoDetail();
+  }, [onContentPress]);
   return (
     <View className="gap-2.5 border-b border-border py-3" ref={blurTargetRef}>
       <CompactPostAuthorRow post={post} />
@@ -45,17 +50,19 @@ export function CompactPost({ post }: CompactPostProps) {
             condition={post.content}
             render={{
               true: (
-                <TaggedContentText
-                  content={post.content}
-                  mentions={post.mentions}
-                  className="text-sm leading-relaxed text-foreground"
-                />
+                <Pressable onPress={handleContentPress}>
+                  <TaggedContentText
+                    content={post.content}
+                    mentions={post.mentions}
+                    className="text-sm leading-relaxed text-foreground"
+                  />
+                </Pressable>
               )
             }}
           />
           <CompactPostImageList urls={post.image_urls} />
         </View>
-        <BlurView className="absolute -m-1 inset-0 bg-background/0!" intensity={isSpoilerHidden ? 17 : 0} blurTarget={blurTargetRef}>
+        <BlurView className="absolute -m-1 inset-0 bg-background/0! pointer-events-none" intensity={isSpoilerHidden ? 17 : 0} blurTarget={blurTargetRef}>
           <ConditionalRender.Boolean
             condition={post.is_spoiler}
             render={{

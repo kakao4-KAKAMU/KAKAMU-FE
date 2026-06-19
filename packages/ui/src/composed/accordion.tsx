@@ -3,7 +3,8 @@ import { TextClassProvider } from './text';
 import { cn } from '../lib/cn';
 import * as AccordionPrimitive from '@rn-primitives/accordion';
 import { ChevronDown } from 'lucide-react-native';
-import { Platform, Pressable, View } from 'react-native';
+import { Platform, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import Animated, {
   FadeOutUp,
   LayoutAnimationConfig,

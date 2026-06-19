@@ -1,17 +1,48 @@
-import { Stack } from 'expo-router';
-import { useTranslation } from '@kakamu/i18n';
+import { useCallback } from 'react';
 import { ScrollView } from 'react-native';
-import { Text } from '@kakamu/ui';
+import { useSearchTrendQuery } from '@kakamu/query';
 
-export default function SearchHistoryScreen() {
-  const { t } = useTranslation();
+import { SearchIndexPanel } from '@/components/featured/search/SearchIndexPanel';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useSearchRecentHistory } from '@/hooks/search/useSearchRecentHistory';
+import { useSearchNavigation } from '@/hooks/search/useSearchNavigation';
+import type { RecentSearchEntry } from '@/lib/search/recent-search-storage';
+
+export default function SearchIndexScreen() {
+  const client = useBackendApiClient();
+  const { openKeyword } = useSearchNavigation();
+  const trendQuery = useSearchTrendQuery(client);
+  const { entries, isLoading: isRecentLoading, clearAll } = useSearchRecentHistory();
+
+  const onTrendPress = useCallback(
+    (keyword: string) => {
+      openKeyword(keyword, 'movie');
+    },
+    [openKeyword],
+  );
+
+  const onRecentPress = useCallback(
+    (entry: RecentSearchEntry) => {
+      openKeyword(entry.keyword, entry.tab);
+    },
+    [openKeyword],
+  );
 
   return (
-    <>
-      <Stack.Screen options={{ title: t('account.searchHistory.title') }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 16 }}>
-        <Text selectable>{t('account.searchHistory.description')}</Text>
-      </ScrollView>
-    </>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      <SearchIndexPanel
+        trends={trendQuery.data?.items ?? []}
+        isTrendLoading={trendQuery.isLoading}
+        recentEntries={entries}
+        isRecentLoading={isRecentLoading}
+        onTrendPress={onTrendPress}
+        onRecentPress={onRecentPress}
+        onClearRecent={clearAll}
+      />
+    </ScrollView>
   );
 }
