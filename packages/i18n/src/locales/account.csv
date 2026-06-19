@@ -263,6 +263,9 @@ account.post.write.validation.content.required,내용을 입력해주세요,Plea
 account.post.write.validation.content.max,내용은 최대 {{max}}자까지 입력할 수 있어요,Content can be up to {{max}} characters
 account.post.write.validation.images.max,이미지는 최대 {{max}}장까지 등록할 수 있어요,You can add up to {{max}} images
 account.post.write.loading,불러오는 중…,Loading…
+shared.errorBoundary.title,문제가 발생했습니다,Something went wrong
+shared.errorBoundary.description,잠시 후 다시 시도해주세요.,Please try again later.
+shared.errorBoundary.retry,다시 시도,Retry
 shared.feedDetail.title,피드 상세,Feed detail
 shared.feedDetail.description,피드 {id}의 상세 페이지,Detail page for feed {id}
 shared.feedDetail.commentsTitle,댓글 {{count}},Comments {{count}}
