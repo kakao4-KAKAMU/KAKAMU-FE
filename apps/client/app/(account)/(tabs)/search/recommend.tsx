@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
 import { useSearchForYouInfiniteQuery } from '@kakamu/query';
@@ -65,9 +65,7 @@ export default function SearchRecommendScreen() {
       }}
       keyExtractor={(post) => String(post.id)}
       renderItem={(post) => (
-        <Pressable accessibilityRole="button" onPress={() => onPostPress(post.id)}>
-          <CompactPost post={post} />
-        </Pressable>
+        <CompactPost post={post} />
       )}
     />
   );

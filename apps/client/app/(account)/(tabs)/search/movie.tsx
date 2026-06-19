@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
 import { useSearchContentInfiniteQuery } from '@kakamu/query';

@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Pressable, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
 import { useSearchLiveInfiniteQuery } from '@kakamu/query';
 import { Text } from '@kakamu/ui';
@@ -13,7 +12,6 @@ import { useSearchRecentHistory } from '@/hooks/search/useSearchRecentHistory';
 
 export default function SearchFeedScreen() {
   const { t } = useTranslation();
-  const router = useRouter();
   const client = useBackendApiClient();
   const { query } = useSearchNavigation();
   const { recordSelection } = useSearchRecentHistory();
@@ -25,10 +23,10 @@ export default function SearchFeedScreen() {
   );
 
   const onPostPress = useCallback(
-    (postId: number) => {
+    () => {
       void recordSelection(query, 'feed');
     },
-    [query, recordSelection, router],
+    [query, recordSelection],
   );
 
   if (!query.trim()) {
@@ -52,7 +50,7 @@ export default function SearchFeedScreen() {
       }}
       keyExtractor={(post) => String(post.id)}
       renderItem={(post) => (
-        <CompactPost post={post} />
+        <CompactPost post={post} onContentPress={onPostPress} />
       )}
     />
   );
