@@ -40,6 +40,7 @@ export type ChatHistoryResponse = {
 export type ChatHistoryParams = {
   cursor?: number | null;
   limit: number;
+  user_id: string;
 };
 
 export type ChatRequest = {

@@ -7,16 +7,22 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
 import { flattenHistoryPagesFromInfinite } from '@/lib/chat/flatten-history-messages';
 import { mergeChatMessages } from '@/lib/chat/merge-chat-messages';
+import { useCurrentUserId } from '../auth/useCurrentUserId';
 
 const HISTORY_PAGE_LIMIT = 30;
 
 export function useChatMessages(activeSessionId: string, isNewSession: boolean) {
+  const currentUserId = useCurrentUserId();
+  if (!currentUserId) {
+    throw new Error('Current user ID not found');
+  }
   const client = useChatApiClient();
   const queryClient = useQueryClient();
   const historyQuery = useChatHistoryInfiniteQuery(
     client,
     isNewSession ? '' : activeSessionId,
     HISTORY_PAGE_LIMIT,
+    currentUserId,
     {
       enabled: !isNewSession && Boolean(activeSessionId),
     },
@@ -53,6 +59,7 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
           getChatHistory(client, sessionId, {
             limit: HISTORY_PAGE_LIMIT,
             cursor: pageParam as number | null,
+            user_id: currentUserId,
           }),
         initialPageParam: null as number | null,
         getNextPageParam: (lastPage: ChatHistoryResponse) =>
