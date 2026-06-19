@@ -1,18 +1,17 @@
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { skipToken, useSuspenseQuery, type QueryFunction, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { getUserById } from '@kakamu/api';
-import type { UserInfo } from '@kakamu/types';
+import type { UserPublic } from '@kakamu/types';
 import { userKeys } from '../../../shared/keys/user.keys';
 
 export function useUserQuery(
   client: ApiClient,
   userId: string,
-  options?: Omit<UseQueryOptions<UserInfo>, 'queryKey' | 'queryFn'>,
+  options?: Omit<UseSuspenseQueryOptions<UserPublic>, 'queryKey' | 'queryFn'>,
 ) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: userKeys.detail(userId),
-    queryFn: () => getUserById(client, userId),
-    enabled: !!userId,
+    queryFn: (userId ? () => getUserById(client, userId) : skipToken) as QueryFunction<UserPublic>,
     ...options,
   });
 }

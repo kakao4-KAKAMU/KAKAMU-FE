@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { ApiClient } from '@kakamu/api';
 import { useUserQuery } from '@kakamu/query';
-import type { UserInfo } from '@kakamu/types';
+import type { UserPublic } from '@kakamu/types';
 import type { ProfileStatKey } from '@/components/featured/profileScreen/types';
 import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 
@@ -15,7 +15,7 @@ type ProfileUserStats = Record<ProfileStatKey, number>;
 
 type UseProfileUserQueryResult = {
   userId: string;
-  user: UserInfo | undefined;
+  user: UserPublic | undefined;
   isLoading: boolean;
   stats: ProfileUserStats;
 };
@@ -33,11 +33,13 @@ export function useProfileUserQuery({
   userId,
 }: UseProfileUserQueryParams): UseProfileUserQueryResult {
   const currentUserId = useCurrentUserId();
-  const targetUserId = isMy ? currentUserId : userId ?? null;
+  const targetUserId = isMy ? currentUserId : userId;
+  
+  if(!targetUserId) {
+    throw new Error('Target user ID not found');
+  }
 
-  const userQuery = useUserQuery(client, targetUserId ?? '', {
-    enabled: !!targetUserId,
-  });
+  const userQuery = useUserQuery(client, targetUserId);
 
   const stats = useMemo<ProfileUserStats>(() => {
     if (!userQuery.data) {

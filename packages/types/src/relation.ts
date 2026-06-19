@@ -16,9 +16,6 @@ export type BlockRequest = {
   level?: BlockLevel;
 };
 
-/** @deprecated `UserSimpleWithFollow` 사용 */
-export type UserSimpleInfo = UserSimpleWithFollow;
-
 export type FollowListParams = {
   target_user_id: string;
   cursor?: string;

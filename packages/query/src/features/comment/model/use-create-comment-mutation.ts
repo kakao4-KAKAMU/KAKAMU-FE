@@ -58,7 +58,7 @@ export function useCreateCommentMutation(
     CreateCommentVariables,
     CreateCommentContext
   >({
-    mutationFn: ({ postId, authorId: _authorId, authorName: _authorName, ...body }) =>
+    mutationFn: ({ postId, ...body }) =>
       createComment(client, postId, body),
     onMutate: async ({ postId, authorId, authorName, ...body }) => {
       await cancelCommentQueries(queryClient, OPTIMISTIC_COMMENT_ID, postId);
@@ -68,7 +68,7 @@ export function useCreateCommentMutation(
       const previousPostDetails = snapshotPostDetail(queryClient, postId);
       const optimisticComment = createOptimisticComment(postId, body, {
         id: authorId,
-        name: authorName,
+        nickname: authorName,
       });
       prependCommentToPostLists(queryClient, postId, optimisticComment);
       adjustPostCommentCountInCache(queryClient, postId, 1);

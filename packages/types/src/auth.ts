@@ -89,8 +89,3 @@ export type LocalLinkRequest = {
 export type RefreshRequest = {
   refresh_token: string;
 };
-
-export type { UserPublic } from './user';
-
-/** @deprecated `UserPublic` 사용 */
-export type UserInfo = import('./user').UserPublic;

@@ -127,7 +127,6 @@ export type {
   SocialAuthLoginRequest,
   TokenResponse,
   User,
-  UserInfo,
 } from './auth';
 
 export type {
@@ -136,7 +135,6 @@ export type {
   FollowListParams,
   FollowListResponse,
   RelationResponse,
-  UserSimpleInfo,
 } from './relation';
 export { BLOCK_LEVELS } from './relation';
 

@@ -50,7 +50,6 @@ export function useUpdatePersonaMutation(
                 ...persona,
                 nickname: body.nickname ?? persona.nickname,
                 profile_image_url: body.profile_image_url ?? persona.profile_image_url,
-                profile_msg: body.profile_msg ?? persona.profile_msg,
               }
             : persona,
         ),
@@ -61,9 +60,8 @@ export function useUpdatePersonaMutation(
         await cancelUserQueries(queryClient, userId);
         previousUserDetails = snapshotUserDetail(queryClient, userId);
         patchUserProfileInCache(queryClient, userId, {
-          nickname: body.nickname,
-          profile_image_url: body.profile_image_url,
-          profile_msg: body.profile_msg,
+          nickname: body.nickname ?? undefined,
+          profile_image: body.profile_image_url ?? undefined,
         });
       }
 

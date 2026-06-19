@@ -8,8 +8,5 @@ export async function postUserPhoneVerification(client: ApiClient, body: PhoneVe
 
 /** `POST .../users/local/reset-password` */
 export async function postUserResetPassword(client: ApiClient, body: ResetPasswordRequest): Promise<void> {
-  await client.post('users/local/reset-password', { json: {
-    ...body,
-    new_password: body.password,
-  } });
+  await client.post('users/local/reset-password', { json: body });
 }

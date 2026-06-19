@@ -1,5 +1,5 @@
 import { ActivityIndicator, ScrollView, View } from 'react-native';
-import type { UserSimpleInfo } from '@kakamu/types';
+import type { UserSimpleWithFollow } from '@kakamu/types';
 import {
   Button,
   Dialog,
@@ -17,7 +17,7 @@ type ProfileRelationListDialogProps = {
   emptyLabel: string;
   loadMoreLabel: string;
   loadingMoreLabel: string;
-  users: UserSimpleInfo[];
+  users: UserSimpleWithFollow[];
   isLoading: boolean;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -59,7 +59,7 @@ export function ProfileRelationListDialog({
                 <ProfileRelationUserRow
                   key={user.id}
                   user={user}
-                  onPress={() => onUserPress(user.id)}
+                  onPress={() => user.id && onUserPress(user.id)}
                 />
               ))}
               {hasNextPage ? (
