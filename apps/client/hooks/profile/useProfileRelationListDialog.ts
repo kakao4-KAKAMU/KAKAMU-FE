@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useFollowersInfiniteQuery, useFollowingsInfiniteQuery } from '@kakamu/query';
-import type { UserSimpleInfo } from '@kakamu/types';
+import type { UserSimpleWithFollow } from '@kakamu/types';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 export type ProfileRelationListType = 'followers' | 'followings';
@@ -25,7 +25,7 @@ export function useProfileRelationListDialog(userId: string) {
 
   const activeQuery = activeList === 'followers' ? followersQuery : followingsQuery;
 
-  const users = useMemo<UserSimpleInfo[]>(() => {
+  const users = useMemo<UserSimpleWithFollow[]>(() => {
     if (!activeQuery.data) {
       return [];
     }
