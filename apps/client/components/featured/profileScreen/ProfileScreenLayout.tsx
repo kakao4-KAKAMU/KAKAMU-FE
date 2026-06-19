@@ -16,6 +16,8 @@ import { useProfileUserQuery } from '@/hooks/profile/useProfileUserQuery';
 import { useProfileFollowActions } from '@/hooks/profile/useProfileFollowActions';
 import { useProfileRelationListDialog } from '@/hooks/profile/useProfileRelationListDialog';
 import { ProfileRelationListDialog } from './ProfileRelationListDialog';
+import { AppSuspenseBoundary } from '@/components/error-boundary';
+import { ProfileScreenLayoutSkeleton } from './ProfileScreenLayout.skeleton';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -24,6 +26,20 @@ type ProfileScreenLayoutProps = {
 };
 
 export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLayoutProps) {
+  return (
+    <AppSuspenseBoundary fallback={<ProfileScreenLayoutSkeleton />}>
+      <ProfileScreenLayoutContent isMy={isMy} userId={userId}>
+        {children}
+      </ProfileScreenLayoutContent>
+    </AppSuspenseBoundary>
+  );
+}
+
+function ProfileScreenLayoutContent({
+  isMy,
+  userId,
+  children,
+}: ProfileScreenLayoutProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();

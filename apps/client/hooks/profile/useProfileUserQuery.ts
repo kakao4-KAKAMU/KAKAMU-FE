@@ -16,7 +16,6 @@ type ProfileUserStats = Record<ProfileStatKey, number>;
 type UseProfileUserQueryResult = {
   userId: string;
   user: UserPublic;
-  isLoading: boolean;
   stats: ProfileUserStats;
 };
 
@@ -44,7 +43,6 @@ export function useProfileUserQuery({
   return {
     userId: targetUserId,
     user: userQuery.data,
-    isLoading: false,
     stats,
   };
 }
