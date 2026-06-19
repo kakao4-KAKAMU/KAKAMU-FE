@@ -2,24 +2,27 @@ export type Persona = {
   id: string;
   user_id: string;
   nickname: string;
-  /** 게시물 tag 활용 시 사용할 code */
-  tag: string;
-  profile_msg: string;
-  profile_image_url?: string;
+  profile_image_url: string | null;
 };
 
 export type PersonaCreateRequest = {
   nickname: string;
-  profile_image_url: string;
-  profile_msg: string;
-  fav_movie_ids: string[];
-  fav_genre_ids: string[];
-  fav_people_ids: string[];
+  profile_image_url?: string | null;
+  fav_movie_ids?: string[] | null;
+  fav_genre_ids?: string[] | null;
+  fav_people_ids?: string[] | null;
 };
 
 export type PersonaCreateResponse = Persona;
 
-export type PersonaUpdateRequest = Partial<PersonaCreateRequest>;
+export type PersonaUpdateRequest = {
+  nickname?: string | null;
+  profile_image_url?: string | null;
+  fav_movie_ids?: string[] | null;
+  fav_genre_ids?: string[] | null;
+  fav_people_ids?: string[] | null;
+};
+
 export type PersonaUpdateResponse = Persona;
 export type PersonaListResponse = Persona[];
 export type PersonaDetailResponse = Persona;

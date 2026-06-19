@@ -5,6 +5,16 @@ export type { ApiErrorBody, ApiErrorCode } from './api-error';
 export { API_ERROR_CODES } from './api-error';
 
 export type {
+  Mention,
+  UserAccount,
+  UserPublic,
+  UserSimple,
+  UserSimpleWithFollow,
+  UserUpdate,
+} from './user';
+export type { CursorPaginationMeta, PagePaginationMeta } from './pagination';
+
+export type {
   Persona,
   PersonaCreateRequest,
   PersonaCreateResponse,
@@ -12,7 +22,7 @@ export type {
   PersonaUpdateResponse,
   PersonaListResponse,
   PersonaDetailResponse,
- } from './persona';
+} from './persona';
 export type { Genre, GenreListResponse } from './genre';
 export type {
   FeedContentType,
@@ -21,18 +31,26 @@ export type {
   FeedSearchParams,
   FeedSort,
   PaginatedResponse,
+  PersonFilterSearchResponse,
   PersonSearchItem,
   PersonSearchParams,
   PersonSearchRequestBody,
   PersonSort,
   SearchPageResponse,
+  TrendItem,
+  TrendSearchResponse,
+  UserSearchResponse,
 } from './search';
 
 export type {
-  MovieSort,
+  MovieFilterSearchResponse,
   MovieItem,
+  MovieRecommendationResponse,
   MovieSearchParams,
   MovieSearchRequestBody,
+  MovieSort,
+  MovieTabSearchResponse,
+  WatchMovieResponse,
 } from './movie';
 
 export type {
@@ -50,6 +68,8 @@ export type {
   LikeRequestBody,
   LikeResponse,
   LikeTargetType,
+  LikeToggleRequest,
+  LikeToggleResponse,
 } from './like';
 export { LIKE_TARGET_TYPES } from './like';
 
@@ -62,11 +82,15 @@ export type {
   PostCreateResponse,
   PostCursorListResponse,
   PostDeleteResponse,
+  PostIdResponse,
   PostItem,
   PostListParams,
   LikedPostListParams,
+  PostSearchResponse,
   PostUpdateRequest,
   PostUpdateResponse,
+  SearchPost,
+  SuccessResponse,
 } from './post';
 
 export type {
@@ -75,6 +99,7 @@ export type {
   ChatHistoryResponse,
   ChatListParams,
   ChatListResponse,
+  ChatRequest,
   ChatSession,
   ChatSessionMetadata,
   ChatSseEvent,
@@ -85,18 +110,22 @@ export type {
   AuthSnsSignUpProvider,
   ChangePasswordRequest,
   Email,
-  ResetPasswordEmail,
-  PhoneVerificationRequest,
+  LocalLinkRequest,
+  LocalLoginRequest,
   LoginResponse,
   Password,
   PasswordConfirm,
+  PhoneVerificationRequest,
+  RefreshRequest,
   RegisterUserRequest,
   ResetPassword,
+  ResetPasswordEmail,
   ResetPasswordRequest,
   SignIn,
   SignInSocial,
   SignUpSNS,
   SocialAuthLoginRequest,
+  TokenResponse,
   User,
   UserInfo,
 } from './auth';
@@ -118,3 +147,6 @@ export type {
   SocialAuthStatus,
   SocialLinkRequest,
 } from './account';
+
+export type { Notification, NotificationListResponse } from './notification';
+export type { ActivityLogCreate, SuccessMessageResponse } from './activity';

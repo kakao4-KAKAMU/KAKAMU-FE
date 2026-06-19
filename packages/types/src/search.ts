@@ -7,12 +7,11 @@ export type FeedPeriod = 'today' | 'week' | 'month';
 
 export type FeedSort = 'latest' | 'popular' | 'relevance';
 
-
 export type PersonSearchItem = {
   id: string;
   name: string;
-  job?: string;
-  profile_image?: string;
+  job?: string | null;
+  profile_image?: string | null;
 };
 
 export type PersonSearchRequestBody = {
@@ -29,6 +28,14 @@ export type PersonSearchParams = {
   sort?: PersonSort;
   skip?: number;
   limit?: number;
+};
+
+export type PersonFilterSearchResponse = {
+  status?: string;
+  items: PersonSearchItem[];
+  skip: number;
+  limit: number;
+  total_count: number;
 };
 
 export type FeedSearchItem = {
@@ -62,4 +69,22 @@ export type SearchPageResponse<T> = {
 export type PaginatedResponse<T> = {
   items: T[];
   next_cursor?: string | null;
+};
+
+export type TrendItem = {
+  rank: number;
+  keyword: string;
+  search_count: number;
+};
+
+export type TrendSearchResponse = {
+  status?: string;
+  stat_date: string;
+  items: TrendItem[];
+};
+
+export type UserSearchResponse = {
+  status?: string;
+  items: import('./user').UserSimple[];
+  meta: import('./pagination').CursorPaginationMeta;
 };

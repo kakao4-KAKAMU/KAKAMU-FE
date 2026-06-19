@@ -23,8 +23,8 @@ export type ChatHistoryMessage = {
   content: string;
   created_at: string;
   reply_metadata?: {
-    type: 'movie',
-    id: string
+    type: 'movie';
+    id: string;
   };
   status?: 'pending' | 'processing' | 'done';
   processing?: boolean;
@@ -41,10 +41,14 @@ export type ChatHistoryParams = {
   limit: number;
 };
 
-export type ChatStreamRequestBody = {
-  user_id: string;
-  session_id: string;
+export type ChatRequest = {
   message: string;
+  session_id: string;
+};
+
+/** SSE 스트림 요청 — `user_id`는 클라이언트에서 추가 전송 */
+export type ChatStreamRequestBody = ChatRequest & {
+  user_id: string;
 };
 
 export type ChatSseEvent = {
