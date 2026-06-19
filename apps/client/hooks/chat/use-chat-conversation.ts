@@ -22,6 +22,9 @@ export function useChatConversation(routeSessionId: string | undefined) {
   const queryClient = useQueryClient();
   const client = useChatApiClient();
   const currentUserId = useCurrentUserId();
+  if (!currentUserId) {
+    throw new Error('Current user ID not found');
+  }
   const listQuery = useChatListQuery(
     client,
     currentUserId
@@ -84,7 +87,8 @@ export function useChatConversation(routeSessionId: string | undefined) {
 
   const send = useChatSend({
     t,
-    personaId,
+    userId: currentUserId,
+    personaId: personaId ?? null,
     activeSessionIdRef,
     assistantDraftIdRef,
     allocateEphemeralId,

@@ -6,6 +6,7 @@ function toHistorySearchParams(params: ChatHistoryParams): Record<string, string
   return {
     limit: String(params.limit),
     ...(typeof params.cursor === 'number' ? { cursor: String(params.cursor) } : {}),
+    user_id: params.user_id,
   };
 }
 

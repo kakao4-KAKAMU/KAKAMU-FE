@@ -13,6 +13,7 @@ export function useChatHistoryInfiniteQuery(
   client: ApiClient,
   sessionId: string,
   limit: number,
+  user_id: string,
   options?: Omit<
     UseInfiniteQueryOptions<
       ChatHistoryResponse,
@@ -31,6 +32,7 @@ export function useChatHistoryInfiniteQuery(
       getChatHistory(client, sessionId, {
         limit,
         cursor: pageParam,
+        user_id: user_id,
       }),
     initialPageParam: null as number | null,
     getNextPageParam: (lastPage) => (lastPage.has_more ? lastPage.next_cursor : null),

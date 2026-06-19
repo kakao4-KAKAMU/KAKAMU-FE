@@ -10,6 +10,7 @@ import { mapChatStreamError } from '@/lib/error-message-map/chat/chat-stream-err
 
 type UseChatSendParams = {
   t: TFunction;
+  userId: string;
   personaId: string | null;
   activeSessionIdRef: MutableRefObject<string>;
   assistantDraftIdRef: MutableRefObject<number | null>;
@@ -20,6 +21,7 @@ type UseChatSendParams = {
 
 export function useChatSend({
   t,
+  userId,
   personaId,
   activeSessionIdRef,
   assistantDraftIdRef,
@@ -57,7 +59,7 @@ export function useChatSend({
 
   const sendMessage = useCallback(async () => {
     const trimmed = draft.trim();
-    if (!trimmed || isStreaming || !personaId) {
+    if (!trimmed || isStreaming) {
       return;
     }
 
@@ -66,7 +68,8 @@ export function useChatSend({
     const userMessage = createEphemeralChatMessage({
       id: allocateEphemeralId(),
       sessionId,
-      userId: personaId,
+      userId: userId,
+      personaId: personaId,
       role: 'user',
       content: trimmed,
       status: 'pending',
@@ -75,7 +78,8 @@ export function useChatSend({
     const assistantMessage = createEphemeralChatMessage({
       id: allocateEphemeralId(),
       sessionId,
-      userId: personaId,
+      userId: userId,
+      personaId: personaId,
       role: 'assistant',
       content: '',
       status: 'processing',
@@ -93,7 +97,8 @@ export function useChatSend({
     try {
       await postChatStream(
         {
-          user_id: personaId,
+          user_id: userId,
+          persona_id: personaId,
           session_id: sessionId,
           message: trimmed,
         },
@@ -128,7 +133,7 @@ export function useChatSend({
     t,
   ]);
 
-  const canSend = draft.trim().length > 0 && !isStreaming && Boolean(personaId);
+  const canSend = draft.trim().length > 0 && !isStreaming && Boolean(userId);
 
   return {
     draft,

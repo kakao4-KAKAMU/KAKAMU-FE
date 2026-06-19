@@ -19,6 +19,7 @@ export type ChatHistoryMessage = {
   id: number;
   session_id: string;
   user_id: string;
+  persona_id: string | null;
   role: 'user' | 'assistant' | string;
   content: string;
   created_at: string;
@@ -39,6 +40,7 @@ export type ChatHistoryResponse = {
 export type ChatHistoryParams = {
   cursor?: number | null;
   limit: number;
+  user_id: string;
 };
 
 export type ChatRequest = {
@@ -49,6 +51,7 @@ export type ChatRequest = {
 /** SSE 스트림 요청 — `user_id`는 클라이언트에서 추가 전송 */
 export type ChatStreamRequestBody = ChatRequest & {
   user_id: string;
+  persona_id: string | null;
 };
 
 export type ChatSseEvent = {

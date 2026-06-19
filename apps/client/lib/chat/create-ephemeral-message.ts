@@ -4,6 +4,7 @@ type CreateEphemeralMessageParams = {
   id: number;
   sessionId: string;
   userId: string;
+  personaId: string | null;
   role: ChatHistoryMessage['role'];
   content: string;
   status?: ChatHistoryMessage['status'];
@@ -14,6 +15,7 @@ export function createEphemeralChatMessage({
   id,
   sessionId,
   userId,
+  personaId,
   role,
   content,
   status = 'pending',
@@ -23,6 +25,7 @@ export function createEphemeralChatMessage({
     id,
     session_id: sessionId,
     user_id: userId,
+    persona_id: personaId,
     role,
     content,
     created_at: new Date().toISOString(),
