@@ -39,6 +39,9 @@ export type {
   SearchPageResponse,
   TrendItem,
   TrendSearchResponse,
+  ContentSearchSort,
+  TabSearchParams,
+  ContentSearchParams,
   UserSearchResponse,
 } from './search';
 
