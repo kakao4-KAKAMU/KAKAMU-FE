@@ -7,16 +7,28 @@ import { useTranslation } from '@kakamu/i18n';
 
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
 import { useChatConversation } from '@/hooks/chat/use-chat-conversation';
+import { AppSuspenseBoundary } from '@/components/error-boundary';
 
 import { ChatComposer } from './ChatComposer';
 import { ChatMessageBubble } from './ChatMessageBubble';
 import { ConditionalRender } from '@/components/utils';
+import { ChatConversationScreenContentSkeleton } from './ChatConversationScreenContent.skeleton';
 
 type ChatConversationScreenContentProps = {
   sessionId: string;
 };
 
 export function ChatConversationScreenContent({
+  sessionId,
+}: ChatConversationScreenContentProps) {
+  return (
+    <AppSuspenseBoundary fallback={<ChatConversationScreenContentSkeleton />}>
+      <ChatConversationScreenContentInner sessionId={sessionId} />
+    </AppSuspenseBoundary>
+  );
+}
+
+function ChatConversationScreenContentInner({
   sessionId,
 }: ChatConversationScreenContentProps) {
   const insets = useSafeAreaInsets();
