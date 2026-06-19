@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import type { PostItem } from '@kakamu/types';
 import { Badge, Text } from '@kakamu/ui';
 import { CompactPost } from '../../post/CompactPost';

@@ -1,4 +1,5 @@
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import { Circle } from 'lucide-react-native';
 import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import { type Href, useRouter } from 'expo-router';
 import { Clapperboard } from 'lucide-react-native';
 import { Icon, Text, cn } from '@kakamu/ui';

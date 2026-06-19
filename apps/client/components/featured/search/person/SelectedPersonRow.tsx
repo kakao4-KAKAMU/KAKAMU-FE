@@ -1,4 +1,5 @@
-import { Platform, Pressable, View } from 'react-native';
+import { Platform, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler'
 import { Icon, Text } from '@kakamu/ui';
 import { Image } from 'react-native';
 import { ConditionalRender } from '@/components/utils';
