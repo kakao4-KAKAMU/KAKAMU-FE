@@ -13,11 +13,6 @@ export function ChatListHeader({
   return (
     <HeaderTemplate
       title={title}
-      rightAction={
-        <TextClassProvider value="text-foreground">
-          <Icon as={Sparkles} size={18} />
-        </TextClassProvider>
-      }
     />
   );
 }

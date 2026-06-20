@@ -54,7 +54,7 @@ function ChatListScreenContentInner() {
         )}
       />
 
-      <View className="absolute right-4" style={{ bottom: insets.bottom + 88 }}>
+      <View className="absolute right-4 bottom-4">
         <Button
           size="icon"
           className="size-14 rounded-full shadow-lg shadow-black/20"
