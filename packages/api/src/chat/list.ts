@@ -15,7 +15,7 @@ export async function getChatList(
   params: ChatListParams,
 ): Promise<ChatListResponse> {
   return client
-    .get('list', {
+    .get('chat/list', {
       searchParams: toChatListSearchParams(params),
     })
     .json<ChatListResponse>();
