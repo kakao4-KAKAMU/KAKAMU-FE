@@ -17,7 +17,7 @@ export async function getChatHistory(
   params: ChatHistoryParams,
 ): Promise<ChatHistoryResponse> {
   return client
-    .get(`history/${sessionId}`, {
+    .get(`chat/history/${sessionId}`, {
       searchParams: toHistorySearchParams(params),
     })
     .json<ChatHistoryResponse>();

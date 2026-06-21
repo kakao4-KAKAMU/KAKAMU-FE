@@ -18,7 +18,7 @@ export async function postChatStream(
   onEvent: (event: ChatSseEvent) => void | Promise<void>,
   signal?: AbortSignal,
 ): Promise<void> {
-  const response = await client.post('stream', {
+  const response = await client.post('chat/completions', {
     json: {
       user_id: body.user_id,
       session_id: body.session_id,
