@@ -57,7 +57,7 @@ export function PersonaCreateScreenContent() {
   const [submitting, setSubmitting] = useState(false);
 
   const genreQuery = usePersonaCreateGenreList();
-  const genres = genreQuery.data.genres;
+  const genres = genreQuery.data;
   const step3Search = usePersonaCreateStep3Search(step === 3);
   const step4Search = usePersonaCreateStep4Search(step === 4);
 

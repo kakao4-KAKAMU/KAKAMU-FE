@@ -69,7 +69,7 @@ export function PersonaListScreenContent() {
         />
 
         <PersonaGrid
-          personas={personas}
+          personasIds={personas}
           isManaging={isManaging}
           addLabel={t('account.persona.addNew')}
           deleteAccessibilityLabel={t('account.persona.deleteA11y')}

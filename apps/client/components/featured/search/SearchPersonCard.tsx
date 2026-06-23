@@ -7,17 +7,26 @@ import { Avatar, AvatarFallback, AvatarImage, Button, Icon, Text } from '@kakamu
 
 import { useProfileFollowActions } from '@/hooks/profile/useProfileFollowActions';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { useUserQuery } from '@kakamu/query';
+import { SearchPersonCardFallback } from './SearchPersonCard.fallback';
 
 type SearchPersonCardProps = {
-  user: UserSimpleWithFollow
+  userId: UserSimpleWithFollow['id'];
   onPress: () => void;
 };
 
-export function SearchPersonCard({ user, onPress }: SearchPersonCardProps) {
+export function SearchPersonCard({ userId, onPress }: SearchPersonCardProps) {
+  if (!userId) {
+    return <SearchPersonCardFallback />;
+  }
   const { t } = useTranslation();
-  const canFollow = user.id != null;
+  const apiClient = useBackendApiClient();
+  const userQuery = useUserQuery(apiClient, userId);
+  const user = userQuery.data;
+  const canFollow = user != null;
   const { isPending, onToggleFollow } = useProfileFollowActions({
-    userId: user.id ?? '',
+    userId: userId,
     isFollowing: user.is_following ?? false,
   });
 

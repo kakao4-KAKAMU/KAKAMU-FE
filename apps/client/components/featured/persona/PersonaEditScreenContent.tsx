@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 import type { PersonaUpdateRequest } from '@kakamu/types';
-import { usePersonasQuery, useUpdatePersonaMutation } from '@kakamu/query';
+import { usePersonaQuery, useUpdatePersonaMutation } from '@kakamu/query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { View } from 'react-native';
@@ -58,7 +58,7 @@ export function PersonaEditScreenContent() {
   const [submitting, setSubmitting] = useState(false);
 
   const genreQuery = usePersonaCreateGenreList();
-  const genres = genreQuery.data.genres;
+  const genres = genreQuery.data;
   const step3Search = usePersonaCreateStep3Search(step === 3);
   const step4Search = usePersonaCreateStep4Search(step === 4);
 
@@ -96,11 +96,8 @@ export function PersonaEditScreenContent() {
   const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
   const { resolveFormImageUrl, isUploading: uploadingImages } = useResolveFormImageUrls(uploadClient);
 
-  const personasQuery = usePersonasQuery(apiClient);
-  const persona = useMemo(
-    () => (id ? personasQuery.data.find((item) => item.id === id) : undefined),
-    [id, personasQuery.data],
-  );
+  const personaQuery = usePersonaQuery(apiClient, id ?? '');
+  const persona = personaQuery.data;
 
   useEffect(() => {
     if (!persona) {

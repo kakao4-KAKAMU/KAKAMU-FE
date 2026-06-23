@@ -17,7 +17,7 @@ export default function SearchFeedScreen() {
   const { recordSelection } = useSearchRecentHistory();
   const searchQuery = useSearchLiveInfiniteQuery(client, { q: query });
 
-  const posts = useMemo(
+  const postIds = useMemo(
     () => searchQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [searchQuery.data?.pages],
   );
@@ -39,7 +39,7 @@ export default function SearchFeedScreen() {
 
   return (
     <SearchResultsFrame
-      items={posts}
+      items={postIds}
       isLoading={searchQuery.isLoading}
       isFetchingNextPage={searchQuery.isFetchingNextPage}
       hasNextPage={searchQuery.hasNextPage ?? false}
@@ -48,9 +48,9 @@ export default function SearchFeedScreen() {
           void searchQuery.fetchNextPage();
         }
       }}
-      keyExtractor={(post) => String(post.id)}
-      renderItem={(post) => (
-        <CompactPost post={post} onContentPress={onPostPress} />
+      keyExtractor={(postId) => String(postId)}
+      renderItem={(postId) => (
+        <CompactPost postId={postId} onContentPress={onPostPress} />
       )}
     />
   );

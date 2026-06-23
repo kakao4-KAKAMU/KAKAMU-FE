@@ -21,7 +21,7 @@ export default function SearchRecommendScreen() {
   const { recordSelection } = useSearchRecentHistory();
   const searchQuery = useSearchForYouInfiniteQuery(client, { q: query }, currentUserId != null);
 
-  const posts = useMemo(
+  const postIds = useMemo(
     () => searchQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [searchQuery.data?.pages],
   );
@@ -54,7 +54,7 @@ export default function SearchRecommendScreen() {
 
   return (
     <SearchResultsFrame
-      items={posts}
+      items={postIds}
       isLoading={searchQuery.isLoading}
       isFetchingNextPage={searchQuery.isFetchingNextPage}
       hasNextPage={searchQuery.hasNextPage ?? false}
@@ -63,9 +63,9 @@ export default function SearchRecommendScreen() {
           void searchQuery.fetchNextPage();
         }
       }}
-      keyExtractor={(post) => String(post.id)}
-      renderItem={(post) => (
-        <CompactPost post={post} />
+      keyExtractor={(postId) => String(postId)}
+      renderItem={(postId) => (
+        <CompactPost postId={postId} />
       )}
     />
   );
