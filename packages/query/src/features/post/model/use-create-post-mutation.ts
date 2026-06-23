@@ -49,7 +49,7 @@ export function useCreatePostMutation(
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId: _userId, ...body }: CreatePostVariables) => createPost(client, body),
+    mutationFn: ({ ...body }: CreatePostVariables) => createPost(client, body),
     onMutate: async ({ userId, ...body }) => {
       await cancelPostQueries(queryClient, OPTIMISTIC_POST_ID);
       const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());

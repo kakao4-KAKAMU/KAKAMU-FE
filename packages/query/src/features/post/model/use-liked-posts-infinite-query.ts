@@ -5,11 +5,13 @@ import {
 } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { getLikedPostList } from '@kakamu/api';
-import type { PostCursorListResponse, PostListParams } from '@kakamu/types';
+import type { PostListParams } from '@kakamu/types';
 
 import { postKeys } from '../../../shared/keys/post.keys';
 import {
   seedPostDetailCacheFromList,
+  toPostIdListPage,
+  type PostCursorIdListResponse,
   type PostInfiniteData,
 } from '../lib/post-infinite-cache';
 
@@ -18,7 +20,7 @@ export function useLikedPostsInfiniteQuery(
   params: Omit<PostListParams, 'cursor'>,
   options?: Omit<
     UseInfiniteQueryOptions<
-      PostCursorListResponse,
+      PostCursorIdListResponse,
       unknown,
       PostInfiniteData,
       ReturnType<typeof postKeys.likedList>,
@@ -37,7 +39,7 @@ export function useLikedPostsInfiniteQuery(
         cursor: pageParam,
       });
       seedPostDetailCacheFromList(queryClient, response.items);
-      return response;
+      return toPostIdListPage(response);
     },
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => (lastPage.has_next ? lastPage.next_cursor : undefined),
