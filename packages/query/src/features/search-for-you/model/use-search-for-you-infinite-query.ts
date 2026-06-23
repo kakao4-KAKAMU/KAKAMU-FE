@@ -1,28 +1,49 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { getSearchForYou } from '@kakamu/api';
-import type { TabSearchParams } from '@kakamu/types';
+import type { PostSearchResponse, TabSearchParams } from '@kakamu/types';
 
+import { postKeys } from '../../../shared/keys/post.keys';
 import { searchKeys } from '../../../shared/keys/search.keys';
+import { seedDetailCache } from '../../../shared/lib/normalize-list-cache';
 
 const DEFAULT_LIMIT = 20;
+
+function selectPostSearchIds(data: {
+  pages: PostSearchResponse[];
+  pageParams: unknown[];
+}) {
+  return {
+    ...data,
+    pages: data.pages.map((page) => ({
+      ...page,
+      items: page.items.map((item) => item.id),
+    })),
+  };
+}
 
 export function useSearchForYouInfiniteQuery(
   client: ApiClient,
   params: Omit<TabSearchParams, 'cursor' | 'limit'>,
   enabled = true,
 ) {
+  const queryClient = useQueryClient();
+
   return useInfiniteQuery({
     queryKey: searchKeys.forYou(params),
-    queryFn: ({ pageParam }) =>
-      getSearchForYou(
+    queryFn: async ({ pageParam }) => {
+      const response = await getSearchForYou(
         client,
         { ...params, limit: DEFAULT_LIMIT },
         pageParam as string | null | undefined,
-      ),
+      );
+      seedDetailCache(queryClient, response.items, (item) => item.id, postKeys.detail);
+      return response;
+    },
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) =>
       lastPage.meta.has_next ? (lastPage.meta.next_cursor as string | null) : undefined,
     enabled: enabled && params.q.trim().length > 0,
+    select: selectPostSearchIds,
   });
 }

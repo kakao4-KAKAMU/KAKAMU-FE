@@ -5,12 +5,7 @@ import type { RelationResponse } from '@kakamu/types';
 
 import { relationKeys } from '../../../shared/keys/relation.keys';
 import { postKeys } from '../../../shared/keys/post.keys';
-import {
-  restorePostInfiniteLists,
-  setPostFollowByAuthorInCaches,
-  snapshotPostInfiniteLists,
-  type PostListQuerySnapshot,
-} from '../../post/lib/post-infinite-cache';
+import { setPostFollowByAuthorInCaches, restorePostDetails, snapshotPostDetails, type PostDetailQuerySnapshot } from '../../post/lib/post-infinite-cache';
 import { userKeys } from '../../../shared/keys/user.keys';
 import {
   cancelUserQueries,
@@ -28,8 +23,7 @@ type FollowUserVariables = {
 
 type FollowUserContext = {
   previousUserDetails: UserDetailQuerySnapshot;
-  previousPostLists: PostListQuerySnapshot;
-  previousLikedPostLists: PostListQuerySnapshot;
+  previousPostDetails: PostDetailQuerySnapshot;
 };
 
 export function useFollowUserMutation(
@@ -47,27 +41,22 @@ export function useFollowUserMutation(
     mutationFn: ({ userId }) => postFollowUser(client, userId),
     onMutate: async ({ userId }) => {
       await cancelUserQueries(queryClient, userId);
-      await queryClient.cancelQueries({ queryKey: postKeys.lists() });
-      await queryClient.cancelQueries({ queryKey: postKeys.likedLists() });
+      await queryClient.cancelQueries({ queryKey: postKeys.details() });
       const previousUserDetails = snapshotUserDetail(queryClient, userId);
-      const previousPostLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
-      const previousLikedPostLists = snapshotPostInfiniteLists(
-        queryClient,
-        postKeys.likedLists(),
-      );
+      const previousPostDetails = snapshotPostDetails(queryClient);
       setUserFollowInCache(queryClient, userId, true);
       setPostFollowByAuthorInCaches(queryClient, userId, true);
-      return { previousUserDetails, previousPostLists, previousLikedPostLists };
+      return { previousUserDetails, previousPostDetails };
     },
     onError: (_error, _variables, context) => {
       if (context) {
         restoreUserDetails(queryClient, context.previousUserDetails);
-        restorePostInfiniteLists(queryClient, context.previousPostLists);
-        restorePostInfiniteLists(queryClient, context.previousLikedPostLists);
+        restorePostDetails(queryClient, context.previousPostDetails);
       }
     },
     onSettled: (_data, _error, { userId }) => {
       queryClient.invalidateQueries({ queryKey: userKeys.detail(userId) });
+      queryClient.invalidateQueries({ queryKey: postKeys.details() });
       queryClient.invalidateQueries({ queryKey: relationKeys.followingsLists() });
       queryClient.invalidateQueries({ queryKey: relationKeys.followersLists() });
     },
