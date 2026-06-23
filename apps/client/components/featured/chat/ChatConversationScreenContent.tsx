@@ -115,13 +115,15 @@ function ChatConversationScreenContentInner({
                   </View>
                 }}
               />
-              <ConditionalRender.Boolean
-                condition={streamStatus}
-                render={{
-                  true: <Text className="text-center text-xs text-muted-foreground">{streamStatus}</Text>
-                }}
-              />
             </View>
+          }
+          ListFooterComponent={
+            <ConditionalRender.Boolean
+              condition={streamStatus}
+              render={{
+                true: <Text className="text-center text-xs text-muted-foreground">{streamStatus}</Text>
+              }}
+            />
           }
           renderItem={renderItem}
         />

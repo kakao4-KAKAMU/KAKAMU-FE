@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
-import { useChatListQuery } from '@kakamu/query';
+import { useQueryClient } from '@tanstack/react-query';
+import { chatKeys, useChatListQuery } from '@kakamu/query';
 import type { ChatSession } from '@kakamu/types';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
@@ -24,6 +25,7 @@ export function useChatListScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const client = useChatApiClient();
+  const queryClient = useQueryClient();
   const currentUserId = useCurrentUserId();
   const listQuery = useChatListQuery(
     client,
@@ -34,17 +36,28 @@ export function useChatListScreen() {
       : null,
   );
 
-  const mapSession = useCallback(
-    (session: ChatSession): ChatThreadRowViewModel => ({
-      sessionId: session.session_id,
-      title: formatChatSessionTitle(session, t('account.chat.thread.untitled')),
-      preview: formatChatSessionPreview(session, t('account.chat.thread.newPreview')),
-      timeLabel: formatChatSessionTime(session.last_active, i18n.language),
-    }),
-    [i18n.language, t],
+  const mapSessionId = useCallback(
+    (sessionId: string): ChatThreadRowViewModel => {
+      const session = queryClient.getQueryData<ChatSession>(chatKeys.detail(sessionId));
+      if (!session) {
+        return {
+          sessionId,
+          title: t('account.chat.thread.untitled'),
+          preview: t('account.chat.thread.newPreview'),
+          timeLabel: '',
+        };
+      }
+      return {
+        sessionId,
+        title: formatChatSessionTitle(session, t('account.chat.thread.untitled')),
+        preview: formatChatSessionPreview(session, t('account.chat.thread.newPreview')),
+        timeLabel: formatChatSessionTime(session.last_active, i18n.language),
+      };
+    },
+    [i18n.language, queryClient, t],
   );
 
-  const threads = (listQuery.data ?? []).map(mapSession);
+  const threads = (listQuery.data ?? []).map(mapSessionId);
 
   const onOpenThread = useCallback(
     (sessionId: string) => {
