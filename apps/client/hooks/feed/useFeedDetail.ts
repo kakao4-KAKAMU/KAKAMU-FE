@@ -1,11 +1,13 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   buildCommentFormValidationMessages,
   useTranslation,
 } from '@kakamu/i18n';
 import {
+  commentKeys,
   useCommentsByPostInfiniteQuery,
   useCreateCommentMutation,
   useDeleteCommentMutation,
@@ -35,6 +37,7 @@ const DEFAULT_VALUES: CommentFormInput = {
 
 export function useFeedDetail(postId: number) {
   const client = useBackendApiClient();
+  const queryClient = useQueryClient();
   const currentUserId = useCurrentUserId();
   const { t } = useTranslation();
   const { open: openErrorAlert } = useErrorAlertDialog();
@@ -84,25 +87,28 @@ export function useFeedDetail(postId: number) {
     },
   });
 
-  const allComments = useMemo(
+  const allCommentIds = useMemo(
     () => commentsQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [commentsQuery.data?.pages],
   );
 
-  const topLevelComments = useMemo(
-    () => allComments.filter((comment) => comment.parent_id == null),
-    [allComments],
-  );
+  const topLevelCommentIds = useMemo(() => {
+    return allCommentIds.filter((commentId) => {
+      const comment = queryClient.getQueryData<CommentItem>(commentKeys.detail(commentId));
+      return comment?.parent_id == null;
+    });
+  }, [allCommentIds, commentsQuery.dataUpdatedAt, queryClient]);
 
   const replyCountById = useMemo(() => {
     const counts = new Map<number, number>();
-    for (const comment of allComments) {
-      if (comment.parent_id != null) {
+    for (const commentId of allCommentIds) {
+      const comment = queryClient.getQueryData<CommentItem>(commentKeys.detail(commentId));
+      if (comment?.parent_id != null) {
         counts.set(comment.parent_id, (counts.get(comment.parent_id) ?? 0) + 1);
       }
     }
     return counts;
-  }, [allComments]);
+  }, [allCommentIds, commentsQuery.dataUpdatedAt, queryClient]);
 
   const commentCount = postQuery.data?.comment_count ?? commentsQuery.data?.pages[0]?.meta.total_count ?? 0;
 
@@ -172,7 +178,7 @@ export function useFeedDetail(postId: number) {
 
   return {
     post: postQuery.data,
-    topLevelComments,
+    topLevelCommentIds,
     replyCountById,
     commentCount,
     isCommentsLoading: commentsQuery.isLoading,

@@ -3,8 +3,15 @@ import { Image } from 'react-native';
 import { Text } from '@kakamu/ui';
 import type { MovieItem } from '@kakamu/types';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
+import { useMovieByIdQuery } from '@kakamu/query';
 
-export function CompactPostMovieCard({ movie }: { movie: MovieItem }) {
+type CompactPostMovieCardProps = {
+  movieId: MovieItem['id'];
+};
+
+export function CompactPostMovieCard({ movieId }: CompactPostMovieCardProps) {
+  const movieQuery = useMovieByIdQuery(movieId);
+  const movie = movieQuery.data;
   return (
     <View className="gap-4 rounded-[10px] border border-border bg-card p-4 shadow-sm shadow-black/5">
       <View className="flex-row items-center gap-3">

@@ -3,14 +3,14 @@ import type { PostItem } from '@kakamu/types';
 import { CompactPost } from '../../post/CompactPost';
 
 type ProfileFeedPanelProps = {
-  posts: PostItem[];
+  postsIds: PostItem['id'][];
 };
 
-export function ProfileFeedPanel({ posts }: ProfileFeedPanelProps) {
+export function ProfileFeedPanel({ postsIds }: ProfileFeedPanelProps) {
   return (
     <View className="gap-0">
-      {posts.map((post) => (
-        <CompactPost key={post.id} post={post} />
+      {postsIds.map((postId) => (
+        <CompactPost key={postId} postId={postId} />
       ))}
     </View>
   );

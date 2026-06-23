@@ -129,7 +129,7 @@ export default function FeedWriteScreen() {
               onSubmit={onSubmit}
               submitting={submitting}
               canSubmit={canSubmit}
-              genres={genreQuery.data?.genres ?? []}
+              genres={genreQuery.data ?? []}
               sheetOpen={movieSearch.sheetOpen}
               onSheetOpenChange={movieSearch.setSheetOpen}
               filterOpen={movieSearch.filterOpen}

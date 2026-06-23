@@ -17,5 +17,5 @@ export default function MyProfileLikesScreen() {
     limit: 20,
   })
 
-  return <ProfileFeedPanel posts={data?.pages.flatMap((page) => page.items) ?? []} />;
+  return <ProfileFeedPanel postsIds={data?.pages.flatMap((page) => page.items) ?? []} />;
 }
