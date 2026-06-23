@@ -1,5 +1,11 @@
 import type { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query';
-import type { CommentCreateRequest, CommentItem, CommentListResponse, PostItem, UserSimple } from '@kakamu/types';
+import type {
+  CommentCreateRequest,
+  CommentItem,
+  CommentListResponse,
+  PostItem,
+  UserSimple,
+} from '@kakamu/types';
 
 import { commentKeys } from '../../../shared/keys/comment.keys';
 import { postKeys } from '../../../shared/keys/post.keys';
@@ -7,13 +13,20 @@ import { postKeys } from '../../../shared/keys/post.keys';
 export const OPTIMISTIC_COMMENT_ID = -1;
 export const DEFAULT_COMMENT_PAGE_SIZE = 20;
 
-export type CommentInfiniteData = InfiniteData<CommentListResponse, number>;
+export type CommentIdListResponse = Omit<CommentListResponse, 'items'> & {
+  items: number[];
+};
+
+export type CommentInfiniteData = InfiniteData<CommentIdListResponse, number>;
 
 export type CommentListQuerySnapshot = [QueryKey, CommentInfiniteData | undefined][];
 
 export type CommentDetailQuerySnapshot = [QueryKey, CommentItem | undefined][];
 
-function enrichCommentItem(item: Omit<CommentItem, 'post_id' | 'like_count' | 'is_liked'>, postId: number): CommentItem {
+function enrichCommentItem(
+  item: Omit<CommentItem, 'post_id' | 'like_count' | 'is_liked'>,
+  postId: number,
+): CommentItem {
   return {
     ...item,
     post_id: postId,
@@ -22,28 +35,41 @@ function enrichCommentItem(item: Omit<CommentItem, 'post_id' | 'like_count' | 'i
   };
 }
 
-function mapInfinitePages(
+export function toCommentIdListPage(response: CommentListResponse): CommentIdListResponse {
+  return {
+    ...response,
+    items: response.items.map((item) => item.id),
+  };
+}
+
+function filterCommentIdsFromPages(
   data: CommentInfiniteData,
-  mapItem: (item: CommentItem) => CommentItem | null,
+  commentId: number,
 ): CommentInfiniteData {
   return {
     ...data,
     pages: data.pages.map((page) => ({
       ...page,
-      items: page.items
-        .map(mapItem)
-        .filter((item): item is CommentItem => item != null),
+      items: page.items.filter((id) => id !== commentId && id !== OPTIMISTIC_COMMENT_ID),
+      meta: {
+        ...page.meta,
+        total_count: Math.max(
+          0,
+          page.meta.total_count -
+            page.items.filter((id) => id === commentId || id === OPTIMISTIC_COMMENT_ID).length,
+        ),
+      },
     })),
   };
 }
 
-function prependToFirstPage(data: CommentInfiniteData, item: CommentItem): CommentInfiniteData {
+function prependCommentIdToFirstPage(data: CommentInfiniteData, commentId: number): CommentInfiniteData {
   if (data.pages.length === 0) {
     return {
       ...data,
       pages: [
         {
-          items: [item],
+          items: [commentId],
           meta: {
             total_count: 1,
             current_page: 1,
@@ -56,19 +82,34 @@ function prependToFirstPage(data: CommentInfiniteData, item: CommentItem): Comme
   }
 
   const [firstPage, ...restPages] = data.pages;
+  const withoutDuplicate = firstPage.items.filter((id) => id !== commentId);
   return {
     ...data,
     pages: [
       {
         ...firstPage,
-        items: [item, ...firstPage.items],
+        items: [commentId, ...withoutDuplicate],
         meta: {
           ...firstPage.meta,
-          total_count: firstPage.meta.total_count + 1,
+          total_count: firstPage.meta.total_count + (firstPage.items.includes(commentId) ? 0 : 1),
         },
       },
       ...restPages,
     ],
+  };
+}
+
+function replaceCommentIdInPages(
+  data: CommentInfiniteData,
+  fromId: number,
+  toId: number,
+): CommentInfiniteData {
+  return {
+    ...data,
+    pages: data.pages.map((page) => ({
+      ...page,
+      items: page.items.map((id) => (id === fromId ? toId : id)),
+    })),
   };
 }
 
@@ -163,7 +204,7 @@ export function prependCommentToPostLists(
         return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
       },
     },
-    (old) => (old ? prependToFirstPage(old, comment) : old),
+    (old) => (old ? prependCommentIdToFirstPage(old, comment.id) : old),
   );
   queryClient.setQueryData(commentKeys.detail(comment.id), comment);
 }
@@ -181,15 +222,7 @@ export function removeCommentFromCaches(
         return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
       },
     },
-    (old) =>
-      old
-        ? mapInfinitePages(old, (item) => {
-            if (item.id === commentId || item.parent_id === commentId) {
-              return null;
-            }
-            return item;
-          })
-        : old,
+    (old) => (old ? filterCommentIdsFromPages(old, commentId) : old),
   );
   queryClient.removeQueries({ queryKey: commentKeys.detail(commentId) });
 }
@@ -207,12 +240,7 @@ export function replaceOptimisticCommentInCaches(
         return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
       },
     },
-    (old) =>
-      old
-        ? mapInfinitePages(old, (item) =>
-            item.id === OPTIMISTIC_COMMENT_ID ? { ...item, id: commentId } : item,
-          )
-        : old,
+    (old) => (old ? replaceCommentIdInPages(old, OPTIMISTIC_COMMENT_ID, commentId) : old),
   );
   const optimistic = queryClient.getQueryData<CommentItem>(commentKeys.detail(OPTIMISTIC_COMMENT_ID));
   if (optimistic) {
@@ -221,28 +249,24 @@ export function replaceOptimisticCommentInCaches(
   }
 }
 
-export function patchCommentInCaches(
+export function patchCommentDetailCache(
   queryClient: QueryClient,
   commentId: number,
-  postId: number,
   patch: (comment: CommentItem) => CommentItem,
 ): void {
-  queryClient.setQueriesData<CommentInfiniteData>(
-    {
-      queryKey: commentKeys.byPostLists(),
-      predicate: (query) => {
-        const key = query.queryKey;
-        return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
-      },
-    },
-    (old) =>
-      old
-        ? mapInfinitePages(old, (item) => (item.id === commentId ? patch(item) : item))
-        : old,
-  );
   queryClient.setQueryData<CommentItem>(commentKeys.detail(commentId), (old) =>
     old ? patch(old) : old,
   );
+}
+
+/** @deprecated use {@link patchCommentDetailCache} */
+export function patchCommentInCaches(
+  queryClient: QueryClient,
+  commentId: number,
+  _postId: number,
+  patch: (comment: CommentItem) => CommentItem,
+): void {
+  patchCommentDetailCache(queryClient, commentId, patch);
 }
 
 export function toggleCommentLikeInCaches(
@@ -250,24 +274,18 @@ export function toggleCommentLikeInCaches(
   commentId: number,
 ): number | null {
   const detail = queryClient.getQueryData<CommentItem>(commentKeys.detail(commentId));
-  if (!detail) {
+  if (!detail?.post_id) {
     return null;
   }
 
-  if (detail.post_id == null) {
-    return null;
-  }
-
-  const postId = detail.post_id;
   const nextIsLiked = !detail.is_liked;
-  const nextLikeCount = detail.like_count + (detail.is_liked ? -1 : 1);
-  patchCommentInCaches(queryClient, commentId, postId, () => ({
+  patchCommentDetailCache(queryClient, commentId, () => ({
     ...detail,
     is_liked: nextIsLiked,
-    like_count: nextLikeCount,
+    like_count: detail.like_count + (detail.is_liked ? -1 : 1),
   }));
 
-  return postId;
+  return detail.post_id;
 }
 
 export function adjustPostCommentCountInCache(
@@ -278,6 +296,13 @@ export function adjustPostCommentCountInCache(
   queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
     old ? { ...old, comment_count: Math.max(0, old.comment_count + delta) } : old,
   );
+}
+
+export async function cancelCommentDetailQueries(
+  queryClient: QueryClient,
+  commentId: number,
+): Promise<void> {
+  await queryClient.cancelQueries({ queryKey: commentKeys.detail(commentId) });
 }
 
 export async function cancelCommentQueries(

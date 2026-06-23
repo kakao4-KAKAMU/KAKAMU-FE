@@ -1,18 +1,19 @@
 import {
   useInfiniteQuery,
   useQueryClient,
-  type InfiniteData,
   type UseInfiniteQueryOptions,
 } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { getCommentsByPost } from '@kakamu/api';
-import type { CommentListResponse } from '@kakamu/types';
+import type { CommentIdListResponse } from '../lib/comment-cache';
 
 import { commentKeys } from '../../../shared/keys/comment.keys';
 import {
   DEFAULT_COMMENT_PAGE_SIZE,
   mapCommentListResponse,
   seedCommentDetailCacheFromList,
+  toCommentIdListPage,
+  type CommentInfiniteData,
 } from '../lib/comment-cache';
 
 export function useCommentsByPostInfiniteQuery(
@@ -21,9 +22,9 @@ export function useCommentsByPostInfiniteQuery(
   pageSize: number = DEFAULT_COMMENT_PAGE_SIZE,
   options?: Omit<
     UseInfiniteQueryOptions<
-      CommentListResponse,
+      CommentIdListResponse,
       unknown,
-      InfiniteData<CommentListResponse, number>,
+      CommentInfiniteData,
       ReturnType<typeof commentKeys.byPostList>,
       number
     >,
@@ -41,7 +42,7 @@ export function useCommentsByPostInfiniteQuery(
       });
       const mapped = mapCommentListResponse(postId, response);
       seedCommentDetailCacheFromList(queryClient, postId, mapped.items);
-      return mapped;
+      return toCommentIdListPage(mapped);
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
