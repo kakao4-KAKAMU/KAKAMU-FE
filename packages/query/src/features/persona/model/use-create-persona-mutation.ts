@@ -2,10 +2,19 @@ import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/
 import type { ApiClient } from '@kakamu/api';
 import { createPersona } from '@kakamu/api';
 import type { Persona, PersonaCreateRequest, PersonaCreateResponse } from '@kakamu/types';
+
 import { personaKeys } from '../../../shared/keys/persona.keys';
+import {
+  removePersonaDetailCache,
+  setPersonaDetailCache,
+} from '../lib/persona-cache';
 
 const NO_MUTATION_CACHE = { gcTime: 0 } as const;
-type CreatePersonaContext = { previousPersonas: Persona[] };
+
+type CreatePersonaContext = {
+  previousPersonaIds: string[];
+  optimisticPersonaId: string;
+};
 
 export function useCreatePersonaMutation(
   client: ApiClient,
@@ -22,25 +31,26 @@ export function useCreatePersonaMutation(
     mutationFn: (body: PersonaCreateRequest) => createPersona(client, body),
     onMutate: async (body) => {
       await queryClient.cancelQueries({ queryKey: personaKeys.list() });
-      const previousPersonas =
-        queryClient.getQueryData<Persona[]>(personaKeys.list()) ?? [];
+      const previousPersonaIds = queryClient.getQueryData<string[]>(personaKeys.list()) ?? [];
       const optimisticPersona: Persona = {
         id: `optimistic-persona-${Date.now()}`,
         user_id: '',
         nickname: body.nickname,
         profile_image_url: body.profile_image_url ?? null,
       };
-      queryClient.setQueryData<Persona[]>(personaKeys.list(), [
-        ...previousPersonas,
-        optimisticPersona,
+      queryClient.setQueryData<string[]>(personaKeys.list(), [
+        ...previousPersonaIds,
+        optimisticPersona.id,
       ]);
-      return { previousPersonas };
+      setPersonaDetailCache(queryClient, optimisticPersona);
+      return { previousPersonaIds, optimisticPersonaId: optimisticPersona.id };
     },
     onError: (_error, _variables, context) => {
       if (!context) {
         return;
       }
-      queryClient.setQueryData(personaKeys.list(), context.previousPersonas);
+      queryClient.setQueryData(personaKeys.list(), context.previousPersonaIds);
+      removePersonaDetailCache(queryClient, context.optimisticPersonaId);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: personaKeys.lists() });
