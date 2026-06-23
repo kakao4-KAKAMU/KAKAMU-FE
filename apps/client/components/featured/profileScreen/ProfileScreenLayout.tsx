@@ -44,7 +44,7 @@ function ProfileScreenLayoutContent({
   const router = useRouter();
   const pathname = usePathname();
   const apiClient = useBackendApiClient();
-  const { user, userId: targetUserId, stats } = useProfileUserQuery({
+  const { user, userId: targetUserId } = useProfileUserQuery({
     client: apiClient,
     isMy,
     userId,
@@ -103,7 +103,7 @@ function ProfileScreenLayoutContent({
         contentContainerClassName='px-4 gap-2.5'
         className="flex-1"
       >
-        <ProfileHero user={user} />
+        <ProfileHero userId={targetUserId} />
         <ConditionalRender.Boolean
           condition={!isMy}
           render={{
@@ -117,7 +117,7 @@ function ProfileScreenLayoutContent({
           }}
         />
         <ProfileStats
-          user={stats}
+          userId={targetUserId}
           onFollowersPress={targetUserId ? relationList.openFollowers : undefined}
           onFollowingsPress={targetUserId ? relationList.openFollowings : undefined}
         />

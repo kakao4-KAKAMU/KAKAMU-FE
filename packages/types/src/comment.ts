@@ -5,8 +5,6 @@ export type { PagePaginationMeta as PaginationMeta } from './pagination';
 
 export type CommentItem = {
   id: number;
-  /** 목록 조회 시 클라이언트가 post 컨텍스트로 보강 */
-  post_id?: number;
   parent_id: number | null;
   user: UserSimple;
   content: string;

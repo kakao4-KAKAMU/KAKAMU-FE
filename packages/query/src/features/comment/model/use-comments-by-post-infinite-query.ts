@@ -40,7 +40,7 @@ export function useCommentsByPostInfiniteQuery(
         page: pageParam,
         size: pageSize,
       });
-      const mapped = mapCommentListResponse(postId, response);
+      const mapped = mapCommentListResponse(response);
       seedCommentDetailCacheFromList(queryClient, postId, mapped.items);
       return toCommentIdListPage(mapped);
     },

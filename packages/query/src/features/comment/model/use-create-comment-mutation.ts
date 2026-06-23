@@ -66,7 +66,7 @@ export function useCreateCommentMutation(
       const previousCommentLists = snapshotCommentByPostLists(queryClient, postId);
       const previousCommentDetails = snapshotCommentDetail(queryClient, OPTIMISTIC_COMMENT_ID);
       const previousPostDetails = snapshotPostDetail(queryClient, postId);
-      const optimisticComment = createOptimisticComment(postId, body, {
+      const optimisticComment = createOptimisticComment(body, {
         id: authorId,
         nickname: authorName,
       });

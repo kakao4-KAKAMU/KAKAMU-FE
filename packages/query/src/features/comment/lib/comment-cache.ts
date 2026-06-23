@@ -23,18 +23,6 @@ export type CommentListQuerySnapshot = [QueryKey, CommentInfiniteData | undefine
 
 export type CommentDetailQuerySnapshot = [QueryKey, CommentItem | undefined][];
 
-function enrichCommentItem(
-  item: Omit<CommentItem, 'post_id' | 'like_count' | 'is_liked'>,
-  postId: number,
-): CommentItem {
-  return {
-    ...item,
-    post_id: postId,
-    like_count: 0,
-    is_liked: false,
-  };
-}
-
 export function toCommentIdListPage(response: CommentListResponse): CommentIdListResponse {
   return {
     ...response,
@@ -114,7 +102,6 @@ function replaceCommentIdInPages(
 }
 
 export function createOptimisticComment(
-  postId: number,
   body: CommentCreateRequest,
   author?: { id?: string | null; nickname?: string; tag?: string },
 ): CommentItem {
@@ -128,7 +115,6 @@ export function createOptimisticComment(
 
   return {
     id: OPTIMISTIC_COMMENT_ID,
-    post_id: postId,
     parent_id: body.parent_id ?? null,
     user,
     content: body.content,
@@ -259,23 +245,13 @@ export function patchCommentDetailCache(
   );
 }
 
-/** @deprecated use {@link patchCommentDetailCache} */
-export function patchCommentInCaches(
-  queryClient: QueryClient,
-  commentId: number,
-  _postId: number,
-  patch: (comment: CommentItem) => CommentItem,
-): void {
-  patchCommentDetailCache(queryClient, commentId, patch);
-}
-
 export function toggleCommentLikeInCaches(
   queryClient: QueryClient,
   commentId: number,
-): number | null {
+) {
   const detail = queryClient.getQueryData<CommentItem>(commentKeys.detail(commentId));
-  if (!detail?.post_id) {
-    return null;
+  if (!detail) {
+    return;
   }
 
   const nextIsLiked = !detail.is_liked;
@@ -284,8 +260,6 @@ export function toggleCommentLikeInCaches(
     is_liked: nextIsLiked,
     like_count: detail.like_count + (detail.is_liked ? -1 : 1),
   }));
-
-  return detail.post_id;
 }
 
 export function adjustPostCommentCountInCache(
@@ -325,11 +299,10 @@ export async function cancelCommentQueries(
 }
 
 export function mapCommentListResponse(
-  postId: number,
   response: CommentListResponse,
 ): CommentListResponse {
   return {
     ...response,
-    items: response.items.map((item) => enrichCommentItem(item, postId)),
+    items: response.items,
   };
 }

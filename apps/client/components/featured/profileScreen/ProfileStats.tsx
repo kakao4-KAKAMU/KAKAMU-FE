@@ -1,6 +1,9 @@
+import { memo, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { Text } from '@kakamu/ui';
+import { useUserQuery } from '@kakamu/query';
 import type { ProfileStatKey } from './types';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 const STAT_LABELS: Record<ProfileStatKey, string> = {
   feed: 'FEED',
@@ -9,12 +12,21 @@ const STAT_LABELS: Record<ProfileStatKey, string> = {
 };
 
 type ProfileStatsProps = {
-  user: Record<ProfileStatKey, number>;
+  userId: string;
   onFollowersPress?: () => void;
   onFollowingsPress?: () => void;
 };
 
-export function ProfileStats({ user, onFollowersPress, onFollowingsPress }: ProfileStatsProps) {
+function ProfileStatsComponent({ userId, onFollowersPress, onFollowingsPress }: ProfileStatsProps) {
+  const apiClient = useBackendApiClient();
+  const userQuery = useUserQuery(apiClient, userId);
+  const user = userQuery.data;
+  const stats = useMemo(() => ({
+    feed: user.post_count,
+    save: user.follower_count,
+    following: user.following_count,
+  }), [user]);
+
   const entries: ProfileStatKey[] = ['feed', 'save', 'following'];
 
   return (
@@ -29,7 +41,7 @@ export function ProfileStats({ user, onFollowersPress, onFollowingsPress }: Prof
         const content = (
           <>
             <Text className="text-xl font-extrabold text-secondary-foreground">
-              {user[key]}
+              {stats[key]}
             </Text>
             <Text className="text-[10px] font-bold tracking-wide text-muted-foreground">
               {STAT_LABELS[key]}
@@ -62,3 +74,5 @@ export function ProfileStats({ user, onFollowersPress, onFollowingsPress }: Prof
     </View>
   );
 }
+
+export const ProfileStats = memo(ProfileStatsComponent);
