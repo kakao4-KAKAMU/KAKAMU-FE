@@ -4,7 +4,7 @@ import { PersonaAddCard } from './PersonaAddCard';
 import { PersonaCard } from './PersonaCard';
 
 type PersonaGridProps = {
-  personas: Persona[];
+  personasIds: Persona['id'][];
   isManaging: boolean;
   addLabel: string;
   deleteAccessibilityLabel: string;
@@ -15,7 +15,7 @@ type PersonaGridProps = {
 };
 
 export function PersonaGrid({
-  personas,
+  personasIds,
   isManaging,
   addLabel,
   deleteAccessibilityLabel,
@@ -26,15 +26,15 @@ export function PersonaGrid({
 }: PersonaGridProps) {
   return (
     <View className="w-full flex-row flex-wrap items-start justify-center gap-3.5">
-      {personas.map((persona) => (
+      {personasIds.map((personaId) => (
         <PersonaCard
-          key={persona.id}
-          persona={persona}
+          key={personaId}
+          personaId={personaId}
           isManaging={isManaging}
-          selectAccessibilityLabel={getSelectAccessibilityLabel(persona.nickname)}
+          getSelectAccessibilityLabel={getSelectAccessibilityLabel}
           deleteAccessibilityLabel={deleteAccessibilityLabel}
-          onSelect={() => onSelect(persona.id)}
-          onDelete={() => onDelete(persona.id)}
+          onSelect={() => onSelect(personaId)}
+          onDelete={() => onDelete(personaId)}
         />
       ))}
       <PersonaAddCard label={addLabel} onPress={onAddPress} />

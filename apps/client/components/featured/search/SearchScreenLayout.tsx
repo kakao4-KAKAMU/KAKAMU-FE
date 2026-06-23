@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from '@kakamu/i18n';
-import { Input, Text } from '@kakamu/ui';
+import { Input } from '@kakamu/ui';
 
 import { HeaderTemplate } from '@/components/featured/header/HeaderTemplate';
 import { useSearchNavigation } from '@/hooks/search/useSearchNavigation';

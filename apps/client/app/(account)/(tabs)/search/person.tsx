@@ -19,7 +19,7 @@ export default function SearchPersonScreen() {
   const { recordSelection } = useSearchRecentHistory();
   const searchQuery = useSearchUserInfiniteQuery(client, { q: query });
 
-  const users = useMemo(
+  const userIds = useMemo(
     () => searchQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [searchQuery.data?.pages],
   );
@@ -42,7 +42,7 @@ export default function SearchPersonScreen() {
 
   return (
     <SearchResultsFrame
-      items={users}
+      items={userIds}
       isLoading={searchQuery.isLoading}
       isFetchingNextPage={searchQuery.isFetchingNextPage}
       hasNextPage={searchQuery.hasNextPage ?? false}
@@ -51,13 +51,13 @@ export default function SearchPersonScreen() {
           void searchQuery.fetchNextPage();
         }
       }}
-      keyExtractor={(user) => user.id ?? user.nickname}
-      renderItem={(user) => (
+      keyExtractor={(userId) => userId}
+      renderItem={(userId) => (
         <SearchPersonCard
-          user={user}
+          userId={userId}
           onPress={() => {
-            if (user.id) {
-              onUserPress(user.id);
+            if (userId) {
+              onUserPress(userId);
             }
           }}
         />

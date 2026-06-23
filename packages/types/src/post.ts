@@ -18,7 +18,6 @@ export type PostItem = {
   is_spoiler: boolean;
   movies: MovieItem[];
   comment_count: number;
-  is_following: boolean;
 };
 
 export type PostWriteRequestBody = {

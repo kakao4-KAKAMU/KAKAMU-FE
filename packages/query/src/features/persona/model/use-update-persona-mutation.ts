@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { updatePersona } from '@kakamu/api';
-import type { Persona, PersonaUpdateRequest, PersonaUpdateResponse } from '@kakamu/types';
+import type { PersonaUpdateRequest, PersonaUpdateResponse } from '@kakamu/types';
+
 import { personaKeys } from '../../../shared/keys/persona.keys';
 import { userKeys } from '../../../shared/keys/user.keys';
 import {
@@ -11,6 +12,12 @@ import {
   snapshotUserDetail,
   type UserDetailQuerySnapshot,
 } from '../../user/lib/user-cache';
+import {
+  patchPersonaDetailCache,
+  type PersonaDetailQuerySnapshot,
+  restorePersonaDetails,
+  snapshotPersonaDetail,
+} from '../lib/persona-cache';
 
 type UpdatePersonaVariables = {
   personaId: string;
@@ -19,7 +26,7 @@ type UpdatePersonaVariables = {
 };
 
 type UpdatePersonaContext = {
-  previousPersonas: Persona[];
+  previousPersonaDetails: PersonaDetailQuerySnapshot;
   previousUserDetails: UserDetailQuerySnapshot | undefined;
 };
 
@@ -39,21 +46,13 @@ export function useUpdatePersonaMutation(
   return useMutation({
     mutationFn: ({ personaId, body }) => updatePersona(client, personaId, body),
     onMutate: async ({ personaId, body, userId }) => {
-      await queryClient.cancelQueries({ queryKey: personaKeys.list() });
-      const previousPersonas =
-        queryClient.getQueryData<Persona[]>(personaKeys.list()) ?? [];
-      queryClient.setQueryData<Persona[]>(
-        personaKeys.list(),
-        previousPersonas.map((persona) =>
-          persona.id === personaId
-            ? {
-                ...persona,
-                nickname: body.nickname ?? persona.nickname,
-                profile_image_url: body.profile_image_url ?? persona.profile_image_url,
-              }
-            : persona,
-        ),
-      );
+      await queryClient.cancelQueries({ queryKey: personaKeys.detail(personaId) });
+      const previousPersonaDetails = snapshotPersonaDetail(queryClient, personaId);
+      patchPersonaDetailCache(queryClient, personaId, (persona) => ({
+        ...persona,
+        nickname: body.nickname ?? persona.nickname,
+        profile_image_url: body.profile_image_url ?? persona.profile_image_url,
+      }));
 
       let previousUserDetails: UserDetailQuerySnapshot | undefined;
       if (userId) {
@@ -65,19 +64,19 @@ export function useUpdatePersonaMutation(
         });
       }
 
-      return { previousPersonas, previousUserDetails };
+      return { previousPersonaDetails, previousUserDetails };
     },
     onError: (_error, _variables, context) => {
       if (!context) {
         return;
       }
-      queryClient.setQueryData(personaKeys.list(), context.previousPersonas);
+      restorePersonaDetails(queryClient, context.previousPersonaDetails);
       if (context.previousUserDetails) {
         restoreUserDetails(queryClient, context.previousUserDetails);
       }
     },
     onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({ queryKey: personaKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: personaKeys.detail(variables.personaId) });
       if (variables.userId) {
         queryClient.invalidateQueries({ queryKey: userKeys.detail(variables.userId) });
       }

@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 import { useTranslation } from '@kakamu/i18n';
-import { chatKeys, useChatListQuery } from '@kakamu/query';
+import { chatKeys } from '@kakamu/query';
 import type { ChatSession, ChatSseEvent } from '@kakamu/types';
 import { usePersonaStore } from '@kakamu/store';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,10 +13,6 @@ import { useChatSession } from '@/hooks/chat/use-chat-session';
 import { useChatStreamEvents } from '@/hooks/chat/use-chat-stream-events';
 import { formatChatSessionTitle } from '@/lib/chat/format-session-label';
 
-function findSession(sessions: ChatSession[] | undefined, sessionId: string): ChatSession | undefined {
-  return sessions?.find((item) => item.session_id === sessionId);
-}
-
 export function useChatConversation(routeSessionId: string | undefined) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -25,14 +21,6 @@ export function useChatConversation(routeSessionId: string | undefined) {
   if (!currentUserId) {
     throw new Error('Current user ID not found');
   }
-  const listQuery = useChatListQuery(
-    client,
-    currentUserId
-      ? {
-          user_id: currentUserId,
-        }
-      : null,
-  );
   const personaId = usePersonaStore((state) => state.selectedPersonaId);
 
   const assistantDraftIdRef = useRef<number | null>(null);
@@ -107,7 +95,9 @@ export function useChatConversation(routeSessionId: string | undefined) {
 
   applyStreamEventRef.current = applyStreamEvent;
 
-  const matchedSession = findSession(listQuery.data, activeSessionId);
+  const matchedSession = queryClient.getQueryData<ChatSession>(
+    chatKeys.detail(activeSessionId),
+  );
   const headerTitle = isNewSession
     ? t('account.chat.thread.untitled')
     : formatChatSessionTitle(

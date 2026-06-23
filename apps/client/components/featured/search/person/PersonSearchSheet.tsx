@@ -8,7 +8,7 @@ import { Button, Icon, Input, Text, BottomSheet } from '@kakamu/ui';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 
 import { PersonFilterSheet } from './PersonFilterSheet';
-import { SelectedPersonRow } from './SelectedPersonRow';
+import { PersonSearchResultRow } from './PersonSearchResultRow';
 import type { PersonSearchControl, PersonaPersonSearchQuery } from '../search-sheet.types';
 
 type SelectedPerson = PersonaCreateFormInput['selectedPersons'][number];
@@ -97,12 +97,12 @@ export function PersonSearchSheet({
                 {t('account.persona.create.emptyResults')}
               </Text>
             ) : (
-              items.map((item) => (
-                <SelectedPersonRow
-                  key={item.id}
-                  name={item.name}
-                  checked={isSelected(item.id)}
-                  onToggle={() => toggleItem(item)}
+              items.map((personId) => (
+                <PersonSearchResultRow
+                  key={personId}
+                  personId={personId}
+                  checked={isSelected(personId)}
+                  onToggle={toggleItem}
                 />
               ))
             )}

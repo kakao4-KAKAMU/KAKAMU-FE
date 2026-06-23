@@ -49,10 +49,10 @@ export default function SearchMovieScreen() {
           void searchQuery.fetchNextPage();
         }
       }}
-      keyExtractor={(movie) => movie.id}
-      renderItem={(movie) => (
+      keyExtractor={(movieId) => movieId}
+      renderItem={(movieId) => (
         <Pressable accessibilityRole="button" onPress={onMoviePress}>
-          <CompactPostMovieCard movie={movie} />
+          <CompactPostMovieCard movieId={movieId} />
         </Pressable>
       )}
     />

@@ -3,24 +3,28 @@ import { Image, Pressable, View } from 'react-native';
 import { User, X } from 'lucide-react-native';
 import { cn, Icon, Text, TextClassProvider } from '@kakamu/ui';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
+import { usePersonaQuery } from '@kakamu/query';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 type PersonaCardProps = {
-  persona: Persona;
+  personaId: Persona['id'];
   isManaging: boolean;
-  selectAccessibilityLabel: string;
+  getSelectAccessibilityLabel: (nickname: string) => string;
   deleteAccessibilityLabel: string;
   onSelect: () => void;
   onDelete: () => void;
 };
 
 export function PersonaCard({
-  persona,
+  personaId,
   isManaging,
-  selectAccessibilityLabel,
+  getSelectAccessibilityLabel,
   deleteAccessibilityLabel,
   onSelect,
   onDelete,
 }: PersonaCardProps) {
+  const apiClient = useBackendApiClient();
+  const personaQuery = usePersonaQuery(apiClient, personaId);
   const cardClassName = cn(
     'relative h-[164px] w-[132px] flex-col items-center justify-center gap-2.5 rounded-[18px] border border-border bg-card p-3.5',
     !isManaging && 'active:opacity-70',
@@ -45,13 +49,13 @@ export function PersonaCard({
       <Pressable
         className="flex-col items-center justify-center gap-2.5 absolute inset-0 active:opacity-70"
         accessibilityRole="button"
-        accessibilityLabel={selectAccessibilityLabel}
+        accessibilityLabel={getSelectAccessibilityLabel(personaQuery.data?.nickname ?? '')}
         onPress={onSelect}
       >
         <View className="h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-full border border-border bg-muted">
-          {persona.profile_image_url ? (
+          {personaQuery.data?.profile_image_url ? (
             <Image
-              source={{ uri: convertImagePath(persona.profile_image_url) }}
+              source={{ uri: convertImagePath(personaQuery.data.profile_image_url) }}
               accessibilityIgnoresInvertColors
               className="h-full w-full"
             />
@@ -64,7 +68,7 @@ export function PersonaCard({
 
         <View className="w-full flex-col items-center gap-0.5">
           <Text className="text-center text-[15px] font-bold leading-tight text-foreground">
-            {persona.nickname}
+            {personaQuery.data?.nickname}
           </Text>
         </View>
       </Pressable>

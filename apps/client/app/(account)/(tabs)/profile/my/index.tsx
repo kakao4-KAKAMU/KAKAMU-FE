@@ -13,5 +13,5 @@ export default function ProfileFeedScreen() {
     limit: 20,
   })
 
-  return <ProfileFeedPanel posts={data?.pages.flatMap((page) => page.items) ?? []} />;
+  return <ProfileFeedPanel postsIds={data?.pages.flatMap((page) => page.items) ?? []} />;
 }

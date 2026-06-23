@@ -161,13 +161,12 @@ export function PostWriteForm({
                 onConfirm={(movies) =>
                   onChange(
                     movies.map((movie) => {
-                      const fromSearch = search.items.find((item) => item.id === movie.id);
                       const existing = selected.find((item) => item.id === movie.id);
                       return {
                         id: movie.id,
                         name: movie.name,
                         release_date: movie.release_date,
-                        poster_url: fromSearch?.poster_url ?? existing?.poster_url,
+                        poster_url: movie.poster_url ?? existing?.poster_url,
                       };
                     }),
                   )

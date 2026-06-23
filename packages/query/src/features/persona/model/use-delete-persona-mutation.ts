@@ -1,15 +1,16 @@
 import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { deletePersona } from '@kakamu/api';
-import type { Persona } from '@kakamu/types';
+
 import { personaKeys } from '../../../shared/keys/persona.keys';
+import { removePersonaDetailCache } from '../lib/persona-cache';
 
 type DeletePersonaVariables = {
   personaId: string;
 };
 
 type DeletePersonaContext = {
-  previousPersonas: Persona[];
+  previousPersonaIds: string[];
 };
 
 const NO_MUTATION_CACHE = { gcTime: 0 } as const;
@@ -24,21 +25,22 @@ export function useDeletePersonaMutation(
     mutationFn: ({ personaId }) => deletePersona(client, personaId),
     onMutate: async ({ personaId }) => {
       await queryClient.cancelQueries({ queryKey: personaKeys.list() });
-      const previousPersonas =
-        queryClient.getQueryData<Persona[]>(personaKeys.list()) ?? [];
-      queryClient.setQueryData<Persona[]>(
+      const previousPersonaIds = queryClient.getQueryData<string[]>(personaKeys.list()) ?? [];
+      queryClient.setQueryData<string[]>(
         personaKeys.list(),
-        previousPersonas.filter((persona) => persona.id !== personaId),
+        previousPersonaIds.filter((id) => id !== personaId),
       );
-      return { previousPersonas };
+      removePersonaDetailCache(queryClient, personaId);
+      return { previousPersonaIds };
     },
     onError: (_error, _variables, context) => {
       if (!context) {
         return;
       }
-      queryClient.setQueryData(personaKeys.list(), context.previousPersonas);
+      queryClient.setQueryData(personaKeys.list(), context.previousPersonaIds);
     },
-    onSettled: () => {
+    onSettled: (_data, _error, { personaId }) => {
+      queryClient.invalidateQueries({ queryKey: personaKeys.detail(personaId) });
       queryClient.invalidateQueries({ queryKey: personaKeys.lists() });
     },
     ...NO_MUTATION_CACHE,

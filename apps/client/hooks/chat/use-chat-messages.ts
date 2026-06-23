@@ -5,7 +5,7 @@ import type { ChatHistoryMessage, ChatHistoryResponse } from '@kakamu/types';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
-import { flattenHistoryPagesFromInfinite } from '@/lib/chat/flatten-history-messages';
+import { resolveHistoryMessagesFromInfinite } from '@/lib/chat/flatten-history-messages';
 import { mergeChatMessages } from '@/lib/chat/merge-chat-messages';
 import { useCurrentUserId } from '../auth/useCurrentUserId';
 
@@ -38,8 +38,11 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
   }, []);
 
   const historyMessages = useMemo(
-    () => flattenHistoryPagesFromInfinite(historyQuery.data),
-    [historyQuery.data],
+    () =>
+      resolveHistoryMessagesFromInfinite(historyQuery.data, (messageId) =>
+        queryClient.getQueryData<ChatHistoryMessage>(chatKeys.messageDetail(messageId)),
+      ),
+    [historyQuery.data, queryClient],
   );
 
   const messages = useMemo(

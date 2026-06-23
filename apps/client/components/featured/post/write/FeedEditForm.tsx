@@ -120,7 +120,7 @@ export function FeedEditForm({ postId }: FeedEditFormProps) {
       onSubmit={onSubmit}
       submitting={submitting}
       canSubmit={!submitting}
-      genres={genreQuery.data.genres}
+      genres={genreQuery.data}
       sheetOpen={movieSearch.sheetOpen}
       onSheetOpenChange={movieSearch.setSheetOpen}
       filterOpen={movieSearch.filterOpen}

@@ -7,10 +7,16 @@ import type {
 } from '@kakamu/types';
 
 import { postKeys } from '../../../shared/keys/post.keys';
+import { movieKeys } from '../../../shared/keys/movie.keys';
+import { userKeys } from '../../../shared/keys/user.keys';
 
 export const OPTIMISTIC_POST_ID = -1;
 
-export type PostInfiniteData = InfiniteData<PostCursorListResponse, number | undefined>;
+export type PostCursorIdListResponse = Omit<PostCursorListResponse, 'items'> & {
+  items: number[];
+};
+
+export type PostInfiniteData = InfiniteData<PostCursorIdListResponse, number | undefined>;
 
 export type PostListQuerySnapshot = [QueryKey, PostInfiniteData | undefined][];
 
@@ -31,6 +37,13 @@ function toPostSpoiler(value: number | boolean | undefined): boolean {
   return value === 1;
 }
 
+export function toPostIdListPage(response: PostCursorListResponse): PostCursorIdListResponse {
+  return {
+    ...response,
+    items: response.items.map((item) => item.id),
+  };
+}
+
 export function createOptimisticPost(body: PostUpdateRequest): PostItem {
   return {
     id: OPTIMISTIC_POST_ID,
@@ -44,7 +57,6 @@ export function createOptimisticPost(body: PostUpdateRequest): PostItem {
     mentions: [],
     like_count: 0,
     is_liked: false,
-    is_following: false,
     comment_count: 0,
     created_at: new Date().toISOString(),
     updated_at: null,
@@ -56,6 +68,14 @@ export function seedPostDetailCacheFromList(
   items: PostItem[],
 ): void {
   for (const item of items) {
+    if (item.movies.length > 0) {
+      for (const movie of item.movies) {
+        queryClient.setQueryData(movieKeys.detail(movie.id), movie);
+      }
+    }
+    if (item.user.id) {
+      queryClient.setQueryData(userKeys.detail(item.user.id), item.user);
+    }
     queryClient.setQueryData(postKeys.detail(item.id), item);
   }
 }
@@ -74,28 +94,23 @@ export function applyPostWriteBody(post: PostItem, body: PostUpdateRequest): Pos
   };
 }
 
-function mapInfinitePages(
-  data: PostInfiniteData,
-  mapItem: (item: PostItem) => PostItem | null,
-): PostInfiniteData {
+function filterPostIdFromPages(data: PostInfiniteData, postId: number): PostInfiniteData {
   return {
     ...data,
     pages: data.pages.map((page) => ({
       ...page,
-      items: page.items
-        .map(mapItem)
-        .filter((item): item is PostItem => item != null),
+      items: page.items.filter((id) => id !== postId),
     })),
   };
 }
 
-function prependToFirstPage(data: PostInfiniteData, item: PostItem): PostInfiniteData {
+function prependPostIdToFirstPage(data: PostInfiniteData, postId: number): PostInfiniteData {
   if (data.pages.length === 0) {
     return {
       ...data,
       pages: [
         {
-          items: [item],
+          items: [postId],
           next_cursor: 0,
           has_next: false,
         },
@@ -104,9 +119,10 @@ function prependToFirstPage(data: PostInfiniteData, item: PostItem): PostInfinit
   }
 
   const [firstPage, ...restPages] = data.pages;
+  const withoutDuplicate = firstPage.items.filter((id) => id !== postId);
   return {
     ...data,
-    pages: [{ ...firstPage, items: [item, ...firstPage.items] }, ...restPages],
+    pages: [{ ...firstPage, items: [postId, ...withoutDuplicate] }, ...restPages],
   };
 }
 
@@ -133,6 +149,10 @@ export function snapshotPostDetail(
   return queryClient.getQueriesData<PostItem>({ queryKey: postKeys.detail(postId) });
 }
 
+export function snapshotPostDetails(queryClient: QueryClient): PostDetailQuerySnapshot {
+  return queryClient.getQueriesData<PostItem>({ queryKey: postKeys.details() });
+}
+
 export function restorePostDetails(
   queryClient: QueryClient,
   snapshots: PostDetailQuerySnapshot,
@@ -146,7 +166,7 @@ export function prependPostToMyLists(queryClient: QueryClient, item: PostItem): 
   setPostDetailCache(queryClient, item);
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.lists() },
-    (old) => (old ? prependToFirstPage(old, item) : old),
+    (old) => (old ? prependPostIdToFirstPage(old, item.id) : old),
   );
 }
 
@@ -154,15 +174,14 @@ export function prependPostToLikedLists(queryClient: QueryClient, item: PostItem
   setPostDetailCache(queryClient, item);
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.likedLists() },
-    (old) => (old ? prependToFirstPage(old, item) : old),
+    (old) => (old ? prependPostIdToFirstPage(old, item.id) : old),
   );
 }
 
 export function removePostFromLikedLists(queryClient: QueryClient, postId: number): void {
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.likedLists() },
-    (old) =>
-      old ? mapInfinitePages(old, (item) => (item.id === postId ? null : item)) : old,
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
   );
 }
 
@@ -173,64 +192,39 @@ export function togglePostLikeInCaches(queryClient: QueryClient, postId: number)
   }
 
   const nextIsLiked = !detail.is_liked;
-  const patched: PostItem = {
+  queryClient.setQueryData<PostItem>(postKeys.detail(postId), {
     ...detail,
     is_liked: nextIsLiked,
     like_count: detail.like_count + (detail.is_liked ? -1 : 1),
-  };
-
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.lists() },
-    (old) =>
-      old
-        ? mapInfinitePages(old, (item) => (item.id === postId ? patched : item))
-        : old,
-  );
-  queryClient.setQueryData<PostItem>(postKeys.detail(postId), patched);
+  });
 
   if (nextIsLiked) {
     queryClient.setQueriesData<PostInfiniteData>(
       { queryKey: postKeys.likedLists() },
-      (old) => {
-        if (!old) {
-          return old;
-        }
-        const existsInLiked = old.pages.some((page) =>
-          page.items.some((item) => item.id === postId),
-        );
-        if (existsInLiked) {
-          return mapInfinitePages(old, (item) => (item.id === postId ? patched : item));
-        }
-        return prependToFirstPage(old, patched);
-      },
+      (old) => (old ? prependPostIdToFirstPage(old, postId) : old),
     );
   } else {
     removePostFromLikedLists(queryClient, postId);
   }
 }
 
+export function patchPostDetailCache(
+  queryClient: QueryClient,
+  postId: number,
+  patch: (post: PostItem) => PostItem,
+): void {
+  queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
+    old ? patch(old) : old,
+  );
+}
+
+/** @deprecated use {@link patchPostDetailCache} */
 export function patchPostInCaches(
   queryClient: QueryClient,
   postId: number,
   patch: (post: PostItem) => PostItem,
 ): void {
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.lists() },
-    (old) =>
-      old
-        ? mapInfinitePages(old, (item) => (item.id === postId ? patch(item) : item))
-        : old,
-  );
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.likedLists() },
-    (old) =>
-      old
-        ? mapInfinitePages(old, (item) => (item.id === postId ? patch(item) : item))
-        : old,
-  );
-  queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
-    old ? patch(old) : old,
-  );
+  patchPostDetailCache(queryClient, postId, patch);
 }
 
 export function setPostFollowByAuthorInCaches(
@@ -238,35 +232,29 @@ export function setPostFollowByAuthorInCaches(
   authorId: string,
   isFollowing: boolean,
 ): void {
-  const patchAuthorPosts = (post: PostItem): PostItem =>
-    post.user.id === authorId ? { ...post, is_following: isFollowing } : post;
-
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.lists() },
-    (old) => (old ? mapInfinitePages(old, patchAuthorPosts) : old),
-  );
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.likedLists() },
-    (old) => (old ? mapInfinitePages(old, patchAuthorPosts) : old),
-  );
   queryClient.setQueriesData<PostItem>(
     { queryKey: postKeys.details() },
-    (old) => (old ? patchAuthorPosts(old) : old),
+    (old) => (old?.user.id === authorId ? { ...old, is_following: isFollowing } : old),
   );
 }
 
 export function removePostFromCaches(queryClient: QueryClient, postId: number): void {
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.lists() },
-    (old) =>
-      old ? mapInfinitePages(old, (item) => (item.id === postId ? null : item)) : old,
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
   );
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.likedLists() },
-    (old) =>
-      old ? mapInfinitePages(old, (item) => (item.id === postId ? null : item)) : old,
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
   );
   queryClient.removeQueries({ queryKey: postKeys.detail(postId) });
+}
+
+export async function cancelPostDetailQueries(
+  queryClient: QueryClient,
+  postId: number,
+): Promise<void> {
+  await queryClient.cancelQueries({ queryKey: postKeys.detail(postId) });
 }
 
 export async function cancelPostQueries(queryClient: QueryClient, postId?: number): Promise<void> {

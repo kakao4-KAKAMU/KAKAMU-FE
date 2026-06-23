@@ -6,14 +6,11 @@ import type { PostUpdateRequest, PostUpdateResponse } from '@kakamu/types';
 import { postKeys } from '../../../shared/keys/post.keys';
 import {
   applyPostWriteBody,
-  cancelPostQueries,
-  patchPostInCaches,
+  cancelPostDetailQueries,
+  patchPostDetailCache,
   restorePostDetails,
-  restorePostInfiniteLists,
   snapshotPostDetail,
-  snapshotPostInfiniteLists,
   type PostDetailQuerySnapshot,
-  type PostListQuerySnapshot,
 } from '../lib/post-infinite-cache';
 
 const NO_MUTATION_CACHE = { gcTime: 0 } as const;
@@ -24,8 +21,6 @@ type UpdatePostVariables = {
 };
 
 type UpdatePostContext = {
-  previousMyLists: PostListQuerySnapshot;
-  previousLikedLists: PostListQuerySnapshot;
   previousDetails: PostDetailQuerySnapshot;
 };
 
@@ -43,28 +38,19 @@ export function useUpdatePostMutation(
   return useMutation({
     mutationFn: ({ postId, body }) => updatePostById(client, postId, body),
     onMutate: async ({ postId, body }) => {
-      await cancelPostQueries(queryClient, postId);
-      const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
-      const previousLikedLists = snapshotPostInfiniteLists(
-        queryClient,
-        postKeys.likedLists(),
-      );
+      await cancelPostDetailQueries(queryClient, postId);
       const previousDetails = snapshotPostDetail(queryClient, postId);
-      patchPostInCaches(queryClient, postId, (post) => applyPostWriteBody(post, body));
-      return { previousMyLists, previousLikedLists, previousDetails };
+      patchPostDetailCache(queryClient, postId, (post) => applyPostWriteBody(post, body));
+      return { previousDetails };
     },
     onError: (_error, _variables, context) => {
       if (!context) {
         return;
       }
-      restorePostInfiniteLists(queryClient, context.previousMyLists);
-      restorePostInfiniteLists(queryClient, context.previousLikedLists);
       restorePostDetails(queryClient, context.previousDetails);
     },
     onSettled: (_data, _error, { postId }) => {
       queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
-      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
     },
     ...NO_MUTATION_CACHE,
     ...options,

@@ -4,13 +4,10 @@ import { getCommentSpoilerDetail } from '@kakamu/api';
 import type { CommentSpoilerDetailResponse } from '@kakamu/types';
 
 import {
-  patchCommentInCaches,
-  type CommentDetailQuerySnapshot,
-  type CommentListQuerySnapshot,
-  restoreCommentByPostLists,
+  patchCommentDetailCache,
   restoreCommentDetails,
-  snapshotCommentByPostLists,
   snapshotCommentDetail,
+  type CommentDetailQuerySnapshot,
 } from '../lib/comment-cache';
 
 const NO_MUTATION_CACHE = { gcTime: 0 } as const;
@@ -21,7 +18,6 @@ type RevealCommentSpoilerVariables = {
 };
 
 type RevealCommentSpoilerContext = {
-  previousCommentLists: CommentListQuerySnapshot;
   previousCommentDetails: CommentDetailQuerySnapshot;
 };
 
@@ -43,13 +39,12 @@ export function useRevealCommentSpoilerMutation(
     RevealCommentSpoilerContext
   >({
     mutationFn: ({ commentId }) => getCommentSpoilerDetail(client, commentId),
-    onMutate: async ({ commentId, postId }) => {
-      const previousCommentLists = snapshotCommentByPostLists(queryClient, postId);
+    onMutate: async ({ commentId }) => {
       const previousCommentDetails = snapshotCommentDetail(queryClient, commentId);
-      return { previousCommentLists, previousCommentDetails };
+      return { previousCommentDetails };
     },
-    onSuccess: (data, { commentId, postId }) => {
-      patchCommentInCaches(queryClient, commentId, postId, (comment) => ({
+    onSuccess: (data, { commentId }) => {
+      patchCommentDetailCache(queryClient, commentId, (comment) => ({
         ...comment,
         content: data.content,
       }));
@@ -58,7 +53,6 @@ export function useRevealCommentSpoilerMutation(
       if (!context) {
         return;
       }
-      restoreCommentByPostLists(queryClient, context.previousCommentLists);
       restoreCommentDetails(queryClient, context.previousCommentDetails);
     },
     ...NO_MUTATION_CACHE,

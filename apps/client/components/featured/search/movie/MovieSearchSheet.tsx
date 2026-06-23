@@ -8,7 +8,7 @@ import { Button, Icon, Input, Text, BottomSheet } from '@kakamu/ui';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
 
 import { MovieFilterSheet } from './MovieFilterSheet';
-import { SelectedMovieRow } from './SelectedMovieRow';
+import { MovieSearchResultRow } from './MovieSearchResultRow';
 import type { MovieSearchControl, MovieSearchQuery } from '../search-sheet.types';
 
 type SelectedMovie = PersonaCreateFormInput['selectedMovies'][number];
@@ -99,14 +99,12 @@ export function MovieSearchSheet({
                 {t('account.persona.create.emptyResults')}
               </Text>
             ) : (
-              items.map((item) => (
-                <SelectedMovieRow
-                  key={item.id}
-                  title={item.title}
-                  poster_url={item.poster_url ?? undefined}
-                  release_date={item.release_date ?? undefined}
-                  checked={isSelected(item.id)}
-                  onToggle={() => toggleItem(item)}
+              items.map((movieId) => (
+                <MovieSearchResultRow
+                  key={movieId}
+                  movieId={movieId}
+                  checked={isSelected(movieId)}
+                  onToggle={toggleItem}
                 />
               ))
             )}

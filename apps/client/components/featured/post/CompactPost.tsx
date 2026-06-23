@@ -12,13 +12,18 @@ import { CompactPostActions } from './CompactPostActions';
 import { ConditionalRender } from '@/components/utils';
 import { useCompactPostActions } from './hooks/useCompactPostActions';
 import { Pressable } from 'react-native-gesture-handler';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { usePostByIdQuery } from '@kakamu/query';
 
 type CompactPostProps = {
-  post: PostItem;
+  postId: PostItem['id'];
   onContentPress?: () => void;
 };
 
-export function CompactPost({ post, onContentPress }: CompactPostProps) {
+export function CompactPost({ postId, onContentPress }: CompactPostProps) {
+  const apiClient = useBackendApiClient();
+  const postQuery = usePostByIdQuery(apiClient, postId);
+  const post = postQuery.data;
   const blurTargetRef = useRef<View>(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
   const actions = useCompactPostActions(post);
@@ -29,7 +34,7 @@ export function CompactPost({ post, onContentPress }: CompactPostProps) {
   }, [onContentPress]);
   return (
     <View className="gap-2.5 border-b border-border py-3" ref={blurTargetRef}>
-      <CompactPostAuthorRow post={post} />
+      <CompactPostAuthorRow userId={post.user.id} createdAt={post.created_at} />
       <View className="relative">
         <ConditionalRender.Boolean
           condition={post.title}
@@ -81,7 +86,7 @@ export function CompactPost({ post, onContentPress }: CompactPostProps) {
         condition={post.movies.length}
         render={{
           true: post.movies.map((movie) => (
-            <CompactPostMovieCard key={movie.id} movie={movie} />
+            <CompactPostMovieCard key={movie.id} movieId={movie.id} />
           )),
         }}
       />

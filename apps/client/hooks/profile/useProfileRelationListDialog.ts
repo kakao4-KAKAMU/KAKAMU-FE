@@ -25,7 +25,7 @@ export function useProfileRelationListDialog(userId: string) {
 
   const activeQuery = activeList === 'followers' ? followersQuery : followingsQuery;
 
-  const users = useMemo<UserSimpleWithFollow[]>(() => {
+  const userIds = useMemo<UserSimpleWithFollow['id'][]>(() => {
     if (!activeQuery.data) {
       return [];
     }
@@ -58,7 +58,7 @@ export function useProfileRelationListDialog(userId: string) {
     onOpenChange,
     openFollowers,
     openFollowings,
-    users,
+    userIds,
     isLoading: activeQuery.isLoading,
     hasNextPage: activeQuery.hasNextPage ?? false,
     isFetchingNextPage: activeQuery.isFetchingNextPage,

@@ -13,12 +13,12 @@ import { Text } from '@kakamu/ui';
 
 import { ProfileSubpageHeader } from '@/components/featured/header/ProfileSubpageHeader';
 import { CompactPost } from '@/components/featured/post/CompactPost';
-import { CommentCard } from '@/components/featured/comment/CommentCard';
 import { CommentComposer } from '@/components/featured/comment/CommentComposer';
 import { ConditionalRender } from '@/components/utils/ConditionalRender';
 import { useFeedDetail } from '@/hooks/feed/useFeedDetail';
 import { AppSuspenseBoundary } from '@/components/error-boundary';
 import { FeedDetailScreenContentSkeleton } from './FeedDetailScreenContent.skeleton';
+import { CommentListItem } from './CommentListItem';
 
 type FeedDetailScreenContentProps = {
   postId: number;
@@ -50,8 +50,7 @@ function FeedDetailScreenContentInner({
 }: FeedDetailScreenContentProps) {
   const insets = useSafeAreaInsets();
   const {
-    post,
-    topLevelComments,
+    topLevelCommentIds,
     replyCountById,
     isCommentsLoading,
     commentsErrorView,
@@ -74,24 +73,23 @@ function FeedDetailScreenContentInner({
   } = useFeedDetail(postId);
 
   const renderComment = useCallback(
-    ({ item }: { item: (typeof topLevelComments)[number] }) => (
-      <CommentCard
-        comment={item}
-        replyCount={replyCountById.get(item.id) ?? 0}
-        isOwner={item.user.id != null && item.user.id === currentUserId}
+    ({ item: commentId }: { item: number }) => (
+      <CommentListItem
+        commentId={commentId}
+        currentUserId={currentUserId}
+        replyCount={replyCountById.get(commentId) ?? 0}
         anonymousLabel={labels.anonymousAuthor}
         deleteLabel={labels.deleteComment}
         reportLabel={labels.reportComment}
-        onToggleLike={() => onToggleCommentLike(item)}
-        onReply={() => onReply(item)}
-        onDelete={() => onDeleteComment(item)}
+        onToggleLike={onToggleCommentLike}
+        onReply={onReply}
+        onDelete={onDeleteComment}
         onReport={onReport}
-        onRevealSpoiler={() => onRevealSpoiler(item)}
+        onRevealSpoiler={onRevealSpoiler}
         isLikePending={isLikePending}
       />
     ),
     [
-      currentUserId,
       labels,
       onDeleteComment,
       onReply,
@@ -100,12 +98,13 @@ function FeedDetailScreenContentInner({
       onToggleCommentLike,
       replyCountById,
       isLikePending,
+      currentUserId,
     ],
   );
 
   const listHeader = (
     <View className="gap-2.5 pb-2">
-      <CompactPost post={post} />
+      <CompactPost postId={postId} />
       <Text className="text-base font-bold text-foreground">
         {labels.commentsTitle}
       </Text>
@@ -136,7 +135,7 @@ function FeedDetailScreenContentInner({
         }}
       />
       <ConditionalRender.Boolean
-        condition={isCommentsLoading && topLevelComments.length === 0}
+        condition={isCommentsLoading && topLevelCommentIds.length === 0}
         render={{
           true: (
             <Text className="py-4 text-center text-sm text-muted-foreground">
@@ -147,7 +146,7 @@ function FeedDetailScreenContentInner({
         }}
       />
       <ConditionalRender.Boolean
-        condition={!isCommentsLoading && topLevelComments.length === 0 && !commentsErrorView}
+        condition={!isCommentsLoading && topLevelCommentIds.length === 0 && !commentsErrorView}
         render={{
           true: (
             <Text className="py-4 text-center text-sm text-muted-foreground">
@@ -194,21 +193,20 @@ function FeedDetailScreenContentInner({
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={insets.top}
     >
-        <FlatList
-          data={topLevelComments}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={renderComment}
-          contentContainerStyle={{
-            paddingHorizontal: 16,
-            paddingTop: 8,
-            paddingBottom: 12,
-            gap: 10,
-          }}
-          ListHeaderComponent={listHeader}
-          ListFooterComponent={listFooter}
-          keyboardShouldPersistTaps="handled"
-        />
-
+      <FlatList
+        data={topLevelCommentIds}
+        keyExtractor={(item) => String(item)}
+        renderItem={renderComment}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingTop: 8,
+          paddingBottom: 12,
+          gap: 10,
+        }}
+        ListHeaderComponent={listHeader}
+        ListFooterComponent={listFooter}
+        keyboardShouldPersistTaps="handled"
+      />
     </KeyboardAvoidingView>
   );
 }
