@@ -134,7 +134,7 @@ function ProfileScreenLayoutContent({
         emptyLabel={t('account.profile.relations.empty')}
         loadMoreLabel={t('account.profile.relations.loadMore')}
         loadingMoreLabel={t('account.profile.relations.loadingMore')}
-        users={relationList.users}
+        userIds={relationList.userIds}
         isLoading={relationList.isLoading}
         hasNextPage={relationList.hasNextPage}
         isFetchingNextPage={relationList.isFetchingNextPage}

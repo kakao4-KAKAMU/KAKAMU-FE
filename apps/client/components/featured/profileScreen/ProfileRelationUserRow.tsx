@@ -2,13 +2,22 @@ import { Pressable, View } from 'react-native';
 import { User } from 'lucide-react-native';
 import type { UserSimpleWithFollow } from '@kakamu/types';
 import { Icon, Text, TextClassProvider } from '@kakamu/ui';
+import { useUserQuery } from '@kakamu/query';
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { ProfileRelationUserRowFallback } from './ProfileRelationUserRow.fallback';
 
 type ProfileRelationUserRowProps = {
-  user: UserSimpleWithFollow;
+  userId: UserSimpleWithFollow['id'];
   onPress: () => void;
 };
 
-export function ProfileRelationUserRow({ user, onPress }: ProfileRelationUserRowProps) {
+export function ProfileRelationUserRow({ userId, onPress }: ProfileRelationUserRowProps) {
+  if (!userId) {
+    return <ProfileRelationUserRowFallback />;
+  }
+  const apiClient = useBackendApiClient();
+  const userQuery = useUserQuery(apiClient, userId);
+  const user = userQuery.data;
   return (
     <Pressable
       accessibilityRole="button"

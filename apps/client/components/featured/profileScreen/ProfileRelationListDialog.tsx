@@ -17,7 +17,7 @@ type ProfileRelationListDialogProps = {
   emptyLabel: string;
   loadMoreLabel: string;
   loadingMoreLabel: string;
-  users: UserSimpleWithFollow[];
+  userIds: UserSimpleWithFollow['id'][];
   isLoading: boolean;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -32,7 +32,7 @@ export function ProfileRelationListDialog({
   emptyLabel,
   loadMoreLabel,
   loadingMoreLabel,
-  users,
+  userIds,
   isLoading,
   hasNextPage,
   isFetchingNextPage,
@@ -50,16 +50,16 @@ export function ProfileRelationListDialog({
           <View className="items-center py-8">
             <ActivityIndicator />
           </View>
-        ) : users.length === 0 ? (
+        ) : userIds.length === 0 ? (
           <Text className="py-8 text-center text-sm text-muted-foreground">{emptyLabel}</Text>
         ) : (
           <ScrollView className="max-h-80" showsVerticalScrollIndicator={false}>
             <View className="gap-0.5">
-              {users.map((user) => (
+              {userIds.map((userId) => (
                 <ProfileRelationUserRow
-                  key={user.id}
-                  user={user}
-                  onPress={() => user.id && onUserPress(user.id)}
+                  key={userId}
+                  userId={userId}
+                  onPress={() => userId && onUserPress(userId)}
                 />
               ))}
               {hasNextPage ? (
