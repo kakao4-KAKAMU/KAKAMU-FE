@@ -8,7 +8,7 @@ import type {
 
 import { postKeys } from '../../../shared/keys/post.keys';
 import { movieKeys } from '../../../shared/keys/movie.keys';
-import { userKeys } from '../../../shared/keys/user.keys';
+import { patchUserInCache } from '../../user/lib/user-cache';
 
 export const OPTIMISTIC_POST_ID = -1;
 
@@ -74,7 +74,7 @@ export function seedPostDetailCacheFromList(
       }
     }
     if (item.user.id) {
-      queryClient.setQueryData(userKeys.detail(item.user.id), item.user);
+      patchUserInCache(queryClient, item.user.id, item.user);
     }
     queryClient.setQueryData(postKeys.detail(item.id), item);
   }
@@ -216,15 +216,6 @@ export function patchPostDetailCache(
   queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
     old ? patch(old) : old,
   );
-}
-
-/** @deprecated use {@link patchPostDetailCache} */
-export function patchPostInCaches(
-  queryClient: QueryClient,
-  postId: number,
-  patch: (post: PostItem) => PostItem,
-): void {
-  patchPostDetailCache(queryClient, postId, patch);
 }
 
 export function setPostFollowByAuthorInCaches(

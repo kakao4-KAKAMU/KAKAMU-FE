@@ -15,7 +15,6 @@ import {
 import {
   cancelPostDetailQueries,
   restorePostDetails,
-  restorePostInfiniteLists,
   snapshotPostDetail,
   snapshotPostInfiniteLists,
   togglePostLikeInCaches,
@@ -82,7 +81,6 @@ export function useLikeMutation(
       }
 
       if (context.targetType === 'POST') {
-        restorePostInfiniteLists(queryClient, context.previousLikedLists);
         restorePostDetails(queryClient, context.previousPostDetails);
         return;
       }
@@ -92,7 +90,6 @@ export function useLikeMutation(
     onSettled: (_data, _error, body) => {
       if (body.target_type === 'POST') {
         queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
-        queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
         return;
       }
 

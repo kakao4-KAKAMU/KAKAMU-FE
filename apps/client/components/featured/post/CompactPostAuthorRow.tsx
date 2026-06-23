@@ -1,9 +1,7 @@
 import { View } from 'react-native';
-import type { PostItem, UserSimple } from '@kakamu/types';
-import { Avatar, AvatarFallback, AvatarImage, cn, Icon, Text, Button } from '@kakamu/ui';
+import type { UserSimple } from '@kakamu/types';
+import { cn, Text, Button } from '@kakamu/ui';
 import { formatRelativeTime } from '@/lib/time';
-import { User } from 'lucide-react-native';
-import { convertImagePath } from '@/lib/upload/convert-image-path';
 import { useCallback, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
@@ -12,6 +10,7 @@ import { useProfileFollowActions } from '@/hooks/profile/useProfileFollowActions
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useUserQuery } from '@kakamu/query';
 import { CompactPostAuthorRowFallback } from './CompactPostAuthorRow.fallback';
+import { ProfileImage } from '../profileScreen/ProfileImage';
 
 export function CompactPostAuthorRow({ userId, createdAt }: { userId: UserSimple['id'], createdAt: string }) {
   const ANONYMOUS_AUTHOR_LABEL = '알 수 없음';
@@ -56,17 +55,7 @@ export function CompactPostAuthorRow({ userId, createdAt }: { userId: UserSimple
   return (
     <View className="flex-row items-center gap-2.5">
       <Button size="smIcon" variant="ghost" onPress={onAuthorPress} disabled={isAnonymous}>
-        <Avatar
-          className={cn('size-full border border-border bg-muted', isAnonymous && 'opacity-60')}
-          alt={authorName || ANONYMOUS_AUTHOR_LABEL}
-        >
-          {authorImage ? (
-            <AvatarImage source={{ uri: convertImagePath(authorImage) }} />
-          ) : null}
-          <AvatarFallback className="size-full bg-muted">
-            <Icon as={User} size={16} className="text-muted-foreground" />
-          </AvatarFallback>
-        </Avatar>
+        <ProfileImage nickname={authorName} url={authorImage} size={8} />
       </Button>
       <View className="min-w-0 flex-1 gap-0.5">
         <Text
