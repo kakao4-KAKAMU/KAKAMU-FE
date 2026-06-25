@@ -105,6 +105,16 @@ account.sonar.previewLikeA11y,좋아요,Like
 account.sonar.emptyQueue,모든 예고편을 살펴봤어요.,You have seen all trailers for now.
 account.sonar.swipeGuideDislike,싫어요,Dislike
 account.sonar.swipeGuideLike,좋아요,Like
+account.sonar.loadFailed.title,예고편을 불러오지 못했어요,Could not load trailers
+account.sonar.loadFailed.description,잠시 후 다시 시도해 주세요.,Please try again in a moment.
+account.sonar.error.failedRequest.title,평가를 저장하지 못했어요,Could not save your rating
+account.sonar.error.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again in a moment.
+account.sonar.error.alreadyEvaluated.title,이미 평가한 예고편이에요,Already rated
+account.sonar.error.alreadyEvaluated.description,다른 예고편을 선택해 주세요.,Please try another trailer.
+account.sonar.error.movieNotFound.title,영화를 찾을 수 없어요,Movie not found
+account.sonar.error.movieNotFound.description,다른 예고편을 선택해 주세요.,Please try another trailer.
+account.sonar.error.personaForbidden.title,페르소나를 확인해 주세요,Check your persona
+account.sonar.error.personaForbidden.description,페르소나를 선택한 뒤 다시 시도해 주세요.,Select a persona and try again.
 account.layout.profile,프로필,Profile
 account.layout.profileSettings,프로필 설정,Profile settings
 account.layout.passwordChange,비밀번호 변경,Change password
