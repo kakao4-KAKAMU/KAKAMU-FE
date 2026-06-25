@@ -34,20 +34,21 @@ export function createAuthenticatedApiClient(
   return createApiClient(prefixUrl, {
     retry: defaultRetry,
     ...options,
-    fetch,
+    fetch: async (input, init) => {
+      const response = await fetch(input, init);
+      return response;
+    },
     hooks: {
       ...options?.hooks,
       beforeRequest: [
         ...(options?.hooks?.beforeRequest ?? []),
-        (request, _opts, { retryCount }) => {
+        (request) => {
           if (isRefreshRequest(request)) {
             return;
           }
-          if (retryCount === 0) {
-            const token = tokenBridge.getAccessToken();
-            if (token) {
-              request.headers.set('Authorization', `Bearer ${token}`);
-            }
+          const token = tokenBridge.getAccessToken();
+          if (token) {
+            request.headers.set('Authorization', `Bearer ${token}`);
           }
           const personaId = personaBridge?.getSelectedPersonaId();
           if (personaId) {
@@ -74,7 +75,6 @@ export function createAuthenticatedApiClient(
           if ((await resolveApiErrorCode(error)) !== API_ERROR_CODES.TOKEN_EXPIRED) {
             return ky.stop;
           }
-
           try {
             const tokens = await refreshTokensSingleFlight(bareClient, tokenBridge);
             request.headers.set('Authorization', `Bearer ${tokens.access_token}`);
