@@ -122,9 +122,10 @@ function TrailerStackCardLayer({
 type TrailerSwipeDeckProps = {
   initialItems: TrailerQueueItem[];
   onVote?: (vote: TrailerVote, item: TrailerQueueItem) => void;
+  onQueueEmpty?: () => void;
 };
 
-export function TrailerSwipeDeck({ initialItems, onVote }: TrailerSwipeDeckProps) {
+export function TrailerSwipeDeck({ initialItems, onVote, onQueueEmpty }: TrailerSwipeDeckProps) {
   const { t } = useTranslation();
   const [queue, setQueue] = useState(initialItems);
   const [blocking, setBlocking] = useState(false);
@@ -143,11 +144,14 @@ export function TrailerSwipeDeck({ initialItems, onVote }: TrailerSwipeDeckProps
         if (q.length === 0) return q;
         const [head, ...rest] = q;
         onVote?.(vote, head);
+        if (rest.length === 0) {
+          onQueueEmpty?.();
+        }
         return rest;
       });
       setBlocking(false);
     },
-    [onVote],
+    [onQueueEmpty, onVote],
   );
 
   const startFlyOut = useCallback(
