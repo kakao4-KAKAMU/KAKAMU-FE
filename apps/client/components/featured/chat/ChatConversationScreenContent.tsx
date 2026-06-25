@@ -1,6 +1,15 @@
 import { Bot } from 'lucide-react-native';
-import { useCallback } from 'react';
-import { ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
+import { useCallback, useEffect, useRef } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 import { useTranslation } from '@kakamu/i18n';
@@ -17,6 +26,8 @@ import { ChatConversationScreenContentSkeleton } from './ChatConversationScreenC
 type ChatConversationScreenContentProps = {
   sessionId: string;
 };
+
+const SCROLL_BOTTOM_THRESHOLD = 200;
 
 export function ChatConversationScreenContent({
   sessionId,
@@ -51,6 +62,83 @@ function ChatConversationScreenContentInner({
     sendA11y,
   } = useChatConversation(sessionId);
 
+  const listRef = useRef<FlatList>(null);
+  const isUserControllingScrollRef = useRef(false);
+  const hasScrolledToInitialHistoryRef = useRef(false);
+  const prevFirstMessageIdRef = useRef<number | undefined>(undefined);
+  const skipNextAutoScrollRef = useRef(false);
+
+  const scrollToBottom = useCallback((animated = true) => {
+    requestAnimationFrame(() => {
+      listRef.current?.scrollToEnd({ animated });
+    });
+  }, []);
+
+  const maybeScrollToBottom = useCallback(
+    (animated = true) => {
+      if (skipNextAutoScrollRef.current) {
+        skipNextAutoScrollRef.current = false;
+        return;
+      }
+      if (isUserControllingScrollRef.current || isLoadingOlderMessages) {
+        return;
+      }
+      scrollToBottom(animated);
+    },
+    [isLoadingOlderMessages, scrollToBottom],
+  );
+
+  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    const distanceFromBottom =
+      contentSize.height - layoutMeasurement.height - contentOffset.y;
+    isUserControllingScrollRef.current = distanceFromBottom > SCROLL_BOTTOM_THRESHOLD;
+  }, []);
+
+  const handleContentSizeChange = useCallback(() => {
+    if (isHistoryLoading || isLoadingOlderMessages) {
+      return;
+    }
+
+    if (!hasScrolledToInitialHistoryRef.current) {
+      hasScrolledToInitialHistoryRef.current = true;
+      isUserControllingScrollRef.current = false;
+      scrollToBottom(false);
+      return;
+    }
+
+    maybeScrollToBottom();
+  }, [isHistoryLoading, isLoadingOlderMessages, maybeScrollToBottom, scrollToBottom]);
+
+  useEffect(() => {
+    hasScrolledToInitialHistoryRef.current = false;
+    isUserControllingScrollRef.current = false;
+    prevFirstMessageIdRef.current = undefined;
+    skipNextAutoScrollRef.current = false;
+  }, [sessionId]);
+
+  useEffect(() => {
+    const firstMessageId = messages[0]?.id;
+    const prevFirstMessageId = prevFirstMessageIdRef.current;
+
+    if (
+      prevFirstMessageId !== undefined &&
+      firstMessageId !== undefined &&
+      firstMessageId !== prevFirstMessageId
+    ) {
+      skipNextAutoScrollRef.current = true;
+    }
+
+    prevFirstMessageIdRef.current = firstMessageId;
+  }, [messages]);
+
+  useEffect(() => {
+    if (isHistoryLoading || !hasScrolledToInitialHistoryRef.current) {
+      return;
+    }
+    maybeScrollToBottom();
+  }, [isHistoryLoading, messages, maybeScrollToBottom]);
+
   const renderItem = useCallback(
     ({ item }: { item: (typeof messages)[number] }) => (
       <ChatMessageBubble message={item} t={t} i18n={i18n} />
@@ -69,7 +157,12 @@ function ChatConversationScreenContentInner({
       >
         <FlatList
           data={messages}
+          ref={listRef}
           keyExtractor={(item) => String(item.id)}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          onContentSizeChange={handleContentSizeChange}
+          keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             paddingHorizontal: 20,
             paddingTop: 8,
@@ -79,6 +172,12 @@ function ChatConversationScreenContentInner({
           }}
           ListHeaderComponent={
             <View className="mb-2 gap-2">
+              <View className="flex-row items-start gap-2.5 rounded-xl bg-muted px-3 py-3">
+                <TextClassProvider value="text-foreground">
+                  <Icon as={Bot} size={22} />
+                </TextClassProvider>
+                <Text className="flex-1 text-[13px] leading-5 text-foreground">{introText}</Text>
+              </View>
               <ConditionalRender.Boolean
                 condition={hasMoreHistory}
                 render={{
@@ -101,12 +200,6 @@ function ChatConversationScreenContentInner({
                   </Pressable>
                 }}
               />
-              <View className="flex-row items-start gap-2.5 rounded-xl bg-muted px-3 py-3">
-                <TextClassProvider value="text-foreground">
-                  <Icon as={Bot} size={22} />
-                </TextClassProvider>
-                <Text className="flex-1 text-[13px] leading-5 text-foreground">{introText}</Text>
-              </View>
               <ConditionalRender.Boolean
                 condition={isHistoryLoading}
                 render={{
