@@ -46,6 +46,9 @@ export type {
 } from './search';
 
 export type {
+  MovieEvaluation,
+  MovieEvaluationRequest,
+  MovieEvaluationResponse,
   MovieFilterSearchResponse,
   MovieItem,
   MovieRecommendationResponse,
@@ -53,7 +56,11 @@ export type {
   MovieSearchRequestBody,
   MovieSort,
   MovieTabSearchResponse,
+  MovieToEvaluateListResponse,
+  MovieToEvaluateParams,
+  MovieWithTrailers,
   WatchMovieResponse,
+  YoutubeVideo,
 } from './movie';
 
 export type {
