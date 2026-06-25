@@ -28,7 +28,6 @@ export function CommentComposer({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        multiline
         editable={!isSubmitting}
         onSubmitEditing={canSend ? onSend : undefined}
         returnKeyType="send"

@@ -28,7 +28,6 @@ export function ChatComposer({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        multiline
         editable={!isStreaming}
         onSubmitEditing={canSend ? onSend : undefined}
         returnKeyType="send"
