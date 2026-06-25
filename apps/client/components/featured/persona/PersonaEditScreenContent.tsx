@@ -8,12 +8,10 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { View } from 'react-native';
 import { useForm } from 'react-hook-form';
-import {
-  PersonaCreateStep1Form,
-  PersonaCreateStep2Form,
-  PersonaCreateStep3Form,
-  PersonaCreateStep4Form,
-} from '@/components/featured/persona';
+import { PersonaCreateStep1Form } from './PersonaCreateStep1Form';
+import { PersonaCreateStep2Form } from './PersonaCreateStep2Form';
+import { PersonaCreateStep3Form } from './PersonaCreateStep3Form';
+import { PersonaCreateStep4Form } from './PersonaCreateStep4Form';
 import { usePendingLocalImages } from '@/hooks/upload/usePendingLocalImages';
 import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenreList';
 import { usePersonaCreateStep3Search } from '@/hooks/persona/usePersonaCreateStep3Search';

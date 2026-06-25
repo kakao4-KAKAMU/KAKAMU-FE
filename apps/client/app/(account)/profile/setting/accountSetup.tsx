@@ -4,8 +4,7 @@ import { useTranslation } from '@kakamu/i18n';
 
 import { AppSuspenseBoundary } from '@/components/error-boundary';
 import { ProfileSubpageHeader } from '@/components/featured/header';
-import { AccountSetupScreenContent } from '@/components/featured/profile/AccountSetupScreenContent';
-import { AccountSetupScreenContentSkeleton } from '@/components/featured/profile/AccountSetupScreenContent.skeleton';
+import { AccountSetupScreenContent, AccountSetupScreenContentSkeleton } from '@/components/featured/profile';
 
 export default function AccountSetupScreen() {
   const { t } = useTranslation();

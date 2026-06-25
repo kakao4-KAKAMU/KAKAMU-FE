@@ -3,8 +3,7 @@ import { useTranslation } from '@kakamu/i18n';
 import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 
 import { AppSuspenseBoundary } from '@/components/error-boundary';
-import { PersonaEditScreenContent } from '@/components/featured/persona/PersonaEditScreenContent';
-import { PersonaCreateStep1FormSkeleton } from '@/components/featured/persona/PersonaCreateStep1Form.skeleton';
+import { PersonaEditScreenContent, PersonaCreateStep1FormSkeleton } from '@/components/featured/persona';
 
 export default function PersonaEditScreen() {
   const { t } = useTranslation();
