@@ -1,3 +1,4 @@
+import { useFocusEffect } from 'expo-router';
 import { Bot } from 'lucide-react-native';
 import { useCallback, useEffect, useRef } from 'react';
 import {
@@ -64,80 +65,52 @@ function ChatConversationScreenContentInner({
 
   const listRef = useRef<FlatList>(null);
   const isUserControllingScrollRef = useRef(false);
-  const hasScrolledToInitialHistoryRef = useRef(false);
-  const prevFirstMessageIdRef = useRef<number | undefined>(undefined);
-  const skipNextAutoScrollRef = useRef(false);
 
-  const scrollToBottom = useCallback((animated = true) => {
+  const scrollToBottom = useCallback((animated = false) => {
     requestAnimationFrame(() => {
       listRef.current?.scrollToEnd({ animated });
     });
   }, []);
 
-  const maybeScrollToBottom = useCallback(
-    (animated = true) => {
-      if (skipNextAutoScrollRef.current) {
-        skipNextAutoScrollRef.current = false;
-        return;
-      }
-      if (isUserControllingScrollRef.current || isLoadingOlderMessages) {
-        return;
-      }
-      scrollToBottom(animated);
-    },
-    [isLoadingOlderMessages, scrollToBottom],
-  );
+  const scrollIfAllowed = useCallback(() => {
+    if (isHistoryLoading || isLoadingOlderMessages || isUserControllingScrollRef.current) {
+      return;
+    }
+    scrollToBottom();
+  }, [isHistoryLoading, isLoadingOlderMessages, scrollToBottom]);
+
+  const handleScrollBeginDrag = useCallback(() => {
+    isUserControllingScrollRef.current = true;
+  }, []);
 
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-    const distanceFromBottom =
-      contentSize.height - layoutMeasurement.height - contentOffset.y;
-    isUserControllingScrollRef.current = distanceFromBottom > SCROLL_BOTTOM_THRESHOLD;
+    if (
+      contentSize.height - layoutMeasurement.height - contentOffset.y <=
+      SCROLL_BOTTOM_THRESHOLD
+    ) {
+      isUserControllingScrollRef.current = false;
+    }
   }, []);
 
   const handleContentSizeChange = useCallback(() => {
-    if (isHistoryLoading || isLoadingOlderMessages) {
-      return;
-    }
+    scrollIfAllowed();
+  }, [scrollIfAllowed]);
 
-    if (!hasScrolledToInitialHistoryRef.current) {
-      hasScrolledToInitialHistoryRef.current = true;
+  useFocusEffect(
+    useCallback(() => {
       isUserControllingScrollRef.current = false;
-      scrollToBottom(false);
-      return;
-    }
-
-    maybeScrollToBottom();
-  }, [isHistoryLoading, isLoadingOlderMessages, maybeScrollToBottom, scrollToBottom]);
+      scrollIfAllowed();
+    }, [sessionId, scrollIfAllowed]),
+  );
 
   useEffect(() => {
-    hasScrolledToInitialHistoryRef.current = false;
+    if (isHistoryLoading) {
+      return;
+    }
     isUserControllingScrollRef.current = false;
-    prevFirstMessageIdRef.current = undefined;
-    skipNextAutoScrollRef.current = false;
-  }, [sessionId]);
-
-  useEffect(() => {
-    const firstMessageId = messages[0]?.id;
-    const prevFirstMessageId = prevFirstMessageIdRef.current;
-
-    if (
-      prevFirstMessageId !== undefined &&
-      firstMessageId !== undefined &&
-      firstMessageId !== prevFirstMessageId
-    ) {
-      skipNextAutoScrollRef.current = true;
-    }
-
-    prevFirstMessageIdRef.current = firstMessageId;
-  }, [messages]);
-
-  useEffect(() => {
-    if (isHistoryLoading || !hasScrolledToInitialHistoryRef.current) {
-      return;
-    }
-    maybeScrollToBottom();
-  }, [isHistoryLoading, messages, maybeScrollToBottom]);
+    scrollToBottom();
+  }, [isHistoryLoading, sessionId, scrollToBottom]);
 
   const renderItem = useCallback(
     ({ item }: { item: (typeof messages)[number] }) => (
@@ -160,6 +133,7 @@ function ChatConversationScreenContentInner({
           ref={listRef}
           keyExtractor={(item) => String(item.id)}
           onScroll={handleScroll}
+          onScrollBeginDrag={handleScrollBeginDrag}
           scrollEventThrottle={16}
           onContentSizeChange={handleContentSizeChange}
           keyboardShouldPersistTaps="handled"
