@@ -33,7 +33,7 @@ type PostLikeContext = {
 
 type CommentLikeContext = {
   targetType: 'COMMENT';
-  commentPostId?: number;
+  commentPostId: number;
   previousCommentDetails: CommentDetailQuerySnapshot;
 };
 
@@ -72,6 +72,7 @@ export function useLikeMutation(
       toggleCommentLikeInCaches(queryClient, commentId);
       return {
         targetType: body.target_type,
+        commentPostId: body.target_id,
         previousCommentDetails,
       };
     },
@@ -87,13 +88,13 @@ export function useLikeMutation(
 
       restoreCommentDetails(queryClient, context.previousCommentDetails);
     },
-    onSettled: (_data, _error, body) => {
-      if (body.target_type === 'POST') {
-        queryClient.invalidateQueries({ queryKey: postKeys.detail(body.target_id) });
+    onSuccess: (_data, _error, body) => {
+      if (body.targetType === 'POST') {
+        queryClient.invalidateQueries({ queryKey: postKeys.detail(body.postId) });
         return;
       }
 
-      queryClient.invalidateQueries({ queryKey: commentKeys.detail(body.target_id) });
+      queryClient.invalidateQueries({ queryKey: commentKeys.detail(body.commentPostId) });
     },
     ...NO_MUTATION_CACHE,
     ...options,
