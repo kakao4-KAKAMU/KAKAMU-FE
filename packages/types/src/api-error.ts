@@ -1,7 +1,10 @@
 /** 백엔드 API 에러 응답 본문 (`{ code, message }`) */
-export interface ApiErrorBody {
+export interface ApiErrorDetail {
   code: string;
   message: string;
+}
+export interface ApiErrorBody {
+  detail: ApiErrorDetail;
 }
 
 export const API_ERROR_CODES = {

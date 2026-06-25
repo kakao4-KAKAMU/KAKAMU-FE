@@ -1,12 +1,12 @@
-import { API_ERROR_CODES, type ApiErrorBody } from '@kakamu/types';
+import { API_ERROR_CODES } from '@kakamu/types';
 import ky, { HTTPError, type Options } from 'ky';
+import { fetch } from 'expo/fetch';
 
 import { createApiClient, type ApiClient } from '../client';
-import { ApiHttpError, getApiErrorCode } from '../errors/api-http-error';
+import { resolveApiErrorCode, toApiHttpError } from '../errors/api-http-error';
 import { refreshTokensSingleFlight } from './refresh-single-flight';
 import type { PersonaBridge } from './persona-bridge';
 import type { TokenBridge } from './token-bridge';
-import { fetch } from 'expo/fetch'
 
 const REFRESH_PATH = 'users/login/refresh';
 
@@ -34,10 +34,7 @@ export function createAuthenticatedApiClient(
   return createApiClient(prefixUrl, {
     retry: defaultRetry,
     ...options,
-    fetch: async (input, init) => {
-      const response = await fetch(input, init);
-      return response;
-    },
+    fetch,
     hooks: {
       ...options?.hooks,
       beforeRequest: [
@@ -64,23 +61,7 @@ export function createAuthenticatedApiClient(
           if (!(error instanceof HTTPError)) {
             return error;
           }
-
-          let body: ApiErrorBody = {
-            code: API_ERROR_CODES.UNKNOWN_ERROR,
-            message: error.message,
-          };
-
-          try {
-            const res = (await error.response.clone().json()) as ApiErrorBody;
-            body = {
-              code: res.code ?? API_ERROR_CODES.UNKNOWN_ERROR,
-              message: res.message ?? error.message,
-            };
-          } catch {
-            // non-JSON body
-          }
-
-          return new ApiHttpError(error, body);
+          return toApiHttpError(error);
         },
       ],
       beforeRetry: [
@@ -90,7 +71,7 @@ export function createAuthenticatedApiClient(
             return ky.stop;
           }
 
-          if (getApiErrorCode(error) !== API_ERROR_CODES.TOKEN_EXPIRED) {
+          if ((await resolveApiErrorCode(error)) !== API_ERROR_CODES.TOKEN_EXPIRED) {
             return ky.stop;
           }
 
