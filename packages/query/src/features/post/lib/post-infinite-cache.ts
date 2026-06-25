@@ -63,25 +63,29 @@ export function createOptimisticPost(body: PostUpdateRequest): PostItem {
   };
 }
 
+export function seedPostDetailCache(queryClient: QueryClient, item: PostItem): void {
+  if (item.movies.length > 0) {
+    for (const movie of item.movies) {
+      queryClient.setQueryData(movieKeys.detail(movie.id), movie);
+    }
+  }
+  if (item.user.id) {
+    patchUserInCache(queryClient, item.user.id, item.user);
+  }
+  queryClient.setQueryData(postKeys.detail(item.id), item);
+}
+
 export function seedPostDetailCacheFromList(
   queryClient: QueryClient,
   items: PostItem[],
 ): void {
   for (const item of items) {
-    if (item.movies.length > 0) {
-      for (const movie of item.movies) {
-        queryClient.setQueryData(movieKeys.detail(movie.id), movie);
-      }
-    }
-    if (item.user.id) {
-      patchUserInCache(queryClient, item.user.id, item.user);
-    }
-    queryClient.setQueryData(postKeys.detail(item.id), item);
+    seedPostDetailCache(queryClient, item);
   }
 }
 
 export function setPostDetailCache(queryClient: QueryClient, item: PostItem): void {
-  queryClient.setQueryData(postKeys.detail(item.id), item);
+  seedPostDetailCache(queryClient, item);
 }
 
 export function applyPostWriteBody(post: PostItem, body: PostUpdateRequest): PostItem {
