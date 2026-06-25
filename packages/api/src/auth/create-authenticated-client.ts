@@ -1,5 +1,5 @@
 import { API_ERROR_CODES } from '@kakamu/types';
-import ky, { HTTPError, type Options } from 'ky';
+import ky, { HTTPError, type Options, RetryOptions } from 'ky';
 import { fetch } from 'expo/fetch';
 
 import { createApiClient, type ApiClient } from '../client';
@@ -10,9 +10,10 @@ import type { TokenBridge } from './token-bridge';
 
 const REFRESH_PATH = 'users/login/refresh';
 
-const defaultRetry: Options['retry'] = {
+const defaultRetry: RetryOptions = {
   limit: 1,
   statusCodes: [401],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 };
 
 function isRefreshRequest(request: Request): boolean {
@@ -32,8 +33,8 @@ export function createAuthenticatedApiClient(
   const bareClient = createApiClient(prefixUrl, { retry: { limit: 0 } });
 
   return createApiClient(prefixUrl, {
-    retry: defaultRetry,
     ...options,
+    retry: defaultRetry,
     fetch: async (input, init) => {
       const response = await fetch(input, init);
       return response;
@@ -42,13 +43,15 @@ export function createAuthenticatedApiClient(
       ...options?.hooks,
       beforeRequest: [
         ...(options?.hooks?.beforeRequest ?? []),
-        (request) => {
+        (request, _opts, { retryCount }) => {
           if (isRefreshRequest(request)) {
             return;
           }
-          const token = tokenBridge.getAccessToken();
-          if (token) {
-            request.headers.set('Authorization', `Bearer ${token}`);
+          if(retryCount === 0) {
+            const token = tokenBridge.getAccessToken();
+            if (token) {
+              request.headers.set('Authorization', `Bearer ${token}`);
+            }
           }
           const personaId = personaBridge?.getSelectedPersonaId();
           if (personaId) {
