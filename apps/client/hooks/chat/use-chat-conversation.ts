@@ -104,6 +104,7 @@ export function useChatConversation(routeSessionId: string | undefined) {
         matchedSession ?? {
           session_id: activeSessionId,
           user_id: personaId ?? '',
+          persona_id: personaId ?? null,
           started_at: '',
           last_active: '',
           metadata: {},

@@ -20,7 +20,7 @@ import { useChatConversation } from '@/hooks/chat/use-chat-conversation';
 import { AppSuspenseBoundary } from '@/components/error-boundary';
 
 import { ChatComposer } from './ChatComposer';
-import { ChatMessageBubble } from './ChatMessageBubble';
+import { ChatMessageListItem } from './ChatMessageListItem';
 import { ConditionalRender } from '@/components/utils';
 import { ChatConversationScreenContentSkeleton } from './ChatConversationScreenContent.skeleton';
 
@@ -114,9 +114,9 @@ function ChatConversationScreenContentInner({
 
   const renderItem = useCallback(
     ({ item }: { item: (typeof messages)[number] }) => (
-      <ChatMessageBubble message={item} t={t} i18n={i18n} />
+      <ChatMessageListItem message={item} t={t} i18n={i18n} />
     ),
-    [],
+    [i18n, t],
   );
 
   return (
