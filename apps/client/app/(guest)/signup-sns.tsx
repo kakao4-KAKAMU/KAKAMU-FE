@@ -118,9 +118,9 @@ export default function SignUpSnsScreen() {
   const registerMutation = useRegisterSocialUserMutation(apiClient, {
     onSettled: async () => {
       await firebaseSignOut(phoneValidation.firebasePhoneDepsRef ?? undefined);
+      clearPendingSnsSignUp();
     },
     onSuccess: (res) => {
-      clearPendingSnsSignUp();
       void setAuthTokens(res.access_token, res.refresh_token);
       setSubmitting(false);
     },
