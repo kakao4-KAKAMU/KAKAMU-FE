@@ -24,7 +24,6 @@ type ProfileSettingsHeaderProps = {
   isDropdownMenu: boolean;
   actionIcon: LucideIcon;
   actionAccessibilityLabel: string;
-  addFeedAccessibilityLabel?: string;
 };
 
 export function ProfileSettingsHeader({
@@ -32,21 +31,20 @@ export function ProfileSettingsHeader({
   isDropdownMenu,
   actionIcon,
   actionAccessibilityLabel,
-  addFeedAccessibilityLabel,
 }: ProfileSettingsHeaderProps) {
   const router = useRouter();
   const { t } = useTranslation();
 
   const handleActionPress = useCallback(() => {
-    router.push('/profile/my');
+    router.push('/(account)/(tabs)/profile/my');
   }, [router]);
 
   const handleAccountSettings = useCallback(() => {
-    router.push('/profile/setting');
+    router.push('/(account)/profile/setting');
   }, [router]);
 
   const handlePersonaSettings = useCallback(() => {
-    router.push('/persona');
+    router.push('/(account)/persona');
   }, [router]);
 
   const handleLogout = useCallback(async () => {
@@ -55,7 +53,7 @@ export function ProfileSettingsHeader({
   }, [router]);
 
   const handleAddFeed = useCallback(() => {
-    router.push('/feed/write');
+    router.push('/(account)/feed/write');
   }, [router]);
 
   return (

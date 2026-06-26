@@ -86,7 +86,6 @@ function ProfileScreenLayoutContent({
             isDropdownMenu={!isSettings}
             actionIcon={Settings}
             actionAccessibilityLabel={t('account.layout.profileSettings')}
-            addFeedAccessibilityLabel={t('account.layout.feedWrite')}
           />,
           false: (
             <ProfileSubpageHeader
