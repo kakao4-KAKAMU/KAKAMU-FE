@@ -26,8 +26,8 @@ const navigationIntegration = Sentry.reactNavigationIntegration({
   useDispatchedActionData: true, // default: false
 });
 Sentry.init({
-  dsn: "https://c975936198a658db66d7afd36e8bc6e2@o4511347737690113.ingest.us.sentry.io/4511347740180480",
-  enableLogs: true,
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DNS ?? '',
+  enableLogs: process.env.NODE_ENV === 'development' ? true : false,
   integrations: [navigationIntegration],
 })
 
