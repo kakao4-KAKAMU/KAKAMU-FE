@@ -15,6 +15,7 @@ export default function AccountLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="persona/index" options={{ headerShown: false, title: t('account.layout.persona') }} />
           <Stack.Screen name="persona/create" options={{ headerShown: false, title: t('account.layout.personaCreate') }} />
+          <Stack.Screen name="persona/[id]" options={{ headerShown: false, title: t('account.layout.personaEdit') }} />
           <Stack.Screen name="profile/setting/index" options={{ headerShown: false, title: t('account.layout.profileSettings') }} />
           <Stack.Screen name="profile/setting/password" options={{ headerShown: false, title: t('account.layout.passwordChange') }} />
           <Stack.Screen name="feed/write/index" options={{ headerShown: false, title: t('account.layout.feedWrite') }} />
