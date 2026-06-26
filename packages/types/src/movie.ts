@@ -48,3 +48,43 @@ export type WatchMovieResponse = {
   status?: string;
   message: string;
 };
+
+export type MovieEvaluation = 'LIKE' | 'DISLIKE';
+
+export type YoutubeVideo = {
+  movie_id: string;
+  is_trailer: boolean;
+  language: string;
+  youtube_video_id: string;
+};
+
+export type MovieWithTrailers = {
+  id: string;
+  title: string;
+  poster_url?: string | null;
+  release_date?: string | null;
+  youtube_videos?: YoutubeVideo[];
+};
+
+export type MovieToEvaluateParams = {
+  persona_id?: string | null;
+  limit?: number;
+};
+
+export type MovieToEvaluateListResponse = {
+  items: MovieWithTrailers[];
+};
+
+export type MovieEvaluationRequest = {
+  movie_id: string;
+  evaluation: MovieEvaluation;
+  persona_id?: string | null;
+};
+
+export type MovieEvaluationResponse = {
+  message: string;
+  user_id: string;
+  persona_id?: string | null;
+  movie_id: string;
+  evaluation: string;
+};

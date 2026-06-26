@@ -6,6 +6,7 @@ export { PersonaListScreenContent } from './PersonaListScreenContent';
 export { PersonaCreateScreenContent } from './PersonaCreateScreenContent';
 export { PersonaEditScreenContent } from './PersonaEditScreenContent';
 export { PersonaCreateStep1Form } from './PersonaCreateStep1Form';
+export { PersonaCreateStep1FormSkeleton } from './PersonaCreateStep1Form.skeleton';
 export { PersonaCreateStep2Form } from './PersonaCreateStep2Form';
 export { PersonaCreateStep3Form } from './PersonaCreateStep3Form';
 export { PersonaCreateStep4Form } from './PersonaCreateStep4Form';

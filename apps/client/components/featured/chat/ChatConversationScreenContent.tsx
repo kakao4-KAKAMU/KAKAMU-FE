@@ -1,6 +1,16 @@
+import { useFocusEffect } from 'expo-router';
 import { Bot } from 'lucide-react-native';
-import { useCallback } from 'react';
-import { ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
+import { useCallback, useEffect, useRef } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon, Text, TextClassProvider } from '@kakamu/ui';
 import { useTranslation } from '@kakamu/i18n';
@@ -17,6 +27,8 @@ import { ChatConversationScreenContentSkeleton } from './ChatConversationScreenC
 type ChatConversationScreenContentProps = {
   sessionId: string;
 };
+
+const SCROLL_BOTTOM_THRESHOLD = 200;
 
 export function ChatConversationScreenContent({
   sessionId,
@@ -51,6 +63,55 @@ function ChatConversationScreenContentInner({
     sendA11y,
   } = useChatConversation(sessionId);
 
+  const listRef = useRef<FlatList>(null);
+  const isUserControllingScrollRef = useRef(false);
+
+  const scrollToBottom = useCallback((animated = false) => {
+    requestAnimationFrame(() => {
+      listRef.current?.scrollToEnd({ animated });
+    });
+  }, []);
+
+  const scrollIfAllowed = useCallback(() => {
+    if (isHistoryLoading || isLoadingOlderMessages || isUserControllingScrollRef.current) {
+      return;
+    }
+    scrollToBottom();
+  }, [isHistoryLoading, isLoadingOlderMessages, scrollToBottom]);
+
+  const handleScrollBeginDrag = useCallback(() => {
+    isUserControllingScrollRef.current = true;
+  }, []);
+
+  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    if (
+      contentSize.height - layoutMeasurement.height - contentOffset.y <=
+      SCROLL_BOTTOM_THRESHOLD
+    ) {
+      isUserControllingScrollRef.current = false;
+    }
+  }, []);
+
+  const handleContentSizeChange = useCallback(() => {
+    scrollIfAllowed();
+  }, [scrollIfAllowed]);
+
+  useFocusEffect(
+    useCallback(() => {
+      isUserControllingScrollRef.current = false;
+      scrollIfAllowed();
+    }, [sessionId, scrollIfAllowed]),
+  );
+
+  useEffect(() => {
+    if (isHistoryLoading) {
+      return;
+    }
+    isUserControllingScrollRef.current = false;
+    scrollToBottom();
+  }, [isHistoryLoading, sessionId, scrollToBottom]);
+
   const renderItem = useCallback(
     ({ item }: { item: (typeof messages)[number] }) => (
       <ChatMessageBubble message={item} t={t} i18n={i18n} />
@@ -69,7 +130,13 @@ function ChatConversationScreenContentInner({
       >
         <FlatList
           data={messages}
+          ref={listRef}
           keyExtractor={(item) => String(item.id)}
+          onScroll={handleScroll}
+          onScrollBeginDrag={handleScrollBeginDrag}
+          scrollEventThrottle={16}
+          onContentSizeChange={handleContentSizeChange}
+          keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             paddingHorizontal: 20,
             paddingTop: 8,
@@ -79,6 +146,12 @@ function ChatConversationScreenContentInner({
           }}
           ListHeaderComponent={
             <View className="mb-2 gap-2">
+              <View className="flex-row items-start gap-2.5 rounded-xl bg-muted px-3 py-3">
+                <TextClassProvider value="text-foreground">
+                  <Icon as={Bot} size={22} />
+                </TextClassProvider>
+                <Text className="flex-1 text-[13px] leading-5 text-foreground">{introText}</Text>
+              </View>
               <ConditionalRender.Boolean
                 condition={hasMoreHistory}
                 render={{
@@ -101,12 +174,6 @@ function ChatConversationScreenContentInner({
                   </Pressable>
                 }}
               />
-              <View className="flex-row items-start gap-2.5 rounded-xl bg-muted px-3 py-3">
-                <TextClassProvider value="text-foreground">
-                  <Icon as={Bot} size={22} />
-                </TextClassProvider>
-                <Text className="flex-1 text-[13px] leading-5 text-foreground">{introText}</Text>
-              </View>
               <ConditionalRender.Boolean
                 condition={isHistoryLoading}
                 render={{

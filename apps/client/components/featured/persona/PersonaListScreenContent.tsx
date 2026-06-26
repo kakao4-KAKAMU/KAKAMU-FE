@@ -5,7 +5,8 @@ import { useTranslation } from '@kakamu/i18n';
 import { useDeletePersonaMutation, usePersonasQuery } from '@kakamu/query';
 import { usePersonaStore } from '@kakamu/store';
 import { useErrorAlertDialog, Button, Text } from '@kakamu/ui';
-import { PersonaGrid, PersonaIntro } from '@/components/featured/persona';
+import { PersonaGrid } from './PersonaGrid';
+import { PersonaIntro } from './PersonaIntro';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapPersonaDeleteError } from '@/lib/error-message-map/persona/persona-delete-error';
 

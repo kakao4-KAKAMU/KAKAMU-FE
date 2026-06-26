@@ -4,10 +4,9 @@ import { ScrollView, View } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
 import { Badge, Icon, Text, TextClassProvider } from '@kakamu/ui';
 
-import {
-  AccountSnsProviderRow,
-  ProfileSettingRow,
-} from '@/components/featured/profile';
+import { AccountSnsProviderRow } from './AccountSnsProviderRow';
+import { ProfileSettingRow } from './ProfileSettingRow';
+
 import { ConditionalRender } from '@/components/utils/ConditionalRender';
 import { useAccountSetupScreen } from '@/hooks/account/useAccountSetupScreen';
 import { getSocialProviderIcon } from '@/lib/account/social-provider-ui';

@@ -1,5 +1,4 @@
 export type { TrailerQueueItem, TrailerVote } from './types';
-export { SONAR_MOCK_TRAILERS } from './mockTrailers';
 export { SonarHint } from './SonarHint';
 export { TrailerMovieRow } from './TrailerMovieRow';
 export { TrailerSwipeCard } from './TrailerSwipeCard';
