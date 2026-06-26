@@ -1,8 +1,24 @@
+import type { MovieItem } from './movie';
+import type { PostItem } from './post';
+
 export type ChatSessionMetadata = Record<string, unknown>;
+
+export type ChatMetadataType = 'movie' | 'feed';
+
+export type ChatMetadataItem = {
+  type: ChatMetadataType | null;
+  id: string | null;
+};
+
+export type ChatMetadataList = {
+  movie?: ChatMetadataItem[];
+  feed?: ChatMetadataItem[];
+};
 
 export type ChatSession = {
   session_id: string;
   user_id: string;
+  persona_id: string | null;
   started_at: string;
   last_active: string;
   metadata: ChatSessionMetadata;
@@ -19,14 +35,14 @@ export type ChatHistoryMessage = {
   id: number;
   session_id: string;
   user_id: string;
-  persona_id: string | null;
   role: 'user' | 'assistant' | string;
   content: string;
   created_at: string;
-  reply_metadata?: {
-    type: 'movie';
-    id: string;
-  };
+  reply_metadata?: ChatMetadataList | null;
+  feed_list?: PostItem[];
+  movie_list?: MovieItem[];
+  /** 클라이언트 낙관적 메시지용 */
+  persona_id?: string | null;
   status?: 'pending' | 'processing' | 'done';
   processing?: boolean;
 };
