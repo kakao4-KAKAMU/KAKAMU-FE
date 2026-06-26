@@ -65,6 +65,21 @@ export default function SignUpSnsScreen() {
   const phoneValid = watch('phoneValid');
 
   useEffect(() => {
+    const tempClearPendingSnsSignUp = () => {
+      clearPendingSnsSignUp();
+    }
+    if(Platform.OS === 'web') {
+      window.addEventListener('beforeunload', tempClearPendingSnsSignUp);
+    }
+    return () => {
+      clearPendingSnsSignUp();
+      if(Platform.OS === 'web') {
+        window.removeEventListener('beforeunload', tempClearPendingSnsSignUp);
+      }
+    }
+  }, [])
+
+  useEffect(() => {
     if (!pendingSnsProvider || !pendingSnsToken) {
       router.replace('./signin');
       return;
