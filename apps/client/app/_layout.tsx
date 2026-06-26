@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 
-import { Redirect, Stack, usePathname, useRouter, useSegments } from 'expo-router';
+import { Redirect, Stack, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -55,10 +55,6 @@ SplashScreen.setOptions({
 })
 SplashScreen.preventAutoHideAsync();
 
-const isPersonaPath = (pathname: string) =>
-  pathname === '/persona' || pathname.startsWith('/persona/');
-
-
 type AccountFilterStatus = 'gotoGuest' |
 'gotoAccountTabs' |
 'none';
@@ -67,9 +63,7 @@ export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
   const isAuthenticated = !!accessToken;
-  const router = useRouter();
   const segments = useSegments();
-  const pathname = usePathname();
   
   useEffect(() => {
     let isMounted = true;
@@ -123,7 +117,7 @@ export default function RootLayout() {
       return 'gotoAccountTabs';
     }
     return 'none';
-  }, [authReady, isAuthenticated, pathname, router, segments]);
+  }, [authReady, isAuthenticated, segments]);
 
   if (!authReady) {
     return null;
