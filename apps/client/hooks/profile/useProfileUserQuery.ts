@@ -1,37 +1,36 @@
 import type { ApiClient } from '@kakamu/api';
-import { useUserQuery } from '@kakamu/query';
+import { useCurrentUserSuspenseQuery, useUserQuery } from '@kakamu/query';
 import type { UserPublic } from '@kakamu/types';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 
-type UseProfileUserQueryParams = {
-  client: ApiClient;
-  isMy: boolean;
-  userId?: string;
-};
-
-
-type UseProfileUserQueryResult = {
+type ProfileUserQueryResult = {
   userId: string;
   user: UserPublic;
 };
 
-/** 프로필 화면용 user 조회 — 내 프로필은 JWT, 타인 프로필은 route param userId 사용 */
-export function useProfileUserQuery({
-  client,
-  isMy,
-  userId,
-}: UseProfileUserQueryParams): UseProfileUserQueryResult {
-  const currentUserId = useCurrentUserId();
-  const targetUserId = isMy ? currentUserId : userId;
-  
-  if(!targetUserId) {
-    throw new Error('Target user ID not found');
+/** 내 프로필 — GET /users/me */
+export function useMyProfileUserQuery(client: ApiClient): ProfileUserQueryResult {
+  const meQuery = useCurrentUserSuspenseQuery(client);
+  const me = meQuery.data;
+
+  if (!me.id) {
+    throw new Error('Current user ID not found');
   }
 
-  const userQuery = useUserQuery(client, targetUserId);
+  return {
+    userId: me.id,
+    user: me,
+  };
+}
+
+/** 타인 프로필 — GET /users/{user_id} */
+export function useOtherProfileUserQuery(
+  client: ApiClient,
+  userId: string,
+): ProfileUserQueryResult {
+  const userQuery = useUserQuery(client, userId);
 
   return {
-    userId: targetUserId,
-    user: userQuery.data
+    userId,
+    user: userQuery.data,
   };
 }

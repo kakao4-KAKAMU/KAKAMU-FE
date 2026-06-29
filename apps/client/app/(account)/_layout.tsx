@@ -1,15 +1,15 @@
 import { Stack } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useAuthStore } from '@kakamu/store';
 import { ConditionalRender } from '@/components/utils';
 
 export default function AccountLayout() {
   const { t } = useTranslation();
-  const currentUserId = useCurrentUserId()
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   return (
     <ConditionalRender.Boolean
-      condition={currentUserId}
+      condition={accessToken}
       render={{
         true: <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />

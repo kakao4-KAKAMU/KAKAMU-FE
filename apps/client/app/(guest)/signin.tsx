@@ -19,6 +19,7 @@ import {
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapSignInError, parseSocialSignInError } from '@/lib/error-message-map/auth/sign-in-error';
 import { setAuthTokens } from '@/lib/auth/set-auth-tokens';
+import { prefetchCurrentUserSession } from '@/lib/auth/prefetch-current-user-session';
 import { useAuthFormValidationKit } from '@/lib/auth-form-validators';
 import { useKakaoLogin } from '@/lib/kakao-login';
 
@@ -43,7 +44,9 @@ export default function SignInScreen() {
         router.push('./signup-sns');
         return;
       }
-      void setAuthTokens(res.access_token, res.refresh_token);
+      void setAuthTokens(res.access_token, res.refresh_token).then(() =>
+        prefetchCurrentUserSession(apiClient),
+      );
     },
     onError: (err, variables) => {
       setSubmitting(false);
@@ -61,7 +64,9 @@ export default function SignInScreen() {
 
   const loginMutation = useLoginUserMutation(apiClient, {
     onSuccess: (res) => {
-      void setAuthTokens(res.access_token, res.refresh_token);
+      void setAuthTokens(res.access_token, res.refresh_token).then(() =>
+        prefetchCurrentUserSession(apiClient),
+      );
       setSubmitting(false);
     },
     onError: (err) => {

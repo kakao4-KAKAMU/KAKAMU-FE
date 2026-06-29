@@ -12,11 +12,12 @@ import { ProfileSettingsHeader } from '../header';
 import { ProfileSubpageHeader } from '../header';
 import { Settings } from 'lucide-react-native';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useProfileUserQuery } from '@/hooks/profile/useProfileUserQuery';
+import { useMyProfileUserQuery, useOtherProfileUserQuery } from '@/hooks/profile/useProfileUserQuery';
 import { useProfileFollowActions } from '@/hooks/profile/useProfileFollowActions';
 import { useProfileRelationListDialog } from '@/hooks/profile/useProfileRelationListDialog';
 import { ProfileRelationListDialog } from './ProfileRelationListDialog';
 import { AppSuspenseBoundary } from '@/components/error-boundary';
+import type { UserPublic } from '@kakamu/types';
 import { ProfileScreenLayoutSkeleton } from './ProfileScreenLayout.skeleton';
 
 type ProfileScreenLayoutProps = {
@@ -28,27 +29,57 @@ type ProfileScreenLayoutProps = {
 export function ProfileScreenLayout({ isMy, userId, children }: ProfileScreenLayoutProps) {
   return (
     <AppSuspenseBoundary fallback={<ProfileScreenLayoutSkeleton />}>
-      <ProfileScreenLayoutContent isMy={isMy} userId={userId}>
-        {children}
-      </ProfileScreenLayoutContent>
+      {isMy ? (
+        <MyProfileScreenLayoutContent>{children}</MyProfileScreenLayoutContent>
+      ) : userId ? (
+        <OtherProfileScreenLayoutContent userId={userId}>{children}</OtherProfileScreenLayoutContent>
+      ) : null}
     </AppSuspenseBoundary>
   );
 }
 
-function ProfileScreenLayoutContent({
-  isMy,
+function MyProfileScreenLayoutContent({ children }: { children: ReactNode }) {
+  const apiClient = useBackendApiClient();
+  const { user, userId: targetUserId } = useMyProfileUserQuery(apiClient);
+
+  return (
+    <ProfileScreenLayoutBody user={user} targetUserId={targetUserId} isMy>
+      {children}
+    </ProfileScreenLayoutBody>
+  );
+}
+
+function OtherProfileScreenLayoutContent({
   userId,
   children,
-}: ProfileScreenLayoutProps) {
+}: {
+  userId: string;
+  children: ReactNode;
+}) {
+  const apiClient = useBackendApiClient();
+  const { user, userId: targetUserId } = useOtherProfileUserQuery(apiClient, userId);
+
+  return (
+    <ProfileScreenLayoutBody user={user} targetUserId={targetUserId} isMy={false}>
+      {children}
+    </ProfileScreenLayoutBody>
+  );
+}
+
+function ProfileScreenLayoutBody({
+  isMy,
+  user,
+  targetUserId,
+  children,
+}: {
+  isMy: boolean;
+  user: UserPublic;
+  targetUserId: string;
+  children: ReactNode;
+}) {
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
-  const apiClient = useBackendApiClient();
-  const { user, userId: targetUserId } = useProfileUserQuery({
-    client: apiClient,
-    isMy,
-    userId,
-  });
 
   const { isPending: isFollowPending, onToggleFollow } = useProfileFollowActions({
     userId: targetUserId,
