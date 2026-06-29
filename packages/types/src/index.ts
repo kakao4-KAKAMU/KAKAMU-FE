@@ -16,6 +16,8 @@ export type { CursorPaginationMeta, PagePaginationMeta } from './pagination';
 
 export type {
   Persona,
+  PersonaMovie,
+  PersonaPerson,
   PersonaCreateRequest,
   PersonaCreateResponse,
   PersonaUpdateRequest,
