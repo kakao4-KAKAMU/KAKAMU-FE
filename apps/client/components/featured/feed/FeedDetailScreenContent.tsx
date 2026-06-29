@@ -76,7 +76,10 @@ function FeedDetailScreenContentInner({
         replyCount={replyCountById.get(commentId) ?? 0}
         anonymousLabel={labels.anonymousAuthor}
         deleteLabel={labels.deleteComment}
+        editLabel={labels.editComment}
         reportLabel={labels.reportComment}
+        placeholder={labels.placeholder}
+        sendA11y={labels.sendA11y}
         onReply={onReply}
       />
     ),

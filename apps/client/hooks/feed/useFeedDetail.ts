@@ -150,6 +150,7 @@ export function useFeedDetail(postId: number) {
       anonymousAuthor: t('shared.feedDetail.anonymousAuthor'),
       reply: t('shared.feedDetail.reply'),
       deleteComment: t('shared.feedDetail.deleteComment'),
+      editComment: t('shared.feedDetail.editComment'),
       reportComment: t('shared.feedDetail.reportComment'),
     },
   };

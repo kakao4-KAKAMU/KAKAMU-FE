@@ -28,9 +28,11 @@ type CommentCardProps = {
   isOwner: boolean;
   anonymousLabel: string;
   deleteLabel: string;
+  editLabel: string;
   reportLabel: string;
   onToggleLike: () => void;
   onReply: () => void;
+  onEdit: () => void;
   onDelete: () => void;
   onReport: () => void;
   onRevealSpoiler: () => void;
@@ -51,9 +53,11 @@ export function CommentCard({
   isOwner,
   anonymousLabel,
   deleteLabel,
+  editLabel,
   reportLabel,
   onToggleLike,
   onReply,
+  onEdit,
   onDelete,
   onReport,
   onRevealSpoiler,
@@ -155,9 +159,14 @@ export function CommentCard({
                   condition={isOwner}
                   render={{
                     true: (
-                      <DropdownMenuItem onPress={onDelete}>
-                        <Text>{deleteLabel}</Text>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem onPress={onEdit}>
+                          <Text>{editLabel}</Text>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onPress={onDelete}>
+                          <Text>{deleteLabel}</Text>
+                        </DropdownMenuItem>
+                      </>
                     ),
                     false: (
                       <DropdownMenuItem onPress={onReport}>
