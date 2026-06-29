@@ -76,6 +76,8 @@ account.persona.update.error.notFound.title,페르소나를 찾을 수 없어요
 account.persona.update.error.notFound.description,이미 삭제되었거나 존재하지 않는 페르소나예요.,This persona no longer exists.
 account.persona.update.error.forbidden.title,수정 권한이 없어요,No permission to update
 account.persona.update.error.forbidden.description,해당 페르소나를 수정할 권한이 없습니다.,You do not have permission to update this persona.
+account.persona.update.error.sameNickname.title,닉네임을 변경해 주세요,Change the nickname
+account.persona.update.error.sameNickname.description,기존과 동일한 닉네임은 사용할 수 없습니다.,The nickname is the same as the current one.
 account.persona.delete.failedRequest.title,페르소나 삭제에 실패했어요,Could not delete persona
 account.persona.delete.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
 account.persona.delete.error.minimumRequired.title,최소 1개의 페르소나는 필요해요,At least one persona is required
