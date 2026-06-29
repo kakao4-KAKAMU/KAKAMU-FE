@@ -302,6 +302,7 @@ shared.feedDetail.spoilerReveal,스포일러 보기,Reveal spoiler
 shared.feedDetail.spoilerHide,스포일러 숨기기,Hide spoiler
 shared.feedDetail.reply,답글,Reply
 shared.feedDetail.deleteComment,삭제,Delete
+shared.feedDetail.editComment,수정,Edit
 shared.feedDetail.reportComment,신고,Report
 shared.feedDetail.validation.content.required,댓글을 입력해주세요,Please enter a comment
 shared.feedDetail.validation.content.max,댓글은 최대 {{max}}자까지 입력할 수 있어요,Comments can be up to {{max}} characters
@@ -313,6 +314,8 @@ shared.feedDetail.error.createComment.title,댓글 등록에 실패했어요,Cou
 shared.feedDetail.error.createComment.description,잠시 후 다시 시도해주세요,Please try again later
 shared.feedDetail.error.deleteComment.title,댓글 삭제에 실패했어요,Could not delete comment
 shared.feedDetail.error.deleteComment.description,권한이 없거나 이미 삭제된 댓글이에요,You may not have permission or the comment was already deleted
+shared.feedDetail.error.updateComment.title,댓글 수정에 실패했어요,Could not update comment
+shared.feedDetail.error.updateComment.description,권한이 없거나 이미 삭제된 댓글이에요,You may not have permission or the comment was already deleted
 shared.feedDetail.error.commentLike.title,좋아요에 실패했어요,Could not like comment
 shared.feedDetail.error.commentLike.description,잠시 후 다시 시도해주세요,Please try again later
 shared.feedDetail.error.spoiler.title,스포일러 내용을 불러오지 못했어요,Could not load spoiler content
