@@ -4,6 +4,7 @@ import { authHandlers } from './custom/auth';
 import { chatStreamHandlers } from './custom/chat-stream';
 import { uploadHandlers } from './custom/upload';
 import { createGeneratedHandlers } from './handlers.generated';
+import { wrapHandlerWithImageUrls } from './lib/patch-image-urls';
 
 const customHandlers: RequestHandler[] = [
   ...authHandlers,
@@ -18,7 +19,7 @@ export function getHandlers(): Promise<RequestHandler[]> {
   if (!handlersPromise) {
     handlersPromise = createGeneratedHandlers().then((generatedHandlers) => [
       ...customHandlers,
-      ...generatedHandlers,
+      ...generatedHandlers.map(wrapHandlerWithImageUrls),
     ]);
   }
 

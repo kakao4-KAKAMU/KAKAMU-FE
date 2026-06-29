@@ -1,3 +1,5 @@
+import { mockProfileImageUrl } from '../lib/faker-images';
+
 /** 로컬 MSW 개발용 고정 mock 토큰·유저 ID */
 export const MOCK_ACCESS_TOKEN = 'mock-access-token-dev';
 export const MOCK_REFRESH_TOKEN = 'mock-refresh-token-dev';
@@ -8,7 +10,7 @@ export const MOCK_USER_PUBLIC = {
   id: MOCK_USER_ID,
   nickname: 'mock_user',
   tag: '0001',
-  profile_image: null,
+  profile_image: mockProfileImageUrl(),
   created_at: '2026-01-01T00:00:00.000Z',
   is_following: false,
   profile_msg: null,
@@ -23,7 +25,7 @@ export const MOCK_USER_ACCOUNT = {
   nickname: 'mock_user',
   phone: '01000000000',
   tag: '0001',
-  profile_image_url: null,
+  profile_image_url: mockProfileImageUrl(),
   profile_msg: null,
   created_at: '2026-01-01T00:00:00.000Z',
 } as const;
