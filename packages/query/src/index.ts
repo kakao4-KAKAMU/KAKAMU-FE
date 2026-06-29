@@ -75,4 +75,5 @@ export { useCommentsByPostInfiniteQuery } from './features/comment/model/use-com
 export { useCommentByIdQuery } from './features/comment/model/use-comment-by-id-query';
 export { useCreateCommentMutation } from './features/comment/model/use-create-comment-mutation';
 export { useDeleteCommentMutation } from './features/comment/model/use-delete-comment-mutation';
+export { useUpdateCommentMutation } from './features/comment/model/use-update-comment-mutation';
 export { useRevealCommentSpoilerMutation } from './features/comment/model/use-reveal-comment-spoiler-mutation';
