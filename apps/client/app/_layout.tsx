@@ -17,6 +17,7 @@ import { ApiClientProvider } from '@/providers/ApiClientProvider';
 import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
 import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
 import { ConditionalRender } from '@/components/utils';
+import { useMswBootstrap } from '@/hooks/msw/useMswBootstrap';
 import { appQueryClient } from '@/lib/query/query-client';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
@@ -60,12 +61,17 @@ type AccountFilterStatus = 'gotoGuest' |
 'none';
 
 export default function RootLayout() {
+  const mswReady = useMswBootstrap();
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
   const isAuthenticated = !!accessToken;
   const segments = useSegments();
   
   useEffect(() => {
+    if (!mswReady) {
+      return;
+    }
+
     let isMounted = true;
 
     const restoreAuth = async () => {
@@ -90,7 +96,7 @@ export default function RootLayout() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [mswReady]);
 
   useEffect(() => {
     if (!authReady) {
@@ -119,7 +125,7 @@ export default function RootLayout() {
     return 'none';
   }, [authReady, isAuthenticated, segments]);
 
-  if (!authReady) {
+  if (!mswReady || !authReady) {
     return null;
   }
 
