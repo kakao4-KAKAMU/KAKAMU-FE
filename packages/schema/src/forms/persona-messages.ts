@@ -4,11 +4,6 @@ export type PersonaFormValidationMessages = {
     min: string;
     max: string;
   };
-  description: {
-    required: string;
-    min: string;
-    max: string;
-  };
   profileImageUrl: {
     invalid: string;
   };
