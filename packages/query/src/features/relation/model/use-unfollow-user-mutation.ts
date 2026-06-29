@@ -3,12 +3,8 @@ import type { ApiClient } from '@kakamu/api';
 import { deleteUnfollowUser } from '@kakamu/api';
 import type { RelationResponse } from '@kakamu/types';
 
-import { relationKeys } from '../../../shared/keys/relation.keys';
-import { postKeys } from '../../../shared/keys/post.keys';
-import { setPostFollowByAuthorInCaches, restorePostDetails, snapshotPostDetails, type PostDetailQuerySnapshot } from '../../post/lib/post-infinite-cache';
 import { userKeys } from '../../../shared/keys/user.keys';
 import {
-  cancelUserQueries,
   restoreUserDetails,
   setUserFollowInCache,
   snapshotUserDetail,
@@ -23,7 +19,6 @@ type UnfollowUserVariables = {
 
 type UnfollowUserContext = {
   previousUserDetails: UserDetailQuerySnapshot;
-  previousPostDetails: PostDetailQuerySnapshot;
 };
 
 export function useUnfollowUserMutation(
@@ -36,29 +31,20 @@ export function useUnfollowUserMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ userId }) => deleteUnfollowUser(client, userId),
     onMutate: async ({ userId }) => {
-      await cancelUserQueries(queryClient, userId);
-      await queryClient.cancelQueries({ queryKey: postKeys.details() });
       const previousUserDetails = snapshotUserDetail(queryClient, userId);
-      const previousPostDetails = snapshotPostDetails(queryClient);
       setUserFollowInCache(queryClient, userId, false);
-      setPostFollowByAuthorInCaches(queryClient, userId, false);
-      return { previousUserDetails, previousPostDetails };
+      return { previousUserDetails };
     },
     onError: (_error, _variables, context) => {
       if (context) {
         restoreUserDetails(queryClient, context.previousUserDetails);
-        restorePostDetails(queryClient, context.previousPostDetails);
       }
     },
     onSettled: (_data, _error, { userId }) => {
       queryClient.invalidateQueries({ queryKey: userKeys.detail(userId) });
-      queryClient.invalidateQueries({ queryKey: postKeys.details() });
-      queryClient.invalidateQueries({ queryKey: relationKeys.followingsLists() });
-      queryClient.invalidateQueries({ queryKey: relationKeys.followersLists() });
     },
     ...NO_MUTATION_CACHE,
     ...options,

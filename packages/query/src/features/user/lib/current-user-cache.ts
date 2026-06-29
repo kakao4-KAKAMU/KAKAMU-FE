@@ -30,11 +30,9 @@ export function mergeUserAccountIntoCurrentUserCache(
   };
 
   queryClient.setQueryData<UserPublic>(userKeys.me(), (old) => {
-    if (!old) {
-      return old;
-    }
+    const temp = old ?? { id: userId, nickname: '', tag: '', profile_image: null, created_at: '', updated_at: null, post_count: 0, follower_count: 0, following_count: 0, is_following: false, profile_msg: null };
     return {
-      ...old,
+      ...temp,
       ...(patch.nickname != null ? { nickname: patch.nickname } : {}),
       ...(patch.profile_msg !== undefined ? { profile_msg: patch.profile_msg } : {}),
       ...(patch.tag != null ? { tag: patch.tag } : {}),
@@ -45,11 +43,9 @@ export function mergeUserAccountIntoCurrentUserCache(
   });
 
   queryClient.setQueryData<UserPublic>(userKeys.detail(userId), (old) => {
-    if (!old) {
-      return old;
-    }
+    const temp = old ?? { id: userId, nickname: '', tag: '', profile_image: null, created_at: '', updated_at: null, post_count: 0, follower_count: 0, following_count: 0, is_following: false, profile_msg: null };
     return {
-      ...old,
+      ...temp,
       ...(profilePatch.nickname != null ? { nickname: profilePatch.nickname } : {}),
       ...(profilePatch.profile_msg !== undefined
         ? { profile_msg: profilePatch.profile_msg }

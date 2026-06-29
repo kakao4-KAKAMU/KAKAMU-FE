@@ -36,10 +36,8 @@ export function patchUserInCache(
   patch: Partial<UserPublic> | ((user: UserPublic) => UserPublic),
 ): void {
   queryClient.setQueryData<UserPublic>(userKeys.detail(userId), (old) => {
-    if (!old) {
-      return old;
-    }
-    return typeof patch === 'function' ? patch(old) : { ...old, ...patch };
+    const temp = old ?? { id: userId, nickname: '', tag: '', profile_image: null, created_at: '', updated_at: null, post_count: 0, follower_count: 0, following_count: 0, is_following: false, profile_msg: null };
+    return typeof patch === 'function' ? patch(temp) : { ...temp, ...patch };
   });
 }
 
@@ -70,6 +68,7 @@ export function setUserFollowInCache(
   userId: string,
   isFollowing: boolean,
 ): void {
+  console.log('setUserFollowInCache', isFollowing)
   patchUserInCache(queryClient, userId, (user) => {
     if (user.is_following === isFollowing) {
       return user;
