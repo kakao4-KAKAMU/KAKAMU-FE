@@ -113,29 +113,6 @@ export function PersonaCreateStep1Form({
           }}
         />
 
-        <Controller
-          control={control}
-          name="description"
-          render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-            <View className="gap-2">
-              <Label nativeID="persona-description-label" className="text-sm text-muted-foreground">
-                {t('account.persona.create.descriptionLabel')}
-              </Label>
-              <Input
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder={t('account.persona.create.descriptionPlaceholder')}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-                aria-labelledby="persona-description-label"
-                className="min-h-20 rounded-md py-3"
-              />
-              {error ? <Text className="text-sm text-destructive">{error.message}</Text> : null}
-            </View>
-          )}
-        />
       </View>
 
       <Button onPress={onContinue} disabled={continuing} className="h-11 rounded-md">

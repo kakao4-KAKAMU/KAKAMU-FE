@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from '@kakamu/i18n';
 import type { PersonaCreateFormInput } from '@kakamu/schema';
-import type { PersonaUpdateRequest } from '@kakamu/types';
 import { usePersonaQuery, useUpdatePersonaMutation } from '@kakamu/query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useErrorAlertDialog } from '@kakamu/ui';
@@ -25,15 +24,10 @@ import { pickProfileImage } from '@/lib/upload/pick-profile-image';
 import { useResolveFormImageUrls } from '@/hooks/upload/useResolveFormImageUrls';
 import { useUploadApiClient } from '@/hooks/api/useUploadApiClient';
 import { ConditionalRender } from '@/components/utils';
-
-const DEFAULT_VALUES: PersonaCreateFormInput = {
-  name: '',
-  description: '',
-  profile_image_url: '',
-  selectedGenreIds: [],
-  selectedMovies: [],
-  selectedPersons: [],
-};
+import {
+  mapPersonaFormInputToUpdateRequest,
+  mapPersonaToFormInput,
+} from '@/lib/persona/map-persona-to-form-input';
 
 type PersonaCreateStep = 1 | 2 | 3 | 4;
 
@@ -47,7 +41,12 @@ export function PersonaEditScreenContent() {
   const { control, handleSubmit, trigger, clearErrors, setValue, getValues, reset } =
     useForm<PersonaCreateFormInput>({
       resolver,
-      defaultValues: DEFAULT_VALUES,
+      defaultValues: mapPersonaToFormInput({
+        id: '',
+        user_id: '',
+        nickname: '',
+        profile_image_url: null,
+      }),
       mode: 'onSubmit',
       reValidateMode: 'onSubmit',
     });
@@ -61,7 +60,7 @@ export function PersonaEditScreenContent() {
   const step4Search = usePersonaCreateStep4Search(step === 4);
 
   const handleContinueFromStep1 = useCallback(async () => {
-    const ok = await trigger(['name', 'description', 'profile_image_url'], {
+    const ok = await trigger(['name', 'profile_image_url'], {
       shouldFocus: true,
     });
     if (ok) {
@@ -101,11 +100,7 @@ export function PersonaEditScreenContent() {
     if (!persona) {
       return;
     }
-    reset({
-      ...DEFAULT_VALUES,
-      name: persona.nickname ?? '',
-      profile_image_url: persona.profile_image_url ?? '',
-    });
+    reset(mapPersonaToFormInput(persona));
   }, [persona, reset]);
 
   const handlePickProfileImage = useCallback(async () => {
@@ -156,24 +151,13 @@ export function PersonaEditScreenContent() {
             )
           : '';
 
-        if (!id) {
+        if (!id || !persona) {
           setSubmitting(false);
           router.replace('/persona');
           return;
         }
 
-        const body: PersonaUpdateRequest = {
-          nickname: data.name.trim() === persona?.nickname ? undefined : data.name.trim(),
-          profile_image_url:
-            profile_image_url === persona?.profile_image_url ? undefined : profile_image_url,
-          ...(data.selectedMovies.length > 0
-            ? { fav_movie_ids: data.selectedMovies.map((movie) => movie.id) }
-            : {}),
-          ...(data.selectedGenreIds.length > 0 ? { fav_genre_ids: data.selectedGenreIds } : {}),
-          ...(data.selectedPersons.length > 0
-            ? { fav_people_ids: data.selectedPersons.map((person) => person.id) }
-            : {}),
-        };
+        const body = mapPersonaFormInputToUpdateRequest(data, persona, profile_image_url);
 
         updateMutation.mutate({
           personaId: id,
@@ -191,8 +175,7 @@ export function PersonaEditScreenContent() {
       getPendingLocalImages,
       id,
       openErrorAlert,
-      persona?.nickname,
-      persona?.profile_image_url,
+      persona,
       resolveFormImageUrl,
       router,
       t,
