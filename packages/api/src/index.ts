@@ -55,5 +55,6 @@ export { getFollowers } from './relations/list-followers';
 export { getFollowings } from './relations/list-followings';
 export { createComment } from './comments/create';
 export { deleteComment } from './comments/delete';
+export { updateComment } from './comments/update';
 export { getCommentSpoilerDetail } from './comments/get-spoiler-detail';
 export { getCommentsByPost } from './comments/list-by-post';
