@@ -1,12 +1,12 @@
 import { fromOpenApi } from '@msw/source/open-api';
 
 import { getApiBaseUrl } from './api-base';
-import spec from './openapi.json';
 
 let generatedHandlersPromise: ReturnType<typeof fromOpenApi> | null = null;
 
 /** OpenAPI 스펙 기반 MSW 핸들러 (런타임 생성, 결과 캐시) */
-export function createGeneratedHandlers() {
+export async function createGeneratedHandlers() {
+  const spec = await import('./openapi.json');
   if (!generatedHandlersPromise) {
     const apiBase = getApiBaseUrl();
     generatedHandlersPromise = fromOpenApi({
