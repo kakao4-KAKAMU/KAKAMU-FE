@@ -7,6 +7,9 @@
     "prebuild": "expo prebuild",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "msw:init": "msw init ./public --save",
+    "msw:sync-openapi": "node ./mocks/scripts/fetch-openapi.mjs",
+    "msw:generate": "node ./mocks/scripts/generate-handlers.mts",
     "web": "expo start --web",
     "build-web": "expo export --platform web",
     "build-web-dev": "NODE_ENV=development expo export --platform web --dev",
@@ -59,14 +62,23 @@
     "react-native-worklets": "0.7.4"
   },
   "devDependencies": {
+    "@msw/source": "^0.6.1",
     "@tailwindcss/postcss": "^4.1.16",
     "@types/culori": "^4.0.1",
     "@types/react": "~19.2.14",
     "@types/react-native-web": "^0.19.2",
+    "fast-text-encoding": "^1.0.6",
+    "msw": "^2.14.6",
     "postcss": "^8.5.6",
+    "react-native-url-polyfill": "^3.0.0",
     "react-test-renderer": "19.1.0",
     "tailwindcss": "^4.1.16",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }
