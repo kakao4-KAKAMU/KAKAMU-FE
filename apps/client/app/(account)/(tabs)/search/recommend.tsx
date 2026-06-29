@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
 import { useSearchForYouInfiniteQuery } from '@kakamu/query';
+import { useAuthStore } from '@kakamu/store';
 import { Text } from '@kakamu/ui';
 
 import { CompactPost } from '@/components/featured/post/CompactPost';
@@ -16,6 +17,7 @@ export default function SearchRecommendScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const client = useBackendApiClient();
+  const accessToken = useAuthStore((state) => state.accessToken);
   const currentUserId = useCurrentUserId();
   const { query } = useSearchNavigation();
   const { recordSelection } = useSearchRecentHistory();
@@ -34,7 +36,7 @@ export default function SearchRecommendScreen() {
     [query, recordSelection, router],
   );
 
-  if (currentUserId == null) {
+  if (!accessToken) {
     return (
       <View className="flex-1 items-center justify-center py-12">
         <Text className="px-4 text-center text-sm text-muted-foreground">

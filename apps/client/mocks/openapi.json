@@ -1,0 +1,7182 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "KAKAMU_BE",
+    "description": "FILMA 백엔드 API 문서",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Health Check",
+        "description": "쿠버네티스 상태 확인용 엔드포인트",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Read Root",
+        "operationId": "read_root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/db-test": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Test Db",
+        "operationId": "test_db_db_test_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "500": {
+            "description": "DB 연결 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "DB_CONNECTION_FAILED",
+                    "message": "/db-test Health check 중 데이터베이스 연결 실패"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/redis-test": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Test Redis",
+        "operationId": "test_redis_redis_test_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logs/activity": {
+      "post": {
+        "tags": [
+          "Logging"
+        ],
+        "summary": "Log Activity",
+        "description": "프론트엔드에서 수집한 유저 행동 로그를 백그라운드 큐에 적재합니다.",
+        "operationId": "log_activity_logs_activity_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityLogCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/batch/search": {
+      "post": {
+        "tags": [
+          "Test - Batch"
+        ],
+        "summary": "[테스트용] 검색어 통계 배치 수동 실행",
+        "description": "수동으로 검색어 통계 배치를 백그라운드에서 즉시 실행합니다.",
+        "operationId": "trigger_search_batch_test_batch_search_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/batch/user-delete": {
+      "post": {
+        "tags": [
+          "Test - Batch"
+        ],
+        "summary": "[테스트용] 탈퇴 유저 영구 삭제 배치 수동 실행",
+        "description": "수동으로 7일 경과 탈퇴 유저 영구 삭제 배치를 백그라운드에서 즉시 실행합니다.",
+        "operationId": "trigger_user_delete_batch_test_batch_user_delete_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/register/local": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "summary": "일반 회원가입",
+        "description": "Firebase 토큰으로 본인/중복 확인 후, 이메일/비밀번호 기반 계정을 생성합니다.",
+        "operationId": "register_local_user_users_register_local_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegister"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "일반 계정 연동됨",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "LOCAL_AUTH_ALREADY_LINKED",
+                    "message": "해당 본인인증(CI)으로 이미 일반 계정이 연결되어 있음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "회원가입 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "REGISTRATION_FAILED",
+                    "message": "회원가입 처리 중 예기치 않은 서버 에러 발생"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/register/local/link": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "summary": "로컬(이메일) 계정 추가 연동",
+        "description": "로그인된 상태에서 이메일(로컬) 계정을 추가 연동합니다. (본인인증 생략)",
+        "operationId": "link_local_user_users_register_local_link_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "일반 계정 연동 실패 (다양한 원인)",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "EmailRequired": {
+                    "summary": "이메일 누락",
+                    "value": {
+                      "detail": {
+                        "code": "EMAIL_REQUIRED",
+                        "message": "소셜 계정에 등록된 이메일이 없습니다. 연동할 이메일을 직접 입력해주세요."
+                      }
+                    }
+                  },
+                  "LocalAuthAlreadyLinked": {
+                    "summary": "일반 계정 이미 연동됨",
+                    "value": {
+                      "detail": {
+                        "code": "LOCAL_AUTH_ALREADY_LINKED",
+                        "message": "이미 이메일 로그인 정보가 연동되어 있습니다."
+                      }
+                    }
+                  },
+                  "DuplicateEmail": {
+                    "summary": "이메일 중복",
+                    "value": {
+                      "detail": {
+                        "code": "DUPLICATE_EMAIL",
+                        "message": "이미 등록된 이메일입니다."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/register/social": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "summary": "소셜 회원가입",
+        "description": "추가 정보를 받아 User와 SocialAuth를 생성하고 JWT를 발급합니다.",
+        "operationId": "register_social_user_users_register_social_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialRegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "소셜 계정 연동됨",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "SOCIAL_AUTH_ALREADY_LINKED",
+                    "message": "해당 본인인증(CI)으로 이미 동일한 소셜 계정이 연결되어 있음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "회원가입 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "REGISTRATION_FAILED",
+                    "message": "회원가입 처리 중 예기치 않은 서버 에러 발생"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login/local": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "일반 로그인",
+        "description": "JSON 형식(LocalLoginRequest)으로 이메일과 비밀번호를 받아 일반 로그인을 처리합니다.",
+        "operationId": "login_local_users_login_local_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "로그인 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "LOGIN_FAILED",
+                    "message": "일반 로그인 시 이메일 또는 비밀번호 불일치"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login/social": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "소셜 로그인",
+        "description": "소셜 토큰을 검증하고, 기존 회원이면 JWT 발급, 신규 회원이면 회원가입 유도 응답을 보냅니다.",
+        "operationId": "social_login_users_login_social_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "지원하지 않는 소셜",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "UNSUPPORTED_SOCIAL_PROVIDER",
+                    "message": "지원하지 않는 소셜 로그인 제공자 요청"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "로그인 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "LOGIN_UNEXPECTED_ERROR",
+                    "message": "로그인 처리 중 예기치 않은 서버 에러 발생"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login/refresh": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "액세스 토큰 갱신",
+        "description": "리프레시 토큰을 검증하고 새로운 액세스 토큰을 발급합니다.",
+        "operationId": "refresh_access_token_users_login_refresh_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "토큰 갱신 실패 (다양한 원인)",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "TokenExpired": {
+                    "summary": "토큰 만료",
+                    "value": {
+                      "detail": {
+                        "code": "TOKEN_EXPIRED",
+                        "message": "리프레시 토큰이 만료되었습니다. 다시 로그인해주세요."
+                      }
+                    }
+                  },
+                  "InvalidToken": {
+                    "summary": "유효하지 않은 토큰",
+                    "value": {
+                      "detail": {
+                        "code": "INVALID_TOKEN",
+                        "message": "유효하지 않은 토큰입니다."
+                      }
+                    }
+                  },
+                  "InvalidType": {
+                    "summary": "토큰 타입 오류",
+                    "value": {
+                      "detail": {
+                        "code": "INVALID_TOKEN_TYPE",
+                        "message": "리프레시 토큰이 아닙니다."
+                      }
+                    }
+                  },
+                  "InvalidPayload": {
+                    "summary": "페이로드 오류",
+                    "value": {
+                      "detail": {
+                        "code": "INVALID_TOKEN_PAYLOAD",
+                        "message": "토큰 내 사용자 정보가 없습니다."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/auth-status": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "현재 계정의 연동 상태 조회",
+        "description": "현재 유저의 이메일 로그인 및 소셜(카카오, 구글 등) 계정 연동 상태를 조회합니다.",
+        "operationId": "get_auth_link_status_users_auth_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountSettingsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/auth-status/social": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "소셜 계정 연동 추가",
+        "description": "새로운 소셜 계정(카카오 등)을 현재 로그인된 계정에 연결(Link)합니다.",
+        "operationId": "link_social_account_users_auth_status_social_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/auth-status/local": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "로컬(이메일/비밀번호) 계정 연동 추가",
+        "description": "현재 로그인된 소셜 계정에 이메일/비밀번호 기반의 로그인 수단을 추가로 연동합니다.",
+        "operationId": "link_local_account_users_auth_status_local_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/auth-status/social/{provider}": {
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "소셜 계정 연동 해제",
+        "description": "연동된 소셜 계정(카카오 등)의 연결을 해제(Unlink)합니다. (단, 유일한 로그인 수단인 경우 실패)",
+        "operationId": "unlink_social_account_users_auth_status_social__provider__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Provider"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "유저 상세 정보 조회",
+        "description": "특정 유저의 상세 정보를 조회합니다. (비회원 접근 가능)",
+        "operationId": "get_user_info_api_users__user_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "USER_NOT_FOUND",
+                    "message": "요청한 사용자를 찾을 수 없음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "내 프로필 정보 조회",
+        "description": "내 프로필 정보를 조회합니다. (태그는 변경 불가)",
+        "operationId": "get_user_info_api_users_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "USER_NOT_FOUND",
+                    "message": "요청한 사용자를 찾을 수 없음"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "내 프로필 정보 수정",
+        "description": "내 계정(User)의 닉네임과 프로필 이미지를 수정합니다. (태그는 변경 불가)",
+        "operationId": "update_my_profile_users_me_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "닉네임 사용 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "NICKNAME_UNAVAILABLE",
+                    "message": "해당 닉네임은 현재 사용할 수 없습니다. (태그 발급 실패)"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "UNAUTHORIZED",
+                    "message": "인증 토큰이 누락되었거나 유효하지 않은 토큰으로 접근 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "USER_NOT_FOUND",
+                    "message": "요청한 사용자를 찾을 수 없음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "유효성 검사 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "요청 데이터 형식이 올바르지 않습니다."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "회원 정보 수정 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "USER_UPDATE_FAILED",
+                    "message": "사용자 정보 수정 중 서버 오류 발생"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/local/reset-password": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "비밀번호 재설정",
+        "description": "Firebase 본인 인증(전화번호)을 통해 이메일 계정의 비밀번호를 재설정합니다.",
+        "operationId": "reset_local_password_users_local_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "비밀번호 재설정 실패 (잘못된 요청)",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "InvalidFirebaseToken": {
+                    "summary": "유효하지 않은 토큰",
+                    "value": {
+                      "detail": {
+                        "code": "INVALID_FIREBASE_TOKEN",
+                        "message": "유효하지 않거나 만료된 Firebase 토큰입니다."
+                      }
+                    }
+                  },
+                  "SocialUser": {
+                    "summary": "소셜 가입 계정",
+                    "value": {
+                      "detail": {
+                        "code": "SOCIAL_USER",
+                        "message": "소셜 로그인으로 가입된 계정입니다. 해당 소셜 서비스를 통해 로그인해주세요."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "USER_NOT_FOUND",
+                    "message": "요청한 사용자를 찾을 수 없음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "유효성 검사 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "요청 데이터 형식이 올바르지 않습니다."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DB 반영 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "DB_COMMIT_ERROR",
+                    "message": "서버 내부 DB 반영 중 오류 발생"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/local/change-password": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "비밀번호 변경 (로그인 후)",
+        "description": "로그인한 상태에서 기존 비밀번호를 확인하고 새로운 비밀번호로 변경합니다.\n일반 이메일/비밀번호 로그인이 연동된 사용자만 이용 가능합니다.",
+        "operationId": "change_local_password_users_local_change_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordChangeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/local/phone-verification": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "전화번호 인증",
+        "description": "Firebase 본인 인증(전화번호)을 통해 이메일 계정의 비밀번호를 재설정합니다.",
+        "operationId": "phone_validation_for_reset_password_users_local_phone_verification_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhoneVerificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Firebase 토큰 오류",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "INVALID_FIREBASE_TOKEN",
+                    "message": "Firebase 인증 토큰이 유효하지 않거나 만료됨"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "USER_NOT_FOUND",
+                    "message": "요청한 사용자를 찾을 수 없음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "유효성 검사 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "요청 데이터 형식이 올바르지 않습니다."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DB 반영 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "DB_COMMIT_ERROR",
+                    "message": "서버 내부 DB 반영 중 오류 발생"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me/restore": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "내 계정 복구",
+        "description": "탈퇴 유예 기간(7일) 내에 로그인하여 회원 탈퇴를 철회하고 계정을 복구합니다.\n(로그인 JWT 토큰 필요)",
+        "operationId": "restore_my_account_users_me_restore_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/me/terminate": {
+      "post": {
+        "tags": [
+          "Account",
+          "Account"
+        ],
+        "summary": "회원 탈퇴 요청 (소프트 삭제)",
+        "description": "회원 탈퇴 시 즉시 데이터를 삭제하지 않고 7일간 유예(Soft Delete)합니다.",
+        "operationId": "terminate_account_users_me_terminate_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/personas": {
+      "get": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "내 페르소나 목록 전체 조회",
+        "operationId": "get_my_personas_personas_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Persona"
+                  },
+                  "type": "array",
+                  "title": "Response Get My Personas Personas Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "새로운 페르소나 생성",
+        "description": "새로운 페르소나를 생성합니다.\n(최대 5개까지 생성 가능하며, 서비스 계층에서 PERSONA_LIMIT_EXCEEDED 에러 처리 필요)",
+        "operationId": "create_persona_personas_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "페르소나 생성 실패 (다양한 원인)",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "MissingNickname": {
+                    "summary": "닉네임 누락",
+                    "value": {
+                      "detail": {
+                        "code": "MISSING_NICKNAME",
+                        "message": "닉네임을 입력해주세요"
+                      }
+                    }
+                  },
+                  "PersonaLimitExceeded": {
+                    "summary": "개수 초과",
+                    "value": {
+                      "detail": {
+                        "code": "PERSONA_LIMIT_EXCEEDED",
+                        "message": "페르소나 계정은 최대 5개 생성 가능합니다."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DB 저장 실패",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "DATABASE_SAVE_FAILED",
+                    "message": "페르소나 생성/수정 시 DB 저장 실패"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/personas/{persona_id}": {
+      "get": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "단일 페르소나 상세 조회",
+        "operationId": "get_persona_detail_personas__persona_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "persona_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Persona Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "페르소나 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_NOT_FOUND",
+                    "message": "존재하지 않거나 삭제된 페르소나 조회/수정"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "페르소나 정보 수정",
+        "description": "기존 페르소나의 정보(닉네임, 프로필 메시지, 취향 등)를 수정합니다.",
+        "operationId": "update_persona_personas__persona_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "persona_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Persona Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "동일한 닉네임",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "SAME_NICKNAME",
+                    "message": "닉네임 변경 시 기존과 동일하게 요청함"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "FORBIDDEN_PERSONA_UPDATE",
+                    "message": "본인 소유가 아닌 타인의 페르소나 수정 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "페르소나 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_NOT_FOUND",
+                    "message": "존재하지 않거나 삭제된 페르소나 조회/수정"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "페르소나 즉시 삭제",
+        "description": "특정 페르소나를 즉시 삭제합니다.\n최소 1개의 활성 페르소나가 유지되어야 합니다.",
+        "operationId": "delete_persona_personas__persona_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "persona_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Persona Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "최소 페르소나 유지",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "MINIMUM_PERSONA_REQUIRED",
+                    "message": "최소 1개의 페르소나는 유지해야 하므로 삭제 불가능"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "페르소나 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_NOT_FOUND",
+                    "message": "존재하지 않거나 삭제된 페르소나 조회/수정"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "페르소나 삭제 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_DELETE_FAILED",
+                    "message": "페르소나 삭제 중 데이터베이스 오류 발생"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relations/follows/{following_user_id}": {
+      "post": {
+        "tags": [
+          "Relations"
+        ],
+        "summary": "유저 팔로우",
+        "description": "현재 사용자로 특정 유저를 팔로우합니다.",
+        "operationId": "follow_user_relations_follows__following_user_id__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "following_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Following User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "본인 팔로우 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "CANNOT_FOLLOW_SELF",
+                    "message": "본인을 팔로우 대상으로 지정"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Relations"
+        ],
+        "summary": "유저 팔로우 해제",
+        "description": "특정 유저에 대한 팔로우를 해제합니다.",
+        "operationId": "unfollow_user_relations_follows__following_user_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "following_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Following User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relations/blocks/{blocked_user_id}": {
+      "post": {
+        "tags": [
+          "Relations"
+        ],
+        "summary": "유저 차단",
+        "description": "특정 유저를 차단합니다.",
+        "operationId": "block_user_relations_blocks__blocked_user_id__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "blocked_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Blocked User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "본인 차단 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "CANNOT_BLOCK_SELF",
+                    "message": "본인을 차단 대상으로 지정"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Relations"
+        ],
+        "summary": "유저 차단 해제",
+        "description": "특정 유저에 대한 차단을 해제합니다.",
+        "operationId": "unblock_user_relations_blocks__blocked_user_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "blocked_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Blocked User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relations/users/{target_user_id}/followers": {
+      "get": {
+        "tags": [
+          "Relations"
+        ],
+        "summary": "유저의 팔로워 목록 조회",
+        "description": "특정 유저를 팔로우하는 사람(팔로워) 목록을 조회합니다.\n탈퇴(DELETED)한 유저는 목록에서 제외됩니다.\n로그인한 경우 각 팔로워에 대한 내 팔로우 여부(`is_following`)가 함께 반환됩니다.",
+        "operationId": "get_followers_relations_users__target_user_id__followers_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "target_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Target User Id"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "마지막으로 조회한 팔로워의 유저 ID",
+              "title": "Cursor"
+            },
+            "description": "마지막으로 조회한 팔로워의 유저 ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relations/users/{target_user_id}/followings": {
+      "get": {
+        "tags": [
+          "Relations"
+        ],
+        "summary": "유저의 팔로잉 목록 조회",
+        "description": "특정 유저가 팔로우하는 사람(팔로잉) 목록을 조회합니다.\n탈퇴(DELETED)한 유저는 목록에서 제외됩니다.",
+        "operationId": "get_followings_relations_users__target_user_id__followings_get",
+        "parameters": [
+          {
+            "name": "target_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Target User Id"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "마지막으로 조회한 팔로잉 유저 ID",
+              "title": "Cursor"
+            },
+            "description": "마지막으로 조회한 팔로잉 유저 ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "새 게시물 작성",
+        "description": "새로운 게시물을 작성하고 해시태그 및 멘션을 파싱하여 연결합니다.\nOpenTelemetry를 사용하여 요청 처리 과정을 추적합니다.",
+        "operationId": "create_post_posts__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청 (해시태그 초과)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "HASHTAG_LIMIT_EXCEEDED",
+                    "message": "본문에 삽입된 해시태그 최대 등록 개수(10개) 초과"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "피드(게시물) 무한 스크롤 조회",
+        "description": "게시물 피드를 무한 스크롤(Cursor-based) 방식으로 조회합니다. (비회원 접근 가능)",
+        "operationId": "get_posts_posts__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "마지막으로 조회한 게시물의 ID",
+              "title": "Cursor"
+            },
+            "description": "마지막으로 조회한 게시물의 ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/liked": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "내가 좋아요한 게시물 목록 조회",
+        "description": "내가(유저 본캐가) 좋아요를 누른 게시물 목록을 조회합니다.\n차단한 사용자의 게시물은 좋아요를 눌렀었더라도 노출되지 않습니다.",
+        "operationId": "get_my_liked_posts_posts_liked_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "마지막으로 조회한 게시물의 ID",
+              "title": "Cursor"
+            },
+            "description": "마지막으로 조회한 게시물의 ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/user/{target_user_id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "특정 유저의 게시물 목록 조회",
+        "description": "특정 유저(본인 또는 타인)가 작성한 게시물 목록을 조회합니다. (비회원 접근 가능)",
+        "operationId": "get_user_posts_posts_user__target_user_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "target_user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Target User Id"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "마지막으로 조회한 게시물의 ID",
+              "title": "Cursor"
+            },
+            "description": "마지막으로 조회한 게시물의 ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/{post_id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "게시물 상세 조회",
+        "description": "게시물 상세 내용을 조회합니다. (비회원 접근 가능)\n사용자가 '스포일러 보기'를 클릭해서 들어온 것으로 간주하여 마스킹 없이 원본을 반환합니다.",
+        "operationId": "get_post_detail_posts__post_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostItem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음 (차단 관계)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "FORBIDDEN_BLOCKED_POST",
+                    "message": "차단 관계에 있는 사용자의 게시물을 링크로 직접 상세 조회 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "게시물 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "POST_NOT_FOUND",
+                    "message": "존재하지 않거나 이미 삭제된 게시물입니다."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "게시물 수정",
+        "description": "게시물을 수정합니다. 본문이 수정되면 '수정됨' 표시를 위한 갱신이 일어납니다.",
+        "operationId": "update_post_posts__post_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청 (해시태그 초과)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "HASHTAG_LIMIT_EXCEEDED",
+                    "message": "본문에 삽입된 해시태그 최대 등록 개수(10개) 초과"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "FORBIDDEN_POST_UPDATE",
+                    "message": "본인이 작성하지 않은 게시물 수정 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "게시물 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "POST_NOT_FOUND",
+                    "message": "존재하지 않거나 이미 삭제된 게시물입니다."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "게시물 삭제 (소프트 삭제)",
+        "description": "게시물을 서비스에서 즉시 숨김(Soft Delete) 처리합니다.",
+        "operationId": "delete_post_posts__post_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "FORBIDDEN_POST_DELETE",
+                    "message": "본인이 작성하지 않은 게시물 삭제 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "게시물 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "POST_NOT_FOUND",
+                    "message": "존재하지 않거나 이미 삭제된 게시물입니다."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/{post_id}/comments/": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "댓글(또는 대댓글) 작성",
+        "description": "게시물에 댓글(또는 대댓글)을 작성합니다.",
+        "operationId": "create_comment_posts__post_id__comments__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentIdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "게시물 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "POST_NOT_FOUND",
+                    "message": "삭제된 게시물에 댓글을 작성하려고 시도"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "게시물의 댓글 목록 페이징 조회",
+        "description": "게시물의 댓글 목록을 페이징 처리하여 조회합니다. 스포일러 댓글은 내용이 마스킹 처리됩니다.",
+        "operationId": "get_comments_posts__post_id__comments__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "페이지 번호 (1부터 시작)",
+              "default": 1,
+              "title": "Page"
+            },
+            "description": "페이지 번호 (1부터 시작)"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "페이지당 반환할 댓글 수",
+              "default": 20,
+              "title": "Size"
+            },
+            "description": "페이지당 반환할 댓글 수"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/{comment_id}": {
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "댓글 삭제 (소프트 삭제)",
+        "description": "댓글을 소프트 삭제합니다. 삭제 시 하위 대댓글도 모두 함께 비활성화(INACTIVE) 처리됩니다.",
+        "operationId": "delete_comment_comments__comment_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Comment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "FORBIDDEN_COMMENT_DELETE",
+                    "message": "본인이 작성하지 않은 댓글을 삭제하려고 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "댓글 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "COMMENT_NOT_FOUND",
+                    "message": "존재하지 않거나 이미 삭제된 댓글 조회/수정/삭제 시도"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "단일 댓글 상세(스포일러 원본) 조회",
+        "description": "사용자가 댓글의 '스포일러 보기'를 클릭했을 때 원본 내용을 반환합니다. (비회원 접근 가능)",
+        "operationId": "get_comment_detail_comments__comment_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Comment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentItem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음 (차단 관계)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "FORBIDDEN_BLOCKED_COMMENT",
+                    "message": "차단 관계에 있는 사용자의 단일 댓글 상세 조회 시도"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "댓글 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "COMMENT_NOT_FOUND",
+                    "message": "존재하지 않거나 이미 삭제된 댓글 조회/수정/삭제 시도"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/likes/": {
+      "post": {
+        "tags": [
+          "Likes"
+        ],
+        "summary": "게시물/댓글 좋아요 토글",
+        "description": "게시물 또는 댓글의 좋아요를 토글(Like/Unlike)하고 취향 가중치에 반영합니다.",
+        "operationId": "toggle_like_likes__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LikeToggleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeToggleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "지원하지 않는 타겟",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "UNSUPPORTED_TARGET_TYPE",
+                    "message": "좋아요가 불가능한 타겟 타입(게시물, 댓글 외) 요청"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "대상 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "TARGET_NOT_FOUND",
+                    "message": "좋아요를 누르려는 대상 원본 데이터가 존재하지 않음"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "현재 유저의 통합 알림 목록 조회 및 읽음 처리",
+        "description": "현재 로그인한 유저의 통합 알림 목록을 불러오고, 진입 즉시 모두 읽음 처리합니다.",
+        "operationId": "get_notifications_notifications__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationListResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/movies/{movie_id}/watch": {
+      "post": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "영화 시청 기록 추가",
+        "operationId": "watch_movie_movies__movie_id__watch_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "movie_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Movie Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchMovieResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/recommend": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "맞춤 영화 추천",
+        "operationId": "get_movies_movies_recommend_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "추천 쿼리",
+              "default": "맞춤 영화 추천",
+              "title": "Query"
+            },
+            "description": "추천 쿼리"
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MlMovieRecommendResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "추천 서버 통신 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "ML_SERVER_UNAVAILABLE",
+                    "message": "추천 서버(ML/VLLM)와 통신할 수 없거나 응답이 지연되고 있습니다."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/live": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Tabs"
+        ],
+        "summary": "실시간 게시물 검색",
+        "operationId": "search_live_v1_search_live_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "검색어 (부분 일치 검색)",
+              "title": "Q"
+            },
+            "description": "검색어 (부분 일치 검색)"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "페이징 커서(ID)",
+              "title": "Cursor"
+            },
+            "description": "페이징 커서(ID)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/for-you": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Tabs"
+        ],
+        "summary": "맞춤형 추천 검색",
+        "operationId": "search_for_you_v1_search_for_you_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "검색어",
+              "title": "Q"
+            },
+            "description": "검색어"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "페이징 커서 (score_id)",
+              "title": "Cursor"
+            },
+            "description": "페이징 커서 (score_id)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/user": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Tabs"
+        ],
+        "summary": "유저 검색",
+        "operationId": "search_user_v1_search_user_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "검색어",
+              "title": "Q"
+            },
+            "description": "검색어"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "페이징 커서 (nickname,id)",
+              "title": "Cursor"
+            },
+            "description": "페이징 커서 (nickname,id)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/content": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Tabs"
+        ],
+        "summary": "콘텐츠(영화) 탭 통합 검색",
+        "operationId": "search_content_v1_search_content_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "검색어",
+              "title": "Q"
+            },
+            "description": "검색어"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "페이징 커서(ID)",
+              "title": "Cursor"
+            },
+            "description": "페이징 커서(ID)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "정렬 기준 (accuracy: 정확도순, popularity: 인기순, latest: 최신순, name_asc: 이름 오름차순, name_desc: 이름 내림차순)",
+              "default": "accuracy",
+              "title": "Sort"
+            },
+            "description": "정렬 기준 (accuracy: 정확도순, popularity: 인기순, latest: 최신순, name_asc: 이름 오름차순, name_desc: 이름 내림차순)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieTabSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/genre/list": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Metadata"
+        ],
+        "summary": "장르 목록 전체 조회",
+        "operationId": "get_genre_list_v1_genre_list_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenreListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/movie": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Metadata"
+        ],
+        "summary": "영화 상세 필터 검색",
+        "operationId": "search_movies_v1_search_movie_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          {
+            "name": "genre",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Genre"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "정렬 기준 (year_desc: 최신연도순, year_asc: 과거연도순, name_asc: 이름 오름차순, name_desc: 이름 내림차순)",
+              "default": "year_desc",
+              "title": "Sort"
+            },
+            "description": "정렬 기준 (year_desc: 최신연도순, year_asc: 과거연도순, name_asc: 이름 오름차순, name_desc: 이름 내림차순)"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieFilterSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/person": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Metadata"
+        ],
+        "summary": "영화인 상세 검색",
+        "operationId": "search_people_v1_search_person_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          {
+            "name": "job",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Job"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "정렬 기준 (name_asc: 이름 오름차순, name_desc: 이름 내림차순)",
+              "default": "name_asc",
+              "title": "Sort"
+            },
+            "description": "정렬 기준 (name_asc: 이름 오름차순, name_desc: 이름 내림차순)"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonFilterSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/trend": {
+      "get": {
+        "tags": [
+          "Search",
+          "Search - Metadata"
+        ],
+        "summary": "인기 검색어(트렌드) Top 10 조회",
+        "operationId": "get_top_search_keywords_v1_search_trend_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "description": "가져올 인기 검색어 개수",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "가져올 인기 검색어 개수"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/list": {
+      "get": {
+        "tags": [
+          "Chatbot"
+        ],
+        "summary": "채팅 세션 목록 조회",
+        "operationId": "list_chat_sessions_chat_list_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "페이지 커서",
+              "title": "Cursor"
+            },
+            "description": "페이지 커서"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "description": "조회 개수",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "조회 개수"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MlChatSession"
+                  },
+                  "title": "Response List Chat Sessions Chat List Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "추천 서버 통신 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "ML_SERVER_UNAVAILABLE",
+                    "message": "추천 서버(ML/VLLM)와 통신할 수 없거나 응답이 지연되고 있습니다."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/history/{session_id}": {
+      "get": {
+        "tags": [
+          "Chatbot"
+        ],
+        "summary": "채팅 세션 메시지 이력 조회",
+        "operationId": "get_chat_session_history_chat_history__session_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "페이지 커서",
+              "title": "Cursor"
+            },
+            "description": "페이지 커서"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "description": "조회 개수",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "조회 개수"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MlChatSessionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "추천 서버 통신 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "ML_SERVER_UNAVAILABLE",
+                    "message": "추천 서버(ML/VLLM)와 통신할 수 없거나 응답이 지연되고 있습니다."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/completions": {
+      "post": {
+        "tags": [
+          "Chatbot"
+        ],
+        "summary": "챗봇 텍스트 스트리밍 생성",
+        "operationId": "chat_with_vllm_chat_completions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-persona-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "현재 활성화된 페르소나 ID",
+              "title": "X-Persona-Id"
+            },
+            "description": "현재 활성화된 페르소나 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "추천 서버 통신 불가",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "ML_SERVER_UNAVAILABLE",
+                    "message": "추천 서버(ML/VLLM)와 통신할 수 없거나 응답이 지연되고 있습니다."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies": {
+      "get": {
+        "summary": "평가할 영화 목록 조회",
+        "description": "로그인한 회원이 평가할 수 있는 영화 목록을 반환합니다.\nML 추천 영화를 우선 제공하고, 부족한 경우 DB 트레일러 영화로 보충합니다.",
+        "operationId": "get_movies_to_evaluate_movies_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "persona_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Persona Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieToEvaluateListResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "페르소나 권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_NOT_FOUND_OR_FORBIDDEN",
+                    "message": "요청한 페르소나에 대한 권한이 없거나 존재하지 않습니다."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/evaluate": {
+      "post": {
+        "summary": "영화 예고편 평가 기록",
+        "description": "로그인한 회원이 영화 예고편을 'LIKE' 또는 'DISLIKE'로 평가한 기록을 저장하고,\n그 반응을 추천 시스템(ML Ingest API)에 전달합니다.",
+        "operationId": "evaluate_movie_trailer_movies_evaluate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieEvaluationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieEvaluationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "이미 평가 완료한 영화",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "ALREADY_EVALUATED",
+                    "message": "이미 이 페르소나로 평가 완료한 영화 예고편입니다."
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "페르소나 권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_NOT_FOUND_OR_FORBIDDEN",
+                    "message": "요청한 페르소나에 대한 권한이 없거나 존재하지 않습니다."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "영화 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "MOVIE_NOT_FOUND",
+                    "message": "요청한 영화 정보를 찾을 수 없습니다."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/evaluations": {
+      "get": {
+        "summary": "영화 평가 기록 조회",
+        "description": "로그인한 회원의 영화 평가 기록을 커서 페이지네이션으로 조회합니다.\npersona_id를 지정하면 해당 페르소나의 평가만 필터링합니다.",
+        "operationId": "list_movie_evaluations_evaluations_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "persona_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Persona Id"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieEvaluationListResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "페르소나 권한 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "code": "PERSONA_NOT_FOUND_OR_FORBIDDEN",
+                    "message": "요청한 페르소나에 대한 권한이 없거나 존재하지 않습니다."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountSettingsResponse": {
+        "properties": {
+          "primary_provider": {
+            "type": "string",
+            "title": "Primary Provider"
+          },
+          "local_auth": {
+            "$ref": "#/components/schemas/LocalAuthStatus"
+          },
+          "social_auths": {
+            "items": {
+              "$ref": "#/components/schemas/SocialAuthStatus"
+            },
+            "type": "array",
+            "title": "Social Auths"
+          }
+        },
+        "type": "object",
+        "required": [
+          "primary_provider",
+          "local_auth",
+          "social_auths"
+        ],
+        "title": "AccountSettingsResponse"
+      },
+      "ActivityLogCreate": {
+        "properties": {
+          "target_type": {
+            "type": "string",
+            "title": "Target Type",
+            "description": "타겟 유형 (예: MOVIE, POST, GENRE, PEOPLE)"
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string",
+                "format": "uuid"
+              }
+            ],
+            "title": "Target Id",
+            "description": "타겟 ID (POST는 int, MOVIE/GENRE/PEOPLE 등은 UUID 형식 지원)"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action",
+            "description": "사용자 행동/관계 유형 (예: VIEW, HOVER, SHARE) - DB의 relation_type에 매핑"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms",
+            "description": "체류 시간(밀리초), 필요한 경우 가중치(weight) 계산에 활용"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "기타 추가 메타데이터"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target_type",
+          "target_id",
+          "action"
+        ],
+        "title": "ActivityLogCreate"
+      },
+      "ChatMetadataType": {
+        "type": "string",
+        "enum": [
+          "movie",
+          "feed"
+        ],
+        "title": "ChatMetadataType"
+      },
+      "ChatRequest": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "사용자가 입력한 챗봇 메시지"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id",
+            "description": "프론트엔드에서 생성 및 관리하는 채팅방 세션 ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "session_id"
+        ],
+        "title": "ChatRequest"
+      },
+      "CommentCreate": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "maxLength": 1000,
+            "title": "Content",
+            "description": "댓글 본문"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id",
+            "description": "대댓글인 경우 부모 댓글의 ID"
+          },
+          "is_spoiler": {
+            "type": "integer",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Is Spoiler",
+            "description": "스포일러 여부 (0: 일반, 1: 스포일러)",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "CommentCreate"
+      },
+      "CommentIdResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "응답 상태",
+            "default": "success"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "성공 메시지 (선택)"
+          },
+          "comment_id": {
+            "type": "integer",
+            "title": "Comment Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "comment_id"
+        ],
+        "title": "CommentIdResponse"
+      },
+      "CommentItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserSimple"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "is_spoiler": {
+            "type": "boolean",
+            "title": "Is Spoiler"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "like_count": {
+            "type": "integer",
+            "title": "Like Count"
+          },
+          "is_liked": {
+            "type": "boolean",
+            "title": "Is Liked"
+          },
+          "hashtags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Hashtags",
+            "default": []
+          },
+          "mentions": {
+            "items": {
+              "$ref": "#/components/schemas/Mention"
+            },
+            "type": "array",
+            "title": "Mentions",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user",
+          "content",
+          "is_spoiler",
+          "created_at",
+          "like_count",
+          "is_liked"
+        ],
+        "title": "CommentItem"
+      },
+      "CommentListResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CommentItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PagePaginationMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "CommentListResponse"
+      },
+      "CursorPaginationMeta": {
+        "properties": {
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "has_next": {
+            "type": "boolean",
+            "title": "Has Next"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_count",
+          "has_next"
+        ],
+        "title": "CursorPaginationMeta"
+      },
+      "FollowListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/UserSimpleWithFollow"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "has_next": {
+            "type": "boolean",
+            "title": "Has Next"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "has_next"
+        ],
+        "title": "FollowListResponse"
+      },
+      "Genre": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "Genre"
+      },
+      "GenreListResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "genres": {
+            "items": {
+              "$ref": "#/components/schemas/Genre"
+            },
+            "type": "array",
+            "title": "Genres"
+          }
+        },
+        "type": "object",
+        "required": [
+          "genres"
+        ],
+        "title": "GenreListResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LikeToggleRequest": {
+        "properties": {
+          "target_type": {
+            "type": "string",
+            "enum": [
+              "POST",
+              "COMMENT"
+            ],
+            "title": "Target Type",
+            "description": "POST 또는 COMMENT"
+          },
+          "target_id": {
+            "type": "integer",
+            "title": "Target Id",
+            "description": "대상 게시물/댓글 ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target_type",
+          "target_id"
+        ],
+        "title": "LikeToggleRequest"
+      },
+      "LikeToggleResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "is_liked": {
+            "type": "boolean",
+            "title": "Is Liked",
+            "description": "좋아요 여부"
+          },
+          "like_count": {
+            "type": "integer",
+            "title": "Like Count",
+            "description": "현재 좋아요 개수"
+          }
+        },
+        "type": "object",
+        "required": [
+          "is_liked",
+          "like_count"
+        ],
+        "title": "LikeToggleResponse"
+      },
+      "LocalAuthStatus": {
+        "properties": {
+          "is_linked": {
+            "type": "boolean",
+            "title": "Is Linked"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "is_linked"
+        ],
+        "title": "LocalAuthStatus"
+      },
+      "LocalLinkRequest": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "연동할 이메일 (미입력 시 소셜 계정의 이메일 자동 사용)"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Password",
+            "description": "연동할 비밀번호"
+          }
+        },
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "title": "LocalLinkRequest"
+      },
+      "LocalLoginRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "로그인에 사용할 이메일"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "description": "비밀번호"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LocalLoginRequest"
+      },
+      "Mention": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "Nickname"
+          },
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "nickname",
+          "tag"
+        ],
+        "title": "Mention"
+      },
+      "MlChatMessage": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Session Id"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "reply_metadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MlChatMetadataList"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "feed_list": {
+            "items": {
+              "$ref": "#/components/schemas/PostItem"
+            },
+            "type": "array",
+            "title": "Feed List"
+          },
+          "movie_list": {
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            },
+            "type": "array",
+            "title": "Movie List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "session_id",
+          "user_id",
+          "role",
+          "content",
+          "created_at"
+        ],
+        "title": "MlChatMessage"
+      },
+      "MlChatMetadata": {
+        "properties": {
+          "type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChatMetadataType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "메타데이터 타입"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "메타데이터 대상 ID"
+          }
+        },
+        "type": "object",
+        "title": "MlChatMetadata"
+      },
+      "MlChatMetadataList": {
+        "properties": {
+          "movie": {
+            "items": {
+              "$ref": "#/components/schemas/MlChatMetadata"
+            },
+            "type": "array",
+            "title": "Movie"
+          },
+          "feed": {
+            "items": {
+              "$ref": "#/components/schemas/MlChatMetadata"
+            },
+            "type": "array",
+            "title": "Feed"
+          }
+        },
+        "type": "object",
+        "title": "MlChatMetadataList"
+      },
+      "MlChatSession": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Session Id"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "persona_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Persona Id"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "last_active": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Active"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "user_id",
+          "persona_id",
+          "started_at",
+          "last_active"
+        ],
+        "title": "MlChatSession"
+      },
+      "MlChatSessionResponse": {
+        "properties": {
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/MlChatMessage"
+            },
+            "type": "array",
+            "title": "Messages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "next_cursor",
+          "has_more",
+          "messages"
+        ],
+        "title": "MlChatSessionResponse"
+      },
+      "MlMovieRecommendItem": {
+        "properties": {
+          "movie_id": {
+            "type": "string",
+            "title": "Movie Id",
+            "description": "영화 ID"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "영화 제목"
+          },
+          "plot_summary": {
+            "type": "string",
+            "title": "Plot Summary",
+            "description": "영화 줄거리"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "description": "영화 추천 점수"
+          }
+        },
+        "type": "object",
+        "required": [
+          "movie_id",
+          "title",
+          "plot_summary",
+          "score"
+        ],
+        "title": "MlMovieRecommendItem"
+      },
+      "MlMovieRecommendResponse": {
+        "properties": {
+          "arm_id": {
+            "type": "string",
+            "title": "Arm Id",
+            "description": "ARM ID"
+          },
+          "movies": {
+            "items": {
+              "$ref": "#/components/schemas/MlMovieRecommendItem"
+            },
+            "type": "array",
+            "title": "Movies",
+            "description": "영화 목록"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords",
+            "description": "키워드 목록"
+          },
+          "themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes",
+            "description": "테마 목록"
+          },
+          "moods": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Moods",
+            "description": "무드 목록"
+          }
+        },
+        "type": "object",
+        "required": [
+          "arm_id",
+          "movies",
+          "keywords",
+          "themes",
+          "moods"
+        ],
+        "title": "MlMovieRecommendResponse"
+      },
+      "Movie": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "poster_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Poster Url"
+          },
+          "release_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "Movie"
+      },
+      "MovieEvaluationItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "evaluation": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ],
+            "title": "Evaluation"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "persona": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Persona"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "movie": {
+            "$ref": "#/components/schemas/MovieWithTrailers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "evaluation",
+          "created_at",
+          "movie"
+        ],
+        "title": "MovieEvaluationItem"
+      },
+      "MovieEvaluationListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MovieEvaluationItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "has_next": {
+            "type": "boolean",
+            "title": "Has Next"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "has_next"
+        ],
+        "title": "MovieEvaluationListResponse"
+      },
+      "MovieEvaluationRequest": {
+        "properties": {
+          "movie_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Movie Id"
+          },
+          "evaluation": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ],
+            "title": "Evaluation"
+          },
+          "persona_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Persona Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "movie_id",
+          "evaluation"
+        ],
+        "title": "MovieEvaluationRequest"
+      },
+      "MovieEvaluationResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "persona_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Persona Id"
+          },
+          "movie_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Movie Id"
+          },
+          "evaluation": {
+            "type": "string",
+            "title": "Evaluation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "user_id",
+          "movie_id",
+          "evaluation"
+        ],
+        "title": "MovieEvaluationResponse"
+      },
+      "MovieFilterSearchResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "skip": {
+            "type": "integer",
+            "title": "Skip"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "skip",
+          "limit",
+          "total_count"
+        ],
+        "title": "MovieFilterSearchResponse"
+      },
+      "MovieTabSearchResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/CursorPaginationMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "MovieTabSearchResponse"
+      },
+      "MovieToEvaluateListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MovieWithTrailers"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "MovieToEvaluateListResponse"
+      },
+      "MovieWithTrailers": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "poster_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Poster Url"
+          },
+          "release_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Date"
+          },
+          "youtube_videos": {
+            "items": {
+              "$ref": "#/components/schemas/YoutubeVideo"
+            },
+            "type": "array",
+            "title": "Youtube Videos",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "MovieWithTrailers"
+      },
+      "Notification": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "receiver_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Receiver User Id"
+          },
+          "sender_persona_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender Persona Id"
+          },
+          "sender_nickname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender Nickname"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "target_type": {
+            "type": "string",
+            "title": "Target Type"
+          },
+          "target_id": {
+            "type": "string",
+            "title": "Target Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "is_read": {
+            "type": "boolean",
+            "title": "Is Read"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "receiver_user_id",
+          "sender_persona_id",
+          "sender_nickname",
+          "type",
+          "target_type",
+          "target_id",
+          "message",
+          "is_read",
+          "created_at"
+        ],
+        "title": "Notification"
+      },
+      "NotificationListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "unread_count": {
+            "type": "integer",
+            "title": "Unread Count",
+            "description": "읽지 않은 새 알림 개수 (배지 표시용)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "unread_count"
+        ],
+        "title": "NotificationListResponse"
+      },
+      "PagePaginationMeta": {
+        "properties": {
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "current_page": {
+            "type": "integer",
+            "title": "Current Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "total_pages": {
+            "type": "integer",
+            "title": "Total Pages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_count",
+          "current_page",
+          "page_size",
+          "total_pages"
+        ],
+        "title": "PagePaginationMeta"
+      },
+      "PasswordChangeRequest": {
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "title": "Current Password",
+            "description": "현재 비밀번호"
+          },
+          "new_password": {
+            "type": "string",
+            "minLength": 8,
+            "title": "New Password",
+            "description": "새로운 비밀번호"
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "title": "PasswordChangeRequest"
+      },
+      "PasswordResetRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "가입 시 사용한 이메일"
+          },
+          "firebase_id_token": {
+            "type": "string",
+            "title": "Firebase Id Token",
+            "description": "Firebase 번호 인증 완료 시 발급된 ID 토큰"
+          },
+          "new_password": {
+            "type": "string",
+            "minLength": 8,
+            "title": "New Password",
+            "description": "새로운 비밀번호"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "firebase_id_token",
+          "new_password"
+        ],
+        "title": "PasswordResetRequest"
+      },
+      "Person": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "job": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job"
+          },
+          "profile_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "Person"
+      },
+      "PersonFilterSearchResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Person"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "skip": {
+            "type": "integer",
+            "title": "Skip"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "skip",
+          "limit",
+          "total_count"
+        ],
+        "title": "PersonFilterSearchResponse"
+      },
+      "Persona": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "Nickname"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "nickname"
+        ],
+        "title": "Persona"
+      },
+      "PersonaCreate": {
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "title": "Nickname"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url"
+          },
+          "fav_movie_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fav Movie Ids"
+          },
+          "fav_genre_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fav Genre Ids"
+          },
+          "fav_people_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fav People Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "nickname"
+        ],
+        "title": "PersonaCreate"
+      },
+      "PersonaEdit": {
+        "properties": {
+          "nickname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nickname"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url"
+          },
+          "fav_movie_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fav Movie Ids"
+          },
+          "fav_genre_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fav Genre Ids"
+          },
+          "fav_people_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fav People Ids"
+          }
+        },
+        "type": "object",
+        "title": "PersonaEdit"
+      },
+      "PhoneVerificationRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "가입 시 사용한 이메일"
+          },
+          "firebase_id_token": {
+            "type": "string",
+            "title": "Firebase Id Token",
+            "description": "Firebase 번호 인증 완료 시 발급된 ID 토큰"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "firebase_id_token"
+        ],
+        "title": "PhoneVerificationRequest"
+      },
+      "PostCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Title",
+            "description": "게시물 제목"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "게시물 본문"
+          },
+          "movie_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Movie Ids",
+            "description": "태깅된 공식 영화 ID 목록 (최소 1개)"
+          },
+          "image_urls": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 5
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Urls",
+            "description": "첨부 이미지 URL 목록 (최대 5장)",
+            "default": [],
+            "example": []
+          },
+          "is_spoiler": {
+            "type": "integer",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Is Spoiler",
+            "description": "스포일러 여부 (0: 일반, 1: 스포일러)",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "movie_ids"
+        ],
+        "title": "PostCreate"
+      },
+      "PostIdResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "응답 상태",
+            "default": "success"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "성공 메시지 (선택)"
+          },
+          "post_id": {
+            "type": "integer",
+            "title": "Post Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id"
+        ],
+        "title": "PostIdResponse"
+      },
+      "PostItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserSimpleWithFollow"
+          },
+          "hashtags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Hashtags"
+          },
+          "mentions": {
+            "items": {
+              "$ref": "#/components/schemas/Mention"
+            },
+            "type": "array",
+            "title": "Mentions"
+          },
+          "like_count": {
+            "type": "integer",
+            "title": "Like Count"
+          },
+          "is_liked": {
+            "type": "boolean",
+            "title": "Is Liked"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "image_urls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Image Urls"
+          },
+          "is_spoiler": {
+            "type": "boolean",
+            "title": "Is Spoiler"
+          },
+          "movies": {
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            },
+            "type": "array",
+            "title": "Movies"
+          },
+          "comment_count": {
+            "type": "integer",
+            "title": "Comment Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user",
+          "hashtags",
+          "mentions",
+          "like_count",
+          "is_liked",
+          "created_at",
+          "title",
+          "content",
+          "image_urls",
+          "is_spoiler",
+          "movies",
+          "comment_count"
+        ],
+        "title": "PostItem"
+      },
+      "PostListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PostItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "has_next": {
+            "type": "boolean",
+            "title": "Has Next"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "has_next"
+        ],
+        "title": "PostListResponse"
+      },
+      "PostSearchResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SearchPost"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/CursorPaginationMeta"
+          },
+          "fallback": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fallback"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "PostSearchResponse"
+      },
+      "PostUpdate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Title",
+            "description": "수정할 게시물 제목"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "수정할 게시물 본문"
+          },
+          "movie_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Movie Ids",
+            "description": "수정할 공식 영화 ID 목록"
+          },
+          "image_urls": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 5
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Urls",
+            "description": "수정할 첨부 이미지 URL 목록",
+            "default": [],
+            "example": []
+          },
+          "is_spoiler": {
+            "type": "integer",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Is Spoiler",
+            "description": "스포일러 여부 (0: 일반, 1: 스포일러)",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "movie_ids"
+        ],
+        "title": "PostUpdate",
+        "description": "게시물 수정 시 전달받는 데이터 (전체 데이터 덮어쓰기 PUT 방식)"
+      },
+      "RefreshRequest": {
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "title": "RefreshRequest"
+      },
+      "RelationResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "RelationResponse"
+      },
+      "SearchPost": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserSimpleWithFollow"
+          },
+          "hashtags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Hashtags"
+          },
+          "mentions": {
+            "items": {
+              "$ref": "#/components/schemas/Mention"
+            },
+            "type": "array",
+            "title": "Mentions"
+          },
+          "like_count": {
+            "type": "integer",
+            "title": "Like Count"
+          },
+          "is_liked": {
+            "type": "boolean",
+            "title": "Is Liked"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "image_urls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Image Urls"
+          },
+          "is_spoiler": {
+            "type": "boolean",
+            "title": "Is Spoiler"
+          },
+          "movies": {
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            },
+            "type": "array",
+            "title": "Movies"
+          },
+          "comment_count": {
+            "type": "integer",
+            "title": "Comment Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user",
+          "hashtags",
+          "mentions",
+          "like_count",
+          "is_liked",
+          "created_at",
+          "title",
+          "content",
+          "image_urls",
+          "is_spoiler",
+          "movies",
+          "comment_count"
+        ],
+        "title": "SearchPost"
+      },
+      "SocialAuthStatus": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "is_linked": {
+            "type": "boolean",
+            "title": "Is Linked"
+          },
+          "connected_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connected At"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "is_linked"
+        ],
+        "title": "SocialAuthStatus"
+      },
+      "SocialLinkRequest": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "소셜 플랫폼 이름 (예: kakao)"
+          },
+          "provided_token": {
+            "type": "string",
+            "title": "Provided Token",
+            "description": "소셜 로그인 성공 시 발급받은 액세스 토큰"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "소셜 계정에 연동된 이메일 (선택 동의 시)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provided_token"
+        ],
+        "title": "SocialLinkRequest"
+      },
+      "SocialLoginRequest": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "소셜 플랫폼 이름 (예: kakao, google)"
+          },
+          "provided_token": {
+            "type": "string",
+            "title": "Provided Token",
+            "description": "프론트엔드에서 발급받은 소셜 액세스 토큰"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provided_token"
+        ],
+        "title": "SocialLoginRequest"
+      },
+      "SocialRegisterRequest": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "소셜 플랫폼 이름 (예: kakao)"
+          },
+          "provided_token": {
+            "type": "string",
+            "title": "Provided Token",
+            "description": "소셜 로그인 성공 시 발급받은 액세스 토큰"
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Username",
+            "description": "사용자 실명"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Nickname",
+            "description": "서비스 내 닉네임"
+          },
+          "firebase_id_token": {
+            "type": "string",
+            "title": "Firebase Id Token",
+            "description": "Firebase 번호 인증 완료 시 발급된 ID 토큰"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "소셜 계정에 연동된 이메일 (선택 동의 시)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provided_token",
+          "username",
+          "nickname",
+          "firebase_id_token"
+        ],
+        "title": "SocialRegisterRequest"
+      },
+      "SuccessMessageResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "성공 메시지"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "SuccessMessageResponse"
+      },
+      "SuccessResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "응답 상태",
+            "default": "success"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "성공 메시지 (선택)"
+          }
+        },
+        "type": "object",
+        "title": "SuccessResponse"
+      },
+      "TokenResponse": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          },
+          "is_new_user": {
+            "type": "boolean",
+            "title": "Is New User",
+            "default": false
+          },
+          "provider_user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider User Id"
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "refresh_token"
+        ],
+        "title": "TokenResponse"
+      },
+      "TrendItem": {
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          },
+          "keyword": {
+            "type": "string",
+            "title": "Keyword"
+          },
+          "search_count": {
+            "type": "integer",
+            "title": "Search Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rank",
+          "keyword",
+          "search_count"
+        ],
+        "title": "TrendItem"
+      },
+      "TrendSearchResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "stat_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Stat Date"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TrendItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stat_date",
+          "items"
+        ],
+        "title": "TrendSearchResponse"
+      },
+      "UserAccount": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Username"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Nickname"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Phone"
+          },
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url"
+          },
+          "profile_msg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Msg"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "nickname",
+          "phone",
+          "tag",
+          "created_at"
+        ],
+        "title": "UserAccount"
+      },
+      "UserPublic": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "Nickname"
+          },
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          },
+          "profile_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "is_following": {
+            "type": "boolean",
+            "title": "Is Following"
+          },
+          "profile_msg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Msg"
+          },
+          "follower_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Follower Count",
+            "default": 0
+          },
+          "following_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Following Count",
+            "default": 0
+          },
+          "post_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "nickname",
+          "tag",
+          "created_at",
+          "is_following"
+        ],
+        "title": "UserPublic"
+      },
+      "UserRegister": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Username",
+            "description": "사용자 실명 (2~50자)"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Nickname",
+            "description": "서비스 내 닉네임 (2~50자)"
+          },
+          "firebase_id_token": {
+            "type": "string",
+            "title": "Firebase Id Token",
+            "description": "Firebase 번호 인증 완료 시 발급된 ID 토큰"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "로그인에 사용할 이메일"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Password",
+            "description": "비밀번호는 최소 8자 이상이어야 합니다."
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "nickname",
+          "firebase_id_token",
+          "email",
+          "password"
+        ],
+        "title": "UserRegister"
+      },
+      "UserSearchResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/UserSimpleWithFollow"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/CursorPaginationMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "UserSearchResponse"
+      },
+      "UserSimple": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "Nickname"
+          },
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          },
+          "profile_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "nickname",
+          "tag",
+          "created_at"
+        ],
+        "title": "UserSimple"
+      },
+      "UserSimpleWithFollow": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "Nickname"
+          },
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          },
+          "profile_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "is_following": {
+            "type": "boolean",
+            "title": "Is Following"
+          }
+        },
+        "type": "object",
+        "required": [
+          "nickname",
+          "tag",
+          "created_at",
+          "is_following"
+        ],
+        "title": "UserSimpleWithFollow"
+      },
+      "UserUpdate": {
+        "properties": {
+          "nickname": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nickname",
+            "description": "수정할 닉네임"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url",
+            "description": "수정할 프로필 이미지 URL"
+          }
+        },
+        "type": "object",
+        "title": "UserUpdate"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WatchMovieResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "응답 상태",
+            "default": "success"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "WatchMovieResponse"
+      },
+      "YoutubeVideo": {
+        "properties": {
+          "movie_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Movie Id"
+          },
+          "is_trailer": {
+            "type": "boolean",
+            "title": "Is Trailer"
+          },
+          "language": {
+            "type": "string",
+            "title": "Language"
+          },
+          "youtube_video_id": {
+            "type": "string",
+            "title": "Youtube Video Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "movie_id",
+          "is_trailer",
+          "language",
+          "youtube_video_id"
+        ],
+        "title": "YoutubeVideo"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import {
 } from '@kakamu/api';
 
 import { getRefreshToken } from './refresh-token-storage';
+import { prefetchCurrentUserSession } from './prefetch-current-user-session';
 import { clearAuthSession, setAuthTokens } from './set-auth-tokens';
 
 /**
@@ -21,6 +22,7 @@ export async function restoreSessionFromRefreshToken(prefixUrl: string): Promise
   try {
     const tokens = await postUserLoginRefresh(bareClient, refreshToken);
     await setAuthTokens(tokens.access_token, tokens.refresh_token);
+    await prefetchCurrentUserSession();
     return true;
   } catch {
     await clearAuthSession();

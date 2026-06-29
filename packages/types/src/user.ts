@@ -30,7 +30,7 @@ export type UserPublic = {
   post_count: number;
 };
 
-/** `GET /users/me` 등 계정 정보 응답 */
+/** `PUT /users/me` 응답 */
 export type UserAccount = {
   id: string;
   username: string;

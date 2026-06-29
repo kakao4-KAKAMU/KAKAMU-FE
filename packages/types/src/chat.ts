@@ -66,7 +66,6 @@ export type ChatRequest = {
 
 /** SSE 스트림 요청 — `user_id`는 클라이언트에서 추가 전송 */
 export type ChatStreamRequestBody = ChatRequest & {
-  user_id: string;
   persona_id: string | null;
 };
 

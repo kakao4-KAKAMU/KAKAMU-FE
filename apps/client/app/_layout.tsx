@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 
-import { Redirect, Stack, usePathname, useRouter, useSegments } from 'expo-router';
+import { Redirect, Stack, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -17,6 +17,7 @@ import { ApiClientProvider } from '@/providers/ApiClientProvider';
 import { restoreSessionFromRefreshToken } from '@/lib/auth/restore-session';
 import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
 import { ConditionalRender } from '@/components/utils';
+import { useMswBootstrap } from '@/hooks/msw/useMswBootstrap';
 import { appQueryClient } from '@/lib/query/query-client';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
@@ -26,8 +27,8 @@ const navigationIntegration = Sentry.reactNavigationIntegration({
   useDispatchedActionData: true, // default: false
 });
 Sentry.init({
-  dsn: "https://c975936198a658db66d7afd36e8bc6e2@o4511347737690113.ingest.us.sentry.io/4511347740180480",
-  enableLogs: true,
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DNS ?? '',
+  enableLogs: process.env.NODE_ENV === 'development' ? true : false,
   integrations: [navigationIntegration],
 })
 
@@ -55,23 +56,22 @@ SplashScreen.setOptions({
 })
 SplashScreen.preventAutoHideAsync();
 
-const isPersonaPath = (pathname: string) =>
-  pathname === '/persona' || pathname.startsWith('/persona/');
-
-
 type AccountFilterStatus = 'gotoGuest' |
 'gotoAccountTabs' |
 'none';
 
 export default function RootLayout() {
+  const mswReady = useMswBootstrap();
   const [authReady, setAuthReady] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
   const isAuthenticated = !!accessToken;
-  const router = useRouter();
   const segments = useSegments();
-  const pathname = usePathname();
   
   useEffect(() => {
+    if (!mswReady) {
+      return;
+    }
+
     let isMounted = true;
 
     const restoreAuth = async () => {
@@ -96,7 +96,7 @@ export default function RootLayout() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [mswReady]);
 
   useEffect(() => {
     if (!authReady) {
@@ -123,9 +123,9 @@ export default function RootLayout() {
       return 'gotoAccountTabs';
     }
     return 'none';
-  }, [authReady, isAuthenticated, pathname, router, segments]);
+  }, [authReady, isAuthenticated, segments]);
 
-  if (!authReady) {
+  if (!mswReady || !authReady) {
     return null;
   }
 

@@ -45,6 +45,12 @@ export { useRegisterUserMutation } from './features/user-register/model/use-regi
 export { useRegisterSocialUserMutation } from './features/user-register-social/model/use-register-social-user-mutation';
 export { useSocialAuthLoginMutation } from './features/social-auth-login/model/use-social-auth-login-mutation';
 export { useUserQuery } from './features/user/model/use-user-query';
+export { useCurrentUserQuery, useCurrentUserSuspenseQuery } from './features/user/model/use-current-user-query';
+export { useUpdateCurrentUserMutation } from './features/user/model/use-update-current-user-mutation';
+export {
+  prefetchCurrentUser,
+  fetchCurrentUser,
+} from './features/user/lib/prefetch-current-user';
 export {
   adjustUserPostCountInCache,
   cancelUserQueries,

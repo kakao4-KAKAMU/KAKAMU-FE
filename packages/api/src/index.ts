@@ -15,6 +15,8 @@ export { postUserLoginRefresh } from './users/refresh';
 export { postUserRegister } from './users/register';
 export { postUserRegisterSocial } from './users/register-social';
 export { getUserById } from './users/get-by-id';
+export { getCurrentUser } from './users/get-me';
+export { updateCurrentUser } from './users/update-me';
 export { getUserAuthStatus } from './users/get-auth-status';
 export { postLinkSocialAuth } from './users/link-social-auth';
 export { deleteUnlinkSocialAuth } from './users/unlink-social-auth';

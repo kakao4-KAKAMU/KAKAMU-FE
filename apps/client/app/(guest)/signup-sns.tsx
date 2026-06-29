@@ -17,6 +17,7 @@ import {
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { mapSignUpSnsError } from '@/lib/error-message-map/auth/sign-up-sns-error';
 import { setAuthTokens } from '@/lib/auth/set-auth-tokens';
+import { prefetchCurrentUserSession } from '@/lib/auth/prefetch-current-user-session';
 import {
   SIGNUP_SNS_PHONE_RECAPTCHA_CONTAINER_ID,
   firebaseSignOut,
@@ -63,6 +64,21 @@ export default function SignUpSnsScreen() {
 
   const phone = watch('phone');
   const phoneValid = watch('phoneValid');
+
+  useEffect(() => {
+    const tempClearPendingSnsSignUp = () => {
+      clearPendingSnsSignUp();
+    }
+    if(Platform.OS === 'web') {
+      window.addEventListener('beforeunload', tempClearPendingSnsSignUp);
+    }
+    return () => {
+      clearPendingSnsSignUp();
+      if(Platform.OS === 'web') {
+        window.removeEventListener('beforeunload', tempClearPendingSnsSignUp);
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!pendingSnsProvider || !pendingSnsToken) {
@@ -118,10 +134,12 @@ export default function SignUpSnsScreen() {
   const registerMutation = useRegisterSocialUserMutation(apiClient, {
     onSettled: async () => {
       await firebaseSignOut(phoneValidation.firebasePhoneDepsRef ?? undefined);
+      clearPendingSnsSignUp();
     },
     onSuccess: (res) => {
-      clearPendingSnsSignUp();
-      void setAuthTokens(res.access_token, res.refresh_token);
+      void setAuthTokens(res.access_token, res.refresh_token).then(() =>
+        prefetchCurrentUserSession(apiClient),
+      );
       setSubmitting(false);
     },
     onError: (err) => {

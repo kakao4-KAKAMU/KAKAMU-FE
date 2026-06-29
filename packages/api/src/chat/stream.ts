@@ -26,7 +26,6 @@ export async function postChatStream(
     },
     headers: { Accept: 'text/event-stream' },
     timeout: false,
-    retry: { limit: 0 },
     signal,
   });
 

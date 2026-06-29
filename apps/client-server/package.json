@@ -7,9 +7,11 @@
   },
   "private": true,
   "dependencies": {
-    "express": "^5.1.0",
     "compression": "^1.8.1",
-    "morgan": "^1.10.1",
-    "expo-server": "^55.0.9"
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "expo-server": "^55.0.9",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1"
   }
 }

@@ -1,12 +1,15 @@
-import { useMemo } from 'react';
 import { useAuthStore } from '@kakamu/store';
-import { getUserIdFromAccessToken } from '@/lib/auth/parse-access-token';
+import { useCurrentUserQuery } from '@kakamu/query';
 
-/** 메모리 access token에서 현재 로그인 user_id를 추출합니다. */
+import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+
+/** GET /users/me 캐시에서 현재 로그인 user_id를 반환합니다. */
 export function useCurrentUserId(): string | null {
+  const client = useBackendApiClient();
   const accessToken = useAuthStore((state) => state.accessToken);
+  const { data } = useCurrentUserQuery(client, { enabled: !!accessToken });
 
-  return useMemo(() => getUserIdFromAccessToken(accessToken), [accessToken]);
+  return data?.id ?? null;
 }
 
 export function useCurrentUserIdOrThrow(): string {
