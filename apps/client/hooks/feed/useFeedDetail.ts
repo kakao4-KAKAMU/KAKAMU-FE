@@ -10,10 +10,7 @@ import {
   commentKeys,
   useCommentsByPostInfiniteQuery,
   useCreateCommentMutation,
-  useDeleteCommentMutation,
-  useLikeMutation,
   usePostByIdQuery,
-  useRevealCommentSpoilerMutation,
   useUserQuery,
 } from '@kakamu/query';
 import { createCommentFormSchema, type CommentFormInput } from '@kakamu/schema';
@@ -22,10 +19,7 @@ import { useErrorAlertDialog } from '@kakamu/ui';
 
 import {
   mapCommentCreateError,
-  mapCommentDeleteError,
-  mapCommentLikeError,
   mapCommentListError,
-  mapCommentSpoilerError,
 } from '@/lib/error-message-map/comment/comment-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
@@ -66,24 +60,6 @@ export function useFeedDetail(postId: number) {
     },
     onError: (error) => {
       openErrorAlert(mapCommentCreateError(error, t));
-    },
-  });
-
-  const deleteCommentMutation = useDeleteCommentMutation(client, {
-    onError: (error) => {
-      openErrorAlert(mapCommentDeleteError(error, t));
-    },
-  });
-
-  const revealSpoilerMutation = useRevealCommentSpoilerMutation(client, {
-    onError: (error) => {
-      openErrorAlert(mapCommentSpoilerError(error, t));
-    },
-  });
-
-  const likeMutation = useLikeMutation(client, {
-    onError: (error) => {
-      openErrorAlert(mapCommentLikeError(error, t));
     },
   });
 
@@ -133,39 +109,8 @@ export function useFeedDetail(postId: number) {
     });
   });
 
-  const onToggleCommentLike = useCallback(
-    (comment: CommentItem) => {
-      if (likeMutation.isPending) {
-        return;
-      }
-      likeMutation.mutate({ target_type: 'COMMENT', target_id: comment.id });
-    },
-    [likeMutation],
-  );
-
-  const onDeleteComment = useCallback(
-    (comment: CommentItem) => {
-      deleteCommentMutation.mutate({ commentId: comment.id, postId });
-    },
-    [deleteCommentMutation, postId],
-  );
-
-  const onRevealSpoiler = useCallback(
-    (comment: CommentItem) => {
-      if (revealSpoilerMutation.isPending) {
-        return;
-      }
-      revealSpoilerMutation.mutate({ commentId: comment.id, postId });
-    },
-    [postId, revealSpoilerMutation],
-  );
-
   const onReply = useCallback((comment: CommentItem) => {
     setReplyParentId(comment.id);
-  }, []);
-
-  const onReport = useCallback(() => {
-    // TODO: 신고 플로우 연결
   }, []);
 
   const loadMoreComments = useCallback(() => {
@@ -193,12 +138,7 @@ export function useFeedDetail(postId: number) {
     canSubmit,
     isSubmitting: createCommentMutation.isPending,
     currentUserId,
-    onToggleCommentLike,
-    onDeleteComment,
-    onRevealSpoiler,
     onReply,
-    onReport,
-    isLikePending: likeMutation.isPending,
     labels: {
       title: t('shared.feedDetail.title'),
       commentsTitle: t('shared.feedDetail.commentsTitle', { count: commentCount }),

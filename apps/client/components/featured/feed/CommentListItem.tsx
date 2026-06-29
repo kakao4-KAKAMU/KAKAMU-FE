@@ -3,47 +3,42 @@ import { useCommentByIdQuery } from '@kakamu/query';
 import type { CommentItem } from '@kakamu/types';
 
 import { CommentCard } from '@/components/featured/comment/CommentCard';
+import { useCommentAction } from '@/hooks/comment/useCommentAction';
 
 type CommentListItemProps = {
+  postId: number;
   commentId: number;
   currentUserId: string | null;
   replyCount: number;
   anonymousLabel: string;
   deleteLabel: string;
   reportLabel: string;
-  onToggleLike: (comment: CommentItem) => void;
   onReply: (comment: CommentItem) => void;
-  onDelete: (comment: CommentItem) => void;
-  onReport: () => void;
-  onRevealSpoiler: (comment: CommentItem) => void;
-  isLikePending?: boolean;
 };
 
 export function CommentListItem({
+  postId,
   commentId,
   currentUserId,
   replyCount,
   anonymousLabel,
   deleteLabel,
   reportLabel,
-  onToggleLike,
   onReply,
-  onDelete,
-  onReport,
-  onRevealSpoiler,
-  isLikePending = false,
 }: CommentListItemProps) {
   const commentQuery = useCommentByIdQuery(commentId);
   const comment = commentQuery.data;
   const isOwner = comment.user.id != null && comment.user.id === currentUserId;
 
-  const handleToggleLike = useCallback(() => onToggleLike(comment), [comment, onToggleLike]);
+  const {
+    onToggleLike,
+    onDelete,
+    onRevealSpoiler,
+    onReport,
+    isLikePending,
+  } = useCommentAction({ postId, commentId });
+
   const handleReply = useCallback(() => onReply(comment), [comment, onReply]);
-  const handleDelete = useCallback(() => onDelete(comment), [comment, onDelete]);
-  const handleRevealSpoiler = useCallback(
-    () => onRevealSpoiler(comment),
-    [comment, onRevealSpoiler],
-  );
 
   return (
     <CommentCard
@@ -53,11 +48,11 @@ export function CommentListItem({
       anonymousLabel={anonymousLabel}
       deleteLabel={deleteLabel}
       reportLabel={reportLabel}
-      onToggleLike={handleToggleLike}
+      onToggleLike={onToggleLike}
       onReply={handleReply}
-      onDelete={handleDelete}
+      onDelete={onDelete}
       onReport={onReport}
-      onRevealSpoiler={handleRevealSpoiler}
+      onRevealSpoiler={onRevealSpoiler}
       isLikePending={isLikePending}
     />
   );
