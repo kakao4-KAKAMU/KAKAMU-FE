@@ -91,7 +91,7 @@ ENV EXPO_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID=${EXPO_PUBLIC_FIREBASE_WEB_MEASUREME
 COPY . .
 
 ENV CI=true
-RUN cat '{}' > apps/client/mocks/openapi.json
+RUN echo '{}' > apps/client/mocks/openapi.json
 RUN pnpm --filter @kakamu/i18n build
 RUN pnpm --filter @kakamu/client build-web-${env}
 
