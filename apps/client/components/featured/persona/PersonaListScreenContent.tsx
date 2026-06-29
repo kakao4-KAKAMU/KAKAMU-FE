@@ -63,7 +63,7 @@ export function PersonaListScreenContent() {
       showsVerticalScrollIndicator={false}
       className="flex-1"
     >
-      <View className="flex-col gap-6 px-5 pb-8 pt-7">
+      <View className="flex-col gap-6 px-5 pb-8 pt-2">
         <PersonaIntro
           title={t('account.persona.title')}
           description={t('account.persona.description')}
