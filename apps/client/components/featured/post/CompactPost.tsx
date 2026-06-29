@@ -67,12 +67,12 @@ export function CompactPost({ postId, onContentPress }: CompactPostProps) {
           />
           <CompactPostImageList urls={post.image_urls} />
         </View>
-        <BlurView className="absolute -m-1 inset-0 bg-background/0! pointer-events-none" intensity={isSpoilerHidden ? 17 : 0} blurTarget={blurTargetRef}>
+        <BlurView className="absolute -my-1 -mx-4 px-4 inset-0 bg-background/0! pointer-events-none flex justify-start items-end" intensity={isSpoilerHidden ? 17 : 0} blurTarget={blurTargetRef}>
           <ConditionalRender.Boolean
             condition={post.is_spoiler}
             render={{
               true: <CompactPostSpoilerBadge
-                className="absolute top-2 right-2"
+                className="pointer-events-auto"
                 revealed={spoilerRevealed}
                 onToggle={() => {
                   setSpoilerRevealed((prev) => !prev)
