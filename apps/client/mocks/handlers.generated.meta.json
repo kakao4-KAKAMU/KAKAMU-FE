@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-28T14:36:02.769Z",
+  "generatedAt": "2026-06-29T02:14:12.602Z",
   "apiBase": "http://localhost:8000/api",
-  "handlerCount": 172,
+  "handlerCount": 174,
   "openapiVersion": "1.0.0"
 }
