@@ -33,6 +33,7 @@ app.use(
         baseUri: ["'self'"],
         formAction: ["'self'"],
         frameAncestors: ["'none'"],
+        frameSrc: ["'self'", "https://www.youtube.com/"],
         objectSrc: ["'none'"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
