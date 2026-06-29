@@ -97,7 +97,6 @@ export function useChatSend({
     try {
       await postChatStream(
         {
-          user_id: userId,
           persona_id: personaId,
           session_id: sessionId,
           message: trimmed,
