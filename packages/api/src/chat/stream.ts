@@ -20,7 +20,6 @@ export async function postChatStream(
 ): Promise<void> {
   const response = await client.post('chat/completions', {
     json: {
-      user_id: body.user_id,
       session_id: body.session_id,
       message: body.message,
     },
