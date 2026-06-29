@@ -20,9 +20,14 @@ import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 type UseCommentActionParams = {
   postId: number;
   commentId: number;
+  onUpdateSuccess?: () => void;
 };
 
-export function useCommentAction({ postId, commentId }: UseCommentActionParams) {
+export function useCommentAction({
+  postId,
+  commentId,
+  onUpdateSuccess,
+}: UseCommentActionParams) {
   const client = useBackendApiClient();
   const { t } = useTranslation();
   const { open: openErrorAlert } = useErrorAlertDialog();
@@ -34,6 +39,7 @@ export function useCommentAction({ postId, commentId }: UseCommentActionParams) 
   });
 
   const updateCommentMutation = useUpdateCommentMutation(client, {
+    onSuccess: onUpdateSuccess,
     onError: (error) => {
       openErrorAlert(mapCommentUpdateError(error, t));
     },
