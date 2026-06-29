@@ -22,6 +22,11 @@ export type CommentCreateRequest = {
   is_spoiler?: number;
 };
 
+export type CommentUpdateRequest = {
+  content: string;
+  is_spoiler?: number;
+};
+
 export type CommentIdResponse = {
   status?: string;
   message?: string | null;
@@ -45,6 +50,8 @@ export type SuccessResponse = {
 };
 
 export type CommentDeleteResponse = SuccessResponse;
+
+export type CommentUpdateResponse = SuccessResponse;
 
 export type CommentListParams = {
   page?: number;

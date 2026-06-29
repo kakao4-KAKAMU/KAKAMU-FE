@@ -71,6 +71,8 @@ export type {
   CommentListParams,
   CommentListResponse,
   CommentSpoilerDetailResponse,
+  CommentUpdateRequest,
+  CommentUpdateResponse,
   PaginationMeta,
 } from './comment';
 
