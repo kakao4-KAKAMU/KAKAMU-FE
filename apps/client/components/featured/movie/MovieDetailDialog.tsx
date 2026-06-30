@@ -1,22 +1,28 @@
 import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
+import { useCallback } from 'react';
+import { Bookmark } from 'lucide-react-native';
 import { useTranslation } from '@kakamu/i18n';
-import { getPrimaryMovieTitle, useMovieDetailQuery } from '@kakamu/query';
+import { getPrimaryMovieTitle, useMovieDetailQuery, useSaveMutation } from '@kakamu/query';
 import {
   AspectRatio,
   Avatar,
   AvatarFallback,
   AvatarImage,
   Badge,
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  Icon,
   Separator,
   Skeleton,
   Text,
+  useErrorAlertDialog,
 } from '@kakamu/ui';
 
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
+import { mapSaveError } from '@/lib/error-message-map/save/save-error';
 import {
   formatMovieMetaLine,
   getPreferredMovieOverview,
@@ -33,6 +39,7 @@ export function MovieDetailDialog({ open, onOpenChange, movieId }: MovieDetailDi
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[min(560px,85vh)] gap-0 overflow-hidden p-0 sm:max-w-md">
+        <DialogTitle></DialogTitle>
         {open && movieId ? (
           <MovieDetailDialogContent movieId={movieId} />
         ) : null}
@@ -44,7 +51,20 @@ export function MovieDetailDialog({ open, onOpenChange, movieId }: MovieDetailDi
 function MovieDetailDialogContent({ movieId }: { movieId: string }) {
   const { t } = useTranslation();
   const client = useBackendApiClient();
+  const { open: openErrorAlert } = useErrorAlertDialog();
   const movieQuery = useMovieDetailQuery(client, movieId);
+  const saveMutation = useSaveMutation(client, {
+    onError: (error) => {
+      openErrorAlert(mapSaveError(error, t));
+    },
+  });
+
+  const onToggleSave = useCallback(() => {
+    if (saveMutation.isPending) {
+      return;
+    }
+    saveMutation.mutate({ target_type: 'MOVIE', movie_id: movieId });
+  }, [movieId, saveMutation]);
 
   if (movieQuery.isLoading) {
     return <MovieDetailDialogSkeleton />;
@@ -103,6 +123,19 @@ function MovieDetailDialogContent({ movieId }: { movieId: string }) {
         <DialogHeader className="gap-2">
           <View className="flex-row flex-wrap items-center gap-2">
             <DialogTitle className="flex-1">{title}</DialogTitle>
+            <Button
+              size="icon"
+              variant="ghost"
+              onPress={onToggleSave}
+              disabled={saveMutation.isPending}
+              accessibilityLabel={t('account.profile.tabs.saved')}
+            >
+              <Icon
+                as={Bookmark}
+                size={18}
+                fill={movie.is_saved ? 'currentColor' : 'none'}
+              />
+            </Button>
             {movie.is_adult ? (
               <Badge variant="destructive">
                 <Text>{t('account.movie.detail.adult')}</Text>

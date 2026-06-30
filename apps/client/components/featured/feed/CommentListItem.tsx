@@ -60,11 +60,13 @@ export function CommentListItem({
 
   const {
     onToggleLike,
+    onToggleSave,
     onDelete,
     onUpdate,
     onRevealSpoiler,
     onReport,
     isLikePending,
+    isSavePending,
     isUpdatePending,
   } = useCommentAction({
     postId,
@@ -140,12 +142,14 @@ export function CommentListItem({
             editLabel={editLabel}
             reportLabel={reportLabel}
             onToggleLike={onToggleLike}
+            onToggleSave={onToggleSave}
             onReply={handleReply}
             onEdit={handleEdit}
             onDelete={onDelete}
             onReport={onReport}
             onRevealSpoiler={onRevealSpoiler}
             isLikePending={isLikePending}
+            isSavePending={isSavePending}
           />
         ),
       }}

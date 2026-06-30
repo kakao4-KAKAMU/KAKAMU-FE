@@ -1,8 +1,9 @@
 import { mapPostLikeError } from '@/lib/error-message-map/post/post-like-error';
+import { mapSaveError } from '@/lib/error-message-map/save/save-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { useTranslation } from '@kakamu/i18n';
-import { useDeletePostMutation, useLikeMutation } from '@kakamu/query';
+import { useDeletePostMutation, useLikeMutation, useSaveMutation } from '@kakamu/query';
 import { PostItem } from '@kakamu/types';
 import { useErrorAlertDialog } from '@kakamu/ui';
 import { useRouter } from 'expo-router';
@@ -18,6 +19,11 @@ export function useCompactPostActions(post: PostItem) {
   const likeMutation = useLikeMutation(client, {
     onError: (err) => {
       openErrorAlert(mapPostLikeError(err, t));
+    },
+  });
+  const saveMutation = useSaveMutation(client, {
+    onError: (err) => {
+      openErrorAlert(mapSaveError(err, t));
     },
   });
 
@@ -42,8 +48,11 @@ export function useCompactPostActions(post: PostItem) {
     router.push(`/feed/${post.id}`);
   }, [post.id, router]);
   const onToggleBookmark = useCallback(() => {
-    console.log('onToggleBookmark', post.id);
-  }, [post.id]);
+    if (saveMutation.isPending) {
+      return;
+    }
+    saveMutation.mutate({ target_type: 'POST', target_id: post.id });
+  }, [post.id, saveMutation]);
   const onDelete = useCallback(() => {
     deletePostMutation.mutate({
       postId: post.id,

@@ -3,8 +3,6 @@ import { View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import type { CommentItem } from '@kakamu/types';
 import {
-  Avatar,
-  AvatarFallback,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +12,7 @@ import {
   Text,
   TextClassProvider,
 } from '@kakamu/ui';
-import { Ellipsis, Heart, MessageCircle, User } from 'lucide-react-native';
+import { Ellipsis, Heart, MessageCircle, Bookmark } from 'lucide-react-native';
 
 import { TaggedContentText } from '@/components/featured/content/TaggedContentText';
 import { ConditionalRender } from '@/components/utils/ConditionalRender';
@@ -31,12 +29,14 @@ type CommentCardProps = {
   editLabel: string;
   reportLabel: string;
   onToggleLike: () => void;
+  onToggleSave: () => void;
   onReply: () => void;
   onEdit: () => void;
   onDelete: () => void;
   onReport: () => void;
   onRevealSpoiler: () => void;
   isLikePending?: boolean;
+  isSavePending?: boolean;
 };
 
 function getAuthorInitials(author: string): string {
@@ -56,12 +56,14 @@ export function CommentCard({
   editLabel,
   reportLabel,
   onToggleLike,
+  onToggleSave,
   onReply,
   onEdit,
   onDelete,
   onReport,
   onRevealSpoiler,
   isLikePending = false,
+  isSavePending = false,
 }: CommentCardProps) {
   const blurTargetRef = useRef<View>(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
@@ -146,6 +148,20 @@ export function CommentCard({
                   fill={comment.is_liked ? 'currentColor' : 'none'}
                 />
                 <Text className="text-xs">{comment.like_count}</Text>
+              </View>
+            </Button>
+            <Button
+              size="text"
+              variant="ghost"
+              onPress={onToggleSave}
+              disabled={isSavePending}
+            >
+              <View className="flex-row items-center gap-1">
+                <Icon
+                  as={Bookmark}
+                  size={16}
+                  fill={comment.is_saved ? 'currentColor' : 'none'}
+                />
               </View>
             </Button>
             <DropdownMenu>

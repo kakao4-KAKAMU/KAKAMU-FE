@@ -4,6 +4,7 @@ import {
   useDeleteCommentMutation,
   useLikeMutation,
   useRevealCommentSpoilerMutation,
+  useSaveMutation,
   useUpdateCommentMutation,
 } from '@kakamu/query';
 import type { CommentUpdateRequest } from '@kakamu/types';
@@ -15,6 +16,7 @@ import {
   mapCommentSpoilerError,
   mapCommentUpdateError,
 } from '@/lib/error-message-map/comment/comment-error';
+import { mapSaveError } from '@/lib/error-message-map/save/save-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 
 type UseCommentActionParams = {
@@ -57,12 +59,25 @@ export function useCommentAction({
     },
   });
 
+  const saveMutation = useSaveMutation(client, {
+    onError: (error) => {
+      openErrorAlert(mapSaveError(error, t));
+    },
+  });
+
   const onToggleLike = useCallback(() => {
     if (likeMutation.isPending) {
       return;
     }
     likeMutation.mutate({ target_type: 'COMMENT', target_id: commentId });
   }, [commentId, likeMutation]);
+
+  const onToggleSave = useCallback(() => {
+    if (saveMutation.isPending) {
+      return;
+    }
+    saveMutation.mutate({ target_type: 'COMMENT', target_id: commentId });
+  }, [commentId, saveMutation]);
 
   const onDelete = useCallback(() => {
     deleteCommentMutation.mutate({ commentId, postId });
@@ -91,11 +106,13 @@ export function useCommentAction({
 
   return {
     onToggleLike,
+    onToggleSave,
     onDelete,
     onUpdate,
     onRevealSpoiler,
     onReport,
     isLikePending: likeMutation.isPending,
+    isSavePending: saveMutation.isPending,
     isDeletePending: deleteCommentMutation.isPending,
     isUpdatePending: updateCommentMutation.isPending,
     isRevealSpoilerPending: revealSpoilerMutation.isPending,
