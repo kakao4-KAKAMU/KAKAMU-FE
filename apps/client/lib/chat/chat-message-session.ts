@@ -1,4 +1,5 @@
 import EventEmitter from 'eventemitter3';
+import { v4 as uuidv4 } from 'uuid';
 import type { ChatHistoryMessage } from '@kakamu/types';
 
 import { createEphemeralChatMessage } from '@/lib/chat/create-ephemeral-message';
@@ -71,7 +72,7 @@ export class ChatMessageSession extends EventEmitter<ChatMessageSessionEvents> {
       processing: true,
     });
 
-    return new ChatMessageSession(crypto.randomUUID(), userMessage, assistantMessage);
+    return new ChatMessageSession(uuidv4(), userMessage, assistantMessage);
   }
 
   get isStreamCompleted(): boolean {
