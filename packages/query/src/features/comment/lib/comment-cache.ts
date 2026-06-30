@@ -122,6 +122,7 @@ export function createOptimisticComment(
     is_spoiler: body.is_spoiler === 1,
     like_count: 0,
     is_liked: false,
+    is_saved: false,
     hashtags: [],
     mentions: [],
     created_at: new Date().toISOString(),
@@ -149,6 +150,23 @@ export function snapshotCommentByPostLists(
       return key[0] === 'comment' && key[1] === 'by-post' && key[2] === postId;
     },
   });
+}
+
+export function snapshotCommentSavedLists(
+  queryClient: QueryClient,
+): CommentListQuerySnapshot {
+  return queryClient.getQueriesData<CommentInfiniteData>({
+    queryKey: commentKeys.savedLists(),
+  });
+}
+
+export function restoreCommentSavedLists(
+  queryClient: QueryClient,
+  snapshots: CommentListQuerySnapshot,
+): void {
+  for (const [queryKey, data] of snapshots) {
+    queryClient.setQueryData(queryKey, data);
+  }
 }
 
 export function restoreCommentByPostLists(
@@ -257,6 +275,60 @@ export function applyCommentUpdateBody(
   };
 }
 
+function prependCommentIdToSavedFirstPage(
+  data: CommentInfiniteData,
+  commentId: number,
+): CommentInfiniteData {
+  return prependCommentIdToFirstPage(data, commentId);
+}
+
+function filterCommentIdFromSavedPages(
+  data: CommentInfiniteData,
+  commentId: number,
+): CommentInfiniteData {
+  return filterCommentIdsFromPages(data, commentId);
+}
+
+export function removeCommentFromSavedLists(queryClient: QueryClient, commentId: number): void {
+  queryClient.setQueriesData<CommentInfiniteData>(
+    { queryKey: commentKeys.savedLists() },
+    (old) => (old ? filterCommentIdFromSavedPages(old, commentId) : old),
+  );
+}
+
+export function setCommentSaveInCaches(
+  queryClient: QueryClient,
+  commentId: number,
+  isSaved: boolean,
+): void {
+  const detail = queryClient.getQueryData<CommentItem>(commentKeys.detail(commentId));
+  if (detail) {
+    patchCommentDetailCache(queryClient, commentId, () => ({
+      ...detail,
+      is_saved: isSaved,
+    }));
+  }
+
+  if (isSaved) {
+    queryClient.setQueriesData<CommentInfiniteData>(
+      { queryKey: commentKeys.savedLists() },
+      (old) => (old ? prependCommentIdToSavedFirstPage(old, commentId) : old),
+    );
+    return;
+  }
+
+  removeCommentFromSavedLists(queryClient, commentId);
+}
+
+export function toggleCommentSaveInCaches(queryClient: QueryClient, commentId: number): void {
+  const detail = queryClient.getQueryData<CommentItem>(commentKeys.detail(commentId));
+  if (!detail) {
+    return;
+  }
+
+  setCommentSaveInCaches(queryClient, commentId, !detail.is_saved);
+}
+
 export function toggleCommentLikeInCaches(
   queryClient: QueryClient,
   commentId: number,
@@ -282,6 +354,16 @@ export function adjustPostCommentCountInCache(
   queryClient.setQueryData<PostItem>(postKeys.detail(postId), (old) =>
     old ? { ...old, comment_count: Math.max(0, old.comment_count + delta) } : old,
   );
+}
+
+export async function cancelCommentSaveQueries(
+  queryClient: QueryClient,
+  commentId: number,
+): Promise<void> {
+  await Promise.all([
+    queryClient.cancelQueries({ queryKey: commentKeys.detail(commentId) }),
+    queryClient.cancelQueries({ queryKey: commentKeys.savedLists() }),
+  ]);
 }
 
 export async function cancelCommentDetailQueries(

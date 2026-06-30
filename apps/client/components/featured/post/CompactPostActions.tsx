@@ -42,7 +42,7 @@ export function CompactPostActions({
           </View>
         </Button>
         <Button size="text" variant={'ghost'} onPress={onToggleBookmark}>
-          <Icon as={Bookmark} size={15} />
+          <Icon as={Bookmark} size={15} fill={post.is_saved ? 'currentColor' : 'none'} />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

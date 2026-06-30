@@ -91,6 +91,17 @@ export type {
 } from './like';
 export { LIKE_TARGET_TYPES } from './like';
 
+export type {
+  SaveTargetType,
+  SaveToggleRequest,
+  SaveToggleResponse,
+  SavedCommentListParams,
+  SavedMovieListParams,
+  SavedMovieListResponse,
+  SavedPostListParams,
+} from './save';
+export { SAVE_TARGET_TYPES } from './save';
+
 export type { ImageUploadResponse, ImageUploadType } from './upload';
 export { IMAGE_UPLOAD_TYPES } from './upload';
 
