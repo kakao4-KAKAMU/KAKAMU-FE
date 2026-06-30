@@ -11,6 +11,9 @@ export const postKeys = {
   likedLists: () => [...postKeys.lists(), 'liked'] as const,
   likedList: (params: Omit<PostListParams, 'cursor'>) =>
     [...postKeys.likedLists(), params] as const,
+  savedLists: () => [...postKeys.lists(), 'saved'] as const,
+  savedList: (params: Omit<import('@kakamu/types').SavedPostListParams, 'cursor'>) =>
+    [...postKeys.savedLists(), params] as const,
   details: () => [...postKeys.all, 'detail'] as const,
   detail: (postId: number) => [...postKeys.details(), postId] as const,
 };

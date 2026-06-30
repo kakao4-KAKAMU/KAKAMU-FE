@@ -7,4 +7,7 @@ export const movieKeys = {
   toEvaluateLists: () => [...movieKeys.all, 'toEvaluate'] as const,
   toEvaluate: (params: import('@kakamu/types').MovieToEvaluateParams) =>
     [...movieKeys.toEvaluateLists(), params] as const,
+  savedLists: () => [...movieKeys.all, 'saved'] as const,
+  savedList: (params: Omit<import('@kakamu/types').SavedMovieListParams, 'cursor'>) =>
+    [...movieKeys.savedLists(), params] as const,
 };

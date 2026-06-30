@@ -7,4 +7,6 @@ export const commentKeys = {
   byPostLists: () => [...commentKeys.all, 'by-post'] as const,
   byPostList: (postId: number, pageSize: number) =>
     [...commentKeys.byPostLists(), postId, pageSize] as const,
+  savedLists: () => [...commentKeys.all, 'saved'] as const,
+  savedList: (pageSize: number) => [...commentKeys.savedLists(), pageSize] as const,
 };

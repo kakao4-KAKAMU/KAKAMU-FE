@@ -36,6 +36,10 @@ export { useCreatePersonaMutation } from './features/persona/model/use-create-pe
 export { useUpdatePersonaMutation } from './features/persona/model/use-update-persona-mutation';
 export { useDeletePersonaMutation } from './features/persona/model/use-delete-persona-mutation';
 export { useLikeMutation } from './features/like/model/use-like-mutation';
+export { useSaveMutation } from './features/save/model/use-save-mutation';
+export { useSavedPostsInfiniteQuery } from './features/save/model/use-saved-posts-infinite-query';
+export { useSavedCommentsInfiniteQuery } from './features/save/model/use-saved-comments-infinite-query';
+export { useSavedMoviesInfiniteQuery } from './features/save/model/use-saved-movies-infinite-query';
 export { useUploadImageMutation } from './features/upload/model/use-upload-image-mutation';
 export { useCreatePostMutation } from './features/post/model/use-create-post-mutation';
 export { useDeletePostMutation } from './features/post/model/use-delete-post-mutation';

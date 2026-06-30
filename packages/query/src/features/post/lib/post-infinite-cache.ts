@@ -57,6 +57,7 @@ export function createOptimisticPost(body: PostUpdateRequest): PostItem {
     mentions: [],
     like_count: 0,
     is_liked: false,
+    is_saved: false,
     comment_count: 0,
     created_at: new Date().toISOString(),
     updated_at: null,
@@ -189,6 +190,46 @@ export function removePostFromLikedLists(queryClient: QueryClient, postId: numbe
   );
 }
 
+export function removePostFromSavedLists(queryClient: QueryClient, postId: number): void {
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.savedLists() },
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
+  );
+}
+
+export function setPostSaveInCaches(
+  queryClient: QueryClient,
+  postId: number,
+  isSaved: boolean,
+): void {
+  const detail = queryClient.getQueryData<PostItem>(postKeys.detail(postId));
+  if (detail) {
+    queryClient.setQueryData<PostItem>(postKeys.detail(postId), {
+      ...detail,
+      is_saved: isSaved,
+    });
+  }
+
+  if (isSaved) {
+    queryClient.setQueriesData<PostInfiniteData>(
+      { queryKey: postKeys.savedLists() },
+      (old) => (old ? prependPostIdToFirstPage(old, postId) : old),
+    );
+    return;
+  }
+
+  removePostFromSavedLists(queryClient, postId);
+}
+
+export function togglePostSaveInCaches(queryClient: QueryClient, postId: number): void {
+  const detail = queryClient.getQueryData<PostItem>(postKeys.detail(postId));
+  if (!detail) {
+    return;
+  }
+
+  setPostSaveInCaches(queryClient, postId, !detail.is_saved);
+}
+
 export function togglePostLikeInCaches(queryClient: QueryClient, postId: number): void {
   const detail = queryClient.getQueryData<PostItem>(postKeys.detail(postId));
   if (!detail) {
@@ -252,10 +293,21 @@ export async function cancelPostDetailQueries(
   await queryClient.cancelQueries({ queryKey: postKeys.detail(postId) });
 }
 
+export async function cancelPostSaveQueries(
+  queryClient: QueryClient,
+  postId: number,
+): Promise<void> {
+  await Promise.all([
+    queryClient.cancelQueries({ queryKey: postKeys.detail(postId) }),
+    queryClient.cancelQueries({ queryKey: postKeys.savedLists() }),
+  ]);
+}
+
 export async function cancelPostQueries(queryClient: QueryClient, postId?: number): Promise<void> {
   await Promise.all([
     queryClient.cancelQueries({ queryKey: postKeys.lists() }),
     queryClient.cancelQueries({ queryKey: postKeys.likedLists() }),
+    queryClient.cancelQueries({ queryKey: postKeys.savedLists() }),
     postId != null
       ? queryClient.cancelQueries({ queryKey: postKeys.detail(postId) })
       : Promise.resolve(),
