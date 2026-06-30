@@ -1,16 +1,16 @@
 import { View } from 'react-native';
-import { useTranslation } from '@kakamu/i18n';
-import { ScrollView } from 'react-native';
-import { Text } from '@kakamu/ui';
+
+import { AppSuspenseBoundary } from '@/components/error-boundary';
+import { MainFeedScreenContent } from '@/components/featured/mainFeed';
+
+function MainFeedScreenFallback() {
+  return <View className="flex-1 bg-background" />;
+}
 
 export default function MainFeedScreen() {
-  const { t } = useTranslation();
-
   return (
-    <View className="flex-1 bg-background">
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 16 }}>
-        <Text selectable>{t('account.mainFeed.description')}</Text>
-      </ScrollView>
-    </View>
+    <AppSuspenseBoundary fallback={<MainFeedScreenFallback />}>
+      <MainFeedScreenContent />
+    </AppSuspenseBoundary>
   );
 }
