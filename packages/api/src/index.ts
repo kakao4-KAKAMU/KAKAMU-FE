@@ -45,6 +45,7 @@ export { createPost } from './posts/create';
 export { deletePostById } from './posts/delete';
 export { getPostById } from './posts/get-by-id';
 export { getLikedPostList } from './posts/list-liked';
+export { getFeedPostList } from './posts/list-feed';
 export { getPostList } from './posts/list';
 export { updatePostById } from './posts/update';
 export { postFollowUser } from './relations/follow-user';
