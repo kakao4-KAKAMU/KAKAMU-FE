@@ -84,6 +84,7 @@ export function useDeletePostMutation(
       queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
       queryClient.invalidateQueries({ queryKey: postKeys.lists() });
       queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
+      queryClient.invalidateQueries({ queryKey: postKeys.feedLists() });
       if (userId) {
         queryClient.invalidateQueries({ queryKey: userKeys.detail(userId) });
       }

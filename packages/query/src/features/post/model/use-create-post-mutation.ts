@@ -78,6 +78,7 @@ export function useCreatePostMutation(
     onSettled: (_data, _error, variables) => {
       queryClient.removeQueries({ queryKey: postKeys.detail(OPTIMISTIC_POST_ID) });
       queryClient.invalidateQueries({ queryKey: postKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: postKeys.feedLists() });
       if (variables.userId) {
         queryClient.invalidateQueries({ queryKey: userKeys.detail(variables.userId) });
       }
