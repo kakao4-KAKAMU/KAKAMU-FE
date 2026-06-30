@@ -292,6 +292,13 @@ account.post.write.validation.content.required,내용을 입력해주세요,Plea
 account.post.write.validation.content.max,내용은 최대 {{max}}자까지 입력할 수 있어요,Content can be up to {{max}} characters
 account.post.write.validation.images.max,이미지는 최대 {{max}}장까지 등록할 수 있어요,You can add up to {{max}} images
 account.post.write.loading,불러오는 중…,Loading…
+account.movie.detail.title,영화 상세,Movie details
+account.movie.detail.openA11y,{{title}} 영화 상세 보기,View movie details for {{title}}
+account.movie.detail.overview,줄거리,Overview
+account.movie.detail.staff,출연·제작,Cast & crew
+account.movie.detail.adult,청소년 관람불가,Adults only
+account.movie.detail.runtime,{{minutes}}분,{{minutes}} min
+account.movie.detail.error.loadFailed,영화 정보를 불러오지 못했어요,Could not load movie details
 shared.errorBoundary.title,문제가 발생했습니다,Something went wrong
 shared.errorBoundary.description,잠시 후 다시 시도해주세요.,Please try again later.
 shared.errorBoundary.retry,다시 시도,Retry
