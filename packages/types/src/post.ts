@@ -60,6 +60,11 @@ export type LikedPostListParams = {
   limit: number;
 };
 
+export type FeedPostListParams = {
+  cursor?: number;
+  limit: number;
+};
+
 export type PostCursorListResponse = {
   items: PostItem[];
   next_cursor: number | null;

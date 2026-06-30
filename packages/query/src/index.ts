@@ -34,6 +34,7 @@ export { useUploadImageMutation } from './features/upload/model/use-upload-image
 export { useCreatePostMutation } from './features/post/model/use-create-post-mutation';
 export { useDeletePostMutation } from './features/post/model/use-delete-post-mutation';
 export { useLikedPostsInfiniteQuery } from './features/post/model/use-liked-posts-infinite-query';
+export { useFeedPostsInfiniteQuery } from './features/post/model/use-feed-posts-infinite-query';
 export { usePostsInfiniteQuery } from './features/post/model/use-posts-infinite-query';
 export { usePostByIdQuery } from './features/post/model/use-post-by-id-query';
 export { useUpdatePostMutation } from './features/post/model/use-update-post-mutation';
@@ -75,4 +76,5 @@ export { useCommentsByPostInfiniteQuery } from './features/comment/model/use-com
 export { useCommentByIdQuery } from './features/comment/model/use-comment-by-id-query';
 export { useCreateCommentMutation } from './features/comment/model/use-create-comment-mutation';
 export { useDeleteCommentMutation } from './features/comment/model/use-delete-comment-mutation';
+export { useUpdateCommentMutation } from './features/comment/model/use-update-comment-mutation';
 export { useRevealCommentSpoilerMutation } from './features/comment/model/use-reveal-comment-spoiler-mutation';

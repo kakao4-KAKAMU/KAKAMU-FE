@@ -3,6 +3,7 @@ import type {
   CommentCreateRequest,
   CommentItem,
   CommentListResponse,
+  CommentUpdateRequest,
   PostItem,
   UserSimple,
 } from '@kakamu/types';
@@ -243,6 +244,17 @@ export function patchCommentDetailCache(
   queryClient.setQueryData<CommentItem>(commentKeys.detail(commentId), (old) =>
     old ? patch(old) : old,
   );
+}
+
+export function applyCommentUpdateBody(
+  comment: CommentItem,
+  body: CommentUpdateRequest,
+): CommentItem {
+  return {
+    ...comment,
+    content: body.content,
+    is_spoiler: body.is_spoiler === 1,
+  };
 }
 
 export function toggleCommentLikeInCaches(

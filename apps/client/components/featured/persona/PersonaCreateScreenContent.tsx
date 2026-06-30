@@ -28,7 +28,6 @@ import { ConditionalRender } from '@/components/utils';
 
 const DEFAULT_VALUES: PersonaCreateFormInput = {
   name: '',
-  description: '',
   profile_image_url: '',
   selectedGenreIds: [],
   selectedMovies: [],
@@ -62,7 +61,7 @@ export function PersonaCreateScreenContent() {
   const selectPersona = usePersonaStore((state) => state.selectPersona);
 
   const handleContinueFromStep1 = useCallback(async () => {
-    const ok = await trigger(['name', 'description', 'profile_image_url'], {
+    const ok = await trigger(['name', 'profile_image_url'], {
       shouldFocus: true,
     });
     if (ok) {

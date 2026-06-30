@@ -1,4 +1,7 @@
 import type { TFunction } from 'i18next';
+
+import { API_ERROR_CODES } from '@kakamu/types';
+
 import { parseApiError } from '@/lib/auth/parse-api-error';
 
 type ErrorView = {
@@ -12,14 +15,17 @@ export function mapPersonaUpdateError(error: unknown, t: TFunction): ErrorView {
   let { message, code } = parseApiError(error, fallback);
 
   switch (code) {
-    case 'NOT_FOUND':
-    case 'PERSONA_NOT_FOUND':
+    case API_ERROR_CODES.PERSONA_NOT_FOUND:
       title = t('account.persona.update.error.notFound.title');
       message = t('account.persona.update.error.notFound.description');
       break;
-    case 'FORBIDDEN':
+    case API_ERROR_CODES.FORBIDDEN_PERSONA_UPDATE:
       title = t('account.persona.update.error.forbidden.title');
       message = t('account.persona.update.error.forbidden.description');
+      break;
+    case API_ERROR_CODES.SAME_NICKNAME:
+      title = t('account.persona.update.error.sameNickname.title');
+      message = t('account.persona.update.error.sameNickname.description');
       break;
     default:
       break;

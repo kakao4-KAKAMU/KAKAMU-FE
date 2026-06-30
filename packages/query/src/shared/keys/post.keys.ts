@@ -1,7 +1,10 @@
-import type { PostListParams } from '@kakamu/types';
+import type { FeedPostListParams, PostListParams } from '@kakamu/types';
 
 export const postKeys = {
   all: ['post'] as const,
+  feedLists: () => [...postKeys.all, 'feed'] as const,
+  feedList: (params: Omit<FeedPostListParams, 'cursor'>) =>
+    [...postKeys.feedLists(), params] as const,
   lists: () => [...postKeys.all, 'list'] as const,
   list: (params: Omit<PostListParams, 'cursor'>) =>
     [...postKeys.lists(), params] as const,

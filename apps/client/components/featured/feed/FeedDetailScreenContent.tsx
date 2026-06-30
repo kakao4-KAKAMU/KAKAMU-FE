@@ -63,43 +63,27 @@ function FeedDetailScreenContentInner({
     canSubmit,
     isSubmitting,
     currentUserId,
-    onToggleCommentLike,
-    onDeleteComment,
-    onRevealSpoiler,
     onReply,
-    onReport,
-    isLikePending,
     labels,
   } = useFeedDetail(postId);
 
   const renderComment = useCallback(
     ({ item: commentId }: { item: number }) => (
       <CommentListItem
+        postId={postId}
         commentId={commentId}
         currentUserId={currentUserId}
         replyCount={replyCountById.get(commentId) ?? 0}
         anonymousLabel={labels.anonymousAuthor}
         deleteLabel={labels.deleteComment}
+        editLabel={labels.editComment}
         reportLabel={labels.reportComment}
-        onToggleLike={onToggleCommentLike}
+        placeholder={labels.placeholder}
+        sendA11y={labels.sendA11y}
         onReply={onReply}
-        onDelete={onDeleteComment}
-        onReport={onReport}
-        onRevealSpoiler={onRevealSpoiler}
-        isLikePending={isLikePending}
       />
     ),
-    [
-      labels,
-      onDeleteComment,
-      onReply,
-      onReport,
-      onRevealSpoiler,
-      onToggleCommentLike,
-      replyCountById,
-      isLikePending,
-      currentUserId,
-    ],
+    [currentUserId, labels, onReply, postId, replyCountById],
   );
 
   const listHeader = (

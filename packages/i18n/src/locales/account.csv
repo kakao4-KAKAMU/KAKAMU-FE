@@ -76,6 +76,8 @@ account.persona.update.error.notFound.title,페르소나를 찾을 수 없어요
 account.persona.update.error.notFound.description,이미 삭제되었거나 존재하지 않는 페르소나예요.,This persona no longer exists.
 account.persona.update.error.forbidden.title,수정 권한이 없어요,No permission to update
 account.persona.update.error.forbidden.description,해당 페르소나를 수정할 권한이 없습니다.,You do not have permission to update this persona.
+account.persona.update.error.sameNickname.title,닉네임을 변경해 주세요,Change the nickname
+account.persona.update.error.sameNickname.description,기존과 동일한 닉네임은 사용할 수 없습니다.,The nickname is the same as the current one.
 account.persona.delete.failedRequest.title,페르소나 삭제에 실패했어요,Could not delete persona
 account.persona.delete.failedRequest.description,잠시 후 다시 시도해 주세요.,Please try again later.
 account.persona.delete.error.minimumRequired.title,최소 1개의 페르소나는 필요해요,At least one persona is required
@@ -194,6 +196,9 @@ account.profile.relations.loadMore,더 보기,Load more
 account.profile.relations.loadingMore,불러오는 중…,Loading…
 account.mainFeed.title,메인,Main
 account.mainFeed.description,피드 목록을 조회할 수 있는 메인 페이지,Main page where you can browse feed items
+account.mainFeed.composerPlaceholder,무슨 영화를 봤나요?,What movie did you watch?
+account.mainFeed.empty,아직 피드가 없어요,No feed items yet
+account.mainFeed.loading,피드를 불러오는 중…,Loading feed…
 account.searchHistory.title,검색,Search
 account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
 account.search.placeholder,"영화, feed, 사람 검색","Search movies, feed, or people"
@@ -302,6 +307,7 @@ shared.feedDetail.spoilerReveal,스포일러 보기,Reveal spoiler
 shared.feedDetail.spoilerHide,스포일러 숨기기,Hide spoiler
 shared.feedDetail.reply,답글,Reply
 shared.feedDetail.deleteComment,삭제,Delete
+shared.feedDetail.editComment,수정,Edit
 shared.feedDetail.reportComment,신고,Report
 shared.feedDetail.validation.content.required,댓글을 입력해주세요,Please enter a comment
 shared.feedDetail.validation.content.max,댓글은 최대 {{max}}자까지 입력할 수 있어요,Comments can be up to {{max}} characters
@@ -313,6 +319,8 @@ shared.feedDetail.error.createComment.title,댓글 등록에 실패했어요,Cou
 shared.feedDetail.error.createComment.description,잠시 후 다시 시도해주세요,Please try again later
 shared.feedDetail.error.deleteComment.title,댓글 삭제에 실패했어요,Could not delete comment
 shared.feedDetail.error.deleteComment.description,권한이 없거나 이미 삭제된 댓글이에요,You may not have permission or the comment was already deleted
+shared.feedDetail.error.updateComment.title,댓글 수정에 실패했어요,Could not update comment
+shared.feedDetail.error.updateComment.description,권한이 없거나 이미 삭제된 댓글이에요,You may not have permission or the comment was already deleted
 shared.feedDetail.error.commentLike.title,좋아요에 실패했어요,Could not like comment
 shared.feedDetail.error.commentLike.description,잠시 후 다시 시도해주세요,Please try again later
 shared.feedDetail.error.spoiler.title,스포일러 내용을 불러오지 못했어요,Could not load spoiler content

@@ -16,6 +16,8 @@ export type { CursorPaginationMeta, PagePaginationMeta } from './pagination';
 
 export type {
   Persona,
+  PersonaMovie,
+  PersonaPerson,
   PersonaCreateRequest,
   PersonaCreateResponse,
   PersonaUpdateRequest,
@@ -71,6 +73,8 @@ export type {
   CommentListParams,
   CommentListResponse,
   CommentSpoilerDetailResponse,
+  CommentUpdateRequest,
+  CommentUpdateResponse,
   PaginationMeta,
 } from './comment';
 
@@ -96,6 +100,7 @@ export type {
   PostItem,
   PostListParams,
   LikedPostListParams,
+  FeedPostListParams,
   PostSearchResponse,
   PostUpdateRequest,
   PostUpdateResponse,

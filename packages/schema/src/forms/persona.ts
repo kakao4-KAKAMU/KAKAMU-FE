@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
 import {
-  PERSONA_DESCRIPTION_MAX_LENGTH,
-  PERSONA_DESCRIPTION_MIN_LENGTH,
   PERSONA_GENRE_MAX_COUNT,
   PERSONA_NAME_MAX_LENGTH,
   PERSONA_NAME_MIN_LENGTH,
@@ -32,15 +30,6 @@ function nameField(messages: PersonaFormValidationMessages['name']) {
     .max(PERSONA_NAME_MAX_LENGTH, messages.max);
 }
 
-function descriptionField(messages: PersonaFormValidationMessages['description']) {
-  return z
-    .string()
-    .trim()
-    .min(1, messages.required)
-    .min(PERSONA_DESCRIPTION_MIN_LENGTH, messages.min)
-    .max(PERSONA_DESCRIPTION_MAX_LENGTH, messages.max);
-}
-
 function isValidProfileImageReference(value: string): boolean {
   if (z.string().url().safeParse(value).success) {
     return true;
@@ -60,7 +49,6 @@ function profileImageUrlField(messages: PersonaFormValidationMessages['profileIm
 export function createPersonaFormSchemas(messages: PersonaFormValidationMessages) {
   const base = z.object({
     name: nameField(messages.name),
-    description: descriptionField(messages.description),
     profile_image_url: profileImageUrlField(messages.profileImageUrl),
     selectedGenreIds: z.array(z.string()),
     selectedMovies: z.array(selectedMovieSchema),
@@ -69,7 +57,6 @@ export function createPersonaFormSchemas(messages: PersonaFormValidationMessages
 
   const step1 = base.pick({
     name: true,
-    description: true,
     profile_image_url: true,
   });
 

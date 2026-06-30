@@ -1,5 +1,5 @@
 import type { Genre } from '@kakamu/types';
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Badge, cn, Text } from '@kakamu/ui';
 
 type GenreMultiSelectProps = {
@@ -28,11 +28,7 @@ export function GenreMultiSelect({
   }
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerClassName="flex-row gap-2"
-    >
+    <View className="flex-row gap-4 flex-wrap">
       {genres.map((genre) => {
         const selected = selectedIds.includes(genre.id);
         const atMax = maxCount != null && selectedIds.length >= maxCount && !selected;
@@ -54,6 +50,6 @@ export function GenreMultiSelect({
           </Pressable>
         );
       })}
-    </ScrollView>
+    </View>
   );
 }

@@ -27,6 +27,23 @@ export function mapCommentCreateError(error: unknown, t: TFunction): ErrorView {
   return { title, description: message };
 }
 
+export function mapCommentUpdateError(error: unknown, t: TFunction): ErrorView {
+  const fallback = t('shared.feedDetail.error.updateComment.description');
+  let title = t('shared.feedDetail.error.updateComment.title');
+  let { message, code } = parseApiError(error, fallback);
+
+  switch (code) {
+    case API_ERROR_CODES.FORBIDDEN_COMMENT_UPDATE:
+    case API_ERROR_CODES.COMMENT_NOT_FOUND:
+      message = t('shared.feedDetail.error.updateComment.description');
+      break;
+    default:
+      break;
+  }
+
+  return { title, description: message };
+}
+
 export function mapCommentDeleteError(error: unknown, t: TFunction): ErrorView {
   const fallback = t('shared.feedDetail.error.deleteComment.description');
   let title = t('shared.feedDetail.error.deleteComment.title');

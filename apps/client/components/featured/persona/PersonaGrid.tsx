@@ -1,4 +1,5 @@
 import type { Persona } from '@kakamu/types';
+import { PERSONA_MAX_COUNT } from '@kakamu/schema';
 import { View } from 'react-native';
 import { PersonaAddCard } from './PersonaAddCard';
 import { PersonaCard } from './PersonaCard';
@@ -37,7 +38,9 @@ export function PersonaGrid({
           onDelete={() => onDelete(personaId)}
         />
       ))}
-      <PersonaAddCard label={addLabel} onPress={onAddPress} />
+      {personasIds.length < PERSONA_MAX_COUNT ? (
+        <PersonaAddCard label={addLabel} onPress={onAddPress} />
+      ) : null}
     </View>
   );
 }

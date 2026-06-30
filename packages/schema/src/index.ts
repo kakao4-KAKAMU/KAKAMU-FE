@@ -42,9 +42,8 @@ export {
 } from './forms/auth';
 
 export {
-  PERSONA_DESCRIPTION_MAX_LENGTH,
-  PERSONA_DESCRIPTION_MIN_LENGTH,
   PERSONA_GENRE_MAX_COUNT,
+  PERSONA_MAX_COUNT,
   PERSONA_NAME_MAX_LENGTH,
   PERSONA_NAME_MIN_LENGTH,
 } from './forms/persona-constants';

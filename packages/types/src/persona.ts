@@ -1,8 +1,27 @@
+import type { Genre } from './genre';
+
+export type PersonaMovie = {
+  id: string;
+  title: string;
+  poster_url?: string | null;
+  release_date?: string | null;
+};
+
+export type PersonaPerson = {
+  id: string;
+  name: string;
+  job?: string | null;
+  profile_image?: string | null;
+};
+
 export type Persona = {
   id: string;
   user_id: string;
   nickname: string;
   profile_image_url: string | null;
+  fav_genres?: Genre[];
+  fav_movies?: PersonaMovie[];
+  fav_people?: PersonaPerson[];
 };
 
 export type PersonaCreateRequest = {
