@@ -12,6 +12,7 @@ export type CommentItem = {
   created_at: string;
   like_count: number;
   is_liked: boolean;
+  is_saved: boolean;
   hashtags: string[];
   mentions: Mention[];
 };

@@ -10,6 +10,7 @@ export type PostItem = {
   mentions: Mention[];
   like_count: number;
   is_liked: boolean;
+  is_saved: boolean;
   created_at: string;
   updated_at: string | null;
   title: string;

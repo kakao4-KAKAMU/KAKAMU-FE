@@ -41,6 +41,7 @@ export type MovieDetail = {
   overviews?: MovieOverview[];
   genres?: Genre[];
   staffs?: MovieStaff[];
+  is_saved?: boolean;
 };
 
 export type MovieSearchRequestBody = {
