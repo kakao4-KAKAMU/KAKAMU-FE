@@ -1,4 +1,4 @@
-import type { ChatSseEvent } from '@kakamu/types';
+import type { ChatSseEvent, MovieItem, PostItem } from '@kakamu/types';
 
 export type ChatStreamEventType = 'open' | 'node' | 'done';
 
@@ -38,35 +38,40 @@ export function normalizeChatStreamEvent(sseEvent: ChatSseEvent): NormalizedChat
   };
 }
 
-/** `open` / `done` payload에서 `session_id`를 추출한다. */
-export function extractIdsFromStreamData(data: unknown): { sessionId: string ; messageId: string } | null {
+function readNumber(value: unknown): number | null {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+/** `open` / `done` payload에서 `session_id`·`message_id`를 추출한다. */
+export function extractIdsFromStreamData(
+  data: unknown,
+): { sessionId: string; messageId: number | null } | null {
   const root = asRecord(data);
   if (!root) {
+    return null;
+  }
+
+  const sessionId = readString(root.session_id);
+  if (!sessionId) {
     return null;
   }
 
   return {
-    sessionId: root.session_id as string,
-    messageId: root.message_id as string,
+    sessionId,
+    messageId: readNumber(root.message_id),
   };
 }
 
-/**
- * `node` payload에서 `generate_reply.reply`만 추출한다.
- * (embed_query, plan_intent, retrieve_movies 등은 UI에 반영하지 않음)
- */
-/** `node` payload의 LangGraph 노드 키 (예: `plan_intent`) */
-export function extractNodePhaseKey(data: unknown): string | null {
-  const root = asRecord(data);
-  if (!root) {
-    return null;
-  }
+export type GenerateReplyPayload = {
+  reply: string;
+  movieList: MovieItem[];
+  feedList: PostItem[];
+};
 
-  const [firstKey] = Object.keys(root);
-  return firstKey ?? null;
-}
-
-export function extractGenerateReplyFromNodeData(data: unknown): string | null {
+/** `node` payload의 `generate_reply` 블록을 추출한다. */
+export function extractGenerateReplyPayloadFromNodeData(
+  data: unknown,
+): GenerateReplyPayload | null {
   const root = asRecord(data);
   if (!root) {
     return null;
@@ -77,5 +82,43 @@ export function extractGenerateReplyFromNodeData(data: unknown): string | null {
     return null;
   }
 
-  return readString(generateReply.reply);
+  const reply = readString(generateReply.reply);
+  if (!reply) {
+    return null;
+  }
+
+  const movieList = Array.isArray(generateReply.movie_list)
+    ? (generateReply.movie_list as MovieItem[])
+    : [];
+  const feedList = Array.isArray(generateReply.feed_list)
+    ? (generateReply.feed_list as PostItem[])
+    : [];
+
+  return { reply, movieList, feedList };
+}
+
+/** `node` payload의 `persist_history.reply_id`를 추출한다. */
+export function extractPersistHistoryReplyIdFromNodeData(data: unknown): number | null {
+  const root = asRecord(data);
+  if (!root) {
+    return null;
+  }
+
+  const persistHistory = asRecord(root.persist_history);
+  if (!persistHistory) {
+    return null;
+  }
+
+  return readNumber(persistHistory.reply_id);
+}
+
+/** `node` payload의 LangGraph 노드 키 (예: `plan_intent`) */
+export function extractNodePhaseKey(data: unknown): string | null {
+  const root = asRecord(data);
+  if (!root) {
+    return null;
+  }
+
+  const [firstKey] = Object.keys(root);
+  return firstKey ?? null;
 }

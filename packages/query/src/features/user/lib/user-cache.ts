@@ -68,7 +68,6 @@ export function setUserFollowInCache(
   userId: string,
   isFollowing: boolean,
 ): void {
-  console.log('setUserFollowInCache', isFollowing)
   patchUserInCache(queryClient, userId, (user) => {
     if (user.is_following === isFollowing) {
       return user;

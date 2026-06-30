@@ -1,12 +1,12 @@
-import { getChatHistory } from '@kakamu/api';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { chatKeys, useChatHistoryInfiniteQuery } from '@kakamu/query';
-import type { ChatHistoryMessage, ChatHistoryResponse } from '@kakamu/types';
+import type { ChatHistoryMessage } from '@kakamu/types';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
 import { resolveHistoryMessagesFromInfinite } from '@/lib/chat/flatten-history-messages';
 import { mergeChatMessages } from '@/lib/chat/merge-chat-messages';
+import { useChatStream } from '@/providers/ChatStreamProvider';
 import { useCurrentUserId } from '../auth/useCurrentUserId';
 
 const HISTORY_PAGE_LIMIT = 30;
@@ -18,6 +18,8 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
   }
   const client = useChatApiClient();
   const queryClient = useQueryClient();
+  const { activeSessionMessages } = useChatStream();
+
   const historyQuery = useChatHistoryInfiniteQuery(
     client,
     isNewSession ? '' : activeSessionId,
@@ -28,15 +30,6 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
     },
   );
 
-  const [localMessages, setLocalMessages] = useState<ChatHistoryMessage[]>([]);
-  const nextEphemeralIdRef = useRef(-1);
-
-  const allocateEphemeralId = useCallback(() => {
-    const id = nextEphemeralIdRef.current;
-    nextEphemeralIdRef.current -= 1;
-    return id;
-  }, []);
-
   const historyMessages = useMemo(
     () =>
       resolveHistoryMessagesFromInfinite(historyQuery.data, (messageId) =>
@@ -46,39 +39,8 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
   );
 
   const messages = useMemo(
-    () => mergeChatMessages(historyMessages, localMessages),
-    [historyMessages, localMessages],
-  );
-
-  const clearLocalMessages = useCallback(() => {
-    setLocalMessages([]);
-  }, []);
-
-  const prefetchHistory = useCallback(
-    async (sessionId: string) => {
-      await queryClient.prefetchInfiniteQuery({
-        queryKey: chatKeys.historyList(sessionId, HISTORY_PAGE_LIMIT),
-        queryFn: ({ pageParam }) =>
-          getChatHistory(client, sessionId, {
-            limit: HISTORY_PAGE_LIMIT,
-            cursor: pageParam as number | null,
-            user_id: currentUserId,
-          }),
-        initialPageParam: null as number | null,
-        getNextPageParam: (lastPage: ChatHistoryResponse) =>
-          lastPage.has_more ? lastPage.next_cursor : null,
-      });
-    },
-    [client, queryClient],
-  );
-
-  const invalidateHistory = useCallback(
-    (sessionId: string) => {
-      void queryClient.invalidateQueries({
-        queryKey: chatKeys.historyList(sessionId, HISTORY_PAGE_LIMIT),
-      });
-    },
-    [queryClient],
+    () => mergeChatMessages(historyMessages, activeSessionMessages),
+    [historyMessages, activeSessionMessages],
   );
 
   const hasMoreHistory = Boolean(historyQuery.hasNextPage);
@@ -92,12 +54,6 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
 
   return {
     messages,
-    localMessages,
-    setLocalMessages,
-    allocateEphemeralId,
-    clearLocalMessages,
-    prefetchHistory,
-    invalidateHistory,
     isHistoryLoading: historyQuery.isLoading,
     isLoadingOlderMessages: historyQuery.isFetchingNextPage,
     hasMoreHistory,

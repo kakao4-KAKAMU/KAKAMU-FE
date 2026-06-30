@@ -6,7 +6,8 @@ import { readSseStream } from '../sse/read-sse-stream';
 function parseSseDataPayload(data: string): unknown {
   try {
     return JSON.parse(data) as unknown;
-  } catch {
+  } catch (error) {
+    console.error('parseSseDataPayload - error', error)
     return data;
   }
 }

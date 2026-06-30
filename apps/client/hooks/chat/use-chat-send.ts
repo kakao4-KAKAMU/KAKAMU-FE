@@ -1,22 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { TFunction } from '@kakamu/i18n';
-import type { ChatHistoryMessage, ChatSseEvent } from '@kakamu/types';
 import { useErrorAlertDialog } from '@kakamu/ui';
-import type { Dispatch, MutableRefObject, SetStateAction } from 'react';
+import type { RefObject } from 'react';
 
 import { usePostChatStream } from '@/hooks/chat/use-post-chat-stream';
-import { createEphemeralChatMessage } from '@/lib/chat/create-ephemeral-message';
+import { ChatMessageSession } from '@/lib/chat/chat-message-session';
+import { ChatStreamConnection } from '@/lib/chat/chat-stream-connection';
 import { mapChatStreamError } from '@/lib/error-message-map/chat/chat-stream-error';
+import type { BindSessionId } from '@/lib/chat/types';
+import { useChatStream } from '@/providers/ChatStreamProvider';
 
 type UseChatSendParams = {
   t: TFunction;
   userId: string;
   personaId: string | null;
-  activeSessionIdRef: MutableRefObject<string>;
-  assistantDraftIdRef: MutableRefObject<number | null>;
-  allocateEphemeralId: () => number;
-  setLocalMessages: Dispatch<SetStateAction<ChatHistoryMessage[]>>;
-  applyStreamEventRef: MutableRefObject<(event: ChatSseEvent) => void | Promise<void>>;
+  activeSessionIdRef: RefObject<string>;
+  bindSessionId: BindSessionId;
+  onInvalidateList: () => void;
+  onStreamDone: (sessionId: string | null) => void | Promise<void>;
 };
 
 export function useChatSend({
@@ -24,38 +25,23 @@ export function useChatSend({
   userId,
   personaId,
   activeSessionIdRef,
-  assistantDraftIdRef,
-  allocateEphemeralId,
-  setLocalMessages,
-  applyStreamEventRef,
+  bindSessionId,
+  onInvalidateList,
+  onStreamDone,
 }: UseChatSendParams) {
   const postChatStream = usePostChatStream();
   const { open: openErrorAlert } = useErrorAlertDialog();
+  const { isStreaming, registerSession, registerConnection, unregisterConnection } = useChatStream();
 
   const [draft, setDraft] = useState('');
-  const [isStreaming, setIsStreaming] = useState(false);
   const [streamStatus, setStreamStatus] = useState<string | null>(null);
-  const abortRef = useRef<AbortController | null>(null);
+  const activeConnectionRef = useRef<ChatStreamConnection | null>(null);
 
   useEffect(() => {
     return () => {
-      abortRef.current?.abort();
+      activeConnectionRef.current?.abort();
     };
   }, []);
-
-  const finalizeLocalMessages = useCallback(() => {
-    setLocalMessages((prev) =>
-      prev.map((message) =>
-        message.status === 'pending' || message.processing
-          ? {
-              ...message,
-              status: 'done' as const,
-              processing: false,
-            }
-          : message,
-      ),
-    );
-  }, [setLocalMessages]);
 
   const sendMessage = useCallback(async () => {
     const trimmed = draft.trim();
@@ -64,72 +50,66 @@ export function useChatSend({
     }
 
     setDraft('');
-    const sessionId = activeSessionIdRef.current;
-    const userMessage = createEphemeralChatMessage({
-      id: allocateEphemeralId(),
-      sessionId,
-      userId: userId,
-      personaId: personaId,
-      role: 'user',
-      content: trimmed,
-      status: 'pending',
-      processing: true,
-    });
-    const assistantMessage = createEphemeralChatMessage({
-      id: allocateEphemeralId(),
-      sessionId,
-      userId: userId,
-      personaId: personaId,
-      role: 'assistant',
-      content: '',
-      status: 'processing',
-      processing: true,
+
+    const session = ChatMessageSession.create({
+      sessionId: activeSessionIdRef.current,
+      userId,
+      personaId,
+      userContent: trimmed,
     });
 
-    assistantDraftIdRef.current = assistantMessage.id;
-    setLocalMessages((prev) => [...prev, userMessage, assistantMessage]);
-    setIsStreaming(true);
+    const connection = new ChatStreamConnection(session, {
+      postChatStream,
+      bindSessionId,
+      onInvalidateList,
+      onStreamDone,
+      setStreamStatus,
+      t,
+    });
+
+    registerSession(session);
+    registerConnection(session.uuid, connection);
+    activeConnectionRef.current = connection;
     setStreamStatus(t('account.chat.streamStatus.sending'));
 
-    const controller = new AbortController();
-    abortRef.current = controller;
-
     try {
-      await postChatStream(
-        {
-          persona_id: personaId,
-          session_id: sessionId,
-          message: trimmed,
-        },
-        (event) => applyStreamEventRef.current(event),
-        controller.signal,
-      );
+      await connection.start({
+        persona_id: personaId,
+        session_id: activeSessionIdRef.current,
+        message: trimmed,
+      });
     } catch (error) {
-      if (!controller.signal.aborted) {
-        openErrorAlert(mapChatStreamError(error, t));
-        setLocalMessages((prev) =>
-          prev.filter((message) => message.id !== assistantMessage.id),
-        );
+      if (connection.wasAborted()) {
+        return;
       }
+      session.markFailed(error);
+      openErrorAlert(mapChatStreamError(error, t));
     } finally {
-      assistantDraftIdRef.current = null;
-      setIsStreaming(false);
-      setStreamStatus(null);
-      abortRef.current = null;
-      finalizeLocalMessages();
+      requestAnimationFrame(() => {
+        unregisterConnection(session.uuid);
+        activeConnectionRef.current = null;
+        setStreamStatus(null);
+        if (!session.isStreamCompleted) {
+          session.finalize();
+        }
+      })
+
     }
   }, [
     activeSessionIdRef,
-    allocateEphemeralId,
-    applyStreamEventRef,
+    bindSessionId,
     draft,
-    finalizeLocalMessages,
     isStreaming,
+    onInvalidateList,
+    onStreamDone,
     openErrorAlert,
     personaId,
     postChatStream,
-    setLocalMessages,
+    registerConnection,
+    registerSession,
     t,
+    unregisterConnection,
+    userId,
   ]);
 
   const canSend = draft.trim().length > 0 && !isStreaming && Boolean(userId);
@@ -141,6 +121,5 @@ export function useChatSend({
     canSend,
     isStreaming,
     streamStatus,
-    setStreamStatus,
   };
 }

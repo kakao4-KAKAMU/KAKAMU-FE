@@ -1,30 +1,24 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import { chatKeys } from '@kakamu/query';
-import type { ChatSession, ChatSseEvent } from '@kakamu/types';
+import type { ChatSession } from '@kakamu/types';
 import { usePersonaStore } from '@kakamu/store';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useChatApiClient } from '@/hooks/api/useChatApiClient';
 import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { useChatMessages } from '@/hooks/chat/use-chat-messages';
 import { useChatSend } from '@/hooks/chat/use-chat-send';
 import { useChatSession } from '@/hooks/chat/use-chat-session';
-import { useChatStreamEvents } from '@/hooks/chat/use-chat-stream-events';
 import { formatChatSessionTitle } from '@/lib/chat/format-session-label';
 
 export function useChatConversation(routeSessionId: string | undefined) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const client = useChatApiClient();
   const currentUserId = useCurrentUserId();
   if (!currentUserId) {
     throw new Error('Current user ID not found');
   }
   const personaId = usePersonaStore((state) => state.selectedPersonaId);
-
-  const assistantDraftIdRef = useRef<number | null>(null);
-  const applyStreamEventRef = useRef<(event: ChatSseEvent) => void | Promise<void>>(async () => {});
 
   const invalidateList = useCallback(() => {
     void queryClient.invalidateQueries({ queryKey: chatKeys.list() });
@@ -37,11 +31,6 @@ export function useChatConversation(routeSessionId: string | undefined) {
 
   const {
     messages,
-    setLocalMessages,
-    allocateEphemeralId,
-    clearLocalMessages,
-    prefetchHistory,
-    invalidateHistory,
     isHistoryLoading,
     isLoadingOlderMessages,
     hasMoreHistory,
@@ -50,27 +39,13 @@ export function useChatConversation(routeSessionId: string | undefined) {
 
   const onStreamDone = useCallback(
     async (sessionId: string | null) => {
-      if (!sessionId) {
+      if (!sessionId || !isNewSession) {
         return;
       }
 
-      invalidateHistory(sessionId);
-      await prefetchHistory(sessionId);
-
-      if (isNewSession) {
-        bindSessionId(sessionId, { replaceRoute: true });
-        return;
-      }
-
-      clearLocalMessages();
+      bindSessionId(sessionId, { replaceRoute: true });
     },
-    [
-      bindSessionId,
-      clearLocalMessages,
-      invalidateHistory,
-      isNewSession,
-      prefetchHistory,
-    ],
+    [bindSessionId, isNewSession],
   );
 
   const send = useChatSend({
@@ -78,22 +53,10 @@ export function useChatConversation(routeSessionId: string | undefined) {
     userId: currentUserId,
     personaId: personaId ?? null,
     activeSessionIdRef,
-    assistantDraftIdRef,
-    allocateEphemeralId,
-    setLocalMessages,
-    applyStreamEventRef,
-  });
-
-  const { applyStreamEvent } = useChatStreamEvents({
-    t,
     bindSessionId,
-    assistantDraftIdRef,
-    setLocalMessages,
-    setStreamStatus: send.setStreamStatus,
+    onInvalidateList: invalidateList,
     onStreamDone,
   });
-
-  applyStreamEventRef.current = applyStreamEvent;
 
   const matchedSession = queryClient.getQueryData<ChatSession>(
     chatKeys.detail(activeSessionId),
