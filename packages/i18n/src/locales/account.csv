@@ -196,6 +196,9 @@ account.profile.relations.loadMore,더 보기,Load more
 account.profile.relations.loadingMore,불러오는 중…,Loading…
 account.mainFeed.title,메인,Main
 account.mainFeed.description,피드 목록을 조회할 수 있는 메인 페이지,Main page where you can browse feed items
+account.mainFeed.composerPlaceholder,무슨 영화를 봤나요?,What movie did you watch?
+account.mainFeed.empty,아직 피드가 없어요,No feed items yet
+account.mainFeed.loading,피드를 불러오는 중…,Loading feed…
 account.searchHistory.title,검색,Search
 account.searchHistory.description,최근 검색 이력 페이지,Recent search history page
 account.search.placeholder,"영화, feed, 사람 검색","Search movies, feed, or people"
