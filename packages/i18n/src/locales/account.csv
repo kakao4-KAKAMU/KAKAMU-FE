@@ -185,6 +185,11 @@ account.profile.menu.logout,로그아웃,Log out
 account.profile.tabs.feed,피드,Feed
 account.profile.tabs.like,좋아요,Likes
 account.profile.tabs.saved,저장,Saved
+account.profile.saved.posts,게시물,Posts
+account.profile.saved.comments,댓글,Comments
+account.profile.saved.movies,영화,Movies
+account.profile.saved.itemCount,{{count}}개,{{count}} items
+account.profile.saved.empty,저장한 항목이 없어요,Nothing saved yet
 account.profile.actions.follow,팔로우,Follow
 account.profile.actions.unfollow,언팔로우,Unfollow
 account.profile.actions.followError.title,팔로우 변경에 실패했어요,Could not update follow status
