@@ -38,6 +38,7 @@ yarn-error.*
 
 mocks/handlers.generated.meta.json
 mocks/openapi.json
+public/mockServiceWorker.js
 
 # generated native folders
 /ios
