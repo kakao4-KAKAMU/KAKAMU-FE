@@ -11,6 +11,12 @@ export { searchKeys } from './shared/keys/search.keys';
 export { chatKeys } from './shared/keys/chat.keys';
 export { useChatListQuery, useChatSessionQuery } from './features/chat/model/use-chat-list-query';
 export { useMovieByIdQuery } from './features/movie/model/use-movie-by-id-query';
+export { useMovieDetailQuery } from './features/movie/model/use-movie-detail-query';
+export {
+  getPrimaryMovieTitle,
+  movieDetailToItem,
+  seedMovieDetailCache,
+} from './features/movie/lib/movie-detail-cache';
 export { useMoviesToEvaluateQuery } from './features/movie-evaluate/model/use-movies-to-evaluate-query';
 export { useEvaluateMovieMutation } from './features/movie-evaluate/model/use-evaluate-movie-mutation';
 export { usePersonByIdQuery } from './features/person/model/use-person-by-id-query';

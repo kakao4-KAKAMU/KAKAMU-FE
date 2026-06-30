@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 import 'react-native-reanimated';
 import { QueryClientProvider } from '@kakamu/query';
-import { AppErrorBoundary, ActionAlertDialogProvider, ErrorAlertDialogProvider, PortalHost } from '@kakamu/ui';
+import { AppErrorBoundary } from '@kakamu/ui';
 import { getI18n, I18nextProvider } from '@kakamu/i18n';
 import { ThemeSchemeProvider } from '@/components/themeScheme';
 import * as Sentry from '@sentry/react-native';
@@ -19,6 +19,7 @@ import { getBackendApiPrefixUrl } from '@/lib/env/backend-api-url';
 import { ConditionalRender } from '@/components/utils';
 import { useMswBootstrap } from '@/hooks/msw/useMswBootstrap';
 import { appQueryClient } from '@/lib/query/query-client';
+import { LayoutDialogProviders } from '@/components/LayoutDialogProviders';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -137,8 +138,7 @@ export default function RootLayout() {
             <ThemeSchemeProvider>
               <ThemeColorProvider>
                 <AppErrorBoundary>
-                  <ErrorAlertDialogProvider>
-                    <ActionAlertDialogProvider>
+                  <LayoutDialogProviders>
                     <ConditionalRender
                       condition={accountStatus}
                       render={{
@@ -155,9 +155,7 @@ export default function RootLayout() {
                       <Stack.Screen name="(shared)" />
                       <Stack.Screen name="(guest)" />
                     </Stack>
-                    <PortalHost />
-                    </ActionAlertDialogProvider>
-                  </ErrorAlertDialogProvider>
+                  </LayoutDialogProviders>
                 </AppErrorBoundary>
               </ThemeColorProvider>
             </ThemeSchemeProvider>

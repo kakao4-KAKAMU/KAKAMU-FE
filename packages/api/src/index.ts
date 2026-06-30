@@ -22,6 +22,7 @@ export { postLinkSocialAuth } from './users/link-social-auth';
 export { deleteUnlinkSocialAuth } from './users/unlink-social-auth';
 export { getGenreList } from './genre/list';
 export { postLike } from './like/like';
+export { getMovieById } from './movies/get-by-id';
 export { getMoviesToEvaluate } from './movies/get-to-evaluate';
 export { postMovieEvaluate } from './movies/evaluate';
 export { postSearchMovies } from './search/movie';
