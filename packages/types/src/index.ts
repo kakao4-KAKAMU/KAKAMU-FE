@@ -100,6 +100,7 @@ export type {
   PostItem,
   PostListParams,
   LikedPostListParams,
+  FeedPostListParams,
   PostSearchResponse,
   PostUpdateRequest,
   PostUpdateResponse,
