@@ -30,7 +30,7 @@ export default function SavedFeedByCategoryScreen() {
   }
 
   if (!isSavedCategoryId(category)) {
-    return <Redirect href="/profile/my/saved" />;
+    return <Redirect href="/profile/my/saved/posts" />;
   }
 
   return (

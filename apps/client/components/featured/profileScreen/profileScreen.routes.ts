@@ -12,7 +12,7 @@ export function getProfileTabHref(
       case 'like':
         return '/profile/my/like';
       case 'saved':
-        return '/profile/my/saved';
+        return '/profile/my/saved/posts';
     }
   }
 
