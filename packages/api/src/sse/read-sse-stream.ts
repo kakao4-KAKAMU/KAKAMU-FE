@@ -5,16 +5,28 @@ export type SseMessage = {
 
 type SseMessageHandler = (message: SseMessage) => void | Promise<void>;
 
+const SSE_BLOCK_DELIMITER = /(?:\r\n|\n){2}/;
+
 function parseSseBlock(block: string): SseMessage | null {
   const trimmed = block.trim();
   if (!trimmed) {
     return null;
   }
 
+  // comment-only block (e.g. `: ping`)
+  if (trimmed.startsWith(':')) {
+    return null;
+  }
+
   let event = 'message';
   const dataLines: string[] = [];
 
-  for (const line of trimmed.split('\n')) {
+  for (const rawLine of trimmed.split('\n')) {
+    const line = rawLine.endsWith('\r') ? rawLine.slice(0, -1) : rawLine;
+
+    if (line.startsWith(':')) {
+      continue;
+    }
     if (line.startsWith('event:')) {
       event = line.slice(6).trim();
     } else if (line.startsWith('data:')) {
@@ -27,6 +39,12 @@ function parseSseBlock(block: string): SseMessage | null {
   }
 
   return { event, data: dataLines.join('\n') };
+}
+
+function splitBufferedBlocks(buffer: string): { blocks: string[]; remainder: string } {
+  const parts = buffer.split(SSE_BLOCK_DELIMITER);
+  const remainder = parts.pop() ?? '';
+  return { blocks: parts, remainder };
 }
 
 /**
@@ -44,11 +62,14 @@ export async function readSseStream(
   }
 
   const decoder = new TextDecoder();
+  let buffer = '';
+
   const dispatchBlocks = async (blocks: string[]) => {
     for (const block of blocks) {
       if (signal?.aborted) {
         return;
       }
+
       const message = parseSseBlock(block);
       if (!message) {
         continue;
@@ -69,10 +90,16 @@ export async function readSseStream(
         break;
       }
 
-      const newStr = decoder.decode(value, { stream: true }).trim()
-      await dispatchBlocks([newStr]);
+      buffer += decoder.decode(value, { stream: true });
+
+      const { blocks, remainder } = splitBufferedBlocks(buffer);
+      buffer = remainder;
+      await dispatchBlocks(blocks);
     }
 
+    if (!signal?.aborted && buffer.trim()) {
+      await dispatchBlocks([buffer]);
+    }
   } finally {
     reader.releaseLock();
   }
