@@ -1,10 +1,46 @@
 export type MovieSort = 'year_asc' | 'year_desc' | 'name_asc' | 'name_desc';
 
+import type { Genre } from './genre';
+
 export type MovieItem = {
   id: string;
   title: string;
   poster_url?: string | null;
   release_date?: string | null;
+};
+
+export type MovieTitle = {
+  title_name: string;
+  country: string;
+  is_original: boolean;
+};
+
+export type MovieOverview = {
+  platform: string;
+  lang?: string | null;
+  overview: string;
+};
+
+export type MovieStaff = {
+  id: string;
+  name: string;
+  job?: string | null;
+  profile_image?: string | null;
+};
+
+export type MovieDetail = {
+  id: string;
+  titles: MovieTitle[];
+  poster_url?: string | null;
+  nation?: string | null;
+  release_date?: string | null;
+  producing_year?: number | null;
+  runtime?: number | null;
+  is_adult: boolean;
+  youtube_videos?: YoutubeVideo[];
+  overviews?: MovieOverview[];
+  genres?: Genre[];
+  staffs?: MovieStaff[];
 };
 
 export type MovieSearchRequestBody = {

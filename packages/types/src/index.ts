@@ -48,16 +48,20 @@ export type {
 } from './search';
 
 export type {
+  MovieDetail,
   MovieEvaluation,
   MovieEvaluationRequest,
   MovieEvaluationResponse,
   MovieFilterSearchResponse,
   MovieItem,
+  MovieOverview,
   MovieRecommendationResponse,
   MovieSearchParams,
   MovieSearchRequestBody,
   MovieSort,
+  MovieStaff,
   MovieTabSearchResponse,
+  MovieTitle,
   MovieToEvaluateListResponse,
   MovieToEvaluateParams,
   MovieWithTrailers,
