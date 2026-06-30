@@ -1,9 +1,11 @@
-import { Image, ScrollView, View } from 'react-native';
+import { Image, Pressable, ScrollView, View } from 'react-native';
 import type { TFunction } from '@kakamu/i18n';
 import type { MovieItem } from '@kakamu/types';
 import { cn, Text } from '@kakamu/ui';
+import { useCallback } from 'react';
 
 import { convertImagePath } from '@/lib/upload/convert-image-path';
+import { useMovieDetailDialog } from '@/providers/MovieDetailDialogProvider';
 
 type ChatMessageMoviePosterListProps = {
   movies: MovieItem[];
@@ -20,6 +22,11 @@ export function ChatMessageMoviePosterList({
     return null;
   }
 
+  const { open } = useMovieDetailDialog();
+  const onMoviePress = useCallback((movieId: string) => {
+    open(movieId);
+  }, [open]);
+
   return (
     <ScrollView
       horizontal
@@ -29,7 +36,8 @@ export function ChatMessageMoviePosterList({
       contentContainerClassName="gap-2"
     >
       {movies.map((movie) => (
-        <View
+        <Pressable
+          onPress={() => onMoviePress(movie.id)}
           key={movie.id}
           accessibilityRole="image"
           accessibilityLabel={t('account.chat.message.chip.movieA11y', {
@@ -51,7 +59,7 @@ export function ChatMessageMoviePosterList({
               </Text>
             </View>
           )}
-        </View>
+        </Pressable>
       ))}
     </ScrollView>
   );
