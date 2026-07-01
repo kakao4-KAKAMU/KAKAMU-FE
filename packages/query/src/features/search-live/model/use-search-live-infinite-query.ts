@@ -3,9 +3,8 @@ import type { ApiClient } from '@kakamu/api';
 import { getSearchLive } from '@kakamu/api';
 import type { PostSearchResponse, TabSearchParams } from '@kakamu/types';
 
-import { postKeys } from '../../../shared/keys/post.keys';
 import { searchKeys } from '../../../shared/keys/search.keys';
-import { seedDetailCache } from '../../../shared/lib/normalize-list-cache';
+import { seedPostDetailCacheFromList } from '../../post/lib/post-infinite-cache';
 
 const DEFAULT_LIMIT = 20;
 
@@ -37,7 +36,7 @@ export function useSearchLiveInfiniteQuery(
         { ...params, limit: DEFAULT_LIMIT },
         pageParam as number | null | undefined,
       );
-      seedDetailCache(queryClient, response.items, (item) => item.id, postKeys.detail);
+      seedPostDetailCacheFromList(queryClient, response.items);
       return response;
     },
     initialPageParam: null as number | null,
