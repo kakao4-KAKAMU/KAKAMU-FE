@@ -81,10 +81,7 @@ export function useDeletePostMutation(
       }
     },
     onSettled: (_data, _error, { postId, userId }) => {
-      queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
-      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: postKeys.likedLists() });
-      queryClient.invalidateQueries({ queryKey: postKeys.feedLists() });
+      removePostFromCaches(queryClient, postId);
       if (userId) {
         queryClient.invalidateQueries({ queryKey: userKeys.detail(userId) });
       }

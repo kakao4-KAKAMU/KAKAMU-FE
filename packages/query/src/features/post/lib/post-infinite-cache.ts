@@ -283,6 +283,14 @@ export function removePostFromCaches(queryClient: QueryClient, postId: number): 
     { queryKey: postKeys.likedLists() },
     (old) => (old ? filterPostIdFromPages(old, postId) : old),
   );
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.savedLists() },
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
+  );
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.feedLists() },
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
+  );
   queryClient.removeQueries({ queryKey: postKeys.detail(postId) });
 }
 
