@@ -35,7 +35,7 @@ app.use(
         frameAncestors: ["'none'"],
         frameSrc: ["'self'", "https://www.youtube.com/"],
         objectSrc: ["'none'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: [
           "'self'",
