@@ -19,10 +19,10 @@
     "react-native-web": "^0.21.0",
     "@kakamu/api": "workspace:*",
     "@kakamu/schema": "workspace:*",
-    "@kakamu/types": "workspace:*"
+    "@kakamu/types": "workspace:*",
+    "@tailwindcss/postcss": "^4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "~19.2.14",
     "@types/react-dom": "~19.2.0",
