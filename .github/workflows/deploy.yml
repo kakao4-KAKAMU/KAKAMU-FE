@@ -32,8 +32,6 @@ jobs:
 
         build-args: |
           env=production
-
-          EXPO_PUBLIC_DEPLOY_ENV=${{ github.ref_name }}
           EXPO_PUBLIC_BACKEND_API_URL=${{ vars.EXPO_PUBLIC_BACKEND_API_URL }}
           EXPO_PUBLIC_UPLOAD_API_URL=${{ vars.EXPO_PUBLIC_UPLOAD_API_URL }}
           EXPO_PUBLIC_CHAT_API_URL=${{ vars.EXPO_PUBLIC_CHAT_API_URL }}
