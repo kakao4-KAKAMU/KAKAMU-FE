@@ -183,13 +183,24 @@ export function prependPostToLikedLists(queryClient: QueryClient, item: PostItem
   );
 }
 
+export function removePostFromMyLists(queryClient: QueryClient, postId: number): void {
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.lists() },
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
+  );
+}
+export function removePostFromFeedLists(queryClient: QueryClient, postId: number): void {
+  queryClient.setQueriesData<PostInfiniteData>(
+    { queryKey: postKeys.feedLists() },
+    (old) => (old ? filterPostIdFromPages(old, postId) : old),
+  );
+}
 export function removePostFromLikedLists(queryClient: QueryClient, postId: number): void {
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.likedLists() },
     (old) => (old ? filterPostIdFromPages(old, postId) : old),
   );
 }
-
 export function removePostFromSavedLists(queryClient: QueryClient, postId: number): void {
   queryClient.setQueriesData<PostInfiniteData>(
     { queryKey: postKeys.savedLists() },
@@ -275,14 +286,10 @@ export function setPostFollowByAuthorInCaches(
 }
 
 export function removePostFromCaches(queryClient: QueryClient, postId: number): void {
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.lists() },
-    (old) => (old ? filterPostIdFromPages(old, postId) : old),
-  );
-  queryClient.setQueriesData<PostInfiniteData>(
-    { queryKey: postKeys.likedLists() },
-    (old) => (old ? filterPostIdFromPages(old, postId) : old),
-  );
+  removePostFromMyLists(queryClient, postId);
+  removePostFromLikedLists(queryClient, postId);
+  removePostFromSavedLists(queryClient, postId);
+  removePostFromFeedLists(queryClient, postId);
   queryClient.removeQueries({ queryKey: postKeys.detail(postId) });
 }
 
