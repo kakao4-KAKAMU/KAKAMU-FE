@@ -46,14 +46,14 @@ app.use(
         ],
         fontSrc: ["'self'", "data:"],
         connectSrc: ["'self'", "https:", "wss:"],
-        upgradeInsecureRequests: isProduction ? [] : null,
+        // upgradeInsecureRequests: isProduction ? [] : null,
       },
     },
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" },
-    hsts: isProduction
-      ? { maxAge: 31_536_000, includeSubDomains: true, preload: false }
-      : false,
+    // hsts: isProduction
+    //   ? { maxAge: 31_536_000, includeSubDomains: true, preload: false }
+    //   : false,
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
   }),
 );
