@@ -1,11 +1,8 @@
 import type { ReactNode } from 'react';
-
-import {
-  ProfileFeedPanel,
-  ProfileSavedCommentsPanel,
-  ProfileSavedEmptyState,
-  ProfileSavedMoviesPanel,
-} from '@/components/featured/profileScreen';
+import { ProfileFeedPanel } from './ProfileFeedPanel';
+import { ProfileSavedCommentsPanel } from './ProfileSavedCommentsPanel';
+import { ProfileSavedEmptyState } from './ProfileSavedEmptyState';
+import { ProfileSavedMoviesPanel } from './ProfileSavedMoviesPanel';
 import type { ProfileSavedCategoryId } from '@/components/featured/profileScreen/types';
 import type { useProfileSavedQueries } from '@/hooks/profile/useProfileSavedCategories';
 
