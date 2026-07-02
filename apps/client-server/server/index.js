@@ -108,7 +108,7 @@ app.all(
   ssrLimiter,
   createRequestHandler({
     build: SERVER_BUILD_DIR,
-    environment: process.env.NODE_ENV ?? "production",
+    environment: "production",
   }),
 );
 
