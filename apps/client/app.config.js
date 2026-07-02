@@ -36,12 +36,7 @@ const config = {
       "startUrl": process.env.EXPO_PUBLIC_HOST_PATH || "/",
     },
     "plugins": [
-      ["expo-router", {
-        "asyncRoutes": {
-          "web": true,
-          "default": false
-        },
-      }],
+      "expo-router",
       "expo-font",
       "expo-web-browser",
       [
