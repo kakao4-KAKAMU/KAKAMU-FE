@@ -37,6 +37,7 @@ const config = {
     },
     "plugins": [
       ["expo-router", {
+        "origin": process.env.EXPO_PUBLIC_HOST_PATH || "/",
         "asyncRoutes": {
           "web": true,
           "default": false
