@@ -1,5 +1,4 @@
 import {
-  skipToken,
   useQueryClient,
   useSuspenseQuery,
   type QueryFunction,
@@ -21,13 +20,11 @@ export function usePostByIdQuery(
 
   return useSuspenseQuery({
     queryKey: postKeys.detail(postId),
-    queryFn: (postId > 0
-      ? async () => {
-          const post = await getPostById(client, postId);
-          seedPostDetailCache(queryClient, post);
-          return post;
-        }
-      : skipToken) as QueryFunction<PostItem>,
+    queryFn: (async () => {
+      const post = await getPostById(client, postId);
+      seedPostDetailCache(queryClient, post);
+      return post;
+    }) as QueryFunction<PostItem>,
     ...options,
   });
 }
