@@ -61,12 +61,12 @@
     "react-native-web": "^0.21.0",
     "react-native-webview": "^13.16.1",
     "react-native-worklets": "0.7.4",
-    "uuid": "^14.0.1"
+    "uuid": "^14.0.1",
+    "@tailwindcss/postcss": "^4.1.16"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
     "@msw/source": "^0.6.1",
-    "@tailwindcss/postcss": "^4.1.16",
     "@types/culori": "^4.0.1",
     "@types/react": "~19.2.14",
     "@types/react-native-web": "^0.19.2",

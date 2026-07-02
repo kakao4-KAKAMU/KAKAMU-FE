@@ -24,7 +24,7 @@ COPY tooling/typescript/package.json tooling/typescript/
 
 # node_modules는 cache mount 대상이면 이미지 레이어에 남지 않아 COPY --from=deps 가 실패합니다.
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+    pnpm install --frozen-lockfile --prod
 
 FROM base AS builder
 WORKDIR /app

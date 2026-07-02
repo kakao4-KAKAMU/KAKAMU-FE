@@ -19,15 +19,17 @@ export function useMswBootstrap(): boolean {
     let cancelled = false;
 
     async function bootstrapMsw() {
-      if (Platform.OS !== 'web') {
-        await import('@/mocks/msw.polyfills');
-      }
-
-      const { enableMsw } = await import('@/mocks/enable-msw');
-      await enableMsw();
-
-      if (!cancelled) {
-        setReady(true);
+      if (process.env.NODE_ENV === 'development') {
+        if (Platform.OS !== 'web') {
+          await import('@/mocks/msw.polyfills');
+        }
+  
+        const { enableMsw } = await import('@/mocks/enable-msw');
+        await enableMsw();
+  
+        if (!cancelled) {
+          setReady(true);
+        }
       }
     }
 
