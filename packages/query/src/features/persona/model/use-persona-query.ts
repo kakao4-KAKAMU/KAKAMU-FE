@@ -1,4 +1,4 @@
-import { skipToken, useSuspenseQuery, type QueryFunction, type UseSuspenseQueryOptions } from '@tanstack/react-query';
+import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import { personaKeys } from '../../../shared/keys/persona.keys';
 import type { ApiClient } from '@kakamu/api';
 import { getPersonaById } from '@kakamu/api';
@@ -11,7 +11,7 @@ export function usePersonaQuery(
 ) {
   return useSuspenseQuery({
     queryKey: personaKeys.detail(personaId),
-    queryFn: (personaId ? () => getPersonaById(client, personaId) : skipToken) as QueryFunction<PersonaDetailResponse>,
+    queryFn: () => getPersonaById(client, personaId),
     ...options,
   });
 }

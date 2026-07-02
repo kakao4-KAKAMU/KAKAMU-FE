@@ -1,4 +1,4 @@
-import { skipToken, useSuspenseQuery, type QueryFunction, type UseSuspenseQueryOptions } from '@tanstack/react-query';
+import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import type { ApiClient } from '@kakamu/api';
 import { getUserById } from '@kakamu/api';
 import type { UserPublic } from '@kakamu/types';
@@ -11,7 +11,9 @@ export function useUserQuery(
 ) {
   return useSuspenseQuery({
     queryKey: userKeys.detail(userId),
-    queryFn: (userId ? () => getUserById(client, userId) : skipToken) as QueryFunction<UserPublic>,
+    queryFn: () => {
+      return getUserById(client, userId);
+     },
     ...options,
   });
 }

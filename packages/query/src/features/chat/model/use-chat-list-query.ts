@@ -1,8 +1,6 @@
 import {
-  skipToken,
   useQueryClient,
   useSuspenseQuery,
-  type QueryFunction,
   type UseSuspenseQueryOptions,
 } from '@tanstack/react-query';
 import { getChatList, type ApiClient } from '@kakamu/api';
@@ -17,7 +15,7 @@ function selectChatSessionIds(data: ChatListResponse): string[] {
 
 export function useChatListQuery(
   client: ApiClient,
-  params: ChatListParams | null,
+  params: ChatListParams,
   options?: Omit<
     UseSuspenseQueryOptions<ChatListResponse, Error, string[]>,
     'queryKey' | 'queryFn' | 'select'
@@ -27,18 +25,16 @@ export function useChatListQuery(
 
   return useSuspenseQuery({
     queryKey: chatKeys.list(),
-    queryFn: (params?.user_id
-      ? async () => {
-          const sessions = await getChatList(client, params);
-          seedDetailCache(
-            queryClient,
-            sessions,
-            (session) => session.session_id,
-            chatKeys.detail,
-          );
-          return sessions;
-        }
-      : skipToken) as QueryFunction<ChatListResponse>,
+    queryFn: async () => {
+      const sessions = await getChatList(client, params);
+      seedDetailCache(
+        queryClient,
+        sessions,
+        (session) => session.session_id,
+        chatKeys.detail,
+      );
+      return sessions;
+    },
     select: selectChatSessionIds,
     ...options,
   });
