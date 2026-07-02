@@ -31,7 +31,7 @@ jobs:
         file: ./Dockerfile # 도커 파일 경로
 
         build-args: |
-          env=dev
+          env=production
           EXPO_PUBLIC_BACKEND_API_URL=${{ vars.EXPO_PUBLIC_BACKEND_API_URL }}
           EXPO_PUBLIC_UPLOAD_API_URL=${{ vars.EXPO_PUBLIC_UPLOAD_API_URL }}
           EXPO_PUBLIC_CHAT_API_URL=${{ vars.EXPO_PUBLIC_CHAT_API_URL }}
