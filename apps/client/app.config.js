@@ -13,7 +13,7 @@ const config = {
     "ios": {
       "bundleIdentifier": "com.kakamu.filma",
       "supportsTablet": true,
-      "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/GoogleService-Info-Dev.plist" : "./firebase-config/GoogleService-Info-Prod.plist",
+      "googleServicesFile": process.env.EXPO_PUBLIC_DEPLOY_ENV === 'dev' ? "./firebase-config/GoogleService-Info-Dev.plist" : "./firebase-config/GoogleService-Info-Prod.plist",
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
@@ -27,7 +27,7 @@ const config = {
         "backgroundColor": "#ffffff"
       },
       "predictiveBackGestureEnabled": false,
-      "googleServicesFile": process.env.NODE_ENV === 'development' ? "./firebase-config/google-services-dev.json" : "./firebase-config/google-services-prod.json"
+      "googleServicesFile": process.env.EXPO_PUBLIC_DEPLOY_ENV === 'dev' ? "./firebase-config/google-services-dev.json" : "./firebase-config/google-services-prod.json"
     },
     "web": {
       "bundler": "metro",

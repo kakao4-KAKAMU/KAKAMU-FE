@@ -8,7 +8,7 @@ const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const { createRequestHandler } = require("expo-server/adapter/express");
 
-const isProduction = (process.env.NODE_ENV ?? "production") === "production";
+const isProduction = (process.env.EXPO_PUBLIC_DEPLOY_ENV ?? "prod") === "prod";
 const CLIENT_BUILD_DIR = path.join(process.cwd(), "dist/client");
 const SERVER_BUILD_DIR = path.join(process.cwd(), "dist/server");
 const port = Number(process.env.PORT ?? 3000);
