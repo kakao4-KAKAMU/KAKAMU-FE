@@ -64,7 +64,9 @@ function ChatConversationScreenContentInner({
   } = useChatConversation(sessionId);
 
   const listRef = useRef<FlatList>(null);
-  const isUserControllingScrollRef = useRef(false);
+  const isAtBottomRef = useRef(true);
+  const hasInitialScrolledRef = useRef(false);
+  const prevMessagesTailRef = useRef<string | null>(null);
 
   const scrollToBottom = useCallback((animated = false) => {
     requestAnimationFrame(() => {
@@ -72,45 +74,52 @@ function ChatConversationScreenContentInner({
     });
   }, []);
 
-  const scrollIfAllowed = useCallback(() => {
-    if (isHistoryLoading || isLoadingOlderMessages || isUserControllingScrollRef.current) {
-      return;
-    }
-    scrollToBottom();
-  }, [isHistoryLoading, isLoadingOlderMessages, scrollToBottom]);
-
-  const handleScrollBeginDrag = useCallback(() => {
-    isUserControllingScrollRef.current = true;
-  }, []);
-
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-    if (
-      contentSize.height - layoutMeasurement.height - contentOffset.y <=
-      SCROLL_BOTTOM_THRESHOLD
-    ) {
-      isUserControllingScrollRef.current = false;
-    }
+    const distanceFromBottom =
+      contentSize.height - layoutMeasurement.height - contentOffset.y;
+    isAtBottomRef.current = distanceFromBottom <= SCROLL_BOTTOM_THRESHOLD;
   }, []);
 
-  const handleContentSizeChange = useCallback(() => {
-    scrollIfAllowed();
-  }, [scrollIfAllowed]);
+  useEffect(() => {
+    hasInitialScrolledRef.current = false;
+    prevMessagesTailRef.current = null;
+    isAtBottomRef.current = true;
+  }, [sessionId]);
+
+  useEffect(() => {
+    if (isHistoryLoading || hasInitialScrolledRef.current) {
+      return;
+    }
+    hasInitialScrolledRef.current = true;
+    isAtBottomRef.current = true;
+    scrollToBottom(false);
+  }, [isHistoryLoading, sessionId, scrollToBottom]);
+
+  useEffect(() => {
+    if (isHistoryLoading || isLoadingOlderMessages || !hasInitialScrolledRef.current) {
+      return;
+    }
+
+    const lastMessage = messages.at(-1);
+    const tailSignature = lastMessage
+      ? `${lastMessage.id}:${lastMessage.content.length}:${lastMessage.status ?? ''}`
+      : null;
+    const prevTail = prevMessagesTailRef.current;
+    prevMessagesTailRef.current = tailSignature;
+
+    if (tailSignature !== prevTail && isAtBottomRef.current) {
+      scrollToBottom(false);
+    }
+  }, [messages, isHistoryLoading, isLoadingOlderMessages, scrollToBottom]);
 
   useFocusEffect(
     useCallback(() => {
-      isUserControllingScrollRef.current = false;
-      scrollIfAllowed();
-    }, [sessionId, scrollIfAllowed]),
+      if (!isHistoryLoading && isAtBottomRef.current) {
+        scrollToBottom(false);
+      }
+    }, [isHistoryLoading, scrollToBottom]),
   );
-
-  useEffect(() => {
-    if (isHistoryLoading) {
-      return;
-    }
-    isUserControllingScrollRef.current = false;
-    scrollToBottom();
-  }, [isHistoryLoading, sessionId, scrollToBottom]);
 
   const renderItem = useCallback(
     ({ item }: { item: (typeof messages)[number] }) => (
@@ -133,9 +142,7 @@ function ChatConversationScreenContentInner({
           ref={listRef}
           keyExtractor={(item) => String(item.id)}
           onScroll={handleScroll}
-          onScrollBeginDrag={handleScrollBeginDrag}
           scrollEventThrottle={16}
-          onContentSizeChange={handleContentSizeChange}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             paddingHorizontal: 20,
