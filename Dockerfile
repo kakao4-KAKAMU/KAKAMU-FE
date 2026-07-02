@@ -32,6 +32,8 @@ WORKDIR /app
 ARG env=production
 ENV NODE_ENV=${env}
 
+ARG EXPO_PUBLIC_DEPLOY_ENV=production
+ENV EXPO_PUBLIC_DEPLOY_ENV=${EXPO_PUBLIC_DEPLOY_ENV}
 ARG EXPO_PUBLIC_HOST_PATH=/
 ENV EXPO_PUBLIC_HOST_PATH=${EXPO_PUBLIC_HOST_PATH}
 
@@ -93,7 +95,7 @@ COPY . .
 ENV CI=true
 RUN echo '{}' > apps/client/mocks/openapi.json
 RUN pnpm --filter @kakamu/i18n build
-RUN pnpm --filter @kakamu/client build-web-${env}
+RUN pnpm --filter @kakamu/client build-web-${EXPO_PUBLIC_DEPLOY_ENV}
 
 FROM base AS runner
 ARG env=production
