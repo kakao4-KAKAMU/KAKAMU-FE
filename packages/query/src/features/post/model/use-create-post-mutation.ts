@@ -13,15 +13,10 @@ import {
   type UserDetailQuerySnapshot,
 } from '../../user/lib/user-cache';
 import {
-  cancelPostQueries,
   createOptimisticPost,
-  OPTIMISTIC_POST_ID,
   prependPostToMyLists,
-  restorePostDetails,
   restorePostInfiniteLists,
-  snapshotPostDetail,
   snapshotPostInfiniteLists,
-  type PostDetailQuerySnapshot,
   type PostListQuerySnapshot,
 } from '../lib/post-infinite-cache';
 
@@ -33,7 +28,6 @@ type CreatePostVariables = PostCreateRequest & {
 
 type CreatePostContext = {
   previousMyLists: PostListQuerySnapshot;
-  previousDetails: PostDetailQuerySnapshot;
   previousUserDetails: UserDetailQuerySnapshot | undefined;
 };
 
@@ -51,9 +45,7 @@ export function useCreatePostMutation(
   return useMutation({
     mutationFn: ({ ...body }: CreatePostVariables) => createPost(client, body),
     onMutate: async ({ userId, ...body }) => {
-      await cancelPostQueries(queryClient, OPTIMISTIC_POST_ID);
       const previousMyLists = snapshotPostInfiniteLists(queryClient, postKeys.lists());
-      const previousDetails = snapshotPostDetail(queryClient, OPTIMISTIC_POST_ID);
       prependPostToMyLists(queryClient, createOptimisticPost(body));
 
       let previousUserDetails: UserDetailQuerySnapshot | undefined;
@@ -63,20 +55,18 @@ export function useCreatePostMutation(
         adjustUserPostCountInCache(queryClient, userId, 1);
       }
 
-      return { previousMyLists, previousDetails, previousUserDetails };
+      return { previousMyLists, previousUserDetails };
     },
     onError: (_error, _variables, context) => {
       if (!context) {
         return;
       }
       restorePostInfiniteLists(queryClient, context.previousMyLists);
-      restorePostDetails(queryClient, context.previousDetails);
       if (context.previousUserDetails) {
         restoreUserDetails(queryClient, context.previousUserDetails);
       }
     },
     onSettled: (_data, _error, variables) => {
-      queryClient.removeQueries({ queryKey: postKeys.detail(OPTIMISTIC_POST_ID) });
       queryClient.invalidateQueries({ queryKey: postKeys.lists() });
       queryClient.invalidateQueries({ queryKey: postKeys.feedLists() });
       if (variables.userId) {
