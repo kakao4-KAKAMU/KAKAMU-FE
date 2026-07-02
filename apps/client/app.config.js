@@ -34,9 +34,6 @@ const config = {
       "output": "server",
       "favicon": "./assets/images/favicon.png",
       "startUrl": process.env.EXPO_PUBLIC_HOST_PATH || "/",
-      "devServer": {
-
-      }
     },
     "plugins": [
       ["expo-router", {
