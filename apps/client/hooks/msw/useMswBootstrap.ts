@@ -19,7 +19,7 @@ export function useMswBootstrap(): boolean {
     let cancelled = false;
 
     async function bootstrapMsw() {
-      if (process.env.EXPO_PUBLIC_DEPLOY_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') {
         if (Platform.OS !== 'web') {
           await import('@/mocks/msw.polyfills');
         }
