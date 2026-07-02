@@ -9,6 +9,7 @@ const morgan = require("morgan");
 const { createRequestHandler } = require("expo-server/adapter/express");
 
 const isProduction = (process.env.NODE_ENV ?? "production") === "production";
+const urlShouldHTTPS = process.env.EXPO_PUBLIC_URL_SHOULD_HTTPS === "true";
 const CLIENT_BUILD_DIR = path.join(process.cwd(), "dist/client");
 const SERVER_BUILD_DIR = path.join(process.cwd(), "dist/server");
 const port = Number(process.env.PORT ?? 3000);
@@ -46,14 +47,12 @@ app.use(
         ],
         fontSrc: ["'self'", "data:"],
         connectSrc: ["'self'", "https:", "wss:"],
-        // upgradeInsecureRequests: isProduction ? [] : null,
+        upgradeInsecureRequests: urlShouldHTTPS ? [] : null,
       },
     },
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" },
-    // hsts: isProduction
-    //   ? { maxAge: 31_536_000, includeSubDomains: true, preload: false }
-    //   : false,
+    hsts: urlShouldHTTPS ? { maxAge: 31_536_000, includeSubDomains: true, preload: false } : false,
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
   }),
 );
