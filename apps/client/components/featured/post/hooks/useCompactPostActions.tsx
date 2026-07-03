@@ -1,7 +1,7 @@
 import { mapPostLikeError } from '@/lib/error-message-map/post/post-like-error';
 import { mapSaveError } from '@/lib/error-message-map/save/save-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { useTranslation } from '@kakamu/i18n';
 import { useDeletePostMutation, useLikeMutation, useSaveMutation } from '@kakamu/query';
 import { PostItem } from '@kakamu/types';
@@ -11,7 +11,7 @@ import { useCallback, useMemo } from 'react';
 
 export function useCompactPostActions(post: PostItem) {
   const client = useBackendApiClient();
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const router = useRouter();
   const { t } = useTranslation();
   const { open: openErrorAlert } = useErrorAlertDialog();
@@ -32,8 +32,8 @@ export function useCompactPostActions(post: PostItem) {
     if (authorId == null) {
       return false;
     }
-    return authorId === currentUserId;
-  }, [post.user.id, currentUserId]);
+    return authorId === currentUser?.id;
+  }, [post.user.id, currentUser]);
 
   const onGotoDetail = useCallback(() => {
     router.push(`/feed/${post.id}`);
@@ -56,9 +56,9 @@ export function useCompactPostActions(post: PostItem) {
   const onDelete = useCallback(() => {
     deletePostMutation.mutate({
       postId: post.id,
-      userId: currentUserId ?? undefined,
+      userId: currentUser?.id
     });
-  }, [currentUserId, deletePostMutation, post.id]);
+  }, [currentUser, deletePostMutation, post.id]);
   const onModify = useCallback(() => {
     router.push(`/feed/write/${post.id}`);
   }, [post.id, router]);

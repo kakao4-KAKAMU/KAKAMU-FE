@@ -16,7 +16,7 @@ import { usePersonaCreateGenreList } from '@/hooks/persona/usePersonaCreateGenre
 import { usePersonaCreateStep3Search } from '@/hooks/persona/usePersonaCreateStep3Search';
 import { usePersonaCreateStep4Search } from '@/hooks/persona/usePersonaCreateStep4Search';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { mapPersonaUpdateError } from '@/lib/error-message-map/persona/persona-update-error';
 import { mapImageUploadError } from '@/lib/error-message-map/upload/image-upload-error';
 import { usePersonaFormValidationKit } from '@/lib/persona-form-validators';
@@ -87,7 +87,7 @@ export function PersonaEditScreenContent() {
   }, []);
 
   const apiClient = useBackendApiClient();
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const uploadClient = useUploadApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
   const { registerLocalImage, releaseLocalImage, getPendingLocalImages } = usePendingLocalImages();
@@ -162,7 +162,7 @@ export function PersonaEditScreenContent() {
         updateMutation.mutate({
           personaId: id,
           body,
-          userId: currentUserId ?? undefined,
+          userId: currentUser?.id,
         });
       } catch (error) {
         setSubmitting(false);
@@ -171,7 +171,7 @@ export function PersonaEditScreenContent() {
     },
     [
       clearErrors,
-      currentUserId,
+      currentUser,
       getPendingLocalImages,
       id,
       openErrorAlert,

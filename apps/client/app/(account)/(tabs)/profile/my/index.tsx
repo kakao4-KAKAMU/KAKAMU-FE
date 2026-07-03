@@ -2,14 +2,14 @@ import {
   ProfileFeedPanel,
 } from '@/components/featured/profileScreen';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserIdOrThrow } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUserOrThrow } from '@/hooks/auth/useCurrentUserId';
 import { usePostsInfiniteQuery } from '@kakamu/query';
 
 export default function ProfileFeedScreen() {
   const client = useBackendApiClient()
-  const currentUserId = useCurrentUserIdOrThrow();
+  const currentUser = useCurrentUserOrThrow();
   const { data } = usePostsInfiniteQuery(client, {
-    target_user_id: currentUserId,
+    target_user_id: currentUser.id,
     limit: 20,
   })
 

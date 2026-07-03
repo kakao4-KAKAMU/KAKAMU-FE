@@ -9,7 +9,7 @@ import { Text } from '@kakamu/ui';
 import { CompactPost } from '@/components/featured/post/CompactPost';
 import { SearchResultsFrame } from '@/components/featured/search/SearchResultsFrame';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { useSearchNavigation } from '@/hooks/search/useSearchNavigation';
 import { useSearchRecentHistory } from '@/hooks/search/useSearchRecentHistory';
 
@@ -18,10 +18,10 @@ export default function SearchRecommendFeedScreen() {
   const router = useRouter();
   const client = useBackendApiClient();
   const accessToken = useAuthStore((state) => state.accessToken);
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const { query } = useSearchNavigation();
   const { recordSelection } = useSearchRecentHistory();
-  const searchQuery = useSearchForYouInfiniteQuery(client, { q: query }, currentUserId != null);
+  const searchQuery = useSearchForYouInfiniteQuery(client, { q: query }, currentUser != null);
 
   const postIds = useMemo(
     () => searchQuery.data?.pages.flatMap((page) => page.items) ?? [],
