@@ -18,7 +18,7 @@ export type UserSimpleWithFollow = UserSimple & {
 
 /** `GET /users/{user_id}` 응답 */
 export type UserPublic = {
-  id: string | null;
+  id: string;
   nickname: string;
   tag: string;
   profile_image: string | null;
