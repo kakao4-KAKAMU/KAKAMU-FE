@@ -38,7 +38,7 @@ const config = {
     "plugins": [
       ["expo-router", {
         "asyncRoutes": {
-          "web": process.env.NODE_ENV === 'development' ? false : true,
+          "web": process.env.EXPO_PUBLIC_DEPLOY_ENV === 'local' ? false : true,
           "default": false
         },
       }],
