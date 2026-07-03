@@ -55,6 +55,8 @@ export type {
   MovieFilterSearchResponse,
   MovieItem,
   MovieOverview,
+  MovieRecommendItem,
+  MovieRecommendParams,
   MovieRecommendationResponse,
   MovieSearchParams,
   MovieSearchRequestBody,

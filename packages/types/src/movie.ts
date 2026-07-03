@@ -76,9 +76,23 @@ export type MovieTabSearchResponse = {
   meta: import('./pagination').CursorPaginationMeta;
 };
 
+export type MovieRecommendParams = {
+  query?: string;
+};
+
+export type MovieRecommendItem = {
+  id: string;
+  title: string;
+  plot_summary: string;
+  score: number;
+};
+
 export type MovieRecommendationResponse = {
-  recommendations: string;
-  for_persona: string;
+  arm_id: string;
+  movies: MovieRecommendItem[];
+  keywords: string[];
+  themes: string[];
+  moods: string[];
 };
 
 export type WatchMovieResponse = {
