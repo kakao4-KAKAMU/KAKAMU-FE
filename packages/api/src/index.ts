@@ -27,6 +27,7 @@ export { getSavedPostList } from './saves/list-saved-posts';
 export { getSavedCommentList } from './saves/list-saved-comments';
 export { getSavedMovieList } from './saves/list-saved-movies';
 export { getMovieById } from './movies/get-by-id';
+export { getMovieRecommend } from './movies/recommend';
 export { getMoviesToEvaluate } from './movies/get-to-evaluate';
 export { postMovieEvaluate } from './movies/evaluate';
 export { postSearchMovies } from './search/movie';

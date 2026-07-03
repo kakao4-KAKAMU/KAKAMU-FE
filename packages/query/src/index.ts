@@ -18,6 +18,7 @@ export {
   seedMovieDetailCache,
 } from './features/movie/lib/movie-detail-cache';
 export { useMoviesToEvaluateQuery } from './features/movie-evaluate/model/use-movies-to-evaluate-query';
+export { useMovieRecommendQuery } from './features/movie-recommend/model/use-movie-recommend-query';
 export { useEvaluateMovieMutation } from './features/movie-evaluate/model/use-evaluate-movie-mutation';
 export { usePersonByIdQuery } from './features/person/model/use-person-by-id-query';
 export { useChatHistoryInfiniteQuery } from './features/chat/model/use-chat-history-infinite-query';

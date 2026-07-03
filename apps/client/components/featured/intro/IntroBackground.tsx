@@ -16,8 +16,7 @@ export function IntroBackground() {
 
   return (
     <View
-      pointerEvents="none"
-      className="absolute inset-0 overflow-hidden"
+      className="absolute inset-0 overflow-hidden pointer-events-none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >

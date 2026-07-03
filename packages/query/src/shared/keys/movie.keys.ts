@@ -10,4 +10,7 @@ export const movieKeys = {
   savedLists: () => [...movieKeys.all, 'saved'] as const,
   savedList: (params: Omit<import('@kakamu/types').SavedMovieListParams, 'cursor'>) =>
     [...movieKeys.savedLists(), params] as const,
+  recommends: () => [...movieKeys.all, 'recommend'] as const,
+  recommend: (params: import('@kakamu/types').MovieRecommendParams) =>
+    [...movieKeys.recommends(), params] as const,
 };
