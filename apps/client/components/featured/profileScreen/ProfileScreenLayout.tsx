@@ -19,6 +19,7 @@ import { ProfileRelationListDialog } from './ProfileRelationListDialog';
 import { AppSuspenseBoundary } from '@/components/error-boundary';
 import type { UserPublic } from '@kakamu/types';
 import { ProfileScreenLayoutSkeleton } from './ProfileScreenLayout.skeleton';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 
 type ProfileScreenLayoutProps = {
   isMy: boolean;
@@ -80,7 +81,8 @@ function ProfileScreenLayoutBody({
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
-
+  
+  const currentUser = useCurrentUser();
   const { isPending: isFollowPending, onToggleFollow } = useProfileFollowActions({
     userId: targetUserId,
     isFollowing: user.is_following,
@@ -135,7 +137,7 @@ function ProfileScreenLayoutBody({
       >
         <ProfileHero userId={targetUserId} />
         <ConditionalRender.Boolean
-          condition={!isMy}
+          condition={!isMy && currentUser}
           render={{
             true: <ProfileFollowButton
               isFollowing={user.is_following}

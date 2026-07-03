@@ -20,6 +20,7 @@ import { ConditionalRender } from '@/components/utils/ConditionalRender';
 import { CompactPostSpoilerBadge } from '@/components/featured/post/CompactPostSpoilerBadge';
 import { formatRelativeTime } from '@/lib/time';
 import { ProfileImage } from '../profileScreen/ProfileImage';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 
 type CommentCardProps = {
   comment: CommentItem;
@@ -66,13 +67,14 @@ export function CommentCard({
   isLikePending = false,
   isSavePending = false,
 }: CommentCardProps) {
+  const currentUser = useCurrentUser();
   const blurTargetRef = useRef<View>(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
   const authorImage = comment.user.profile_image;
   const authorName = comment.user.nickname;
   const isAnonymous = comment.user.id == null;
   const timeLabel = formatRelativeTime(comment.created_at);
-  const isSpoilerHidden = comment.is_spoiler && !spoilerRevealed;
+  const isSpoilerHidden = comment.is_spoiler && !spoilerRevealed && !isAnonymous;
 
   const handleSpoilerToggle = () => {
     if (comment.is_spoiler && !spoilerRevealed) {
@@ -129,70 +131,102 @@ export function CommentCard({
 
         <View className="flex-row items-center gap-4">
           <TextClassProvider value="text-muted-foreground">
-            <Button size="text" variant="ghost" onPress={onReply}>
-              <View className="flex-row items-center gap-1">
-                <Icon as={MessageCircle} size={16} />
-                <Text className="text-xs">{replyCount}</Text>
-              </View>
-            </Button>
-            <Button
-              size="text"
-              variant="ghost"
-              onPress={onToggleLike}
-              disabled={isLikePending}
-            >
-              <View className="flex-row items-center gap-1">
-                <Icon
-                  as={Heart}
-                  size={16}
-                  fill={comment.is_liked ? 'currentColor' : 'none'}
-                />
-                <Text className="text-xs">{comment.like_count}</Text>
-              </View>
-            </Button>
-            <Button
-              size="text"
-              variant="ghost"
-              onPress={onToggleSave}
-              disabled={isSavePending}
-            >
-              <View className="flex-row items-center gap-1">
-                <Icon
-                  as={Bookmark}
-                  size={16}
-                  fill={comment.is_saved ? 'currentColor' : 'none'}
-                />
-              </View>
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="text" variant="ghost">
-                  <Icon as={Ellipsis} size={16} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <ConditionalRender.Boolean
-                  condition={isOwner}
-                  render={{
-                    true: (
-                      <>
-                        <DropdownMenuItem onPress={onEdit}>
-                          <Text>{editLabel}</Text>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onPress={onDelete}>
-                          <Text>{deleteLabel}</Text>
-                        </DropdownMenuItem>
-                      </>
-                    ),
-                    false: (
-                      <DropdownMenuItem onPress={onReport}>
-                        <Text>{reportLabel}</Text>
-                      </DropdownMenuItem>
-                    ),
-                  }}
-                />
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <ConditionalRender.Boolean
+              condition={currentUser}
+              render={{
+                true: <Button size="text" variant="ghost" onPress={onReply}>
+                  <View className="flex-row items-center gap-1">
+                    <Icon as={MessageCircle} size={16} />
+                    <Text className="text-xs">{replyCount}</Text>
+                  </View>
+                </Button>,
+                false: <View className="flex-row items-center gap-1">
+                  <Icon as={MessageCircle} size={16} />
+                  <Text className="text-xs">{replyCount}</Text>
+                </View>
+              }}
+            />
+            <ConditionalRender.Boolean
+              condition={currentUser}
+              render={{
+                true: <Button
+                  size="text"
+                  variant="ghost"
+                  onPress={onToggleLike}
+                  disabled={isLikePending}
+                >
+                  <View className="flex-row items-center gap-1">
+                    <Icon
+                      as={Heart}
+                      size={16}
+                      fill={comment.is_liked ? 'currentColor' : 'none'}
+                    />
+                    <Text className="text-xs">{comment.like_count}</Text>
+                  </View>
+                </Button>,
+                false: <View className="flex-row items-center gap-1">
+                  <Icon
+                    as={Heart}
+                    size={16}
+                    fill={comment.is_liked ? 'currentColor' : 'none'}
+                  />
+                  <Text className="text-xs">{comment.like_count}</Text>
+                </View>
+              }}
+            />
+            <ConditionalRender.Boolean
+              condition={currentUser}
+              render={{
+                true: <Button
+                  size="text"
+                  variant="ghost"
+                  onPress={onToggleSave}
+                  disabled={isSavePending}
+                >
+                  <View className="flex-row items-center gap-1">
+                    <Icon
+                      as={Bookmark}
+                      size={16}
+                      fill={comment.is_saved ? 'currentColor' : 'none'}
+                    />
+                  </View>
+                </Button>,
+              }}
+            />
+            <ConditionalRender.Boolean
+              condition={currentUser}
+              render={{
+                true: <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="text" variant="ghost">
+                      <Icon as={Ellipsis} size={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <ConditionalRender.Boolean
+                      condition={isOwner}
+                      render={{
+                        true: (
+                          <>
+                            <DropdownMenuItem onPress={onEdit}>
+                              <Text>{editLabel}</Text>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onPress={onDelete}>
+                              <Text>{deleteLabel}</Text>
+                            </DropdownMenuItem>
+                          </>
+                        ),
+                        false: (
+                          <DropdownMenuItem onPress={onReport}>
+                            <Text>{reportLabel}</Text>
+                          </DropdownMenuItem>
+                        ),
+                      }}
+                    />
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              }}
+            />
           </TextClassProvider>
         </View>
       </View>

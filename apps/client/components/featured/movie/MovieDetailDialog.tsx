@@ -28,6 +28,8 @@ import {
   getPreferredMovieOverview,
 } from '@/lib/movie/movie-detail-display';
 import { convertImagePath } from '@/lib/upload/convert-image-path';
+import { ConditionalRender } from '@/components/utils/ConditionalRender';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 
 type MovieDetailDialogProps = {
   open: boolean;
@@ -53,6 +55,7 @@ function MovieDetailDialogContent({ movieId }: { movieId: string }) {
   const client = useBackendApiClient();
   const { open: openErrorAlert } = useErrorAlertDialog();
   const movieQuery = useMovieDetailQuery(client, movieId);
+  const currentUser = useCurrentUser();
   const saveMutation = useSaveMutation(client, {
     onError: (error) => {
       openErrorAlert(mapSaveError(error, t));
@@ -123,19 +126,24 @@ function MovieDetailDialogContent({ movieId }: { movieId: string }) {
         <DialogHeader className="gap-2">
           <View className="flex-row flex-wrap items-center gap-2">
             <DialogTitle className="flex-1">{title}</DialogTitle>
-            <Button
-              size="icon"
-              variant="ghost"
-              onPress={onToggleSave}
-              disabled={saveMutation.isPending}
-              accessibilityLabel={t('account.profile.tabs.saved')}
-            >
-              <Icon
-                as={Bookmark}
-                size={18}
-                fill={movie.is_saved ? 'currentColor' : 'none'}
-              />
-            </Button>
+            <ConditionalRender.Boolean
+              condition={currentUser}
+              render={{
+                true: <Button
+                  size="icon"
+                  variant="ghost"
+                  onPress={onToggleSave}
+                  disabled={saveMutation.isPending}
+                  accessibilityLabel={t('account.profile.tabs.saved')}
+                >
+                  <Icon
+                    as={Bookmark}
+                    size={18}
+                    fill={movie.is_saved ? 'currentColor' : 'none'}
+                  />
+                </Button>
+              }}
+            />
             {movie.is_adult ? (
               <Badge variant="destructive">
                 <Text>{t('account.movie.detail.adult')}</Text>
