@@ -1,4 +1,3 @@
-import { useCallback, useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import type { SignInWithRememberFormInput } from '@kakamu/schema';
 import { Pressable, View } from 'react-native';

@@ -1,17 +1,12 @@
-import { useState } from 'react';
 import { useTranslation } from '@kakamu/i18n';
 import type { ResetPasswordFormInput } from '@kakamu/schema';
-import { Pressable, View } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
+import { View } from 'react-native';
 import { Controller, type Control } from 'react-hook-form';
 import {
   Button,
-  Icon,
-  Input,
   Label,
   PasswordInput,
   Text,
-  TextClassProvider,
 } from '@kakamu/ui';
 
 export type ResetPasswordFormValues = ResetPasswordFormInput;

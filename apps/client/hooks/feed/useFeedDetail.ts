@@ -22,7 +22,7 @@ import {
   mapCommentListError,
 } from '@/lib/error-message-map/comment/comment-error';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 
 const DEFAULT_VALUES: CommentFormInput = {
   content: '',
@@ -32,7 +32,7 @@ const DEFAULT_VALUES: CommentFormInput = {
 export function useFeedDetail(postId: number) {
   const client = useBackendApiClient();
   const queryClient = useQueryClient();
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const { t } = useTranslation();
   const { open: openErrorAlert } = useErrorAlertDialog();
   const [replyParentId, setReplyParentId] = useState<number | null>(null);
@@ -51,7 +51,7 @@ export function useFeedDetail(postId: number) {
 
   const postQuery = usePostByIdQuery(client, postId);
   const commentsQuery = useCommentsByPostInfiniteQuery(client, postId);
-  const userQuery = useUserQuery(client, currentUserId ?? '');
+  const userQuery = useUserQuery(client, postQuery.data.user.id ?? '');
 
   const createCommentMutation = useCreateCommentMutation(client, {
     onSuccess: () => {
@@ -96,7 +96,7 @@ export function useFeedDetail(postId: number) {
   }, [userQuery.data]);
 
   const canSubmit =
-    form.formState.isValid && !createCommentMutation.isPending && !!currentUserId;
+    form.formState.isValid && !createCommentMutation.isPending && !!currentUser;
 
   const onSubmit = form.handleSubmit((values) => {
     createCommentMutation.mutate({
@@ -104,7 +104,7 @@ export function useFeedDetail(postId: number) {
       content: values.content.trim(),
       parent_id: replyParentId,
       is_spoiler: values.is_spoiler ? 1 : 0,
-      authorId: currentUserId ?? undefined,
+      authorId: currentUser?.id,
       authorName,
     });
   });
@@ -137,7 +137,7 @@ export function useFeedDetail(postId: number) {
     onSubmit,
     canSubmit,
     isSubmitting: createCommentMutation.isPending,
-    currentUserId,
+    currentUserId: currentUser?.id ?? null,
     onReply,
     labels: {
       title: t('shared.feedDetail.title'),

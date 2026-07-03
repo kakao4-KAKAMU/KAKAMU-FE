@@ -6,7 +6,7 @@ import { Input } from '@kakamu/ui';
 
 import { HeaderTemplate } from '@/components/featured/header/HeaderTemplate';
 import { useSearchNavigation } from '@/hooks/search/useSearchNavigation';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { DEFAULT_SEARCH_TAB, type SearchTab } from '@/lib/search/search-tabs';
 
 import { SearchTabBar } from './SearchTabBar';
@@ -18,7 +18,7 @@ type SearchScreenLayoutProps = {
 
 export function SearchScreenLayout({ children }: SearchScreenLayoutProps) {
   const { t } = useTranslation();
-  const currentUserId = useCurrentUserId();
+  const currentUserId = useCurrentUser();
   const { query, activeTab, submitSearch, navigateToTab } = useSearchNavigation();
   const [draft, setDraft] = useState(query);
 

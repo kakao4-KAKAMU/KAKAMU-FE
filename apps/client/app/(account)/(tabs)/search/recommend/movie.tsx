@@ -8,19 +8,19 @@ import { Text } from '@kakamu/ui';
 import { CompactPostMovieCard } from '@/components/featured/post/CompactPostMovieCard';
 import { SearchResultsFrame } from '@/components/featured/search/SearchResultsFrame';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { useSearchNavigation } from '@/hooks/search/useSearchNavigation';
 
 export default function SearchRecommendMovieScreen() {
   const { t } = useTranslation();
   const client = useBackendApiClient();
   const accessToken = useAuthStore((state) => state.accessToken);
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const { query } = useSearchNavigation();
   const recommendQuery = useMovieRecommendQuery(
     client,
     { query },
-    { enabled: currentUserId != null && query.trim().length > 0 },
+    { enabled: currentUser != null && query.trim().length > 0 },
   );
 
   const movieIds = useMemo(

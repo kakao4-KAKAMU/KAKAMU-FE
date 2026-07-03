@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
 import { Text } from '@kakamu/ui';

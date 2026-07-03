@@ -6,7 +6,7 @@ import { chatKeys, useChatListQuery } from '@kakamu/query';
 import type { ChatSession } from '@kakamu/types';
 
 import { useChatApiClient } from '@/hooks/api/useChatApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUserOrThrow } from '@/hooks/auth/useCurrentUserId';
 import {
   formatChatSessionPreview,
   formatChatSessionTime,
@@ -26,14 +26,13 @@ export function useChatListScreen() {
   const { t, i18n } = useTranslation();
   const client = useChatApiClient();
   const queryClient = useQueryClient();
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUserOrThrow();
+  const currentUserId = currentUser.id;
   const listQuery = useChatListQuery(
     client,
-    currentUserId
-      ? {
-          user_id: currentUserId,
-        }
-      : null,
+    {
+      user_id: currentUserId,
+    },
   );
 
   const mapSessionId = useCallback(

@@ -7,15 +7,12 @@ import { useChatApiClient } from '@/hooks/api/useChatApiClient';
 import { resolveHistoryMessagesFromInfinite } from '@/lib/chat/flatten-history-messages';
 import { mergeChatMessages } from '@/lib/chat/merge-chat-messages';
 import { useChatStream } from '@/providers/ChatStreamProvider';
-import { useCurrentUserId } from '../auth/useCurrentUserId';
+import { useCurrentUserOrThrow } from '../auth/useCurrentUserId';
 
 const HISTORY_PAGE_LIMIT = 30;
 
 export function useChatMessages(activeSessionId: string, isNewSession: boolean) {
-  const currentUserId = useCurrentUserId();
-  if (!currentUserId) {
-    throw new Error('Current user ID not found');
-  }
+  const currentUser = useCurrentUserOrThrow();
   const client = useChatApiClient();
   const queryClient = useQueryClient();
   const { activeSessionMessages } = useChatStream();
@@ -24,7 +21,7 @@ export function useChatMessages(activeSessionId: string, isNewSession: boolean) 
     client,
     isNewSession ? '' : activeSessionId,
     HISTORY_PAGE_LIMIT,
-    currentUserId,
+    currentUser.id,
     {
       enabled: !isNewSession && Boolean(activeSessionId),
     },

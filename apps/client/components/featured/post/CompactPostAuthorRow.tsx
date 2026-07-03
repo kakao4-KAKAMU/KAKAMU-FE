@@ -5,7 +5,7 @@ import { formatRelativeTime } from '@/lib/time';
 import { useCallback, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from '@kakamu/i18n';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { useProfileFollowActions } from '@/hooks/profile/useProfileFollowActions';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { useUserQuery } from '@kakamu/query';
@@ -22,7 +22,7 @@ export function CompactPostAuthorRow({ userId, createdAt }: { userId: UserSimple
   const user = userQuery.data;
   const router = useRouter();
   const { t } = useTranslation();
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const authorId = user.id;
   const authorName = user.nickname;
   const authorImage = user.profile_image;
@@ -31,11 +31,11 @@ export function CompactPostAuthorRow({ userId, createdAt }: { userId: UserSimple
   const metaLabel = isAnonymous ? timeLabel : timeLabel;
 
   const isOwnPost = useMemo(
-    () => authorId != null && authorId === currentUserId,
-    [authorId, currentUserId],
+    () => authorId != null && authorId === currentUser?.id,
+    [authorId, currentUser],
   );
 
-  const showFollowButton = !isAnonymous && !isOwnPost;
+  const showFollowButton = currentUser && !isAnonymous && !isOwnPost;
 
   const { isPending: isFollowPending, onToggleFollow } = useProfileFollowActions({
     userId: authorId ?? '',

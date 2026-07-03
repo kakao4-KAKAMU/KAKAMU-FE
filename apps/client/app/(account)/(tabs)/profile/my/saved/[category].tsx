@@ -8,7 +8,7 @@ import {
   type ProfileSavedCategoryId,
 } from '@/components/featured/profileScreen';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import {
   useProfileSavedCategories,
   useProfileSavedQueries,
@@ -21,7 +21,7 @@ function isSavedCategoryId(value: string | undefined): value is ProfileSavedCate
 export default function SavedFeedByCategoryScreen() {
   const { category } = useLocalSearchParams<{ category: string }>();
   const client = useBackendApiClient();
-  const currentUserId = useCurrentUserId();
+  const currentUserId = useCurrentUser();
   const queries = useProfileSavedQueries(client);
   const categories = useProfileSavedCategories(queries);
 

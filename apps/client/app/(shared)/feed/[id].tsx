@@ -2,12 +2,12 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 import { FeedDetailScreenContent } from '@/components/featured/feed/FeedDetailScreenContent';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 
 export default function FeedDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const postId = Number(id);
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
 
   return (
     <>
@@ -16,7 +16,7 @@ export default function FeedDetailScreen() {
         {postId > 0 ? (
           <FeedDetailScreenContent
             postId={postId}
-            showCommentComposer={currentUserId != null}
+            showCommentComposer={currentUser != null}
           />
         ) : null}
       </View>

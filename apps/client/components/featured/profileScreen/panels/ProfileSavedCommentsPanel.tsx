@@ -5,7 +5,7 @@ import { useCommentByIdQuery } from '@kakamu/query';
 import type { CommentItem } from '@kakamu/types';
 
 import { CommentCard } from '@/components/featured/comment/CommentCard';
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUserId';
 import { useCommentAction } from '@/hooks/comment/useCommentAction';
 
 type ProfileSavedCommentItemProps = {
@@ -14,10 +14,10 @@ type ProfileSavedCommentItemProps = {
 
 function ProfileSavedCommentItem({ commentId }: ProfileSavedCommentItemProps) {
   const { t } = useTranslation();
-  const currentUserId = useCurrentUserId();
+  const currentUserId = useCurrentUser();
   const commentQuery = useCommentByIdQuery(commentId);
   const comment = commentQuery.data;
-  const isOwner = comment.user.id != null && comment.user.id === currentUserId;
+  const isOwner = comment.user.id != null && comment.user.id === currentUserId?.id;
 
   const {
     onToggleLike,

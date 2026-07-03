@@ -1,6 +1,6 @@
 import { useTranslation } from '@kakamu/i18n';
 import { Stack, useRouter } from 'expo-router';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Button, Text } from '@kakamu/ui';
 import {
   AuthHeader,

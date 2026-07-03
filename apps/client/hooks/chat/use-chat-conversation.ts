@@ -5,7 +5,7 @@ import type { ChatSession } from '@kakamu/types';
 import { usePersonaStore } from '@kakamu/store';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
+import { useCurrentUserOrThrow } from '@/hooks/auth/useCurrentUserId';
 import { useChatMessages } from '@/hooks/chat/use-chat-messages';
 import { useChatSend } from '@/hooks/chat/use-chat-send';
 import { useChatSession } from '@/hooks/chat/use-chat-session';
@@ -14,10 +14,7 @@ import { formatChatSessionTitle } from '@/lib/chat/format-session-label';
 export function useChatConversation(routeSessionId: string | undefined) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const currentUserId = useCurrentUserId();
-  if (!currentUserId) {
-    throw new Error('Current user ID not found');
-  }
+  const currentUserId = useCurrentUserOrThrow();
   const personaId = usePersonaStore((state) => state.selectedPersonaId);
 
   const invalidateList = useCallback(() => {
@@ -50,7 +47,7 @@ export function useChatConversation(routeSessionId: string | undefined) {
 
   const send = useChatSend({
     t,
-    userId: currentUserId,
+    userId: currentUserId.id,
     personaId: personaId ?? null,
     activeSessionIdRef,
     bindSessionId,
