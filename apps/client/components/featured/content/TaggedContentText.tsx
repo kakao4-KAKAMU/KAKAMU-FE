@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native-gesture-handler';
 import type { MentionUserItem } from '@kakamu/types';
 import { cn, Text } from '@kakamu/ui';
 
@@ -51,6 +52,14 @@ export function TaggedContentText({
     [router],
   );
 
+  const onPressTaggedContent = useCallback((segment: typeof segments[number]) => {
+    if (segment.type === 'mention') {
+      onMentionPress(segment.nickname, segment.tag);
+    } else if (segment.type === 'hashtag') {
+      onHashtagPress(segment.tag);
+    }
+  }, [onMentionPress, onHashtagPress, segments]);
+
   if (segments.length === 0) {
     return null;
   }
@@ -68,26 +77,33 @@ export function TaggedContentText({
 
         if (segment.type === 'mention') {
           return (
-            <Text
+            <Pressable
               key={`mention-${index}`}
-              className={linkCn}
               accessibilityRole="link"
-              onPress={() => onMentionPress(segment.nickname, segment.tag)}
+              onPress={() => {
+                onPressTaggedContent(segment)
+              }}
             >
-              @{segment.nickname}#{segment.tag}
-            </Text>
+              <Text className={linkCn}>
+                @{segment.nickname}#{segment.tag}
+              </Text>
+            </Pressable>
           );
         }
 
         return (
-          <Text
+          <Pressable
             key={`hashtag-${index}`}
-            className={linkCn}
             accessibilityRole="link"
-            onPress={() => onHashtagPress(segment.tag)}
-          >
-            #{segment.tag}
-          </Text>
+            onPress={() => {
+            onPressTaggedContent(segment)
+          }}>
+            <Text
+              className={linkCn}
+            >
+              #{segment.tag}
+            </Text>
+          </Pressable>
         );
       })}
     </Text>
