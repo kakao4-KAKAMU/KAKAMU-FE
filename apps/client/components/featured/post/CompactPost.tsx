@@ -11,7 +11,6 @@ import { CompactPostMovieCard } from './CompactPostMovieCard';
 import { CompactPostActions } from './CompactPostActions';
 import { ConditionalRender } from '@/components/utils';
 import { useCompactPostActions } from './hooks/useCompactPostActions';
-import { Pressable } from 'react-native-gesture-handler';
 import { useBackendApiClient } from '@/hooks/api/useBackendApiClient';
 import { usePostByIdQuery } from '@kakamu/query';
 
@@ -54,13 +53,12 @@ export function CompactPost({ postId, onContentPress }: CompactPostProps) {
             condition={post.content}
             render={{
               true: (
-                <Pressable onPress={handleContentPress}>
-                  <TaggedContentText
-                    content={post.content}
-                    mentions={post.mentions}
-                    className="text-sm leading-relaxed text-foreground"
-                  />
-                </Pressable>
+                <TaggedContentText
+                  content={post.content}
+                  mentions={post.mentions}
+                  className="text-sm leading-relaxed text-foreground"
+                  onPress={handleContentPress}
+                />
               )
             }}
           />

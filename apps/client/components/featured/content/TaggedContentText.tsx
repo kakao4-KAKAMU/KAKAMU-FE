@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Pressable } from 'react-native-gesture-handler';
 import type { MentionUserItem } from '@kakamu/types';
 import { cn, Text } from '@kakamu/ui';
 
 import {
   parseTaggedContent,
   resolveMentionUserId,
+  type TaggedContentSegment,
 } from '@/lib/content/parse-tagged-content';
 
 type TaggedContentTextProps = {
@@ -14,6 +14,7 @@ type TaggedContentTextProps = {
   mentions?: MentionUserItem[];
   className?: string;
   linkClassName?: string;
+  onPress?: () => void;
 };
 
 export function TaggedContentText({
@@ -21,6 +22,7 @@ export function TaggedContentText({
   mentions,
   className,
   linkClassName,
+  onPress,
 }: TaggedContentTextProps) {
   const router = useRouter();
   const segments = useMemo(() => parseTaggedContent(content), [content]);
@@ -52,24 +54,31 @@ export function TaggedContentText({
     [router],
   );
 
-  const onPressTaggedContent = useCallback((segment: typeof segments[number]) => {
-    if (segment.type === 'mention') {
-      onMentionPress(segment.nickname, segment.tag);
-    } else if (segment.type === 'hashtag') {
-      onHashtagPress(segment.tag);
-    }
-  }, [onMentionPress, onHashtagPress, segments]);
+  const onPressTaggedContent = useCallback(
+    (segment: TaggedContentSegment) => {
+      if (segment.type === 'mention') {
+        onMentionPress(segment.nickname, segment.tag);
+      } else if (segment.type === 'hashtag') {
+        onHashtagPress(segment.tag);
+      }
+    },
+    [onMentionPress, onHashtagPress],
+  );
 
   if (segments.length === 0) {
     return null;
   }
 
   if (segments.length === 1 && segments[0].type === 'text') {
-    return <Text className={className}>{segments[0].value}</Text>;
+    return (
+      <Text className={className} onPress={onPress}>
+        {segments[0].value}
+      </Text>
+    );
   }
 
   return (
-    <Text className={className}>
+    <Text className={className} onPress={onPress}>
       {segments.map((segment, index) => {
         if (segment.type === 'text') {
           return segment.value;
@@ -77,33 +86,26 @@ export function TaggedContentText({
 
         if (segment.type === 'mention') {
           return (
-            <Pressable
+            <Text
               key={`mention-${index}`}
+              className={linkCn}
               accessibilityRole="link"
-              onPress={() => {
-                onPressTaggedContent(segment)
-              }}
+              onPress={() => onPressTaggedContent(segment)}
             >
-              <Text className={linkCn}>
-                @{segment.nickname}#{segment.tag}
-              </Text>
-            </Pressable>
+              @{segment.nickname}#{segment.tag}
+            </Text>
           );
         }
 
         return (
-          <Pressable
+          <Text
             key={`hashtag-${index}`}
+            className={linkCn}
             accessibilityRole="link"
-            onPress={() => {
-            onPressTaggedContent(segment)
-          }}>
-            <Text
-              className={linkCn}
-            >
-              #{segment.tag}
-            </Text>
-          </Pressable>
+            onPress={() => onPressTaggedContent(segment)}
+          >
+            #{segment.tag}
+          </Text>
         );
       })}
     </Text>

@@ -105,11 +105,11 @@ export function CommentCard({
             <TaggedContentText
               content={comment.content}
               mentions={comment.mentions}
-              className="text-sm leading-relaxed text-foreground"
+              className="text-sm leading-relaxed text-foreground pointer-events-auto"
             />
           </View>
           <ConditionalRender.Boolean
-            condition={comment.is_spoiler}
+            condition={comment.is_spoiler && !isSpoilerHidden}
             render={{
               true: (
                 <BlurView
