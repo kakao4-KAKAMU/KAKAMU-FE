@@ -71,7 +71,13 @@ export function seedPostDetailCache(queryClient: QueryClient, item: PostItem): v
     }
   }
   if (item.user.id) {
-    patchUserInCache(queryClient, item.user.id, item.user);
+    patchUserInCache(queryClient, item.user.id, (user) => ({ 
+      ...user,
+      tag: item.user.tag,
+      nickname: item.user.nickname,
+      profile_image: item.user.profile_image,
+      created_at: item.user.created_at,
+    }));
   }
   queryClient.setQueryData(postKeys.detail(item.id), item);
 }

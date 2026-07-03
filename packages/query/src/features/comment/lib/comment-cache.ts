@@ -10,6 +10,7 @@ import type {
 
 import { commentKeys } from '../../../shared/keys/comment.keys';
 import { postKeys } from '../../../shared/keys/post.keys';
+import { patchUserInCache } from '../../user/lib/user-cache';
 
 export const OPTIMISTIC_COMMENT_ID = -1;
 export const DEFAULT_COMMENT_PAGE_SIZE = 20;
@@ -136,6 +137,15 @@ export function seedCommentDetailCacheFromList(
 ): void {
   for (const item of items) {
     queryClient.setQueryData(commentKeys.detail(item.id), item);
+    if(item.user.id) {
+      patchUserInCache(queryClient, item.user.id, (user) => ({ 
+        ...user,
+        tag: item.user.tag,
+        nickname: item.user.nickname,
+        profile_image: item.user.profile_image,
+        created_at: item.user.created_at,
+      }));
+    }
   }
 }
 
