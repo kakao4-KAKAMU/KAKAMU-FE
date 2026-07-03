@@ -2,7 +2,7 @@ import { useRef, useState, useMemo, useCallback } from 'react';
 import { View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import type { PostItem } from '@kakamu/types';
-import { Text } from '@kakamu/ui';
+import { cn, Text } from '@kakamu/ui';
 import { TaggedContentText } from '@/components/featured/content/TaggedContentText';
 import { CompactPostAuthorRow } from './CompactPostAuthorRow';
 import { CompactPostSpoilerBadge } from './CompactPostSpoilerBadge';
@@ -48,8 +48,7 @@ export function CompactPost({ postId, onContentPress }: CompactPostProps) {
           }}
         />
         <View
-          className="gap-2.5 relative"
-          pointerEvents={isSpoilerHidden ? 'none' : 'auto'}
+          className={cn('gap-2.5 relative', isSpoilerHidden ? 'pointer-events-none' : 'pointer-events-auto')}
         >
           <ConditionalRender.Boolean
             condition={post.content}

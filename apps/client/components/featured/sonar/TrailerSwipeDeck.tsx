@@ -98,13 +98,11 @@ function TrailerStackCardLayer({
         {isFront ? (
           <>
             <Animated.View
-              pointerEvents="none"
-              className="absolute inset-0 rounded-3xl bg-destructive/90"
+              className="absolute inset-0 rounded-3xl bg-destructive/90 pointer-events-none"
               style={dislikeTintStyle}
             />
             <Animated.View
-              pointerEvents="none"
-              className="absolute inset-0 rounded-3xl bg-emerald-500/90"
+              className="absolute inset-0 rounded-3xl bg-emerald-500/90 pointer-events-none"
               style={likeTintStyle}
             />
           </>

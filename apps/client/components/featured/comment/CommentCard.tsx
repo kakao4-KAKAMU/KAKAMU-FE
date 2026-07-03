@@ -4,6 +4,7 @@ import { BlurView } from 'expo-blur';
 import type { CommentItem } from '@kakamu/types';
 import {
   Button,
+  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -95,10 +96,9 @@ export function CommentCard({
           </View>
         </View>
 
-        <View className="relative" ref={blurTargetRef}>
+        <View className="relative " ref={blurTargetRef}>
           <View
-            className="rounded-lg bg-muted px-3 py-2.5"
-            pointerEvents={isSpoilerHidden ? 'none' : 'auto'}
+            className={cn('rounded-lg bg-muted px-3 py-2.5', isSpoilerHidden ? 'pointer-events-none' : 'pointer-events-auto')}
           >
             <TaggedContentText
               content={comment.content}
