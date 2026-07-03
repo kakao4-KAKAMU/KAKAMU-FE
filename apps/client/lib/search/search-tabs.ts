@@ -16,6 +16,9 @@ export function isSearchTab(value: string): value is SearchTab {
 }
 
 export function getSearchTabFromPathname(pathname: string): SearchTabRoute {
+  if (pathname.includes('/search/recommend')) {
+    return 'recommend';
+  }
   const segment = pathname.split('/').filter(Boolean).at(-1) ?? 'index';
   if (segment === 'search') {
     return 'index';

@@ -13,7 +13,7 @@ import { useCurrentUserId } from '@/hooks/auth/useCurrentUserId';
 import { useSearchNavigation } from '@/hooks/search/useSearchNavigation';
 import { useSearchRecentHistory } from '@/hooks/search/useSearchRecentHistory';
 
-export default function SearchRecommendScreen() {
+export default function SearchRecommendFeedScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const client = useBackendApiClient();
@@ -26,14 +26,6 @@ export default function SearchRecommendScreen() {
   const postIds = useMemo(
     () => searchQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [searchQuery.data?.pages],
-  );
-
-  const onPostPress = useCallback(
-    (postId: number) => {
-      void recordSelection(query, 'recommend');
-      router.push(`/feed/${postId}`);
-    },
-    [query, recordSelection, router],
   );
 
   if (!accessToken) {
@@ -67,7 +59,9 @@ export default function SearchRecommendScreen() {
       }}
       keyExtractor={(postId) => String(postId)}
       renderItem={(postId) => (
-        <CompactPost postId={postId} />
+        <CompactPost postId={postId} onContentPress={() => {
+          void recordSelection(query, 'recommend');
+        }} />
       )}
     />
   );
