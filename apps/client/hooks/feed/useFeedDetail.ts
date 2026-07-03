@@ -137,7 +137,7 @@ export function useFeedDetail(postId: number) {
     onSubmit,
     canSubmit,
     isSubmitting: createCommentMutation.isPending,
-    currentUserId: currentUser?.id,
+    currentUserId: currentUser?.id ?? null,
     onReply,
     labels: {
       title: t('shared.feedDetail.title'),
